@@ -1,7 +1,8 @@
 
 var app = new Framework7({
   el: '#app',
-  name: 'tweakra1n',
+  name: 'AppRealm',
+  id: 'com.apprealm.TechLxrd'
   theme: 'md', 
   popup: {
     swipeToClose: 'to-bottom',
@@ -44,16 +45,13 @@ document.addEventListener("DOMContentLoaded", () => {
     checkConnection();
 });
 
-
-
-
 function initPhotoBrowser(urls) {
     const photos = urls.map(url => ({ url }));
     return app.photoBrowser.create({
         photos,
         type: "standalone",
         navbar: true,
-        toolbar: true,
+        toolbar: false,
         swiper: {
             zoom: true
         },
@@ -126,7 +124,7 @@ function createPopupHtml(item) {
                             </li>
                         </ul>
                     </div>
-                    <div class="block inset"><a href="${item.get_link}" class="button button-tonal button-round external">Install</a></div>
+                    <div class="block inset"><a href="${item.get_link}" class="button button-tonal button-round external">Open</a></div>
                     <div class="block block-strong inset">
                         <h2>About</h2>
                         <p>${item.description}</p>
@@ -153,10 +151,10 @@ function createPopupHtml(item) {
                                     subtitle: '${item.category}',
                                     color: '${item.badgecolor}'
                                 })" class="item-link item-content">
-                                    <div class="item-media"><i class="icon material-icons color-red">stars</i></div>
+                                    <div class="item-media"><i class="icon material-icons color-red">favorite</i></div>
                                     <div class="item-inner">
                                         <div class="item-title-row">
-                                            <div class="item-title">Add to Wishlist</div>
+                                            <div class="item-title">Add to Favorites</div>
                                         </div>
                                     </div>
                                 </a>
