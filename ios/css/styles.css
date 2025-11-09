@@ -1,17 +1,16 @@
 :root {
-  --f7-ios-primary: #3E84F7;
-  --f7-ios-primary-shade: #3E84F7;
-  --f7-ios-primary-tint: #3E84F7;
+  --f7-ios-primary: rgb(0, 0, 0);
+  --f7-ios-primary-shade: rgb(0, 0, 0);
+  --f7-ios-primary-tint: rgb(0, 0, 0);
   --lamp-toolbar-duration: .7s;
   --f7-dialog-border-radius: 30px;
   --f7-searchbar-input-height: 44px;
   --f7-searchbar-inline-input-height: 44px;
-  --f7-bars-translucent-blur: 2px;
+  --f7-bars-translucent-blur: 20px;
   --f7-dialog-text-align: left;
   --f7-dialog-border-divider-color: transparent;
   --f7-dialog-title-font-size: 17px;
   --f7-searchbar-backdrop-bg-color: transparent;
-  --f7-tabbar-icon-size: 20px;
   --f7-theme-color-rgb: var(--f7-ios-primary);
   --f7-block-inset-border-radius: 23px;
   --f7-list-inset-border-radius: 25px;
@@ -51,6 +50,9 @@ a, body {
   --f7-list-inset-border-radius: 25px;
   --f7-card-border-radius: 26px !important;
 }
+.ios.dark{--f7-ios-primary: #ffffff;
+  --f7-ios-primary-shade: #ffffff;
+  --f7-ios-primary-tint: #ffffff;}
 
 .lamp-tabbar {
   --f7-toolbar-inner-padding-left: 0px;
@@ -100,8 +102,8 @@ a, body {
 
 .searchbar input[type="search"] {
   background: rgba(255, 255, 255, 0.10);
-  backdrop-filter: blur(34px) saturate(180%);
-  -webkit-backdrop-filter: blur(34px) saturate(180%);
+  backdrop-filter: blur(150px) saturate(180%)!important;
+  -webkit-backdrop-filter: blur(150px) saturate(180%)!important;
   border: 1px solid rgba(255, 255, 255, 0.25);
   box-shadow:
     0px 0px 0px 2px rgba(255, 255, 255, 0.05) inset,
@@ -164,14 +166,6 @@ a, body {
   width: 90%;
   padding: 10px 0;
   margin-bottom: 10px;
-  background: rgba(255, 255, 255, 0.13)!important;
-  backdrop-filter: blur(30px) saturate(180%);
-  -webkit-backdrop-filter: blur(30px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow:
-    0px 0px 0px 2px rgba(255, 255, 255, 0.05) inset,
-    0px 0px 100px 10px rgba(255, 255, 255, 0.05) inset,
-    0 0.5px 0px rgba(255, 255, 255, 0.525) inset;
   border-radius: 24px;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -179,31 +173,9 @@ a, body {
   bottom: 0;
 }
 
-.toolbar-bottom::before {
-  content: "";
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.25), transparent 70%);
-  mix-blend-mode: screen;
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
-
-.dark .toolbar-bottom {
-  background: rgba(30, 30, 30, 0.13)!important;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow:
-    0px 0px 0px 2px rgba(255, 255, 255, 0.05) inset,
-    0px 0px 100px 10px rgba(255, 255, 255, 0.05) inset,
-    0 0.5px 0px rgba(255, 255, 255, 0.525) inset;
-}
-
-.dark .toolbar-bottom::before {
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.05), transparent 70%);
-}
 
 .install {
-  font-size: 17px; /* was "auto", which is invalid */
+  font-size: 17px;
   color: #fff;
   background-image:
     repeating-radial-gradient(circle at 0 0, transparent 0, #06d1c2 32px),
