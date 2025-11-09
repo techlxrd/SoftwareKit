@@ -2,7 +2,7 @@ const app = new Framework7({
   el: "#app",
   theme: "ios",
   name: "tweakra1n",
-  id: "com.shadvlxrd.tweakra1n",
+  id: "com.techlxrd.AppRealm",
   popup: {
     push: true,
     swipeToClose: true,
@@ -21,7 +21,7 @@ const app = new Framework7({
   routes: [
     {
       path: "/other/",
-      content: `<div class="page"><div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner sliding"><div class="left"><a href="#" class="link back"><i class="icon icon-back"></i></a></div><div class="title">Other</div></div></div><div class="page-content"><div class="list media-list separated inset"><ul><li><a href="https://ios.cfw.guide" class="item-link item-content external"><div class="item-media"><i class="f7-icons">lock_open_fill</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Jailbreak guide</div></div></div></a></li><li><a href="https://udid.tech/config/udid_tech.signed.mobileconfig" class="item-link item-content external"><div class="item-media"><i class="f7-icons">gear_alt</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Get UDID</div></div></div></a></li><li><a href="https://www.dropbox.com/scl/fi/4khxifa6dmyxtna7e8p9t/blockrevokes.mobileconfig?rlkey=kzc1wlts0u5vfkco1q5pyihb3&dl=1" class="item-link item-content external"><div class="item-media"><i class="f7-icons">shield_lefthalf_fill</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Block revokes</div></div></div></a></li><li><a href="https://cdn.adtidy.org/public/Dns/adguard-dns.mobileconfig" class="item-link item-content external"><div class="item-media"><i class="f7-icons">rectangle_3_offgrid_fill</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Block ADS</div></div></div></a></li><li><a href="https://www.dropbox.com/scl/fi/9mpbzim7x6sogk65e5jai/Block_OTA.mobileconfig?rlkey=86frs6v7zrhwzvrbwrqgo04m6&dl=1" class="item-link item-content external"><div class="item-media"><i class="f7-icons">lock_shield_fill</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Block OTA</div></div></div></a></li></ul></div><div class="block block-title">Supervision required</div><div class="list media-list separated inset"><ul><li><a href="https://www.dropbox.com/scl/fi/sbjxg9q6w6za17s94ommj/Skip_Setup.mobileconfig?rlkey=l4eojv7qyh6gb0jul53h8o08h&dl=1" class="item-link item-content external"><div class="item-media"><i class="icon f7-icons">device_phone_portrait</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Skip Setup</div></div></div></a></li><li><a href="https://www.dropbox.com/scl/fi/xmcduai5mhnyp7pznd0mb/Disable_Screen_Time.mobileconfig?rlkey=7s2vqp4kfccna8etuj57lbr2w&dl=1" class="item-link item-content external"><div class="item-media"><i class="f7-icons">hourglass</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Disable Screen Time</div></div></div></a></li></ul></div><br></div>`,
+      content: `<div class="page"><div class="navbar no-outline"><div class="navbar-bg"></div><div class="navbar-inner sliding"><div class="left"><a href="#" class="link back"><i class="icon icon-back"></i></a></div><div class="title">Other</div></div></div><div class="page-content"><div class="list media-list separated inset"><ul><li><a href="https://ios.cfw.guide" class="item-link item-content external"><div class="item-media"><i class="f7-icons">lock_open_fill</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Jailbreak guide</div></div></div></a></li><li><a href="https://udid.tech/config/udid_tech.signed.mobileconfig" class="item-link item-content external"><div class="item-media"><i class="f7-icons">gear_alt</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Get UDID</div></div></div></a></li><li><a href="https://cdn.adtidy.org/public/Dns/adguard-dns.mobileconfig" class="item-link item-content external"><div class="item-media"><i class="f7-icons">rectangle_3_offgrid_fill</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Block ADS</div></div></div></a></li></ul></div></ul></div><br></div>`,
       options: { transition: "f7-cover" },
     },
    {
@@ -655,59 +655,6 @@ document.addEventListener("DOMContentLoaded", function () {
   displayFavorites();
 });
 
-let colorPickerInstance = null;
-
-function updateThemeColor(color) {
-  const root = document.documentElement;
-  root.style.setProperty("--f7-ios-primary", color);
-  root.style.setProperty("--f7-ios-primary-shade", color + "D9");
-  root.style.setProperty("--f7-ios-primary-tint", color + "4D");
-  localStorage.setItem("ios-primary-color", color);
-  localStorage.setItem("ios-primary-shade", color + "D9");
-  localStorage.setItem("ios-primary-tint", color + "4D");
-}
-
-const debouncedUpdateThemeColor = debounce(updateThemeColor, 250);
-
-function openColorPicker(initialColor) {
-  colorPickerInstance = app.colorPicker.create({
-    inputEl: "#accent-color",
-    openIn: "popover",
-    closeOnSelect: true,
-    value: { hex: initialColor },
-    on: {
-      change: (picker, value) => {
-        debouncedUpdateThemeColor(value.hex);
-      },
-      closed: () => {
-        colorPickerInstance.destroy();
-        colorPickerInstance = null;
-      }
-    }
-  });
-  colorPickerInstance.open();
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const initialColor = localStorage.getItem("ios-primary-color") || "#3E84F7";
-  updateThemeColor(initialColor);
-  document.getElementById("accent-color").addEventListener("click", () => {
-    if (colorPickerInstance) {
-      colorPickerInstance.setValue({ hex: initialColor });
-      colorPickerInstance.open();
-    } else {
-      openColorPicker(initialColor);
-    }
-  });
-});
-
-function debounce(func, wait) {
-  let timeout;
-  return function(...args) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, args), wait);
-  };
-}
 
 var swiperFeatured = new Swiper(".featured", {
   slidesPerView: "auto",
