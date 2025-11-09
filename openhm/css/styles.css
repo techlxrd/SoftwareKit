@@ -3,7 +3,7 @@
     --f7-block-inset-border-radius: 25px; 
     --f7-list-inset-border-radius: 18px;
     --f7-searchbar-input-border-radius: 25px;
- --f7-searchbar-in-page-content-input-border-radius: 25px;
+    --f7-searchbar-inline-input-height: 37px;      --f7-searchbar-in-page-content-input-border-radius: 25px;
     --f7-dialog-border-radius: 18px;
     --f7-dialog-input-border-radius: 25px;
     --f7-actions-border-radius: 18px;
@@ -26,15 +26,15 @@
     --f7-notification-border-radius: 20px;
     --f7-sheet-height: 400px;
     --f7-popup-border-radius: 20px;
-    --f7-bars-translucent-blur: 6px;
+    --f7-bars-translucent-blur: 7px;
     --f7-card-border-radius: 30px;
 }
 .ios .dark,
 .ios.dark {
+    --f7-ios-primary: #3E84F7 !important;
     --f7-block-inset-border-radius: 25px; 
     --f7-list-inset-border-radius: 23px;
-    --f7-searchbar-input-border-radius: 25px; 
- --f7-searchbar-in-page-content-input-border-radius: 25px;
+    --f7-searchbar-input-border-radius: 25px;       --f7-searchbar-in-page-content-input-border-radius: 25px;
     --f7-dialog-border-radius: 18px;
     --f7-dialog-input-border-radius: 25px;
     --f7-actions-border-radius: 18px;
@@ -71,9 +71,9 @@
   margin-left: 0;
   margin-right: auto;
 }
-.list.separated li{margin-top:10px;background:var(--f7-list-strong-bg-color);transition:background-color 1s;transform:translateZ(0)}.list.separated ul{background:0 0}.list.separated .item-inner:after{content:none}.list.separated .item-content,.list.separated .item-link,.list.separated li{border-radius:var(--f7-list-inset-border-radius)!important}
+.list.separated li{margin-top:10px;background:var(--f7-list-strong-bg-color);transition:background-color 1s;transform:translateZ(0)}.list.separated ul{background:0 0}.list.separated .item-inner:after{content:none}.list.separated .item-content,.list.separated .item-link,.list.separated li{border-radius:var(--f7-list-inset-border-radius) !important}
 .button {
-  text-transform: none; !important
+  text-transform: none !important;
 }
 .dialog{margin-top:280px;}
 .notification{height:83px;}
@@ -91,7 +91,7 @@
 .inline{display: inline-block;}
 .link.popup-close{font-size:auto;color:grey;}
 .list-dividers .item-inner:after {
- transform-origin: initial;!important
+ transform-origin: initial !important;
 }
 .searchbar {
     overflow-x: hidden;
@@ -110,7 +110,6 @@ padding: 5px;
 
 }
 
-
 .swiper-title {
 
 margin: 0;
@@ -119,10 +118,9 @@ font-size: 26px;
 
 font-weight: 700;
 
-color: #767c8e;
+color: #000;
 
 }
-
 
 .swiper-padding {
 
@@ -144,7 +142,7 @@ width: 85%;
 
 height: 50%;
 
-border-radius: 20px
+border-radius: 20px;
 
 }
 
@@ -190,7 +188,7 @@ width: 100%;
 
 backdrop-filter: saturate(180%) blur(var(--f7-bars-translucent-blur));
 
-align-items: center
+align-items: center;
 
 }
 
@@ -199,7 +197,7 @@ align-items: center
 
 font-size: 60px;
 
-color: gray
+color: gray;
 
 }
 
@@ -268,7 +266,7 @@ text-align: center
 
 .sidebar .tab-link .icon {
 
-font-size: 24px
+font-size: 24px;
 
 }
 
@@ -282,17 +280,9 @@ color: #3E84F7;
 .item-media img {
     width: 60px;
     height: 60px;
-    background-image: url(https://appmarkt.pages.dev/ios/assets/default.png);
+    background-image: url(https://apprealm.pages.dev/ios/assets/default.png);
     background-size: cover;
     border-radius: 26%;
-}
-.accent-color-indicator {
-    display: inline-block;
-    width: 27px;
-    height: 27px;
-    border-radius: 100%;
-    border: 1px solid grey;
-    background-color:var(--f7-ios-primary); 
 }
 #favempty {
   position: absolute;
@@ -302,5 +292,5 @@ color: #3E84F7;
   text-align: center;
 }
 .searchbar .searchbar-input-wrap {
-  border-radius: 50px;!important
+  border-radius: 50px!important;
 }
