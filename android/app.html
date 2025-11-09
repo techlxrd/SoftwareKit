@@ -1,1 +1,271 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><title>tweakra1n</title><link rel="icon" type="image/jpg" href="https://tweakrain.pages.dev/favicon.ico"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7@8.3.4/framework7-bundle.min.css" integrity="sha256-G54tO11H1I9volDPFbhFBVer91FaXMx+MZhIm1qlh5g=" crossorigin="anonymous"><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" crossorigin="anonymous"><link rel="stylesheet" href="css/styles.css"></head><body><div id="app"><div class="view view-main"><div data-name="home" class="page"><div class="navbar navbar-large"><div class="navbar-bg"></div><div class="navbar-inner"><div class="left"></div><div class="title">Home</div><div class="right"></div><div class="title-large"><div class="title-large-text">Home</div></div></div></div><div class="toolbar tabbar tabbar-icons toolbar-bottom searchbar-hide-on-enable"><div class="toolbar-inner"><a href="#tab1" class="tab-link tab-link-active" data-tab-title="Home"><i class="icon material-icons">home</i><span class="tabbar-label">Home</span></a><a href="#tab2" class="tab-link" data-tab-title="Apps and Tweaks"><i class="icon material-icons">apps</i><span class="tabbar-label">Apps</span></a><a href="#tab3" class="tab-link" data-tab-title="Settings"><i class="icon material-icons">settings</i><span class="tabbar-label">Settings</span></a></div></div><div class="sidebar"><div class="sidebar-inner"><a href="#tab1" class="tab-link tab-link-active" data-tab-title="Home"><i class="icon material-icons">home</i></a><a href="#tab2" class="tab-link" data-tab-title="Apps and Tweaks"><i class="icon material-icons">apps</i></a><a href="#tab3" class="tab-link" data-tab-title="Settings"><i class="icon material-icons">settings</i></a></div></div><div class="tabs"><div class="page-content tab tab-active ptr-content" id="tab1" data-ptr-distance="55"><div class="ptr-preloader"><div class="preloader"></div><div class="ptr-arrow"></div></div><div class="swiper swiper-padding featured swiper-initialized swiper-horizontal swiper-md swiper-backface-hidden"><div class="swiper-wrapper" aria-live="polite"><div class="swiper-slide featured" role="group" aria-label="1 / 5"><a class="link popup-open" data-popup="#lawnchair"><div class="title-container"><div class="swiper-title">Lawnchair</div></div><img src="https://i.imgur.com/6n1p4qp.jpeg"><div class="backout"></div></a></div><div class="swiper-slide featured" role="group" aria-label="2 / 5"><a class="link popup-open" href="#" data-popup="#revanced"><div class="title-container"><div class="swiper-title">ReVanced</div></div><img src="https://i.imgur.com/Z8XnZEH.jpeg"><div class="backout"></div></a></div><div class="swiper-slide featured" role="group" aria-label="3 / 5"><a class="link popup-open" href="#" data-popup="#anone"><div class="title-container"><div class="swiper-title">AN1</div></div><img src="https://i.imgur.com/zCvG78A.jpeg"><div class="backout"></div></a></div><div class="swiper-slide featured" role="group" aria-label="5 / 5"><a class="link popup-open" data-popup="#happymod"><div class="title-container"><div class="swiper-title">HappyMod</div></div><img src="https://i.imgur.com/7Qtuibe.jpeg"><div class="backout"></div></a></div></div><br><div class="swiper-pagination swiper-pagination-bullets swiper-pagination-horizontal"><span class="swiper-pagination-bullet swiper-pagination-bullet-active" aria-current="true"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span></div><span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div><div class="list media-list separated inset"><p><ul><li><a class="item-link item-content sheet-open" data-sheet="#changelog"><div class="item-media"><i class="material-icons">rocket_launch</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">What's new</div></div></div></a></li></ul></div><div id="news"></div></div><div class="page-content tab ptr-content" id="tab2" data-ptr-distance="55"><div class="ptr-preloader"><div class="preloader"></div><div class="ptr-arrow"></div></div><form class="searchbar searchbar-init" data-search-container=".virtual-list" data-search-item="li" data-search-in=".item-title"><div class="searchbar-inner"><div class="searchbar-input-wrap"><input type="search" placeholder="Search apps or tweaks" style="border-radius:11px"><i class="searchbar-icon"></i><span class="input-clear-button"></span></div><span class="searchbar-disable-button color-blue">Cancel</span></div></form><div class="list list-strong simple-list searchbar-not-found inset"><ul><li>Unfortunately, no items were found.</li></ul></div><div class="list separated media-list inset searchbar-hide-on-enable"><ul><li><a class="item-link item-content popup-open" data-popup="#wishlist"><div class="item-media"><i class="icon material-icons">stars</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Wishlist</div></div></div></a></li></ul></div><div class="list separated media-list inset searchbar-hide-on-enable"><ul></ul></div><div class="list media-list virtual-list separated inset grid-list"><ul></ul><br><br></div></div><div class="page-content tab ptr-content" id="tab3" data-ptr-distance="55"><div class="ptr-preloader"><div class="preloader"></div><div class="ptr-arrow"></div></div><div class="list separated media-list inset"><ul><li><div class="item-content"><div class="item-media"><a class="popup-open" data-popup="#icon"><img src="https://appmarkt.pages.dev/favicon.ico"></a></div><div class="item-inner"><div class="item-title-row"><div class="item-title"><script>var userAgent=navigator.userAgent,androidMatch=userAgent.match(/Android (\d+)\.?(\d+)?\.?(\d+)?/i),androidVersion=androidMatch?androidMatch.slice(1).filter(Boolean).join("."):null;androidVersion&&document.write("Android "+androidVersion)</script></div></div><div style="font-size:12px" class="item-subtitle"><script>var mydate=new Date,year=mydate.getYear(),day=mydate.getDay(),month=mydate.getMonth(),daym=mydate.getDate();daym<10&&(daym="0"+daym);var dayarray=new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"),montharray=new Array("January","February","March","April","May","June","July","August","September","October","November","December");document.write(dayarray[day]+", "+montharray[month]+" "+daym)</script></div></div></div></li></ul></div><div class="list media-list separated inset grid"><ul><li style="display:flex;align-items:center;justify-content:space-between;padding-left:16px;padding-right:15px;padding-top:3px"><div style="display:flex;align-items:center"><div class="item-media"><i class="icon material-icons">palette</i></div><div style="padding-left:14px;font-weight:var(--f7-list-media-item-title-font-weight,var(--f7-list-item-title-font-weight,inherit))">Accent color</div></div><div style=""><span class="accent-color-indicator" id="accent-color"></span></div></li><li><a onclick="reset()" class="item-link item-content"><div class="item-media"><i class="icon material-icons">history</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Restore color</div></div></div></a></li></ul></div><div class="block-title">Other</div><div class="list media-list separated inset"><ul><li><a href="https://x.com/TechLxrd07/" class="item-link item-content external"><div class="item-media"><i class="material-icons">person_add</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Follow Us</div></div></div></a></li><li><a href="https://www.paypal.com/donate/?hosted_button_id=764DYR9PAFGUY" class="item-link item-content external"><div class="item-media"><i class="material-icons color-red">favorite</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Donate</div></div></div></a></li><li><a class="item-link item-content popup-open" data-popup="#terms"><div class="item-media"><i class="material-icons">info</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Terms of service</div></div></div></a></li><li><a href="https://github.com/Shadvlxrd/tweakra1n" class="item-link item-content external"><div class="item-media"><i class="material-icons">code</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Source code</div></div></div></a></li></ul><center><p>tweakra1n Android v3.0</div></div></div></div></div></div><div class="popup" id="wishlist"><div class="view"><div class="page"><div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner"><div class="title">Wishlist</div><div class="right"><a class="link popup-close">Close</a></div></div></div><div class="page-content"><div class="block block-title" id="favempty" style="text-align:center">Empty<i class="material-icons" style="font-size:15px">inventory_2</i></div><div class="list separated grid-list media-list inset grid-list" id="fav"><ul></ul></div></div><div class="popup" id="terms"><div class="page"><div class="swipe-nav"><div><i class="material-icons">remove</i></div></div><div class="page-content"><div class="block-title block-title-large">Terms of Service</div><div class="block block-strong inset"><p>Welcome to AppMarket – the ultimate app store for your Android devices. We highly value your privacy and security, which is why we have meticulously crafted the following terms of service to ensure absolute clarity and transparency:</p><p><strong>1. Privacy First:</strong>Your privacy is our top priority. We assure you that we do not collect any of your personal data. Your information remains strictly yours and is treated with the highest level of respect.</p><p><strong>2. Enhanced User Experience:</strong>To enhance your experience, we use cookies exclusively to save your settings. This enables you to effortlessly customize your AppMarket experience according to your preferences.</p><p><strong>3. Third-party Apps and Data Collection:</strong>It's important to note that certain tweaks or apps available through AppMarket may involve data collection. By utilizing these, you acknowledge and consent to their respective data collection practices. Kindly review their terms and privacy policies for additional details.</p><p><strong>4. User Responsibility:</strong>While we relentlessly strive for excellence, it's essential to clarify that we cannot be held responsible for any damages to your device. You hold the responsibility for your device and its usage.</p><p><strong>5. Open Dialogue:</strong>We wholeheartedly encourage you to reach out with any questions or concerns. We value your feedback and aim to continuously elevate your AppMarket experience.</p><p>Thank you for choosing AppMarket.</p></div></div></div></div><div class="sheet-modal" id="changelog" data-swipe-to-close="true"><div class="sheet-modal-inner"><div class="swipe-nav"><div><i class="material-icons">remove</i></div></div><div class="page-content"><div class="block-title block-title-large">What's new?</div><div class="block"><div class="block block-strong inset"><p>Last updated:<span class="badge">6 December 2024</span><h2>v3.0</h2><p>🪲Bug fixes and improvements<p>🔎When you activate the Searchbar, the bottom toolbar will be concealed until you close the Searchbar.<p🌿Improved performance and optimized the code<p>📰The news are now appearing instantly.</p></div><br><br></div></div><script src="https://cdn.jsdelivr.net/npm/framework7@8.3.4/framework7-bundle.min.js" integrity="sha256-3rYMGudduhDtmbZZDWgbNKl+YYb5wXAGn91KZa1GeJY=" crossorigin="anonymous"></script><script type="text/javascript" src="js/app.js"></script></body></html>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>AppRealm</title>
+    <link rel="icon" type="image/jpg" href="https://apprealm.pages.dev/favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7@8.3.4/framework7-bundle.min.css" integrity="sha256-G54tO11H1I9volDPFbhFBVer91FaXMx+MZhIm1qlh5g=" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <div id="app">
+        <div class="view view-main">
+            <div data-name="home" class="page">
+                <div class="navbar navbar-large">
+                    <div class="navbar-bg"></div>
+                    <div class="navbar-inner">
+                        <div class="left"></div>
+                        <div class="title">Home</div>
+                        <div class="right"></div>
+                        <div class="title-large">
+                            <div class="title-large-text">Home</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="toolbar tabbar tabbar-icons toolbar-bottom searchbar-hide-on-enable">
+                    <div class="toolbar-inner"><a href="#tab1" class="tab-link tab-link-active" data-tab-title="Home"><i class="icon material-icons">home</i></a><a href="#tab2" class="tab-link" data-tab-title="Apps and Tweaks"><i class="icon material-icons">apps</i></a>
+                        <a
+                            href="#tab3" class="tab-link" data-tab-title="Info"><i class="icon material-icons">info_fill</i></a>
+                    </div>
+                </div>
+                <div class="sidebar">
+                    <div class="sidebar-inner"><a href="#tab1" class="tab-link tab-link-active" data-tab-title="Home"><i class="icon material-icons">home</i></a><a href="#tab2" class="tab-link" data-tab-title="Apps and Tweaks"><i class="icon material-icons">apps</i></a><a href="#tab3"
+                            class="tab-link" data-tab-title="Info"><i class="icon material-icons">info_fill</i></a></div>
+                </div>
+                <div class="tabs">
+                    <div class="page-content tab tab-active ptr-content" id="tab1" data-ptr-distance="55">
+                        <div class="ptr-preloader">
+                            <div class="preloader"></div>
+                            <div class="ptr-arrow"></div>
+                        </div>
+                        <div class="swiper swiper-padding featured swiper-initialized swiper-horizontal swiper-md swiper-backface-hidden">
+                            <div class="swiper-wrapper" aria-live="polite">
+                                <div class="swiper-slide featured" role="group" aria-label="1 / 5">
+                                    <a class="link popup-open" data-popup="#lawnchair">
+                                        <div class="title-container">
+                                            <div class="swiper-title">Lawnchair</div>
+                                        </div><img src="https://i.imgur.com/6n1p4qp.jpeg">
+                                        <div class="backout"></div>
+                                    </a>
+                                </div>
+                                <div class="swiper-slide featured" role="group" aria-label="2 / 5">
+                                    <a class="link popup-open" href="#" data-popup="#revanced">
+                                        <div class="title-container">
+                                            <div class="swiper-title">ReVanced</div>
+                                        </div><img src="https://i.imgur.com/Z8XnZEH.jpeg">
+                                        <div class="backout"></div>
+                                    </a>
+                                </div>
+                                <div class="swiper-slide featured" role="group" aria-label="3 / 5">
+                                    <a class="link popup-open" href="#" data-popup="#anone">
+                                        <div class="title-container">
+                                            <div class="swiper-title">AN1</div>
+                                        </div><img src="https://i.imgur.com/zCvG78A.jpeg">
+                                        <div class="backout"></div>
+                                    </a>
+                                </div>
+                                <div class="swiper-slide featured" role="group" aria-label="5 / 5">
+                                    <a class="link popup-open" data-popup="#happymod">
+                                        <div class="title-container">
+                                            <div class="swiper-title">HappyMod</div>
+                                        </div><img src="https://i.imgur.com/7Qtuibe.jpeg">
+                                        <div class="backout"></div>
+                                    </a>
+                                </div>
+                            </div><br>
+                            <div class="swiper-pagination swiper-pagination-bullets swiper-pagination-horizontal"><span class="swiper-pagination-bullet swiper-pagination-bullet-active" aria-current="true"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span></div>
+                            <span
+                                class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                        </div>
+                        <div class="block block-title">Newsfeed 📰</div>                
+                        <div id="news"></div>
+                    </div>
+                    <div class="page-content tab ptr-content" id="tab2" data-ptr-distance="55">
+                        <div class="ptr-preloader">
+                            <div class="preloader"></div>
+                            <div class="ptr-arrow"></div>
+                        </div>
+                        <form class="searchbar searchbar-init" data-search-container=".virtual-list" data-search-item="li" data-search-in=".item-title">
+                            <div class="searchbar-inner">
+                                <div class="searchbar-input-wrap"><input type="search" placeholder="Search apps or tweaks" style="border-radius:11px"><i class="searchbar-icon"></i><span class="input-clear-button"></span></div><span class="searchbar-disable-button color-blue">Cancel</span></div>
+                        </form>
+                        <div class="list list-strong simple-list searchbar-not-found inset">
+                            <ul>
+                                <li>Unfortunately, no items were found.</li>
+                            </ul>
+                        </div>
+                        <div class="list separated media-list inset searchbar-hide-on-enable">
+                            <ul>
+                                <li>
+                                    <a class="item-link item-content popup-open" data-popup="#favorites">
+                                        <div class="item-media"><i class="icon material-icons">favorite_fill</i></div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div class="item-title">Favorites</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="list separated media-list inset searchbar-hide-on-enable">
+                            <ul></ul>
+                        </div>
+                        <div class="list media-list virtual-list separated inset grid-list">
+                            <ul></ul><br><br></div>
+                    </div>
+                    <div class="page-content tab ptr-content" id="tab3" data-ptr-distance="55">
+                        <div class="ptr-preloader">
+                            <div class="preloader"></div>
+                            <div class="ptr-arrow"></div>
+                        </div>
+                        <div class="list separated media-list inset">
+                            <ul>
+                                <li>
+                                    <div class="item-content">
+                                        <div class="item-media"><a class="popup-open" data-popup="#icon"><img src="https://apprealm.pages.dev/favicon.png"></a></div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div class="item-title">
+                                                    <script>
+                                                        var userAgent = navigator.userAgent,
+                                                            androidMatch = userAgent.match(/Android (\d+)\.?(\d+)?\.?(\d+)?/i),
+                                                            androidVersion = androidMatch ? androidMatch.slice(1).filter(Boolean).join(".") : null;
+                                                        androidVersion && document.write("Android " + androidVersion)
+                                                    </script>
+                                                </div>
+                                            </div>
+                                            <div style="font-size:12px" class="item-subtitle">
+                                                <script>
+                                                    var mydate = new Date,
+                                                        year = mydate.getYear(),
+                                                        day = mydate.getDay(),
+                                                        month = mydate.getMonth(),
+                                                        daym = mydate.getDate();
+                                                    daym < 10 && (daym = "0" + daym);
+                                                    var dayarray = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"),
+                                                        montharray = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+                                                    document.write(dayarray[day] + ", " + montharray[month] + " " + daym)
+                                                </script>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="block-title">Other</div>
+                        <div class="list media-list separated inset">
+                            <ul>
+                                <li>
+                                    <a href="https://x.com/TechLxrd07/" class="item-link item-content external">
+                                        <div class="item-media"><i class="material-icons">person_add</i></div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div class="item-title">Follow Us</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                        <a class="item-link item-content popup-open" data-popup="#changelog">
+                                            <div class="item-media"><i class="material-icons">rocket_launch</i></div>
+                                            <div class="item-inner">
+                                                <div class="item-title-row">
+                                                    <div class="item-title">What's new</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                <li>
+                                    <a class="item-link item-content popup-open" data-popup="#terms">
+                                        <div class="item-media"><i class="material-icons">info</i></div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div class="item-title">Terms of service</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://github.com/TechLxrd/AppRealm" class="item-link item-content external">
+                                        <div class="item-media"><i class="material-icons">code</i></div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div class="item-title">Source code</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                            <center>
+                                <p>AppRealm Android v1.0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="popup" id="favorites">
+        <div class="view">
+            <div class="page">
+                <div class="navbar">
+                    <div class="navbar-bg"></div>
+                    <div class="navbar-inner">
+                        <div class="title">Favorites</div>
+                        <div class="right"><a class="link popup-close">Close</a></div>
+                    </div>
+                </div>
+                <div class="page-content">
+                    <div class="block block-title" id="favempty" style="text-align:center">Empty</div>
+                    <div class="list separated grid-list media-list inset grid-list" id="fav">
+                        <ul></ul>
+                    </div>
+                </div>
+                <div class="popup" id="terms">
+                    <div class="page">
+                        <div class="swipe-nav">
+                            <div><i class="material-icons">remove</i></div>
+                        </div>
+                        <div class="page-content">
+                            <div class="block-title block-title-large">Terms of Service</div>
+                            <div class="block block-strong inset">
+                                <p>Welcome to AppMarket – the ultimate app store for your Android devices. We highly value your privacy and security, which is why we have meticulously crafted the following terms of service to ensure absolute clarity and
+                                    transparency:</p>
+                                <p><strong>1. Privacy First:</strong>Your privacy is our top priority. We assure you that we do not collect any of your personal data. Your information remains strictly yours and is treated with the highest level of respect.</p>
+                                <p><strong>2. Enhanced User Experience:</strong>To enhance your experience, we use cookies exclusively to save your settings. This enables you to effortlessly customize your AppMarket experience according to your preferences.</p>
+                                <p><strong>3. Third-party Apps and Data Collection:</strong>It's important to note that certain tweaks or apps available through AppMarket may involve data collection. By utilizing these, you acknowledge and consent to their
+                                    respective data collection practices. Kindly review their terms and privacy policies for additional details.</p>
+                                <p><strong>4. User Responsibility:</strong>While we relentlessly strive for excellence, it's essential to clarify that we cannot be held responsible for any damages to your device. You hold the responsibility for your device
+                                    and its usage.</p>
+                                <p><strong>5. Open Dialogue:</strong>We wholeheartedly encourage you to reach out with any questions or concerns. We value your feedback and aim to continuously elevate your AppMarket experience.</p>
+                                <p>Thank you for choosing AppMarket.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sheet-modal" id="changelog" data-swipe-to-close="true">
+                    <div class="sheet-modal-inner">
+                        <div class="swipe-nav">
+                            <div><i class="material-icons">remove</i></div>
+                        </div>
+                        <div class="page-content">
+                            <div class="block-title block-title-large">What's new?</div>
+                            <div class="block">
+                                <div class="block block-strong inset">
+                                    <p>Last updated:<span class="badge">6 December 2024</span>
+                                        <h2>v3.0</h2>
+                                        <p>🪲Bug fixes and improvements
+                                            <p>🔎When you activate the Searchbar, the bottom toolbar will be concealed until you close the Searchbar.
+                                                <p🌿Improved performance and optimized the code<p>📰The news are now appearing instantly.</p>
+                                </div><br><br></div>
+                        </div>
+                        <script src="https://cdn.jsdelivr.net/npm/framework7@8.3.4/framework7-bundle.min.js" integrity="sha256-3rYMGudduhDtmbZZDWgbNKl+YYb5wXAGn91KZa1GeJY=" crossorigin="anonymous"></script>
+                        <script type="text/javascript" src="js/app.js"></script>
+</body>
+
+</html>
