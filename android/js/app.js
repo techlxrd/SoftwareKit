@@ -2,7 +2,7 @@
 var app = new Framework7({
   el: '#app',
   name: 'AppRealm',
-  id: 'com.apprealm.TechLxrd'
+  id: 'com.apprealm.TechLxrd',
   theme: 'md', 
   popup: {
     swipeToClose: 'to-bottom',
