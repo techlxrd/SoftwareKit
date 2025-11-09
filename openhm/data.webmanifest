@@ -1,15 +1,15 @@
 {
-  "name": "tweakra1n",
-  "short_name": "tweakra1n",
+  "name": "AppRealm",
+  "short_name": "AppRealm",
   "description": "The best third party app store for OpenHarmony",
   "icons": [
     {
-      "src": "https://appmarkt.pages.dev/ios/assets/favicon.ico",
+      "src": "https://apprealm.pages.dev/favicon.png",
       "sizes": "32x32",
       "type": "image/x-icon"
     }, 
     {
-      "src": "https://appmarkt.pages.dev/ios/assets/favicon.ico ",
+      "src": "https://apprealm.pages.dev/favicon.png",
       "sizes": "512x512",
       "type": "image/x-icon"
     }

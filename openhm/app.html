@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
-    <title>tweakra1n</title>
+    <title>AppRealm</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7@8.3.4/framework7-bundle.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Shadvlxrd/harmonyicons@latest/hmicons.css">
-    <link rel="icon" type="image/x-icon" href="https://appmarkt.pages.dev/favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Outland3r2007/harmonyicons@latest/hmicons.css">
+    <link rel="icon" type="image/x-icon" href="https://apprealm.pages.dev/favicon.png">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="manifest" href="data.webmanifest"/>
   </head>
@@ -14,7 +14,7 @@
     <div id="app">
       <div class="view view-main">
         <div data-name="home" class="page">
-<div class="navbar navbar-large-transparent">
+<div class="navbar navbar-large-transparent no-outline">
                     <div class="navbar-bg"></div>
                     <div class="navbar-inner">
                         <div class="left"></div>
@@ -36,9 +36,9 @@
           <i class="hm-icons hm-public-favorites-filled"></i>
           <span class="tabbar-label">Favorites</span>
         </a>
-        <a href="#settingsTab" class="tab-link" data-tab-title="Settings">
-          <i class="hm-icons hm-public-settings-filled"></i>
-          <span class="tabbar-label">Settings</span>
+        <a href="#settingsTab" class="tab-link" data-tab-title="Info">
+          <i class="hm-icons hm-public-worldclock"></i>
+          <span class="tabbar-label">Info</span>
         </a>
       </div>
     </div>
@@ -48,13 +48,14 @@
                             <div class="preloader"></div>
                             <div class="ptr-arrow"></div>
                         </div>
-                        <form class="searchbar searchbar-init" data-search-container=".virtual-list" data-search-item="li" data-search-in=".item-title">
+                        <form class="searchbar searchbar-init searchbar-inline" data-search-container=".virtual-list" data-search-item="li" data-search-in=".item-title" style="margin:10px;">
                             <div class="searchbar-inner">
-                                <div class="searchbar-input-wrap"><input type="search" placeholder="Search apps or tweaks"><i class="searchbar-icon"></i><span class="input-clear-button"></span></div><span class="searchbar-disable-button color-blue">Cancel</span></div>
+                                <div class="searchbar-input-wrap"><input type="search" placeholder="Search"><i class="searchbar-icon"></i><span class="input-clear-button"></span></div><span class="searchbar-disable-button color-blue">Cancel</span></div>
                         </form> 
+                      
                         <div class="list list-strong simple-list searchbar-not-found inset">
                             <ul>
-                                <li>Unfortunately, no items were found.</li>
+                                <li>Unfortunately, no items were found 😔</li>
                             </ul>
                         </div>
                         <div>
@@ -71,7 +72,7 @@
                                     <div class="swiper-slide featured" role="group" aria-label="2 / 5">
                                         <a class="link popup-open" data-popup="#nextstore">
                                             <div class="title-container">
-                                                <div class="swiper-title">NEXT Store</div>
+                                                <div class="swiper-title">Droitong</div>
                                             </div><img loading="lazy" src="https://i.imgur.com/CTTK6Te.png">
                                             <div class="backout"></div>
                                         </a>
@@ -79,7 +80,7 @@
                                     <div class="swiper-slide featured" role="group" aria-label="3 / 5">
                                         <a class="link popup-open" data-popup="#soon">
                                             <div class="title-container">
-                                                <div class="swiper-title">Unavailable</div>
+                                                <div class="swiper-title">NEXT Store</div>
                                             </div><img loading="lazy" src="https://i.imgur.com/9Q6I1fe.jpeg">
                                             <div class="backout"></div>
                                         </a>
@@ -135,7 +136,7 @@
                             <ul>
                                 <li>
                                     <div class="item-content">
-                                        <div class="item-media"><a class="popup-open" data-popup="#icon"><img loading="lazy" id="faviconimg2" src="https://appmarkt.pages.dev/favicon.ico"></a></div>
+                                        <div class="item-media"><a class="popup-open" data-popup="#icon"><img loading="lazy" id="faviconimg2" src="https://apprealm.pages.dev/favicon.png"></a></div>
                                         <div class="item-inner">
                                             <div class="item-title-row">
                                                 <div class="item-title" id="greeting">
@@ -177,13 +178,7 @@ window.onload = getGreeting;
                                         </div>
                                     </div>
                                 </li>
-                                <li style="display:flex;align-items:center;justify-content:space-between;padding-left:16px;padding-right:15px">
-                                    <div style="display:flex;align-items:center">
-                                        <div class="item-media"><i class="hm-icons hm-public-themes-filled"></i></div>
-                                        <div style="padding-left:14px;font-weight:var(--f7-list-media-item-title-font-weight,var(--f7-list-item-title-font-weight,inherit))">Accent color</div>
-                                    </div>
-                                    <div style=""><span class="accent-color-indicator" id="accent-color"></span></div>
-                                </li>
+                               
                                 </ul>
                                 </div>
                                 <div class="list list-strong list-dividers inset media-list">
@@ -194,50 +189,27 @@ window.onload = getGreeting;
                                         <div class="item-media"><i class="hm-icons hm-share-filled"></i></div>
                                         <div class="item-inner">
                                             <div class="item-title-row">
-                                                <div class="item-title">Share tweakra1n</div>
+                                                <div class="item-title">Share AppRealm</div>
                                             </div>
                                         </div>
                                     </a>
                                 </li>
                                 
-                                <li>
-                                    <a onclick="reset()" class="item-link item-content">
-                                        <div class="item-media"><i style="color:red;" class="hm-icons hm-delete-filled"></i></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title">Reset</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="block-title">Other</div>
-                        <div class="list list-strong list-dividers media-list inset">
-                            <p>
-                                <ul>
+                              
+                           
                                     <li>
                                         <a href="https://x.com/TechLxrd07/" class="item-link item-content external">
                                             <div class="item-media"><i class="hm-icons hm-contacts-add-filled"></i></div>
                                             <div class="item-inner">
                                                 <div class="item-title-row">
-                                                    <div class="item-title">Follow Us</div>
+                                                    <div class="item-title">Follow Me</div>
                                                 </div>
                                             </div>
                                         </a>
                                     </li>
+                                    
                                     <li>
-                                        <a href="https://www.paypal.com/donate/?hosted_button_id=764DYR9PAFGUY" class="item-link item-content external">
-                                            <div class="item-media"><i class="hm-icons hm-nickname-filled"></i></div>
-                                            <div class="item-inner">
-                                                <div class="item-title-row">
-                                                    <div class="item-title">Donate</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="item-link item-content sheet-open" data-sheet="#changelog">
+                                        <a class="item-link item-content popup-open" data-popup="#changelog">
                                             <div class="item-media"><i class="hm-icons hm-public-fast-filled"></i></div>
                                             <div class="item-inner">
                                                 <div class="item-title-row">
@@ -257,7 +229,7 @@ window.onload = getGreeting;
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="https://github.com/Shadvlxrd/tweakra1n" class="item-link item-content external">
+                                        <a href="https://github.com/TechLxrd/AppRealm" class="item-link item-content external">
                                             <div class="item-media"><i class="hm-icons hm-folder_filled"></i></div>
                                             <div class="item-inner">
                                                 <div class="item-title-row">
@@ -268,13 +240,13 @@ window.onload = getGreeting;
                                     </li>
                                 </ul>
                                 <center>
-                                    <h4>tweakra1n OpenHarmony v1.0 Beta 2</div>
+                                    <h4>AppRealm OpenHarmony v1.0</div>
                     </div>
                 </div>
                 </div>
                 </div>
-                <div class="popup" id="terms"><div class="page"><div class="swipe-nav"><div><i class="hm-icons hm-screenshot-line"></i></div></div><div class="page-content"><div class="block-title block-title-large">Terms of Service</div><div class="block block-strong inset"><p>Welcome to tweakra1n – the ultimate all-in-one utility for your iDevices. We highly value your privacy and security, which is why we have meticulously crafted the following terms of service to ensure absolute clarity and transparency:</p><p><strong>1. Privacy First:</strong>Your privacy is our top priority. We assure you that we do not collect any of your personal data. Your information remains strictly yours and is treated with the highest level of respect.</p><p><strong>2. Enhanced User Experience:</strong>To enhance your experience, we use cookies exclusively to save your settings. This enables you to effortlessly customize your tweakra1n experience according to your preferences.</p><p><strong>3. Third-party Apps and Data Collection:</strong>It's important to note that certain tweaks or apps available through tweakra1n may involve data collection. By utilizing these, you acknowledge and consent to their respective data collection practices. Kindly review their terms and privacy policies for additional details.</p><p><strong>4. User Responsibility:</strong>While we relentlessly strive for excellence, it's essential to clarify that we cannot be held responsible for any damages stemming from the use of Jailbreaking apps or other applications facilitated by tweakra1n. You hold the responsibility for your device and its usage.</p><p><strong>5. Open Dialogue:</strong>We wholeheartedly encourage you to reach out with any questions or concerns. Feel free to use the Feedback button situated in the Settings page for assistance. We value your feedback and aim to continuously elevate your tweakra1n experience.</p><p><strong>Thank you for choosing tweakra1n.</div></div></div></div>
-                <div class="sheet-modal" id="changelog"><div class="sheet-modal-inner"><div class="swipe-nav"><div><i class="hm-icons hm-screenshot-line"></i></div></div><div class="page-content"><div class="block-title block-title-large">What's new?</div><div class="block"><div class="block block-strong inset"><p>Last updated:<span class="badge">Unavailable</span><h2>v1.0 beta 2</h2><p>❌No changelog available</div><br><br></div></div>
+                <div class="popup" id="terms"><div class="page"><div class="swipe-nav"><div><i class="hm-icons hm-screenshot-line"></i></div></div><div class="page-content"><div class="block-title block-title-large">Terms of Service</div><div class="block block-strong inset"><p>Welcome to AppRealm – the ultimate all-in-one utility for your iDevices. We highly value your privacy and security, which is why we have meticulously crafted the following terms of service to ensure absolute clarity and transparency:</p><p><strong>1. Privacy First:</strong>Your privacy is our top priority. We assure you that we do not collect any of your personal data. Your information remains strictly yours and is treated with the highest level of respect.</p><p><strong>2. Enhanced User Experience:</strong>To enhance your experience, we use cookies exclusively to save your settings. This enables you to effortlessly customize your AppRealm experience according to your preferences.</p><p><strong>3. Third-party Apps and Data Collection:</strong>It's important to note that certain tweaks or apps available through AppRealm may involve data collection. By utilizing these, you acknowledge and consent to their respective data collection practices. Kindly review their terms and privacy policies for additional details.</p><p><strong>4. User Responsibility:</strong>While we relentlessly strive for excellence, it's essential to clarify that we cannot be held responsible for any damages stemming from the use of Jailbreaking apps or other applications facilitated by AppRealm. You hold the responsibility for your device and its usage.</p><p><strong>5. Open Dialogue:</strong>We wholeheartedly encourage you to reach out with any questions or concerns. Feel free to use the Feedback button situated in the Settings page for assistance. We value your feedback and aim to continuously elevate your AppRealm experience.</p><p><strong>Thank you for choosing AppRealm.</div></div></div></div>
+                <div class="sheet-modal" id="changelog"><div class="sheet-modal-inner"><div class="swipe-nav"><div><i class="hm-icons hm-screenshot-line"></i></div></div><div class="page-content"><div class="block-title block-title-large">What's new?</div><div class="block"><div class="block block-strong inset"><p>Last updated:<span class="badge">Unavailable</span><h2>v1.0 </h2><p>🎉First release</div><br><br></div></div>
     <script src="https://cdn.jsdelivr.net/npm/framework7@8.3.4/framework7-bundle.min.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
   </body>
