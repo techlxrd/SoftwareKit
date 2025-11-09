@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" class="ios ios-translucent-bars ios-translucent-modals device-pixel-ratio-2 device-ios ios dark">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
-    <title>tweakra1n</title>
+    <title>AppRealm</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7@8.3.4/framework7-bundle.min.css" integrity="sha256-G54tO11H1I9volDPFbhFBVer91FaXMx+MZhIm1qlh5g=" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons@5.0.5/css/framework7-icons.css" integrity="sha256-RSzKDnaL5c8/Ksi7QeDBiOtJSr5k3LbqDGqs4NKDl7M=" crossorigin="anonymous">
-    <link rel="apple-touch-icon" href="https://tweakrain.pages.dev/favicon.ico" id="favicon">
+    <link rel="apple-touch-icon" href="https://apprealm.pages.dev/favicon.png" id="favicon">
 </head>
 <body>
     <div id="app">
@@ -29,10 +30,10 @@
                 </div>
                 <div class="toolbar tabbar tabbar-icons toolbar-bottom no-outline lamp-tabbar tabbar-highlight searchbar-hide-on-enable"> 
                     <div class="toolbar-inner">
-                        <a href="#homeTab" class="tab-link tab-link-active" data-tab-title="Today"><i class="icon f7-icons">today_fill</i><span class="tabbar-label">Today</span></a>
-                        <a href="#globalTab" class="tab-link" data-tab-title="Global"><i class="icon f7-icons">globe</i><span class="tabbar-label">Global</span></a>
-                        <a href="#searchTab" class="tab-link" data-tab-title="Browse"><i class="icon f7-icons">cube_box_fill</i><span class="tabbar-label">Browse</span></a>
-                        <a href="#settingsTab" class="tab-link" data-tab-title="Settings"><i class="icon f7-icons">gear</i><span class="tabbar-label">Settings</span></a>
+                        <a href="#homeTab" class="tab-link tab-link-active" data-tab-title="Today"><i class="icon f7-icons">today_fill</i></a>
+                        <a href="#globalTab" class="tab-link" data-tab-title="Global"><i class="icon f7-icons">globe</i></a>
+                        <a href="#searchTab" class="tab-link" data-tab-title="Browse"><i class="icon f7-icons">tray_fill</i></a>
+                        <a href="#settingsTab" class="tab-link" data-tab-title="Info"><i class="icon f7-icons">doc_text_fill</i></a>
                     </div>
                 </div>
                 <div class="tabs">
@@ -96,14 +97,11 @@
                                     <span class="swiper-pagination-bullet"></span>
                                     <span class="swiper-pagination-bullet"></span>
                                     <span class="swiper-pagination-bullet"></span>
+                                    <span class="swiper-pagination-bullet"></span>
                                 </div>
                                 <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                             </div>
-                            <div class="block block-strong inset frosted-glass">
-                                <div>Welcome back!✨</div>
-                                <h1 class="no-margin-top"><span>tweakra1n</span></h1>
-                                <a class="popup-open new" data-popup="#changelog">See what's new in v5.0 🚀</a>
-                            </div>
+                            
                             <div class="block-title">Newsfeed 📰</div>
                             <div id="news"></div>
                             <br>
@@ -117,7 +115,7 @@
                         <div class="list separated inset">
                             <ul>
                                 <li>
-                                    <a href="https://ipasign.online" class="item-link item-content external">
+                                    <a href="https://signer.apptesters.org/" class="item-link item-content external">
                                         <div class="item-media"><i class="f7-icons">pencil_outline</i></div>
                                         <div class="item-inner">
                                             <div class="item-title-row">
@@ -148,7 +146,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="block-title">Guides & More<i class="f7-icons icon-small">bookmark_fill</i></div>
+                        <div class="block-title">Guides <i class="f7-icons icon-small">bookmark_fill</i></div>
                         <div class="swiper swiper-padding guides swiper-initialized swiper-horizontal swiper-ios swiper-backface-hidden">
                             <div class="swiper-wrapper" aria-live="polite">
                                 <div class="swiper-slide guides guides-active" role="group" aria-label="1 / 5">
@@ -179,78 +177,92 @@
                             <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                         </div>
                         <div class="block-title">Favorites<i class="f7-icons icon-small">heart_fill</i></div>
-                        <p id="favempty" class="centered-empty">Nothing to see here<i class="f7-icons icon-small">tray_fill</i></p>
+                        <p id="favempty" class="centered-empty">Nothing to see here <i class="f7-icons icon-small">tray_fill</i></p>
                         <div class="list separated media-list inset" id="fav">
                             <ul></ul>
                         </div>
                     </div>
-                    <div id="searchTab" class="page-content tab ptr-content" data-ptr-distance="56">
-                        <div class="ptr-preloader">
-                            <div class="preloader"></div>
-                            <div class="ptr-arrow"></div>
+
+                  <div id="searchTab" class="tab page-content ptr-content" data-ptr-distance="56">
+    <div class="ptr-preloader">
+        <div class="preloader"></div>
+        <div class="ptr-arrow"></div>
+    </div>
+   <style>
+.navbar .left .link.back,
+.link.back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0;
+  width: 36px;                      
+  height: 36px;
+  line-height: 0;
+  vertical-align: middle;
+  font-size:10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.22);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+
+  box-shadow:
+    0 0 0 1.5px rgba(255,255,255,0.03) inset,
+    0 1px 0 rgba(255,255,255,0.4) inset;
+  background-clip: padding-box;
+  overflow: visible;
+  cursor: pointer;
+}
+
+.navbar .left .link.back::before,
+.navbar .left .link.back::after,
+.link.back::before,
+.link.back::after {
+  display: none;
+  content: none;
+}
+
+.link.back > * {
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  font-size: 6px!important;   /* tune smaller/larger as needed */
+
+}
+
+@media (max-width:420px) {
+  .navbar .left .link.back,
+  .link.back {
+    width: 30px;
+    height: 30px;
+  }
+  .link.back > * { font-size: 12px; width: 62%; height: 62%; }
+}</style>
+            <div class="searchbar-bottom"> 
+                <form class="searchbar searchbar-init searchbar-inline rounded-searchbar" data-search-container=".virtual-list" data-search-item="li" data-search-in=".item-title">
+                    <div class="searchbar-inner">
+                        <div class="searchbar-input-wrap">
+                            <input type="search" placeholder="Search" class="rounded-input">
+                            <i class="searchbar-icon"></i>
+                            <span class="input-clear-button"></span>
                         </div>
-                        <div class="searchbar-bottom">
-                            <form class="searchbar searchbar-init searchbar-inline rounded-searchbar" data-search-container=".virtual-list" data-search-item="li" data-search-in=".item-title">
-                                <div class="searchbar-inner">
-                                    <div class="searchbar-input-wrap">
-                                        <input type="search" placeholder="Search" class="rounded-input">
-                                        <i class="searchbar-icon"></i>
-                                        <span class="input-clear-button"></span>
-                                    </div>
-                                    <span class="searchbar-disable-button color-blue">Cancel</span>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="list list-strong simple-list searchbar-not-found inset">
-                            <ul><li>Unfortunately, no items were found.</li></ul>
-                        </div>
-                        <div class="block block-strong inset searchbar-hide-on-enable">
-                            <p class="segmented segmented-raised">
-                                <a href="#searchTab" class="button button-active tab-link tab-link-active" data-tab-title="Browse ">Apps & Tweaks</a>
-                                                                <a href="#trollTab" class="button tab-link" data-tab-title="Browse">TrollStore</a>
-                            </p>
-                        </div>
-                        <div class="list media-list virtual-list separated inset grid-list mt-negative">
-                            <ul></ul>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                        </div>
+                        <span class="searchbar-disable-button color-blue">Cancel</span>
                     </div>
-                    <div id="trollTab" class="page-content tab ptr-content" data-ptr-distance="56">
-                        <div class="ptr-preloader">
-                            <div class="preloader"></div>
-                            <div class="ptr-arrow"></div>
-                        </div>
-                        <div class="searchbar-bottom">
-                            <form class="searchbar searchbar-init searchbar-inline rounded-searchbar" data-search-container=".virtual-troll-list" data-search-item="li" data-search-in=".item-title">
-                                <div class="searchbar-inner">
-                                    <div class="searchbar-input-wrap">
-                                        <input type="search" placeholder="Search TrollStore apps" class="rounded-input">
-                                        <i class="searchbar-icon"></i>
-                                        <span class="input-clear-button"></span>
-                                    </div>
-                                    <span class="searchbar-disable-button color-blue">Cancel</span>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="list list-strong simple-list searchbar-not-found inset">
-                            <ul><li>Unfortunately, no items were found.</li></ul>
-                        </div>
-                        <div class="block block-strong inset">
-                            <p class="segmented segmented segmented-raised searchbar-hide-on-enable">
-                                <a href="#searchTab" class="button tab-link tab-link-active" data-tab-title="Browse">Apps & Tweaks</a>
-                                <a href="#trollTab" class="button button-active tab-link" data-tab-title="Browse">TrollStore</a>
-                            </p>
-                        </div>
-                        <div class="list media-list virtual-troll-list separated inset grid-list mt-negative">
-                            <ul></ul>
-                            <br>
-                            <br>
-                            <br>
-                        </div>
-                    </div>
+                </form>
+            </div>
+            <div class="list list-strong simple-list searchbar-not-found inset">
+                <ul><li>Unfortunately, no items were found.</li></ul>
+            </div>
+            <div class="list media-list virtual-list separated inset grid-list mt-negative">
+                <ul></ul>
+                <br><br><br><br>
+            </div>
+       
+</div>
                     <div id="settingsTab" class="page-content tab ptr-content" data-ptr-distance="56">
                         <div class="ptr-preloader">
                             <div class="preloader"></div>
@@ -261,8 +273,8 @@
                                 <li>
                                     <div class="item-content">
                                         <div class="item-media">
-                                            <a class="popup-open" data-popup="#icon">
-                                                <img loading="lazy" id="faviconimg2" src="https://tweakrain.pages.dev/favicon.ico">
+                                            
+                                                <img loading="lazy" id="faviconimg2" src="https://apprealm.pages.dev/favicon.png">
                                             </a>
                                         </div>
                                         <div class="item-inner">
@@ -303,7 +315,7 @@
                                         <div class="item-media"><i class="f7-icons">square_arrow_up</i></div>
                                         <div class="item-inner">
                                             <div class="item-title-row">
-                                                <div class="item-title">Share tweakra1n</div>
+                                                <div class="item-title">Share AppRealm</div>
                                             </div>
                                         </div>
                                     </a>
@@ -312,13 +324,7 @@
                         </div>
                         <div class="list media-list separated inset">
                             <ul>
-                                <li class="flex-between accent-li">
-                                    <div class="flex-align">
-                                        <div class="item-media"><i class="icon f7-icons">paintbrush_fill</i></div>
-                                        <div class="accent-label">Accent color</div>
-                                    </div>
-                                    <div><span class="accent-color-indicator" id="accent-color"></span></div>
-                                </li>
+                               
                                 <li>
                                     <a class="item-link item-content popup-open" data-popup="#terms">
                                         <div class="item-media"><i class="f7-icons">exclamationmark_octagon_fill</i></div>
@@ -340,17 +346,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="https://www.paypal.com/donate/?hosted_button_id=764DYR9PAFGUY" class="item-link item-content external">
-                                        <div class="item-media"><i class="f7-icons color-red">heart_fill</i></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title">Donate</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="https://github.com/Shadvlxrd/tweakra1n" class="item-link item-content external">
+                                    <a href="https://github.com/TechLxrd/AppRealm" class="item-link item-content external">
                                         <div class="item-media"><i class="f7-icons">logo_github</i></div>
                                         <div class="item-inner">
                                             <div class="item-title-row">
@@ -359,40 +355,16 @@
                                         </div>
                                     </a>
                                 </li>
-                                <li>
-                                    <a onclick="reset()" class="item-link item-content">
-                                        <div class="item-media"><i class="icon f7-icons if-not-md color-red">trash_fill</i></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title">Reset</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
+                               
                             </ul>
-                            <center><p>tweakra1n v5.0</p></center>
+                            <center><p>AppRealm v1.0</p></center>
                         </div>
                     </div>
                 </div>
             </div>
         </div>     
     </div>
-<div class="popup" id="icon">
-  <div class="page">
-    <div class="swipe-nav">
-      <div><i class="f7-icons">minus</i></div>
-    </div>
-    <div class="page-content">
-      <div class="block-title block-title-large">Change icon</div>
-      <div class="list media-list separated inset">
-        <ul>
-          <li><a onclick='customicon("tab","assets/favicon.ico")' class="item-link item-content"><div class="item-media"><img loading="lazy" src="assets/favicon.ico"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Default</div></div><div class="item-subtitle">By @TechLxrd07</div></div></a></li><li><a onclick='customicon("tab","assets/customicons/Icon14.png")' class="item-link item-content"><div class="item-media"><img loading="lazy" src="assets/customicons/Icon14.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">LandaStore (Legacy)</div></div><div class="item-subtitle">By @TechLxrd07</div></div></a></li><li><a onclick='customicon("tab","assets/customicons/Icon13.png")' class="item-link item-content"><div class="item-media"><img loading="lazy" src="assets/customicons/Icon13.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Apple style</div></div><div class="item-subtitle">By @TechLxrd07</div></div></a></li><li><a onclick='customicon("tab","assets/customicons/Icon12.png")' class="item-link item-content"><div class="item-media"><img loading="lazy" src="assets/customicons/Icon12.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Blue</div></div><div class="item-subtitle">By @OuniDesigns</div></div></a></li><li><a onclick='customicon("tab","assets/customicons/Icon11.png")' class="item-link item-content"><div class="item-media"><img loading="lazy" src="assets/customicons/Icon11.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Colorful</div></div><div class="item-subtitle">By @TechLxrd07</div></div></a></li><li><a onclick='customicon("tab","assets/customicons/Icon1.png")' class="item-link item-content"><div class="item-media"><img loading="lazy" src="assets/customicons/Icon1.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Mango</div></div><div class="item-subtitle">By @ShortcutFactory</div></div></a></li><li><a onclick='customicon("tab","assets/customicons/Icon8.png")' class="item-link item-content"><div class="item-media"><img loading="lazy" src="assets/customicons/Icon8.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Silic0nHub (Legacy)</div></div><div class="item-subtitle">By @AppInstalleriOS</div></div></a></li><li><a onclick='customicon("tab","assets/customicons/Icon2.png")' class="item-link item-content"><div class="item-media"><img loading="lazy" src="assets/customicons/Icon2.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Purple Gradient 3D</div></div><div class="item-subtitle">By @jam_minty</div></div></a></li><li><a onclick='customicon("tab","assets/customicons/Icon3.png")' class="item-link item-content"><div class="item-media"><img loading="lazy" src="assets/customicons/Icon3.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Package Manager</div></div><div class="item-subtitle">By @TechLxrd07</div></div></a></li><li><a onclick='customicon("tab","assets/customicons/Icon9.png")' class="item-link item-content"><div class="item-media"><img loading="lazy" src="assets/customicons/Icon9.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Purple Gradient 3D #2</div></div><div class="item-subtitle">By @BasicTechGuy</div></div></a></li><li><a onclick='customicon("tab","assets/customicons/Icon10.png")' class="item-link item-content"><div class="item-media"><img loading="lazy" src="assets/customicons/Icon10.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Purple Gradient #2</div></div><div class="item-subtitle">By @BasicTechGuy</div></div></a></li><li><a onclick='customicon("tab","assets/customicons/Icon4.png")' class="item-link item-content"><div class="item-media"><img loading="lazy" src="assets/customicons/Icon4.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Blue Gradient</div></div><div class="item-subtitle">By @OuniDesigns</div></div></a></li><li><a onclick='customicon("tab","assets/customicons/Icon5.png")' class="item-link item-content"><div class="item-media"><img loading="lazy" src="assets/customicons/Icon5.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Tweak</div></div><div class="item-subtitle">By @OuniDesigns</div></div></a></li><li><a onclick='customicon("tab","assets/customicons/Icon7.png")' class="item-link item-content"><div class="item-media"><img loading="lazy" src="assets/customicons/Icon7.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Purple</div></div><div class="item-subtitle">By @OuniDesigns</div></div></a></li>     
-        </ul>
-        <br><br>
-      </div>
-    </div>
-  </div>
-</div>
+
 <div class="popup" id="sourceCompatibility">
   <div class="page">
     <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
@@ -417,15 +389,15 @@
   <div class="page">
     <div class="page-content bg-img">
       <div class="block block-strong inset frosted-glass">
-        <div class="block-title block-title-large text-white">Install tweakra1n</div>
-        <p>Add tweakra1n to your home screen and you're all set!</p>
+        <div class="block-title block-title-large text-white">Install AppRealm</div>
+        <p>Add AppRealm to your home screen and you're all set!</p>
       </div>
       <div class="list separated glass inset">
         <ul>
           <li>
             <div class="item-content">
               <div class="item-media"><i class="f7-icons">compass_fill</i></div>
-              <div class="item-inner">Access this webpage through Safari.</div>
+              <div class="item-inner">Access this webpage using Safari</div>
             </div>
           </li>
           <li>
@@ -440,12 +412,7 @@
               <div class="item-inner">and tap "Add to Home Screen"</div>
             </div>
           </li>
-          <li>
-            <a class="item-link item-content popup-open" data-popup="#icon">
-              <div class="item-media"><img loading="lazy" id="faviconimg" src="https://tweakrain.pages.dev/favicon.ico"></div>
-              <div class="item-inner"><div class="item-title-row"><div class="item-title">Change icon</div></div></div>
-            </a>
-          </li>
+         
           <li>
             <a class="item-link item-content popup-open" data-popup="#terms">
               <div class="item-media"><i class="f7-icons">exclamationmark_octagon_fill</i></div>
@@ -497,9 +464,9 @@
         </ul>
       <br>
       <br>
-        <a href="altstore://source?url=https://tweakrain.pages.dev/ios/altstore.json" class="button button-large button-fill button-raised">Add to AltStore</a>
-        <p><a onclick="copySource()" class="button button-fill button-raised">Copy to clipboard</a></p>
-        <p><a onclick="shareSource()" class="button button-fill button-raised">Share</a></p>
+        <a href="altstore://source?url=https://tweakrain.pages.dev/ios/altstore.json" class="button button-large button-fill button-raised color-blue">Add to AltStore</a>
+        <p><a onclick="copySource()" class="button button-fill button-raised color-blue">Copy to clipboard</a></p>
+        <p><a onclick="shareSource()" class="button button-fill button-raised color-blue">Share</a></p>
       </div>
     </div>
   </div>
@@ -510,13 +477,13 @@
     <div class="page-content">
       <div class="block-title block-title-large">Terms of Service</div>
       <div class="block block-strong inset">
-        <p>Welcome to tweakra1n – the ultimate all-in-one utility for your Apple, Android and OpenHarmony Devices. We highly value your privacy and security, which is why we have meticulously crafted the following terms of service to ensure absolute clarity and transparency:</p>
+        <p>Welcome to AppRealm – the ultimate all-in-one utility for your Apple, Android and OpenHarmony Devices. We highly value your privacy and security, which is why we have meticulously crafted the following terms of service to ensure absolute clarity and transparency:</p>
         <p><strong>1. Privacy First:</strong> Your privacy is our top priority. We assure you that we do not collect any of your personal data. Your information remains strictly yours and is treated with the highest level of respect.</p>
-        <p><strong>2. Enhanced User Experience:</strong> To enhance your experience, we use cookies exclusively to save your settings. This enables you to effortlessly customize your tweakra1n experience according to your preferences.</p>
-        <p><strong>3. Third-party Apps and Data Collection:</strong> It's important to note that certain tweaks or apps available through tweakra1n may involve data collection. By utilizing these, you acknowledge and consent to their respective data collection practices. Kindly review their terms and privacy policies for additional details.</p>
-        <p><strong>4. User Responsibility:</strong> While we relentlessly strive for excellence, it's essential to clarify that we cannot be held responsible for any damages stemming from the use of Jailbreaking apps or other applications facilitated by tweakra1n. You hold the responsibility for your device and its usage.</p>
-        <p><strong>5. Open Dialogue:</strong> We wholeheartedly encourage you to reach out with any questions or concerns. We value your feedback and aim to continuously elevate your tweakra1n experience.</p>
-        <p><strong>Thank you for choosing tweakra1n.</strong></p>
+        <p><strong>2. Enhanced User Experience:</strong> To enhance your experience, we use cookies exclusively to save your settings. This enables you to effortlessly customize your AppRealm experience according to your preferences.</p>
+        <p><strong>3. Third-party Apps and Data Collection:</strong> It's important to note that certain tweaks or apps available through AppRealm may involve data collection. By utilizing these, you acknowledge and consent to their respective data collection practices. Kindly review their terms and privacy policies for additional details.</p>
+        <p><strong>4. User Responsibility:</strong> While we relentlessly strive for excellence, it's essential to clarify that we cannot be held responsible for any damages stemming from the use of Jailbreaking apps or other applications facilitated by AppRealm. You hold the responsibility for your device and its usage.</p>
+        <p><strong>5. Open Dialogue:</strong> We wholeheartedly encourage you to reach out with any questions or concerns. We value your feedback and aim to continuously elevate your AppRealm experience.</p>
+        <p><strong>Thank you for choosing AppRealm.</strong></p>
       </div>
     </div>
   </div>
@@ -527,13 +494,9 @@
     <div class="page-content">
       <div class="block-title block-title-large">What's new?</div>
       <div class="block block-strong inset">
-        <p>Last updated: <span class="badge">27 June 2025</span></p>
-        <center><h1>v5.0</h1></center>      
-          🪲 Bug fixes and improvements
-         <br>🎨 This update brings a major UI overhaul inspired by iOS 26
-          <br>📱 Reverified all apps and tweaks
-          <br>📄Improved guides and app descriptions        
-          <br>💻 Huge code optimisations<br>🖼️Integrated Bing wallpapers for a new background on each run
+        <p>Last updated: <span class="badge">Unknown</span></p>
+        <center><h1>v1.0</h1></center>      
+         🎉 First release
       </div>
       <br><br>
     </div>
@@ -594,6 +557,7 @@
     <script>
         var swiperguides = new Swiper(".guides", { slidesPerView: "auto", spaceBetween: 10 })
     </script>
+   
     <script src="js/instantclick.min.js" data-no-instant></script>
     <script data-no-instant>InstantClick.init()</script>
 </body>
