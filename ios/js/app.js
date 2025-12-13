@@ -1,8 +1,9 @@
 const app = new Framework7({
   el: "#app",
   theme: "ios",
-  name: "tweakra1n",
+  name: "AppRealm",
   id: "com.techlxrd.AppRealm",
+  touch: {touchHighlight: true }, 
   popup: {
     push: true,
     swipeToClose: true,
@@ -318,7 +319,7 @@ fetch("https://www.idownloadblog.com/feed/")
       const imgElement = new window.DOMParser().parseFromString(content, "text/html").querySelector("img");
       const imgSrc = imgElement ? imgElement.getAttribute("src") : "#";
       const card = document.createElement("div");
-      card.classList.add("card", "card-raised", "frosted-glass");
+      card.classList.add("card", "card-raised", "liquid-glass");
       card.innerHTML = `
         <div class="card-content">
           <div class="card-image" style="text-align: center;">
@@ -669,7 +670,7 @@ var swiperFeatured = new Swiper(".featured", {
 function shareURL() {
   if (navigator.share) {
     navigator.share({
-      title: "tweakra1n",
+      title: "AppRealm",
       text: "Take your iDevice experience to the next level with our awesome app!",
       url: "https://tweakrain.pages.dev/"
     });
@@ -679,15 +680,15 @@ function shareURL() {
 function shareSource() {
   if (navigator.share) {
     navigator.share({
-      title: "tweakra1n",
-      text: "Official AltStore source provided by tweakra1n",
+      title: "AppRealm",
+      text: "Official AltStore source provided by AppRealm",
       url: "https://tweakrain.pages.dev/ios/altstore.json"
     });
   }
 }
 
 function copySource() {
-  navigator.clipboard.writeText('https://tweakrain.pages.dev/ios/altstore.json')
+  navigator.clipboard.writeText('https://apprealm.pages.dev/ios/altstore.json')
     .then(() => {
       app.toast.create({
         text: 'Source link copied!',
