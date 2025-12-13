@@ -8,33 +8,35 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     <title>AppRealm</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7@8.3.4/framework7-bundle.min.css" integrity="sha256-G54tO11H1I9volDPFbhFBVer91FaXMx+MZhIm1qlh5g=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7@9.0.0/framework7-bundle.min.css" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons@5.0.5/css/framework7-icons.css" integrity="sha256-RSzKDnaL5c8/Ksi7QeDBiOtJSr5k3LbqDGqs4NKDl7M=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/techlxrd/LiquidStyle/liquidstyle.css">
     <link rel="apple-touch-icon" href="https://apprealm.pages.dev/favicon.png" id="favicon">
 </head>
 <body>
     <div id="app">
         <div class="view view-main">
             <div class="page">
-                <div class="navbar navbar-large-transparent no-outline">
-                    <div class="navbar-bg"></div>
-                    <div class="navbar-inner">
-                        <div class="left"></div>
-                        <div class="title">Today</div>
-                        <div class="right"></div>
-                        <div class="title-large">
-                            <div class="title-large-text">Today</div>
-                        </div>
+                <div class="navbar navbar-large navbar-transparent">
+    <div class="navbar-bg"></div>
+    <div class="navbar-inner">
+     
+      <div class="title">Today</div>
+      <div class="title-large">
+        <div class="title-large-text">Today</div>
+      </div>
+    </div>
+  </div>
+                <div class="toolbar tabbar tabbar-icons toolbar-bottom searchbar-hide-on-enable"> 
+                    <div class="toolbar-inner">
+                         <div class="toolbar-pane">
+                        <a href="#homeTab" class="tab-link tab-link-active" data-tab-title="Today"><i class="icon f7-icons">today_fill</i><span class="tabbar-label">Today</span></a>
+                        <a href="#globalTab" class="tab-link" data-tab-title="Global"><i class="icon f7-icons">globe</i><span class="tabbar-label">Global</span></a>
+                        <a href="#searchTab" class="tab-link" data-tab-title="Browse"><i class="icon f7-icons">tray_fill</i><span class="tabbar-label">Browse</span></a>
+                        <a href="#settingsTab" class="tab-link" data-tab-title="Info"><i class="icon f7-icons">doc_text_fill</i><span class="tabbar-label">Info</span></a>
                     </div>
                 </div>
-                <div class="toolbar tabbar tabbar-icons toolbar-bottom no-outline lamp-tabbar tabbar-highlight searchbar-hide-on-enable"> 
-                    <div class="toolbar-inner">
-                        <a href="#homeTab" class="tab-link tab-link-active" data-tab-title="Today"><i class="icon f7-icons">today_fill</i></a>
-                        <a href="#globalTab" class="tab-link" data-tab-title="Global"><i class="icon f7-icons">globe</i></a>
-                        <a href="#searchTab" class="tab-link" data-tab-title="Browse"><i class="icon f7-icons">tray_fill</i></a>
-                        <a href="#settingsTab" class="tab-link" data-tab-title="Info"><i class="icon f7-icons">doc_text_fill</i></a>
-                    </div>
                 </div>
                 <div class="tabs">
                     <div id="homeTab" class="page-content bg-img tab tab-active ptr-content" data-ptr-distance="56">
@@ -188,69 +190,15 @@
         <div class="preloader"></div>
         <div class="ptr-arrow"></div>
     </div>
-   <style>
-.navbar .left .link.back,
-.link.back {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  padding: 0;
-  width: 36px;                      
-  height: 36px;
-  line-height: 0;
-  vertical-align: middle;
-  font-size:10px;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.22);
-  backdrop-filter: blur(12px) saturate(160%);
-  -webkit-backdrop-filter: blur(12px) saturate(160%);
-
-  box-shadow:
-    0 0 0 1.5px rgba(255,255,255,0.03) inset,
-    0 1px 0 rgba(255,255,255,0.4) inset;
-  background-clip: padding-box;
-  overflow: visible;
-  cursor: pointer;
-}
-
-.navbar .left .link.back::before,
-.navbar .left .link.back::after,
-.link.back::before,
-.link.back::after {
-  display: none;
-  content: none;
-}
-
-.link.back > * {
-  margin: 0;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-  font-size: 6px!important;   /* tune smaller/larger as needed */
-
-}
-
-@media (max-width:420px) {
-  .navbar .left .link.back,
-  .link.back {
-    width: 30px;
-    height: 30px;
-  }
-  .link.back > * { font-size: 12px; width: 62%; height: 62%; }
-}</style>
-            <div class="searchbar-bottom"> 
-                <form class="searchbar searchbar-init searchbar-inline rounded-searchbar" data-search-container=".virtual-list" data-search-item="li" data-search-in=".item-title">
+            <div class="searchbar-bottom "> 
+                <form class="searchbar searchbar-init searchbar-inline " data-search-container=".virtual-list" data-search-item="li" data-search-in=".item-title">
                     <div class="searchbar-inner">
                         <div class="searchbar-input-wrap">
-                            <input type="search" placeholder="Search" class="rounded-input">
+                            <input type="search" placeholder="Search" >
                             <i class="searchbar-icon"></i>
                             <span class="input-clear-button"></span>
                         </div>
-                        <span class="searchbar-disable-button color-blue">Cancel</span>
+                        <span class="searchbar-disable-button"></span>
                     </div>
                 </form>
             </div>
@@ -388,32 +336,32 @@
 <div class="popup popup-tablet-fullscreen" id="hs" data-close-on-escape="false" data-swipe-to-close="false" data-push="false">
   <div class="page">
     <div class="page-content bg-img">
-      <div class="block block-strong inset frosted-glass">
+      <div class="block block-strong inset liquid-glass">
         <div class="block-title block-title-large text-white">Install AppRealm</div>
         <p>Add AppRealm to your home screen and you're all set!</p>
       </div>
-      <div class="list separated glass inset">
+      <div class="list separated inset">
         <ul>
-          <li>
+          <li class="liquid-glass">
             <div class="item-content">
               <div class="item-media"><i class="f7-icons">compass_fill</i></div>
               <div class="item-inner">Access this webpage using Safari</div>
             </div>
           </li>
-          <li>
+          <li class="liquid-glass">
             <div class="item-content">
               <div class="item-media"><i class="f7-icons">square_arrow_up_fill</i></div>
               <div class="item-inner">Tap the "Share" button</div>
             </div>
           </li>
-          <li>
+          <li class="liquid-glass">
             <div class="item-content">
               <div class="item-media"><i class="f7-icons">plus_app_fill</i></div>
               <div class="item-inner">and tap "Add to Home Screen"</div>
             </div>
           </li>
          
-          <li>
+          <li class="liquid-glass">
             <a class="item-link item-content popup-open" data-popup="#terms">
               <div class="item-media"><i class="f7-icons">exclamationmark_octagon_fill</i></div>
               <div class="item-inner"><div class="item-title-row"><div class="item-title">Terms of service</div></div></div>
@@ -423,14 +371,14 @@
         <br>
         <br>
         <br>
-        <a class="button button-large button-fill color-red popup-close">Dismiss</a>
+        <a class="button button-large button-fill popup-close red-tinted">Dismiss</a>
       </div>
     </div>
   </div>
 </div>
 <div class="popup" id="altstore-repo">
   <div class="page">
-    <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
+    <div class="swipe-nav liquid-glass"><div><i class="f7-icons">minus</i></div></div>
     <div class="page-content">
       <center>
         <img class="popup-img" src="assets/altstore.png">
@@ -502,7 +450,7 @@
     </div>
   </div>
 </div>
-<style>
+<style>   
 .no-margin-top {
   margin-top: 0;
 }
@@ -525,16 +473,9 @@
   padding-left: 16px;
   padding-right: 15px;
 }
-.rounded-segmented {
-  border-radius: 10px;
-}
 .flex-align {
   display: flex;
   align-items: center;
-}
-.accent-label {
-  padding-left: 14px;
-  font-weight: var(--f7-list-media-item-title-font-weight, var(--f7-list-item-title-font-weight, inherit));
 }
 .bg-img {
   background-size: cover;
@@ -546,18 +487,13 @@
   margin-top: 15%;
   border-radius: 24%;
 }
-
-.ios .dark,
-.ios.dark {
-  --f7-dialog-border-divider-color: transparent;
-}
 </style>
-    <script src="https://cdn.jsdelivr.net/npm/framework7@8.3.4/framework7-bundle.min.js" integrity="sha256-3rYMGudduhDtmbZZDWgbNKl+YYb5wXAGn91KZa1GeJY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/framework7@9.0.0/framework7-bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/gh/techlxrd/LiquidStyle/liquidstyle.js"></script>
     <script src="js/app.js"></script>
     <script>
         var swiperguides = new Swiper(".guides", { slidesPerView: "auto", spaceBetween: 10 })
-    </script>
-   
+    </script>   
     <script src="js/instantclick.min.js" data-no-instant></script>
     <script data-no-instant>InstantClick.init()</script>
 </body>
