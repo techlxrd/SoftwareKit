@@ -3,10 +3,15 @@ const app = new Framework7({
   theme: "ios",
   name: "AppRealm",
   id: "com.techlxrd.AppRealm",
-  touch: {touchHighlight: true }, 
+  touch: {touchHighlight: true, 
+  tapHold: true, 
+  },
   popup: {
     push: true,
     swipeToClose: true,
+  },
+  popover: {
+    verticalPosition: 'bottom', 
   },
   sheet: {
     push: true,
@@ -20,11 +25,7 @@ const app = new Framework7({
     path: "./service-worker.js",
   },
   routes: [
-    {
-      path: "/other/",
-      content: `<div class="page"><div class="navbar no-outline"><div class="navbar-bg"></div><div class="navbar-inner sliding"><div class="left"><a href="#" class="link back"><i class="icon icon-back"></i></a></div><div class="title">Other</div></div></div><div class="page-content"><div class="list media-list separated inset"><ul><li><a href="https://ios.cfw.guide" class="item-link item-content external"><div class="item-media"><i class="f7-icons">lock_open_fill</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Jailbreak guide</div></div></div></a></li><li><a href="https://udid.tech/config/udid_tech.signed.mobileconfig" class="item-link item-content external"><div class="item-media"><i class="f7-icons">gear_alt</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Get UDID</div></div></div></a></li><li><a href="https://cdn.adtidy.org/public/Dns/adguard-dns.mobileconfig" class="item-link item-content external"><div class="item-media"><i class="f7-icons">rectangle_3_offgrid_fill</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Block ADS</div></div></div></a></li></ul></div></ul></div><br></div>`,
-      options: { transition: "f7-cover" },
-    },
+  
    {
   path: "/trustcert/",
   content: `
@@ -81,7 +82,7 @@ const app = new Framework7({
           <div class="left">
             <a href="#" class="link back"><i class="icon icon-back"></i></a>
           </div>
-          <div class="title">Unable to install {app}</div>
+          <div class="title">Unable to install application</div>
         </div>
       </div>
       <div class="page-content">
@@ -124,11 +125,11 @@ const app = new Framework7({
         <div class="navbar-bg"></div>
         <div class="navbar-inner sliding">
           <div class="left"><a href="#" class="link back"><i class="icon icon-back"></i></a></div>
-          <div class="title">Allow Marketplace from {name}</div>
+          <div class="title">Allow Marketplace from (eg. AltStore)</div>
         </div>
       </div>
       <div class="page-content">
-        <div class="block block-strong inset">
+        <div class="block">
           <center>
             <img loading="lazy" src="https://i.imgur.com/UQTwAyS.jpeg" style="max-width:340px;width:97%;border-radius:20px;margin-bottom:18px;">
           </center>
@@ -234,16 +235,40 @@ const app = new Framework7({
 });
 const mainView = app.views.create(".view-main");
 
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".tab-link").forEach(tabLink => {
-    tabLink.addEventListener("click", function () {
-      const tabTitle = this.getAttribute("data-tab-title");
-      const navbarTitle = document.querySelector(".navbar .title");
-      const navbarLargeTitle = document.querySelector(".navbar .title-large-text");
-      if (navbarTitle) navbarTitle.textContent = tabTitle;
-      if (navbarLargeTitle) navbarLargeTitle.textContent = tabTitle;
+document.addEventListener('DOMContentLoaded', () => {
+
+  function updateNavbarTitleFromTab(tabId) {
+    if (!tabId) return;
+
+    const tabLink = document.querySelector(
+      `.tab-link[href="${tabId}"]`
+    );
+    if (!tabLink) return;
+
+    const tabTitle = tabLink.getAttribute('data-tab-title');
+    if (!tabTitle) return;
+
+    const navbar = document.querySelector('.navbar');
+    if (!navbar) return;
+
+    const navbarTitle = navbar.querySelector('.title');
+    const navbarLargeTitle = navbar.querySelector('.title-large-text');
+
+    if (navbarTitle) navbarTitle.textContent = tabTitle;
+    if (navbarLargeTitle) navbarLargeTitle.textContent = tabTitle;
+  }
+
+  document.querySelectorAll('.tab-link').forEach(tabLink => {
+    tabLink.addEventListener('click', function () {
+      updateNavbarTitleFromTab(this.getAttribute('href'));
     });
   });
+  window.goToTab = function (tabId) {
+    app.popup.close();
+    app.tab.show(tabId);
+    updateNavbarTitleFromTab(tabId);
+  };
+
 });
 const CACHE_KEY = 'bingWallpapers';
 const CACHE_TTL = 24 * 60 * 60 * 1000;
@@ -306,7 +331,59 @@ function applyDarkModeSetting() {
   applyDarkMode(darkModeQuery);
 }
 applyDarkModeSetting();
+let colorPickerInstance = null;
 
+function updateThemeColor(color) {
+  const root = document.documentElement;
+  root.style.setProperty("--f7-ios-primary", color);
+  root.style.setProperty("--f7-ios-primary-shade", color + "D9");
+  root.style.setProperty("--f7-ios-primary-tint", color + "4D");
+  localStorage.setItem("ios-primary-color", color);
+  localStorage.setItem("ios-primary-shade", color + "D9");
+  localStorage.setItem("ios-primary-tint", color + "4D");
+}
+
+const debouncedUpdateThemeColor = debounce(updateThemeColor, 250);
+
+function openColorPicker(initialColor) {
+  colorPickerInstance = app.colorPicker.create({
+    inputEl: "#accent-color",
+    openIn: "popover",
+    closeOnSelect: true,
+    value: { hex: initialColor },
+    on: {
+      change: (picker, value) => {
+        debouncedUpdateThemeColor(value.hex);
+      },
+      closed: () => {
+        colorPickerInstance.destroy();
+        colorPickerInstance = null;
+      }
+    }
+  });
+  colorPickerInstance.open();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const initialColor = localStorage.getItem("ios-primary-color") || "#007AFF";
+  updateThemeColor(initialColor);
+  document.getElementById("accent-color").addEventListener("click", () => {
+    if (colorPickerInstance) {
+      colorPickerInstance.setValue({ hex: initialColor });
+      colorPickerInstance.open();
+    } else {
+      openColorPicker(initialColor);
+    }
+  });
+});
+
+function debounce(func, wait) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
 fetch("https://www.idownloadblog.com/feed/")
   .then(response => response.text())
   .then(data => {
@@ -319,22 +396,24 @@ fetch("https://www.idownloadblog.com/feed/")
       const imgElement = new window.DOMParser().parseFromString(content, "text/html").querySelector("img");
       const imgSrc = imgElement ? imgElement.getAttribute("src") : "#";
       const card = document.createElement("div");
-      card.classList.add("card", "card-raised", "liquid-glass");
+      card.classList.add("card", "card-raised", "liquid-glass", "news-card");
       card.innerHTML = `
         <div class="card-content">
-          <div class="card-image" style="text-align: center;">
-            <img class="newsimg" src="${imgSrc}" loading="lazy">
-          </div>
-          <div class="card-header">${title}</div>
-          <div class="card-footer">
-            <a onclick="navigator.share({ title: '${title}', url: '${link}' })">
-              <i class="f7-icons">square_arrow_up</i>
-            </a>
-            <a href="${link}" class="external">
-              <i class="f7-icons">book_fill</i>
-            </a>
-          </div>
-        </div>`;
+  <div class="card-image">
+    <img class="newsimg" src="${imgSrc}" loading="lazy">
+  </div>
+
+  <div class="card-header">${title}</div>
+
+  <div class="card-footer">
+    <a onclick="navigator.share({ title: '${title}', url: '${link}' })">
+      <i class="f7-icons">square_arrow_up</i>
+    </a>
+    <a href="${link}" class="external">
+      <i class="f7-icons">book_fill</i>
+    </a>
+  </div>
+</div>`;
       newsContainer.appendChild(card);
     }
   });
@@ -398,7 +477,7 @@ function loadIcon() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".ptr-content").forEach(element => {
+  document.querySelectorAll(".ptr-tab").forEach(element => {
     element.addEventListener("ptr:refresh", () => window.location.reload());
   });
   checkConnection();
@@ -469,77 +548,77 @@ function createItemHtml(item) {
 
 function createPopupHtml(item) {
   return `
-    <div class="popup" id="${item.id}">
+ <div class="popup" id="${item.id}">
       <div class="page">
         <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
         <div class="page-content">
-          <div style="margin-top: 20px; padding: 0px;">
-            <div class="list separated media-list no-chevron inset">
-              <ul>
-                <li style="background:none;">
-                  <div class="item-content">
-                    <div class="item-media">
-                      <img loading="lazy" src="${item.icon}" style="width: 100px; height: 100px;">
-                    </div>
-                    <div class="item-inner">
-                      <div class="item-title-row" style="font-size: 21px;">
-                        <div class="item-title">
-                          ${item.title} <i style="font-size: 21px; color: ${item.badgecolor};" class="f7-icons">${item.badge}</i>
-                        </div>
-                      </div>
-                      <div class="item-subtitle"><span class="badge">${item.category}</span></div>
-                      <div class="item-text">
-                        <a href="${item.get_link}" class="button button-fill button-round button-fill get inline external">GET↓</a>
-                        <a onclick="navigator.share({ title: '${item.title}', url: '${item.get_link}' })" class="button button-fill button-round get inline" style="background:none;float:right;">
-                          <i class="f7-icons" style="color:var(--f7-ios-primary);">square_arrow_up</i>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="block block-strong inset">
-              <h2>Description</h2>
-              <p>${item.description}</p>
-              <center>
-                <div class="screenshot" onclick="openPhotoBrowser(${JSON.stringify(item.screenshots).replace(/"/g, "&quot;")})">
-                  ${generateScreenshotElements(item.screenshots)}
+          <div style="margin-top: 40px; padding: 0px;">
+          
+          <div class="block" style="margin-top: 27px; margin-bottom: 20px;">
+            <div style="display: flex; gap: 15px;">
+              <img src="${item.icon}" style="width: 110px; height: 110px; border-radius: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05);">
+              <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
+                <div style="font-size: 22px; font-weight: 700; line-height: 1.2;">${item.title}</div>
+                <div style="font-size: 15px; color: #8e8e93; margin-top: 4px;">${item.category}</div>
+                
+                <div style="display: flex; gap: 10px; margin-top: auto; align-items: center;">
+                  <a href="${item.get_link}" class="external button button-fill button-round" style="padding: 0 24px;">GET</a>
+                  <a class="popover-open more" data-popover=".popover-menu">
+                    <i class="f7-icons">ellipsis_circle_fill</i>
+                  </a>
                 </div>
+              </div>
+            </div>
+                      </div>
+             
+          <div class="block-title" style="font-size: 20px; color: #000; margin-top: 25px;">Preview</div>
+         <center>
+                <div class="screenshot" onclick="openPhotoBrowser(${JSON.stringify(item.screenshots).replace(/"/g, "&quot;")})">
+                  ${generateScreenshotElements(item.screenshots)}          
               </center>
             </div>
-            <div class="list list-strong list-dividers simple-list inset">
-              <ul>
-                <li><span>Type</span><span style="float: right">${item.type}</span></li>
-                <li><span>OS</span><span style="float: right">${item.compatible}</span></li>
-              </ul>
-            </div>
-            <div class="list media-list separated inset">
-              <ul>
-                <li>
-                  <a onclick="addToFavorites({
-                    id: '${item.id}',
-                    icon: '${item.badge}',
-                    image: '${item.icon}',
-                    title: '${item.title}',
-                    subtitle: '${item.category}',
-                    color: '${item.badgecolor}'
-                  })" class="item-link item-content">
-                    <div class="item-media"><i class="icon f7-icons color-red">heart_fill</i></div>
-                    <div class="item-inner">
-                      <div class="item-title-row">
-                        <div class="item-title">Add to favorites</div>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <br>
+          
+
+          <div class="block block-strong inset">
+             <div style="font-size: 15px; line-height: 1.5;">
+              ${item.description}
+             </div>
           </div>
+
+          <div class="list simple-list inset">
+            <ul>
+              <li>
+                <span>Category</span>
+                <span style="color: #8e8e93;">${item.category}</span>
+              </li>
+              <li>
+                <span>Compatibility</span>
+                <span style="color: #8e8e93;">${item.compatible}</span>
+              </li>
+              <li>
+                <span>Type</span>
+                <span style="color: #8e8e93;">${item.type}</span>
+              </li>
+            </ul>
+          </div>           
         </div>
       </div>
     </div>
+    <div class="popover popover-menu">
+    <div class="popover-inner">
+      <div class="list" style="text-align: left!important;">
+        <ul>
+         
+         <li><a onclick="navigator.share({ title: '${item.title}', url: '${item.get_link}' })" class="item-link item-content external"><div class="item-media"><i class="f7-icons">square_arrow_up </i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Share</div></div></div></a></li><li><a onclick="addToFavorites({
+                  id: '${item.id}',
+                  icon: '${item.badge}',
+                  image: '${item.icon}',
+                  title: '${item.title}',
+                  subtitle: '${item.category}',
+                  color: '${item.badgecolor}'
+                })"  class="item-link item-content external"><div class="item-media"><i class="f7-icons">heart_fill</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Favorite</div></div></div></a></li><li>         
+        </ul>
+      </div>
   `;
 }
 
@@ -563,18 +642,6 @@ function initVirtualList(containerSelector, items) {
     const popupHtml = createPopupHtml(item);
     document.body.insertAdjacentHTML("beforeend", popupHtml);
   });
-}
-
-async function fetchAndLoadTroll() {
-  try {
-    const response = await fetch("troll.json");
-    const trollstore = (await response.json()).sort((a, b) => a.title.localeCompare(b.title));
-    const trollCountElement = document.getElementById("trollcount");
-    if (trollCountElement) trollCountElement.textContent = trollstore.length;
-    initVirtualList(".virtual-troll-list", trollstore);
-  } catch (error) {
-    console.error("Could not load trollstore:", error);
-  }
 }
 
 async function fetchAndLoadApps() {
@@ -631,8 +698,11 @@ function displayFavorites() {
             </div>
           </a>
         </div>
+         <div class="swipeout-actions-left">
+          <a href="#" class="swipeout-delete" onclick="removeFromFavorites('${fav.title}')">Sort <i class="f7-icons">bars</i></a>
+        </div>
         <div class="swipeout-actions-right">
-          <a href="#" class="swipeout-delete" onclick="removeFromFavorites('${fav.title}')">Remove</a>
+          <a href="#" class="swipeout-delete " onclick="removeFromFavorites('${fav.title}')">Unfavorite <i class="f7-icons">heart_slash_fill</i></a>
         </div>
       </li>`;
     favList.insertAdjacentHTML("beforeend", favItemHtml);
@@ -652,7 +722,6 @@ function removeFromFavorites(title) {
 
 document.addEventListener("DOMContentLoaded", function () {
   fetchAndLoadApps();
-  fetchAndLoadTroll();
   displayFavorites();
 });
 
@@ -713,11 +782,10 @@ function reset() {
     verticalButtons: true,
     buttons: [
       {
-        text: 'Reset Accent Color',
-        bold: true,
+        text: 'Restore accent color',
         onClick: function () {
-          updateThemeColor("#3E84F7");
-          app.dialog.alert('Accent color has been reset.', 'Done');
+          updateThemeColor("#007AFF");
+          app.dialog.alert('Accent color has been restored to default setting.', 'Done');
         }
       },
       {
@@ -743,8 +811,7 @@ function reset() {
         }
       },
       {
-        text: 'Cancel',
-        color: 'red',
+        text: 'Close',
         close: true
       }
     ]
