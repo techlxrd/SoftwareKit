@@ -1,9 +1,9 @@
 {
-  "name": "tweakra1n",
+  "name": "AppRealm",
   "subtitle": "",
-  "description": "Official AltStore source provided by tweakra1n. ",
-  "iconURL": "https://tweakrain.pages.dev/favicon.ico",
-  "website": "https://tweakrain.pages.dev",
+  "description": "Official AltStore source provided by AppRealm. ",
+  "iconURL": "https://i.imgur.com/ATjkpzN.png",
+  "website": "https://apprealm.pages.dev",
   "patreonURL": "",
   "tintColor": "#00a5ff",
   "featuredApps": [
@@ -19,7 +19,7 @@
       "bundleIdentifier": "thewonderofyou.Feather",
       "marketplaceID": "",
       "developerName": "Unknown",
-      "subtitle": "",
+      "subtitle": "An awesome app.",
       "localizedDescription": "Feather is a free on-device iOS application manager/installer, using certificates part of the Apple Developer Program.",
       "iconURL": "https://i.imgur.com/YJqfuVA.png",
       "tintColor": "#7736c8",
@@ -27,12 +27,12 @@
       "screenshots": [],
       "versions": [
         {
-          "downloadURL": "https://github.com/khcrysalis/Feather/releases/download/v2.0/Feather-default.ipa",
-          "size": 10000000,
           "version": "2.0",
-          "buildVersion": null,
           "date": "2025-05-19T05:06:00+03:00",
           "localizedDescription": null,
+          "downloadURL": "https://github.com/khcrysalis/Feather/releases/download/v2.0/Feather-default.ipa",
+          "size": 10000000,
+          "buildVersion": null,
           "minOSVersion": null
         }
       ],
@@ -769,14 +769,25 @@
   ],
   "news": [
     {
-      "title": "tweakra1n v4.0 was launched 🎉",
+      "title": "New Feature Announcement",
+      "identifier": "news_zc24bxugpu",
+      "caption": "Introducing a new feature in AltStore!",
+      "date": "2025-12-14T17:38",
+      "tintColor": "#00a5ff",
+      "imageURL": "",
+      "notify": true,
+      "url": "https://example.com/new_feature_details",
+      "appID": null
+    },
+    {
+      "title": "AppRealm",
       "identifier": "news_ywerg8b65k",
       "caption": "See what's new in the app! ",
       "date": "2025-05-17T15:47",
       "tintColor": "#939c95",
       "imageURL": "https://i.imgur.com/BiiZ6ae.png",
       "notify": true,
-      "url": "https://tweakrain.pages.dev/ios/app",
+      "url": "",
       "appID": null
     }
   ]
