@@ -25,12 +25,6 @@ a, body {
   --f7-tabbar-icons-height: 70px;
   --f7-tabbar-label-font-size: 10px;
 }
-.searchbar-bottom,
-.searchbar,
-.searchbar-input-wrap {
-  overflow: hidden;
-  
-}
 
 .searchbar-bottom {
   position: fixed;
@@ -38,7 +32,8 @@ a, body {
   left: 50%;
   transform: translateX(-50%);
   width: 93%;
-  z-index: 999;
+  max-width: 100%;
+  z-index: 9999;
   background: linear-gradient(
         145deg, 
         rgba(255, 255, 255, 0.15) 0%, 
@@ -48,16 +43,16 @@ a, body {
     135deg, 
     rgba(255, 60, 60, 0.9) 0%,   
     rgba(200, 0, 0, 0.65) 100%   
-);;  backdrop-filter: url(#liquid-filter) blur(3px);
-    -webkit-backdrop-filter: url(#liquid-filter) blur(3px);order: 1px solid rgba(255, 255, 255, 0.25);}
+);;  backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);border: 1px solid rgba(255, 255, 255, 0.25);}
 #faviconimg {
   width: 40px;
   height: 40px;
 }
 
-.frosted-glass {
-  backdrop-filter: url(#liquid-filter) blur(1px);
-    -webkit-backdrop-filter: url(#liquid-filter) blur(1px);
+.liquid-glass {
+  backdrop-filter: blur(6px)!important;
+    -webkit-backdrop-filter: blur(6px)!important;
     background: linear-gradient(
         145deg, 
         rgba(255, 255, 255, 0.15) 0%, 
@@ -69,35 +64,23 @@ a, body {
     0px 0px 100px 10px rgba(255, 255, 255, 0.05) inset,
     0 0.5px 0px rgba(255, 255, 255, 0.525) inset;
 }
-
-.frosted-glass::before {
-  content: "";
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), transparent 70%);
-  mix-blend-mode: screen;
-  pointer-events: none;
-}
-
-.dark .frosted-glass {
-  background: rgba(30, 30, 30, 0.13);
+ .list.separated.glass li {
+  backdrop-filter: blur(6px)!important;
+    -webkit-backdrop-filter: blur(6px)!important;
+    background: linear-gradient(
+        145deg, 
+        rgba(255, 255, 255, 0.15) 0%, 
+        rgba(255, 255, 255, 0.05) 100%
+    )!important;
   border: 1px solid rgba(255, 255, 255, 0.25);
   box-shadow:
     0px 0px 0px 2px rgba(255, 255, 255, 0.05) inset,
     0px 0px 100px 10px rgba(255, 255, 255, 0.05) inset,
-    0 0.5px 0px rgba(255, 255, 255, 0.525) inset;
+    0 0.5px 0px rgba(255, 255, 255, 0.525) inset!important;
 }
-
-.dark .frosted-glass::before {
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.05), transparent 70%);
-}
-
-.toolbar-bottom {
-  backdrop-filter: url(#liquid-filter)!important;
-      -webkit-backdrop-filter: url(#liquid-filter) !important;  
-}
-
 
 .install {
-  font-size: 17px;
+  font-size: 15px;
   color: #fff;
   background-image:
     repeating-radial-gradient(circle at 0 0, transparent 0, #06d1c2 32px),
@@ -142,26 +125,15 @@ a, body {
 .list.separated li {
   border-radius: var(--f7-list-inset-border-radius)!important;
 }
-.button-raised {
-  border-radius: 15px;
-}
-.button-large {
-  border-radius: 999px;
-}
-.get {
-  width: 63px;
-  margin-top: 10px;
-  margin-left: 4px;
-}
 .item-media img {
-  width: 58px;
-  height: 58px;
+  width: 58px!important;
+  height: 58px!important;
   border: 2px solid rgba(255, 255, 255, 0.25);
   box-shadow:
     0px 0px 0px 2px rgba(255, 255, 255, 0.05) inset,
     0px 0px 100px 10px rgba(255, 255, 255, 0.05) inset,
     0 0.5px 0px rgba(255, 255, 255, 0.525) inset;
-  border-radius: 24%;
+  border-radius: 27%!important;
 }
 .swiper-slide .guides,
 .swiper-slide img {
@@ -199,7 +171,6 @@ a {
 .list.separated li {
   margin-top: 10px;
   background: var(--f7-list-strong-bg-color);
-  transition: background-color 1s;
   transform: translateZ(0);
 }
 .list.separated ul {
@@ -245,8 +216,8 @@ img {
   border-radius: 25px;
 }
 .swipe-nav {
-  backdrop-filter: url(#liquid-filter) blur(1px);
-    -webkit-backdrop-filter: url(#liquid-filter) blur(1px);
+  backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     background: linear-gradient(
         145deg, 
         rgba(255, 255, 255, 0.15) 0%, 
@@ -256,7 +227,7 @@ img {
   justify-content: center;
   z-index: 500;
   display: flex;
-  height: 19px;
+  height: 24px;
   width: 100%;
   align-items: center;
 }
