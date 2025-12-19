@@ -1,9 +1,7 @@
 :root {
-  --f7-ios-primary: #007AFF;
-  --f7-ios-primary-shade: #007AFF;
-  --f7-ios-primary-tint: #007AFF;
+  
   --f7-searchbar-backdrop-bg-color: transparent;
-  --f7-theme-color-rgb: var(--f7-ios-primary);
+  
 }
 a, body {
   -webkit-touch-callout: none;
@@ -19,7 +17,6 @@ a, body {
 }
 
 .ios {
-  --f7-theme-color-rgb: var(--f7-ios-primary);
   --f7-toolbar-height: 46px!important;
   --f7-toolbar-font-size: 14px;
   --f7-tabbar-icons-height: 70px;
