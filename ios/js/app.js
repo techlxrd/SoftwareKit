@@ -918,8 +918,8 @@ function reset() {
         color: 'red',
         onClick: function () {
           app.dialog.confirm(
-            'This will delete all settings and local data. This action cannot be undone. Are you sure?',
-            'Confirm Wipe',
+            'This will delete all your settings and data including added sources and favorites. This action cannot be undone.',
+            'Confirm reset',
             () => {
               app.preloader.show();
               
