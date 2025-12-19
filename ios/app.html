@@ -26,6 +26,18 @@
             </a></div>
       <div class="title-large">
         <div class="title-large-text">Today</div>
+        <form class="searchbar searchbar-init searchbar-expandable" data-search-container=".virtual-list" data-search-item="li" data-search-in=".item-title" data-expand="navbar">
+                    <div class="searchbar-inner">
+                        <div class="searchbar-input-wrap">
+                            <input type="search" placeholder="Search" >
+                            <i class="searchbar-icon"></i>
+                            <span class="input-clear-button"></span>
+                        </div>    
+                        <span class="searchbar-disable-button">
+            <i class="icon icon-close"></i>
+          </span>              
+                    </div>
+                </form>
       </div>
     </div>
   </div>
@@ -185,17 +197,12 @@
         <div class="preloader"></div>
         <div class="ptr-arrow"></div>
     </div>
-            <div class="searchbar-bottom "> 
-                <form class="searchbar searchbar-init searchbar-inline " data-search-container=".virtual-list" data-search-item="li" data-search-in=".item-title">
-                    <div class="searchbar-inner">
-                        <div class="searchbar-input-wrap">
-                            <input type="search" placeholder="Search" >
-                            <i class="searchbar-icon"></i>
-                            <span class="input-clear-button"></span>
-                        </div>                  
-                    </div>
-                </form>
-            </div>
+    
+           <div class="fab fab-right-bottom searchbar-hide-on-enable"  style="position:fixed;">
+        <a class="searchbar-enable" data-searchbar=".searchbar"> <i class="icon f7-icons">search</i> </a>
+    </div>  
+                
+            
             <div class="list list-strong simple-list searchbar-not-found inset">
                 <ul><li>Unfortunately, no items were found.</li></ul>
             </div>
@@ -492,7 +499,7 @@
                                 return `
                                 <li>
                                     <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
-                                        <div class="item-media"><img src="${item.iconURL}" width="44" style="border-radius:10px;" loading="lazy"></div>
+                                        <div class="item-media"><img src="${item.iconURL}"  loading="lazy"></div>
                                         <div class="item-inner">
                                             <div class="item-title-row"><div class="item-title">${item.name}</div></div>
                                             <div class="item-subtitle">${item.developerName}</div>
@@ -1029,6 +1036,17 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   });
 });
+ 
+window.addEventListener('error', function (event) {
+    
+    if (event.target.tagName === 'IMG') {
+        
+        event.target.onerror = null; 
+        
+       
+        event.target.src = 'assets/default.png';
+    }
+}, true); 
 </script>
    <script src="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.js"></script>
     <script src="js/app.js"></script>
