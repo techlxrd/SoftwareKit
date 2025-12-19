@@ -2,10 +2,10 @@
   "name": "AppRealm",
   "subtitle": "",
   "description": "Official AltStore source provided by AppRealm. ",
-  "iconURL": "https://i.imgur.com/ATjkpzN.png",
+  "iconURL": "https://i.imgur.com/gNCFPYq.png",
   "website": "https://apprealm.pages.dev",
   "patreonURL": "",
-  "tintColor": "#00a5ff",
+  "tintColor": "#b2b2b2",
   "featuredApps": [
     "com.atebits.Tweetie2",
     "com.kdt.livecontainer",
@@ -769,23 +769,12 @@
   ],
   "news": [
     {
-      "title": "New Feature Announcement",
-      "identifier": "news_zc24bxugpu",
-      "caption": "Introducing a new feature in AltStore!",
-      "date": "2025-12-14T17:38",
-      "tintColor": "#00a5ff",
-      "imageURL": "",
-      "notify": true,
-      "url": "https://example.com/new_feature_details",
-      "appID": null
-    },
-    {
-      "title": "AppRealm",
-      "identifier": "news_ywerg8b65k",
+      "title": "AppRealm v1.0 was released 🎉",
+      "identifier": "news_0df3yswqwr",
       "caption": "See what's new in the app! ",
-      "date": "2025-05-17T15:47",
-      "tintColor": "#939c95",
-      "imageURL": "https://i.imgur.com/BiiZ6ae.png",
+      "date": "2025-12-18T14:46",
+      "tintColor": "#b2b2b2",
+      "imageURL": "",
       "notify": true,
       "url": "",
       "appID": null

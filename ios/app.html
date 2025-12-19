@@ -326,7 +326,7 @@
                                         <div style="font-size: 15px; color: #8e8e93; margin-top: 4px;">${item.developerName}</div>
                                         <div style="display: flex; gap: 10px; margin-top: auto; align-items: center;">
                                             <a href="${item.downloadURL}" class="external button button-fill button-round" style="padding: 0 24px; font-weight:bold;">GET</a>
-                                            <a class="popover-open more" data-popover=".popover-menu"><i class="f7-icons">ellipsis_circle_fill</i></a>
+                                            <a onclick="navigator.share({url: '${item.downloadURL}' })" class="more"><i class="f7-icons">square_arrow_up</i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -341,9 +341,12 @@
                                 <ul>
                                     <li><span>Version</span><span>${item.version}</span></li>
                                     <li><span>Size</span><span>${(item.size / 1024 / 1024).toFixed(1)} MB</span></li>
-                                    <li><span>Developer</span><span>${item.developerName}</span></li>
+                                    <li><span>BundleID</span><span>${item.bundleIdentifier}</span></li>
                                 </ul>
-                            </div>
+                            </div>                           
+        </div>
+      </div>
+    </div>
                         </div>
                     </div>
                 </div>
@@ -357,7 +360,7 @@
 
     repos.forEach(repo => {
         const li = document.createElement('li');
-        li.id = repo.name; // stable id
+        li.id = repo.name; 
         li.className = repo.isSystem ? '' : 'swipeout';
         const iconSrc = repo.iconURL || 'assets/default.png';
 
@@ -382,7 +385,7 @@
         savedOrder.forEach(id => {
             const item = document.getElementById(id);
             if (item && item.parentNode === listEl) {
-                listEl.appendChild(item); // move to end in saved order
+                listEl.appendChild(item);
             }
         });
     }
@@ -392,7 +395,7 @@
             const order = Array.from(listEl.children).map(li => li.id);
             localStorage.setItem('sourcesListOrder', JSON.stringify(order));
         });
-        listEl.sortableInitialized = true; // prevent multiple listeners
+        listEl.sortableInitialized = true; 
     }
 }
     function renderNews(repos) {
@@ -417,10 +420,10 @@
   <div class="card card-outline repo-news-card">
     <div class="card-content card-content-padding">
       <div class="size-12">${news.source}</div>
-      <div class="text-weight-bold margin-top-half">
+      <div class="text-weight-bold ">
         ${news.title}
       </div>
-      <div class="size-12 margin-top-half">
+      <div class="size-12">
         ${news.caption.substring(0, 80)}...
       </div>
     </div>
@@ -434,7 +437,7 @@
         });
 
         if (!document.getElementById('news-swiper-container').swiper) {
-            app.swiper.create('#news-swiper-container', { slidesPerView: 1.1 });
+            app.swiper.create('#news-swiper-container', { slidesPerView: 1 });
         }
     }
 
@@ -687,10 +690,7 @@
               <div class="item-inner"><div class="item-title-row"><div class="item-title">See other compatible apps</div></div></div>
             </a>
           </li>
-          </ul>
-          
-          
-             
+          </ul>             
       <br>
       <br>          
         <a href="altstore://source?url=https://tweakrain.pages.dev/ios/altstore.json" class="button button-large button-fill button-raised button-round">Add to AltStore</a>
@@ -834,16 +834,7 @@
                                         </div>
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="https://github.com/TechLxrd/AppRealm" class="item-link item-content external">
-                                        <div class="item-media"><i class="f7-icons">logo_github</i></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title">Source code</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
+                                
                               <li>
                                     <a onclick="reset()" class="item-link item-content">
                                         <div class="item-media"><i class="icon f7-icons if-not-md color-red">trash_fill</i></div>
@@ -913,29 +904,59 @@
 }
 
 .repo-news-card {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  min-height: 190px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.12);
+  border: none;
+  width:100%;
+  border-radius:20px;
 }
 
 .repo-news-card .card-content {
-  flex: 1;
+  padding: 16px;
+}
+.repo-news-card .size-12:first-child {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.repo-news-card .text-weight-bold {
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+.repo-news-card .size-12:not(:first-child) {
+  font-size: 13px;
+  line-height: 1.5;
 }
 
 .repo-news-card .card-footer {
-  border-top: 1px solid var(--f7-card-border-color);
+  padding: 12px 16px;
+  border-top: 1px solid rgba(0,0,0,.06);
 }
+
+.repo-news-card .card-footer .link {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: .75;
+}
+
+.repo-news-card .card-footer .link:active {
+  opacity: 1;
+}
+
 .news-card .card-content {
   padding: 0;
-  border-radius: 18px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 10px 28px rgba(0,0,0,.4);
+  box-shadow: 0 6px 18px rgba(0,0,0,.12);
 }
 
 .news-card .card-image {
-  position: relative;
-  height: 210px;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
 }
 
 .news-card .newsimg {
@@ -943,64 +964,33 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: saturate(1.1) contrast(1.05);
-}
-
-.news-card .card-image::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,.05),
-    rgba(0,0,0,.65)
-  );
 }
 
 .news-card .card-header {
-  position: absolute;
-  bottom: 14px;
-  left: 16px;
-  right: 16px;
-  z-index: 2;
-  padding: 0;
-  font-size: 18px;
+  padding: 14px 16px 10px;
+  font-size: 17px;
   font-weight: 700;
-  line-height: 1.3;
-  color: #fff;
-  text-shadow: 0 2px 10px rgba(0,0,0,.6);
+  line-height: 1.35;
 }
 
 .news-card .card-footer {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 2;
+  padding: 10px 16px 14px;
   display: flex;
-  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(0,0,0,.06);
 }
 
 .news-card .card-footer a {
-  width: 38px;
-  height: 38px;
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-  background: rgba(0,0,0,.45);
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: #fff;
+  gap: 6px;
 }
 
 .news-card .card-footer i {
   font-size: 20px;
 }
 </style>
-<script>var reposwiper = new Swiper('.repo-news-swiper', {
-  slidesPerView: 1,
-  spaceBetween: 5,
-  centeredSlides: true,
-});</script>
     <script src="https://cdn.jsdelivr.net/npm/framework7@9.0.0/framework7-bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/app.js"></script>
     <script>
