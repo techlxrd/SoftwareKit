@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
     <title>AppRealm</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7@9.0.0/framework7-bundle.min.css" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons@5.0.5/css/framework7-icons.css" integrity="sha256-RSzKDnaL5c8/Ksi7QeDBiOtJSr5k3LbqDGqs4NKDl7M=" crossorigin="anonymous">
     <link rel="apple-touch-icon" href="https://apprealm.pages.dev/favicon.png" id="favicon">
@@ -173,9 +173,10 @@
                             <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                         </div>
                         <div class="block-title">Favorites<i class="f7-icons icon-small">heart_fill</i></div>
-                        <p id="favempty" class="centered-empty">Nothing to see here <i class="f7-icons icon-small">tray_fill</i></p>
-                        <div class="list separated media-list inset" id="fav">
+                       
+                        <div class="list separated media-list inset sortable sortable-tap-hold" id="fav">
                             <ul></ul>
+                             <p id="favempty" class="centered-empty">Nothing to see here <i class="f7-icons icon-small">tray_fill</i></p>
                         </div>
                     </div>
 
@@ -458,7 +459,7 @@
                             </div>                        
                         </div>
                     </form></div>
-                        <div class="left"><a href="#" class="link back"><i class="icon icon-back"></i></a></div>
+                        <div class="left"><a class="link back"><i class="icon icon-back"></i></a></div>
                         <div class="title">${repo.name}</div>
                         <div class="right"> <a onclick="navigator.share({url: '${repo.sourceURL}' })" class="link icon-only"><i class="icon f7-icons">square_arrow_up</i></a></div>
                     </div>
@@ -491,7 +492,7 @@
                             renderItem: function (item) {
                                 return `
                                 <li>
-                                    <a href="#" class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
+                                    <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
                                         <div class="item-media"><img src="${item.iconURL}" width="44" style="border-radius:10px;" loading="lazy"></div>
                                         <div class="item-inner">
                                             <div class="item-title-row"><div class="item-title">${item.name}</div></div>
@@ -991,7 +992,46 @@
   font-size: 20px;
 }
 </style>
-    <script src="https://cdn.jsdelivr.net/npm/framework7@9.0.0/framework7-bundle.min.js" crossorigin="anonymous"></script>
+<script>let themeColor = localStorage.getItem("ios-primary-color") || "#007AFF";
+let colorPicker;
+
+
+const setCustomColor = (newColor) => {
+  themeColor = newColor;
+  
+  
+  app.setColorTheme(newColor);
+  
+  const indicator = document.getElementById('accent-color');
+  if (indicator) {
+    indicator.style.backgroundColor = newColor;
+  }
+  
+  localStorage.setItem("ios-primary-color", newColor);
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  setCustomColor(themeColor);
+
+  let timeout;
+  colorPicker = app.colorPicker.create({
+    targetEl: '#accent-color', 
+    value: {
+      hex: themeColor,
+    },
+    on: {
+      change(cp, value) {       
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+          if (themeColor === value.hex) return;
+          setCustomColor(value.hex);
+        }, 200);
+      },
+    },
+  });
+});
+</script>
+   <script src="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.js"></script>
     <script src="js/app.js"></script>
     <script>
         var swiperguides = new Swiper(".guides", { slidesPerView: "auto", spaceBetween: 10 })
