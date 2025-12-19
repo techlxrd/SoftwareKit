@@ -200,8 +200,7 @@
                 <ul><li>Unfortunately, no items were found.</li></ul>
             </div>
             <div class="list media-list virtual-list separated inset grid-list mt-negative">
-                <ul></ul>
-                <br><br><br><br>
+                <ul></ul>              
             </div>
        
 </div>
@@ -366,12 +365,12 @@
         const iconSrc = repo.iconURL || 'assets/default.png';
 
         li.innerHTML = `
-            <div class="swipeout-content item-content item-link repo-link" data-url="${repo.sourceURL}">
+            <div class="swipeout-content item-content  repo-link" data-url="${repo.sourceURL}">
                 <div class="item-media"><img src="${iconSrc}" width="45" height="45"></div>
                 <div class="item-inner">
                     <div class="item-title">${repo.name}</div>
                     <div class="item-subtitle">${repo.apps.length} Apps</div>
-                    <div class="sortable-handler"></div>
+                   
                 </div>
             </div>
             ${!repo.isSystem ? ` <div class="swipeout-actions-right"><a onclick="navigator.share({url: '${repo.sourceURL}' })">Share</a><a class="swipeout-delete" data-url="${repo.sourceURL}">Remove<i class="f7-icons">trash</i></a></div>` : ''}
@@ -660,7 +659,7 @@
 </div>
 <div class="popup" id="altstore-repo">
   <div class="page">
-    <div class="swipe-nav liquid-glass"><div><i class="f7-icons">minus</i></div></div>
+    <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
     <div class="page-content">
       <center>
         <img class="popup-img" src="assets/altstore.png">
@@ -825,6 +824,7 @@
                                         </div>
                                     </a>
                                 </li>
+                                  <li class="accordion-item"> <a class="item-link item-content">  <div class="item-media"><i class="f7-icons">rocket_fill</i></div><div class="item-inner"> <div class="item-title">Changelog</div> </div> </a> <div class="accordion-item-content"><div class="block"><strong>No changelog available at the moment</strong></div></li>
                                 <li>
                                     <a href="https://x.com/TechLxrd07/" class="item-link item-content external">
                                         <div class="item-media"><i class="f7-icons">logo_twitter</i></div>
@@ -979,7 +979,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid rgba(0,0,0,.06);
 }
 
 .news-card .card-footer a {
