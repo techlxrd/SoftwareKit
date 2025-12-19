@@ -700,9 +700,7 @@ function removeFromFavorites(title) {
 document.addEventListener("DOMContentLoaded", function () {
   fetchAndLoadApps();
   displayFavorites();
-});/* =========================
-   ADD TO FAVORITES
-========================= */
+});
 function addToFavorites(item) {
   let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   let favOrder = JSON.parse(localStorage.getItem("favOrder")) || [];
@@ -728,9 +726,6 @@ function addToFavorites(item) {
   displayFavorites();
 }
 
-/* =========================
-   DISPLAY FAVORITES
-========================= */
 function displayFavorites() {
   const favContainer = document.getElementById("fav");
   if (!favContainer) return;
@@ -752,7 +747,6 @@ function displayFavorites() {
 
   if (favEmptyElement) favEmptyElement.style.display = "none";
 
-  // build ordered favorites
   const favMap = new Map(favorites.map(f => [f.id, f]));
   const orderedFavorites = [];
 
@@ -763,7 +757,6 @@ function displayFavorites() {
     }
   });
 
-  // append new / unordered favorites
   orderedFavorites.push(...favMap.values());
 
   orderedFavorites.forEach(fav => {
@@ -799,7 +792,6 @@ function displayFavorites() {
     );
   });
 
-  // sortable listener (once)
   if (!favList.favSortableInitialized) {
     favList.addEventListener("sortable:sort", () => {
       const order = Array.from(favList.children).map(li =>
@@ -812,9 +804,6 @@ function displayFavorites() {
   }
 }
 
-/* =========================
-   REMOVE FROM FAVORITES
-========================= */
 function removeFromFavorites(title) {
   let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   let favOrder = JSON.parse(localStorage.getItem("favOrder")) || [];
@@ -836,9 +825,6 @@ function removeFromFavorites(title) {
   }
 }
 
-/* =========================
-   INIT
-========================= */
 document.addEventListener("DOMContentLoaded", () => {
   fetchAndLoadApps();
   displayFavorites();
