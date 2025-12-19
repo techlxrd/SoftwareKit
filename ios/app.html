@@ -6,50 +6,51 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
+
     <title>AppRealm</title>
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons@5.0.5/css/framework7-icons.css" integrity="sha256-RSzKDnaL5c8/Ksi7QeDBiOtJSr5k3LbqDGqs4NKDl7M=" crossorigin="anonymous">
     <link rel="apple-touch-icon" href="https://apprealm.pages.dev/favicon.png" id="favicon">
 </head>
+
 <body>
     <div id="app">
         <div class="view view-main">
             <div class="page">
                 <div class="navbar navbar-large navbar-transparent">
-    <div class="navbar-bg"></div>
-    <div class="navbar-inner">    
-      <div class="title">Today</div>
-      <div class="right"><a class="link icon-only popup-open" data-popup="#settings">
+                    <div class="navbar-bg"></div>
+                    <div class="navbar-inner">
+                        <div class="title">Today</div>
+                        <div class="right"><a class="link icon-only popup-open" data-popup="#settings">
                 <i class="icon f7-icons">gear</i>
             </a></div>
-      <div class="title-large">
-        <div class="title-large-text">Today</div>
-        <form class="searchbar searchbar-init searchbar-expandable" data-search-container=".virtual-list" data-search-item="li" data-search-in=".item-title" data-expand="navbar">
-                    <div class="searchbar-inner">
-                        <div class="searchbar-input-wrap">
-                            <input type="search" placeholder="Search" >
-                            <i class="searchbar-icon"></i>
-                            <span class="input-clear-button"></span>
-                        </div>    
-                        <span class="searchbar-disable-button">
+                        <div class="title-large">
+                            <div class="title-large-text">Today</div>
+                            <form class="searchbar searchbar-init searchbar-expandable" data-search-container=".virtual-list" data-search-item="li" data-search-in=".item-title" data-expand="navbar">
+                                <div class="searchbar-inner">
+                                    <div class="searchbar-input-wrap">
+                                        <input type="search" placeholder="Search">
+                                        <i class="searchbar-icon"></i>
+                                        <span class="input-clear-button"></span>
+                                    </div>
+                                    <span class="searchbar-disable-button">
             <i class="icon icon-close"></i>
-          </span>              
-                    </div>
-                </form>
-      </div>
-    </div>
-  </div>
-                <div class="toolbar tabbar tabbar-icons toolbar-bottom searchbar-hide-on-enable"> 
-                    <div class="toolbar-inner">
-                         <div class="toolbar-pane">
-                        <a href="#homeTab" class="tab-link tab-link-active" data-tab-title="Today"><i class="icon f7-icons">today_fill</i><span class="tabbar-label">Today</span></a>
-                        <a href="#globalTab" class="tab-link" data-tab-title="Global"><i class="icon f7-icons">globe</i><span class="tabbar-label">Global</span></a>
-                        <a href="#searchTab" class="tab-link" data-tab-title="Library"><i class="icon f7-icons">square_stack_3d_up_fill</i><span class="tabbar-label">App Library</span></a>
-                      <a href="#sourcesTab" class="tab-link" data-tab-title="Sources"><i class="icon f7-icons">arrow_down_circle_fill</i><span class="tabbar-label">Sources</span></a>  
+          </span>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
+                <div class="toolbar tabbar tabbar-icons toolbar-bottom searchbar-hide-on-enable">
+                    <div class="toolbar-inner">
+                        <div class="toolbar-pane">
+                            <a href="#homeTab" class="tab-link tab-link-active" data-tab-title="Today"><i class="icon f7-icons">today_fill</i><span class="tabbar-label">Today</span></a>
+                            <a href="#globalTab" class="tab-link" data-tab-title="Global"><i class="icon f7-icons">globe</i><span class="tabbar-label">Global</span></a>
+                            <a href="#searchTab" class="tab-link" data-tab-title="Library"><i class="icon f7-icons">square_stack_3d_up_fill</i><span class="tabbar-label">App Library</span></a>
+                            <a href="#sourcesTab" class="tab-link" data-tab-title="Sources"><i class="icon f7-icons">arrow_down_circle_fill</i><span class="tabbar-label">Sources</span></a>
+                        </div>
+                    </div>
                 </div>
                 <div class="tabs">
                     <div id="homeTab" class="page-content bg-img tab tab-active ptr-content ptr-tab" data-ptr-distance="56">
@@ -116,7 +117,7 @@
                                 </div>
                                 <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                             </div>
-                            
+
                             <div class="block-title">Newsfeed 📰</div>
                             <div id="news"></div>
                             <br>
@@ -149,10 +150,62 @@
                                         </div>
                                     </a>
                                 </li>
-                                <li class="accordion-item"> <a class="item-link item-content">  <div class="item-media"><i class="f7-icons">ellipsis_circle_fill</i></div><div class="item-inner"> <div class="item-title">Other</div> </div> </a> <div class="accordion-item-content"><div class="list"><ul><li><a href="https://ios.cfw.guide" class="item-link item-content external"><div class="item-media"><i class="f7-icons">lock_open_fill</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Jailbreak guide</div></div></div></a></li><li><a href="https://ios.cfw.guide" class="item-link item-content external"><div class="item-media"><i class="f7-icons">cube_box_fill</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Jailbreak repos</div></div></div></a></li><li><a href="https://udid.tech/config/udid_tech.signed.mobileconfig" class="item-link item-content external"><div class="item-media"><i class="f7-icons">gear</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Get UDID</div></div></div></a></li><li><a href="https://cdn.adtidy.org/public/Dns/adguard-dns.mobileconfig" class="item-link item-content external"><div class="item-media"><i class="f7-icons">rectangle_3_offgrid_fill</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Adblocker</div></div></div></a></li></ul></div></div>
-                                
-                               
-                           
+                                <li class="accordion-item">
+                                    <a class="item-link item-content">
+                                        <div class="item-media"><i class="f7-icons">ellipsis_circle_fill</i></div>
+                                        <div class="item-inner">
+                                            <div class="item-title">Other</div>
+                                        </div>
+                                    </a>
+                                    <div class="accordion-item-content">
+                                        <div class="list">
+                                            <ul>
+                                                <li>
+                                                    <a href="https://ios.cfw.guide" class="item-link item-content external">
+                                                        <div class="item-media"><i class="f7-icons">lock_open_fill</i></div>
+                                                        <div class="item-inner">
+                                                            <div class="item-title-row">
+                                                                <div class="item-title">Jailbreak guide</div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://ios.cfw.guide" class="item-link item-content external">
+                                                        <div class="item-media"><i class="f7-icons">cube_box_fill</i></div>
+                                                        <div class="item-inner">
+                                                            <div class="item-title-row">
+                                                                <div class="item-title">Jailbreak repos</div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://udid.tech/config/udid_tech.signed.mobileconfig" class="item-link item-content external">
+                                                        <div class="item-media"><i class="f7-icons">gear</i></div>
+                                                        <div class="item-inner">
+                                                            <div class="item-title-row">
+                                                                <div class="item-title">Get UDID</div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="https://cdn.adtidy.org/public/Dns/adguard-dns.mobileconfig" class="item-link item-content external">
+                                                        <div class="item-media"><i class="f7-icons">rectangle_3_offgrid_fill</i></div>
+                                                        <div class="item-inner">
+                                                            <div class="item-title-row">
+                                                                <div class="item-title">Adblocker</div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+
+
                         </div>
                         <div class="block-title">Guides <i class="f7-icons icon-small">bookmark_fill</i></div>
                         <div class="swiper swiper-padding guides swiper-initialized swiper-horizontal swiper-ios swiper-backface-hidden">
@@ -185,875 +238,511 @@
                             <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                         </div>
                         <div class="block-title">Favorites<i class="f7-icons icon-small">heart_fill</i></div>
-                       
+
                         <div class="list separated media-list inset sortable sortable-tap-hold" id="fav">
                             <ul></ul>
-                             <p id="favempty" class="centered-empty">Nothing to see here <i class="f7-icons icon-small">tray_fill</i></p>
+                            <p id="favempty" class="centered-empty">Nothing to see here <i class="f7-icons icon-small">tray_fill</i></p>
                         </div>
                     </div>
 
-                  <div id="searchTab" class="tab page-content ptr-content ptr-tab" data-ptr-distance="56">
-    <div class="ptr-preloader">
-        <div class="preloader"></div>
-        <div class="ptr-arrow"></div>
-    </div>
-    
-           <div class="fab fab-right-bottom searchbar-hide-on-enable"  style="position:fixed;">
-        <a class="searchbar-enable" data-searchbar=".searchbar"> <i class="icon f7-icons">search</i> </a>
-    </div>  
-                
-            
-            <div class="list list-strong simple-list searchbar-not-found inset">
-                <ul><li>Unfortunately, no items were found.</li></ul>
-            </div>
-            <div class="list media-list virtual-list separated inset grid-list mt-negative">
-                <ul></ul>              
-            </div>
-       
-</div>
-                  <div id="sourcesTab" class="page-content tab ptr-content ptr-repos" data-ptr-distance="56" style="overflow-x: hidden;">
-    <div class="ptr-preloader">
-        <div class="preloader"></div>
-        <div class="ptr-arrow"></div>
-    </div>
+                    <div id="searchTab" class="tab page-content ptr-content ptr-tab" data-ptr-distance="56">
+                        <div class="ptr-preloader">
+                            <div class="preloader"></div>
+                            <div class="ptr-arrow"></div>
+                        </div>
 
-    <div id="news-section" style="display:none;">
-        <div class="block-title margin-top">Repository news</div>
-        <div class="swiper-container margin-bottom repo-news-swiper" id="news-swiper-container">
-            <div class="swiper-wrapper" id="news-swiper-wrapper"></div>
-            <div class="swiper-pagination"></div>
-        </div>
-    </div>    
-    <div class="block-title">Sources</div>
-    <div class="list media-list separated inset grid-list sortable sortable-tap-hold" id="sources-list-container">
-        <ul id="sources-list"></ul>
-    </div>
-   
-    <div class="fab fab-right-bottom" id="add-source-fab" style="position:fixed;">
-        <a href="#"> <i class="icon f7-icons">plus</i> </a>
-    </div>
-</div>
-<div class="view" id="repository-view" style="display:none;"></div>
-<script>document.addEventListener('DOMContentLoaded', () => {
-    const STORAGE_KEY = 'altstore_repos_v3';
-    const LOCAL_REPO_URL = './altstore.json';
+                        <div class="fab fab-right-bottom searchbar-hide-on-enable">
+                            <a class="searchbar-enable" data-searchbar=".searchbar"> <i class="icon f7-icons">search</i> </a>
+                        </div>
 
-    if (!window.repoView) {
-        window.repoView = app.views.create('#repository-view', { name: 'repoView' });
-    }
 
-    function sanitizeRepo(json, url) {
-        return {
-            name: json.name ?? "Untitled Repo",
-            identifier: json.identifier ?? url,
-            sourceURL: url,
-            iconURL: json.iconURL ?? "",
-            apps: (json.apps ?? []).map(app => {
-                const latest = (app.versions && app.versions.length > 0) ? app.versions[0] : app;
-                return {
-                    name: app.name ?? "Unknown App",
-                    bundleIdentifier: app.bundleIdentifier ?? Math.random().toString(36).substring(7),
-                    developerName: app.developerName ?? "Unknown",
-                    iconURL: app.iconURL ?? "",
-                    subtitle: app.subtitle ?? "",
-                    localizedDescription: latest.localizedDescription ?? app.localizedDescription ?? app.description ?? "No description available.",
-                    screenshots: app.screenshots ?? app.screenshotURLs ?? [],
-                    downloadURL: latest.downloadURL ?? app.downloadURL ?? "#",
-                    version: latest.version ?? app.version ?? "1.0",
-                    size: latest.size ?? app.size ?? 0
-                };
-            }),
-            news: (json.news ?? []).map(n => ({
-                title: n.title ?? "News",
-                caption: n.caption ?? "",
-                date: n.date ?? new Date().toISOString(),
-                imageURL: n.imageURL ?? "",
-                url: n.url ?? "#"
-            })),
-            isSystem: url === LOCAL_REPO_URL
-        };
-    }
+                        <div class="list list-strong simple-list searchbar-not-found inset">
+                            <ul>
+                                <li>Unfortunately, no items were found.</li>
+                            </ul>
+                        </div>
+                        <div class="list media-list virtual-list separated inset grid-list mt-negative">
+                            <ul></ul>
+                        </div>
 
-    function getRepos() {
-        try {
-            const data = localStorage.getItem(STORAGE_KEY);
-            let repos = data ? JSON.parse(data) : [];
-            if (!repos.some(r => r.sourceURL === LOCAL_REPO_URL)) {
-                repos.unshift({ sourceURL: LOCAL_REPO_URL, name: "AppRealm", apps: [], isSystem: true });
-            }
-            return repos;
-        } catch { return []; }
-    }
+                    </div>
+                    <div id="sourcesTab" class="page-content tab ptr-content ptr-repos" data-ptr-distance="56">
+                        <div class="ptr-preloader">
+                            <div class="preloader"></div>
+                            <div class="ptr-arrow"></div>
+                        </div>
 
-    function saveRepos(repos) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(repos));
-    }
+                        <div id="news-section">
+                            <div class="block-title margin-top">Repository news</div>
+                            <div class="swiper-container margin-bottom repo-news-swiper" id="news-swiper-container">
+                                <div class="swiper-wrapper" id="news-swiper-wrapper"></div>
+                                <div class="swiper-pagination"></div>
+                            </div>
+                        </div>
+                        <div class="block-title">Sources</div>
+                        <div class="list media-list separated inset grid-list sortable sortable-tap-hold" id="sources-list-container">
+                            <ul id="sources-list"></ul>
+                        </div>
 
-    async function fetchRepo(url) {
-        try {
-            const res = await fetch(url);
-            if (!res.ok) throw new Error();
-            const json = await res.json();
-            return sanitizeRepo(json, url);
-        } catch {
-            return null;
-        }
-    }
-
-    window.openPhotoBrowser = function(screenshotUrls) {
-        if (typeof screenshotUrls === 'string') screenshotUrls = JSON.parse(screenshotUrls);
-        const pb = app.photoBrowser.create({
-            photos: screenshotUrls.map(url => ({ url })),
-            type: 'standalone',
-            navbar: true,
-            toolbar: false,
-            swiper: { zoom: true }
-        });
-        pb.open();
-    };
-
-    function createPopupHtml(item) {
-        const screenshotsJson = JSON.stringify(item.screenshots).replace(/"/g, "&quot;");
-        const screenshotsHtml = item.screenshots.map(src => 
-            `<img loading="lazy" src="${src}" onclick="openPhotoBrowser(['${src}'])">`
-        ).join('');
-
-        return `
-        <div class="popup popup-app-detail" id="popup-${item.bundleIdentifier}">
-            <div class="view">
-                <div class="page">
-                    <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
-                    <div class="page-content">
-                         <div style="margin-top: 40px; padding: 0px;">
-          <div class="block" style="margin-top: 27px; margin-bottom: 20px;">
-            <div style="display: flex; gap: 15px;">
-                                    <img src="${item.iconURL}" style="width: 110px; height: 110px; border-radius: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); object-fit:cover;">
-                                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
-                                        <div style="font-size: 22px; font-weight: 700; line-height: 1.2;">${item.name}</div>
-                                        <div style="font-size: 15px; color: #8e8e93; margin-top: 4px;">${item.developerName}</div>
-                                        <div style="display: flex; gap: 10px; margin-top: auto; align-items: center;">
-                                            <a href="${item.downloadURL}" class="external button button-fill button-round" style="padding: 0 24px; font-weight:bold;">GET</a>
-                                            <a onclick="navigator.share({url: '${item.downloadURL}' })" class="more"><i class="f7-icons">square_arrow_up</i></a>
-                                        </div>
+                        <div class="fab fab-right-bottom" id="add-source-fab">
+                            <a href="#"> <i class="icon f7-icons">plus</i> </a>
+                        </div>
+                    </div>
+                    <div class="view" id="repository-view"></div>
+                    <div class="popup" id="sourceCompatibility">
+                        <div class="page">
+                            <div class="swipe-nav">
+                                <div><i class="f7-icons">minus</i></div>
+                            </div>
+                            <div class="page-content">
+                                <div class="block-title block-title-large">Compatible apps</div>
+                                <div class="list separated inset">
+                                    <ul>
+                                        <li>
+                                            <a href="https://flekstore.com" class="item-link item-content external">
+                                                <div class="item-media"><img loading="lazy" src="https://pbs.twimg.com/profile_images/1333829432134541316/u1UlasW7_400x400.jpg"></div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">FlekSt0re</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://github.com/khcrysalis/Feather/tree/v2.0" class="item-link item-content external">
+                                                <div class="item-media"><img loading="lazy" src="https://i.imgur.com/RyiQZcj.png"></div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">Feather</div>
+                                                    </div>
+                                                    <div class="item-subtitle"></div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://s0n1c.ca/altlist/" class="item-link item-content external">
+                                                <div class="item-media"><img loading="lazy" src="https://s0n1c.ca/altlist/icon.png"></div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">AltList</div>
+                                                    </div>
+                                                    <div class="item-subtitle"></div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://appdb.to" class="item-link item-content external">
+                                                <div class="item-media"><img loading="lazy" src="https://pbs.twimg.com/profile_images/1838260547944394752/UfYijXbB.jpg"></div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">AppDB</div>
+                                                    </div>
+                                                    <div class="item-subtitle"></div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://gbox.pub" class="item-link item-content external">
+                                                <div class="item-media"><img loading="lazy" src="https://gbox.pub/Public/resources/icon256.png"></div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">GBox</div>
+                                                    </div>
+                                                    <div class="item-subtitle"></div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://esign.yyyue.xyz" class="item-link item-content external">
+                                                <div class="item-media"><img loading="lazy" src="https://esign.yyyue.xyz/ESignLogo200.png"></div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">ESign</div>
+                                                    </div>
+                                                    <div class="item-subtitle"></div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://usescarlet.com" class="item-link item-content external">
+                                                <div class="item-media"><img loading="lazy" src="https://usescarlet.com/favicon.png"></div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">Scarlet</div>
+                                                    </div>
+                                                    <div class="item-subtitle"></div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <br><br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup popup-tablet-fullscreen" id="hs" data-close-on-escape="false" data-swipe-to-close="false" data-push="false">
+                        <div class="page">
+                            <div class="page-content bg-img">
+                                <div class="block block-strong inset liquid-glass">
+                                    <div class="block-title block-title-large text-white">Install AppRealm<i class="f7-icons">arrow_down_circle_fill</i></div>
+                                    <p>Add AppRealm to your home screen and you're all set!</p>
+                                </div>
+                                <div class="list separated inset glass">
+                                    <ul>
+                                        <li>
+                                            <div class="item-content">
+                                                <div class="item-media"><i class="f7-icons">compass_fill</i></div>
+                                                <div class="item-inner">Access this webpage using Safari</div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="item-content">
+                                                <div class="item-media"><i class="f7-icons">square_arrow_up_fill</i></div>
+                                                <div class="item-inner">Tap the "Share" button</div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="item-content">
+                                                <div class="item-media"><i class="f7-icons">plus_app_fill</i></div>
+                                                <div class="item-inner">and tap "Add to Home Screen"</div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a class="item-link item-content popup-open" data-popup="#terms">
+                                                <div class="item-media"><i class="f7-icons">exclamationmark_octagon_fill</i></div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">Terms of service</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <a class="button button-large button-fill button-round popup-close red-tinted">Close</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popup" id="altstore-repo">
+                        <div class="page">
+                            <div class="swipe-nav">
+                                <div><i class="f7-icons">minus</i></div>
+                            </div>
+                            <div class="page-content">
+                                <center>
+                                    <img class="popup-img" src="assets/altstore.png">
+                                </center>
+                                <div class="list separated inset">
+                                    <ul>
+                                        <li>
+                                            <div class="item-content">
+                                                <div class="item-media"><i class="f7-icons">bag_fill</i></div>
+                                                <div class="item-inner">Discover and sideload amazing apps</div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="item-content">
+                                                <div class="item-media"><i class="f7-icons">globe</i></div>
+                                                <div class="item-inner">Compatible with multiple apps</div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="item-content">
+                                                <div class="item-media"><i class="f7-icons">person_alt_circle_fill</i></div>
+                                                <div class="item-inner">Safe apps from amazing developers</div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a class="item-link item-content popup-open" data-popup="#sourceCompatibility">
+                                                <div class="item-media"><i class="f7-icons">app_badge_fill</i></div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">See other compatible apps</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <br>
+                                    <br>
+                                    <a href="altstore://source?url=https://tweakrain.pages.dev/ios/altstore.json" class="button button-large button-fill button-raised button-round">Add to AltStore</a>
+                                    <p><a onclick="copySource()" class="button button-fill button-raised button-round">Copy to clipboard</a></p>
+                                    <p><a onclick="shareSource()" class="button button-fill button-raised button-round">Share source</a>
+                                </div>
+                                <div class="block-title">Looking for something else? </div>
+                                <div class="list separated inset">
+                                    <ul>
+                                        <li>
+                                            <a class="popup-close item-content item-link" onclick="goToTab('#sourcesTab')">
+                                                <div class="item-media"><i class="f7-icons">arrow_down_circle_fill</i></div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">Go to Sources</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="popup" id="terms">
+                            <div class="page">
+                                <div class="swipe-nav">
+                                    <div><i class="f7-icons">minus</i></div>
+                                </div>
+                                <div class="page-content">
+                                    <div class="block-title block-title-large">Terms of Service</div>
+                                    <div class="block block-strong inset">
+                                        <p>Welcome to AppRealm – the ultimate all-in-one utility for your Apple, Android and OpenHarmony Devices. We highly value your privacy and security, which is why we have meticulously crafted the following terms of
+                                            service to ensure absolute clarity and transparency:</p>
+                                        <p><strong>1. Privacy First:</strong> Your privacy is our top priority. We assure you that we do not collect any of your personal data. Your information remains strictly yours and is treated with the highest level
+                                            of respect.</p>
+                                        <p><strong>2. Enhanced User Experience:</strong> To enhance your experience, we use cookies exclusively to save your settings. This enables you to effortlessly customize your AppRealm experience according to your preferences.</p>
+                                        <p><strong>3. Third-party Apps and Data Collection:</strong> It's important to note that certain tweaks or apps available through AppRealm may involve data collection. By utilizing these, you acknowledge and consent
+                                            to their respective data collection practices. Kindly review their terms and privacy policies for additional details.</p>
+                                        <p><strong>4. User Responsibility:</strong> While we relentlessly strive for excellence, it's essential to clarify that we cannot be held responsible for any damages stemming from the use of Jailbreaking apps or other
+                                            applications facilitated by AppRealm. You hold the responsibility for your device and its usage.</p>
+                                        <p><strong>5. Open Dialogue:</strong> We wholeheartedly encourage you to reach out with any questions or concerns. We value your feedback and aim to continuously elevate your AppRealm experience.</p>
+                                        <p><strong>Thank you for choosing AppRealm.</strong></p>
                                     </div>
                                 </div>
                             </div>
-                            ${item.screenshots.length > 0 ? `
-                            <div class="block-title" style="font-size: 20px; margin-top: 25px;">Preview</div>
-                            <div class="screenshot" onclick="openPhotoBrowser(${screenshotsJson})">${screenshotsHtml}</div>` : ''}
-                            <div class="block block-strong inset margin-top">
-                                <div style="font-size: 15px; line-height: 1.5;">${item.localizedDescription.replace(/\n/g, '<br>')}</div>
+                        </div>
+                        <div class="popup" id="changelog">
+                            <div class="page">
+                                <div class="swipe-nav">
+                                    <div><i class="f7-icons">minus</i></div>
+                                </div>
+                                <div class="page-content">
+                                    <div class="block-title block-title-large">What's new?</div>
+                                    <div class="block block-strong inset">
+                                        <p>Last updated: <span class="badge">Unknown</span></p>
+                                        <center>
+                                            <h1>v1.0</h1>
+                                        </center>
+                                        No changelog available at the moment, check back later. 
+                                    </div>
+                                    <br><br>
+                                </div>
                             </div>
-                            <div class="list simple-list inset list-separated">
-                                <ul>
-                                    <li><span>Version</span><span>${item.version}</span></li>
-                                    <li><span>Size</span><span>${(item.size / 1024 / 1024).toFixed(1)} MB</span></li>
-                                    <li><span>BundleID</span><span>${item.bundleIdentifier}</span></li>
-                                </ul>
-                            </div>                           
-        </div>
-      </div>
-    </div>
                         </div>
-                    </div>
-                </div>
-            </div>`;
-    }
+                        <div class="popup" id="settings">
+                            <div class="page">
+                                <div class="swipe-nav">
+                                    <div><i class="f7-icons">minus</i></div>
+                                </div>
+                                <div class="page-content">
+                                    <div class="block-title block-title-large">Settings</div>
+                                    <div class="list separated media-list inset">
+                                        <ul>
 
- function renderSourcesList(repos) {
-    const listEl = document.getElementById('sources-list');
-    listEl.innerHTML = '';
-    const frag = document.createDocumentFragment();
+                                            <li>
+                                                <div class="item-content">
+                                                    <div class="item-media">
 
-    repos.forEach(repo => {
-        const li = document.createElement('li');
-        li.id = repo.name; 
-        li.className = repo.isSystem ? '' : 'swipeout';
-        const iconSrc = repo.iconURL || 'assets/default.png';
-
-        li.innerHTML = `
-            <div class="swipeout-content item-content  repo-link" data-url="${repo.sourceURL}">
-                <div class="item-media"><img src="${iconSrc}" width="45" height="45"></div>
-                <div class="item-inner">
-                    <div class="item-title">${repo.name}</div>
-                    <div class="item-subtitle">${repo.apps.length} Apps</div>
-                   
-                </div>
-            </div>
-            ${!repo.isSystem ? ` <div class="swipeout-actions-right"><a onclick="navigator.share({url: '${repo.sourceURL}' })">Share</a><a class="swipeout-delete" data-url="${repo.sourceURL}">Remove<i class="f7-icons">trash</i></a></div>` : ''}
-        `;
-        frag.appendChild(li);
-    });
-
-    listEl.appendChild(frag);
-
-    const savedOrder = JSON.parse(localStorage.getItem('sourcesListOrder') || '[]');
-    if (savedOrder.length) {
-        savedOrder.forEach(id => {
-            const item = document.getElementById(id);
-            if (item && item.parentNode === listEl) {
-                listEl.appendChild(item);
-            }
-        });
-    }
-
-    if (!listEl.sortableInitialized) {
-        listEl.addEventListener('sortable:sort', () => {
-            const order = Array.from(listEl.children).map(li => li.id);
-            localStorage.setItem('sourcesListOrder', JSON.stringify(order));
-        });
-        listEl.sortableInitialized = true; 
-    }
-}
-    function renderNews(repos) {
-        let allNews = [];
-        repos.forEach(r => { if(r.news) allNews.push(...r.news.map(n => ({...n, source: r.name}))); });
-        
-        const wrapper = document.getElementById('news-swiper-wrapper');
-        const section = document.getElementById('news-section');
-        
-        if (allNews.length === 0) {
-            section.style.display = 'none';
-            return;
-        }
-
-        section.style.display = 'block';
-        wrapper.innerHTML = '';
-        allNews.sort((a,b) => new Date(b.date) - new Date(a.date));
-
-        allNews.forEach(news => {
-            wrapper.insertAdjacentHTML('beforeend', `
-              <div class="swiper-slide swiper-slide-news">
-  <div class="card card-outline repo-news-card">
-    <div class="card-content card-content-padding">
-      <div class="size-12">${news.source}</div>
-      <div class="text-weight-bold ">
-        ${news.title}
-      </div>
-      <div class="size-12">
-        ${news.caption.substring(0, 80)}...
-      </div>
-    </div>
-
-    <div class="card-footer">
-      <a href="${news.url}" class="link external">Open link</a>
-    </div>
-  </div>
-</div> 
-            `);
-        });
-
-        if (!document.getElementById('news-swiper-container').swiper) {
-            app.swiper.create('#news-swiper-container', { slidesPerView: 1 });
-        }
-    }
-
-    function openRepoPage(repo) {
-        const pageId = `repo-${Date.now()}`;
-        const pageHtml = `
-            <div class="page page-with-subnavbar" data-name="repo-detail">
-                <div class="navbar">
-                    <div class="navbar-bg"></div>
-                    <div class="navbar-inner">
-                        <div class="subnavbar"><div class="searchbar-backdrop"></div>
-                    <form class="searchbar">
-                        <div class="searchbar-inner">
-                            <div class="searchbar-input-wrap">
-                                <input type="search" placeholder="Search" />
-                                <i class="searchbar-icon"></i>
-                                <span class="input-clear-button"></span>
-                            </div>                        
-                        </div>
-                    </form></div>
-                        <div class="left"><a class="link back"><i class="icon icon-back"></i></a></div>
-                        <div class="title">${repo.name}</div>
-                        <div class="right"> <a onclick="navigator.share({url: '${repo.sourceURL}' })" class="link icon-only"><i class="icon f7-icons">square_arrow_up</i></a></div>
-                    </div>
-                </div>
-                <div class="page-content">                         
-                    <div class="list media-list separated inset virtual-list virtual-list-${pageId} searchbar-found"></div>
-                     <div class="list list-strong simple-list searchbar-not-found inset">
-                <ul><li>Unfortunately, no items were found.</li></ul>
-            </div>
-            </div>`;
-
-        app.views.main.router.navigate({
-            url: `/repo-detail/${pageId}/`,
-            route: {
-                path: `/repo-detail/${pageId}/`,
-                content: pageHtml,
-                on: {
-                    pageInit: function (e, page) {
-                        const vl = app.virtualList.create({
-                            el: `.virtual-list-${pageId}`,
-                            items: repo.apps,
-                            searchAll: function (query, items) {
-                                const q = query.toLowerCase();
-                                return items.reduce((acc, item, index) => {
-                                    if (item.name.toLowerCase().includes(q) || !q) acc.push(index);
-                                    return acc;
-                                }, []);
-                            },
-                            height: 75,
-                            renderItem: function (item) {
-                                return `
-                                <li>
-                                    <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
-                                        <div class="item-media"><img src="${item.iconURL}"  loading="lazy"></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row"><div class="item-title">${item.name}</div></div>
-                                            <div class="item-subtitle">${item.developerName}</div>
-                                        </div>
-                                    </a>
-                                </li>`;
-                            }
-                        });
-
-                        app.searchbar.create({
-                            el: page.el.querySelector('.searchbar'),
-                            searchContainer: `.virtual-list-${pageId}`,
-                            searchIn: '.item-title',
-                            on: { search(sb, query) { vl.search(query); } }
-                        });
-
-                        page.$el.on('click', '.app-item-trigger', function () {
-                            const appItem = repo.apps.find(a => a.bundleIdentifier === this.dataset.id);
-                            if (appItem) {
-                                app.popup.create({
-                                    content: createPopupHtml(appItem),
-                                    swipeToClose: true,
-                                    on: { closed: function (p) { p.destroy(); } }
-                                }).open();
-                            }
-                        });
-                    }
-                }
-            }
-        });
-    }
-
-    async function refreshData(force = false) {
-        let repos = getRepos();
-        if (force) app.dialog.preloader('Refreshing Sources');
-
-        try {
-            if (force || repos.some(r => !r.apps || r.apps.length === 0)) {
-                const waitPromise = force ? new Promise(resolve => setTimeout(resolve, 2000)) : Promise.resolve();
-                const fetchPromise = Promise.all(repos.map(r => fetchRepo(r.sourceURL)));
-                
-                const [_, updates] = await Promise.all([waitPromise, fetchPromise]);
-                repos = updates.map((newRepo, i) => newRepo || repos[i]);
-                saveRepos(repos);
-            }
-        } finally {
-            if (force) app.dialog.close();
-        }
-
-        renderSourcesList(repos);
-        renderNews(repos);
-    }
-
-    document.getElementById('add-source-fab').addEventListener('click', () => {
-        app.dialog.prompt('Enter source link','Add source', async (url) => {
-            if (!url) return;                  
-            const repos = getRepos();
-            const existingRepo = repos.find(r => r.sourceURL === url);
-            
-            if (existingRepo) {
-                app.dialog.alert('This source has already been added.', 'Error');
-                return;
-            }           
-
-            app.dialog.preloader('Fetching source data');
-            const repo = await fetchRepo(url);
-            app.dialog.close();
-
-            if (repo) {             
-                repos.push(repo);
-                saveRepos(repos);
-                renderSourcesList(repos);
-                app.toast.create({text: 'Repository Added', closeTimeout: 1100}).open();
-            } else {
-                app.dialog.alert('Invalid URL or JSON');
-            }
-        });
-    });
-
-    document.getElementById('sources-list').addEventListener('click', (e) => {
-        const delBtn = e.target.closest('.swipeout-delete');
-        if (delBtn) {
-            const url = delBtn.dataset.url;
-            saveRepos(getRepos().filter(r => r.sourceURL !== url));
-            app.swipeout.delete(delBtn.closest('li'));
-            return;
-        }
-
-        const link = e.target.closest('.repo-link');
-        if (link) {
-            const repo = getRepos().find(r => r.sourceURL === link.dataset.url);
-            if (repo) openRepoPage(repo);
-        }
-    });
-
-    document.querySelector('.ptr-repos').addEventListener('ptr:refresh', async (e) => {
-        await refreshData(true);
-        app.ptr.done(e.target);
-    });
-
-    refreshData(false);
-});</script>
-<div class="popup" id="sourceCompatibility">
-  <div class="page">
-    <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
-    <div class="page-content">
-      <div class="block-title block-title-large">Compatible apps</div>
-      <div class="list separated inset">
-        <ul>
-          <li>
-            <a href="https://flekstore.com" class="item-link item-content external">
-              <div class="item-media"><img loading="lazy" src="https://pbs.twimg.com/profile_images/1333829432134541316/u1UlasW7_400x400.jpg"></div>
-              <div class="item-inner"><div class="item-title-row"><div class="item-title">FlekSt0re</div></div></div>
-            </a>
-          </li>
-         <li><a href="https://github.com/khcrysalis/Feather/tree/v2.0" class="item-link item-content external"><div class="item-media"><img loading="lazy" src="https://i.imgur.com/RyiQZcj.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Feather</div></div><div class="item-subtitle"></div></div></a></li><li><a href="https://s0n1c.ca/altlist/" class="item-link item-content external"><div class="item-media"><img loading="lazy" src="https://s0n1c.ca/altlist/icon.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">AltList</div></div><div class="item-subtitle"></div></div></a></li><li><a href="https://appdb.to" class="item-link item-content external"><div class="item-media"><img loading="lazy" src="https://pbs.twimg.com/profile_images/1838260547944394752/UfYijXbB.jpg"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">AppDB</div></div><div class="item-subtitle"></div></div></a></li><li><a href="https://gbox.pub" class="item-link item-content external"><div class="item-media"><img loading="lazy" src="https://gbox.pub/Public/resources/icon256.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">GBox</div></div><div class="item-subtitle"></div></div></a></li><li><a href="https://esign.yyyue.xyz" class="item-link item-content external"><div class="item-media"><img loading="lazy" src="https://esign.yyyue.xyz/ESignLogo200.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">ESign</div></div><div class="item-subtitle"></div></div></a></li><li><a href="https://usescarlet.com" class="item-link item-content external"><div class="item-media"><img loading="lazy" src="https://usescarlet.com/favicon.png"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Scarlet</div></div><div class="item-subtitle"></div></div></a></li>
-        </ul>
-        <br><br>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="popup popup-tablet-fullscreen" id="hs" data-close-on-escape="false" data-swipe-to-close="false" data-push="false">
-  <div class="page">
-    <div class="page-content bg-img">
-      <div class="block block-strong inset liquid-glass">
-        <div class="block-title block-title-large text-white">Install AppRealm<i class="f7-icons">arrow_down_circle_fill</i></div>
-        <p>Add AppRealm to your home screen and you're all set!</p>
-      </div>
-      <div class="list separated inset glass">
-        <ul>
-          <li>
-            <div class="item-content">
-              <div class="item-media"><i class="f7-icons">compass_fill</i></div>
-              <div class="item-inner">Access this webpage using Safari</div>
-            </div>
-          </li>
-          <li>
-            <div class="item-content">
-              <div class="item-media"><i class="f7-icons">square_arrow_up_fill</i></div>
-              <div class="item-inner">Tap the "Share" button</div>
-            </div>
-          </li>
-          <li>
-            <div class="item-content">
-              <div class="item-media"><i class="f7-icons">plus_app_fill</i></div>
-              <div class="item-inner">and tap "Add to Home Screen"</div>
-            </div>
-          </li>       
-          <li>
-            <a class="item-link item-content popup-open" data-popup="#terms">
-              <div class="item-media"><i class="f7-icons">exclamationmark_octagon_fill</i></div>
-              <div class="item-inner"><div class="item-title-row"><div class="item-title">Terms of service</div></div></div>
-            </a>
-          </li>
-        </ul>
-        <br>
-        <br>
-        <br>
-        <a class="button button-large button-fill button-round popup-close red-tinted">Close</a>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="popup" id="altstore-repo">
-  <div class="page">
-    <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
-    <div class="page-content">
-      <center>
-        <img class="popup-img" src="assets/altstore.png">
-      </center>
-      <div class="list separated inset">
-        <ul>
-          <li>
-            <div class="item-content">
-              <div class="item-media"><i class="f7-icons">bag_fill</i></div>
-              <div class="item-inner">Discover and sideload amazing apps</div>
-            </div>
-          </li>
-          <li>
-            <div class="item-content">
-              <div class="item-media"><i class="f7-icons">globe</i></div>
-              <div class="item-inner">Compatible with multiple apps</div>
-            </div>
-          </li>
-          <li>
-            <div class="item-content">
-              <div class="item-media"><i class="f7-icons">person_alt_circle_fill</i></div>
-              <div class="item-inner">Safe apps from amazing developers</div>
-            </div>
-          </li>
-          <li>
-            <a class="item-link item-content popup-open" data-popup="#sourceCompatibility">
-              <div class="item-media"><i class="f7-icons">app_badge_fill</i></div>
-              <div class="item-inner"><div class="item-title-row"><div class="item-title">See other compatible apps</div></div></div>
-            </a>
-          </li>
-          </ul>             
-      <br>
-      <br>          
-        <a href="altstore://source?url=https://tweakrain.pages.dev/ios/altstore.json" class="button button-large button-fill button-raised button-round">Add to AltStore</a>
-        <p><a onclick="copySource()" class="button button-fill button-raised button-round">Copy to clipboard</a></p>
-        <p><a onclick="shareSource()" class="button button-fill button-raised button-round">Share source</a>
-      </div>
-       <div class="block-title">Looking for something else? </div>
-           <div class="list separated inset">
-        <ul>
-           <li>
-            <a class="popup-close item-content item-link" onclick="goToTab('#sourcesTab')">
-              <div class="item-media"><i class="f7-icons">arrow_down_circle_fill</i></div>
-              <div class="item-inner"><div class="item-title-row"><div class="item-title">Go to Sources</div></div></div>
-            </a>
-          </li>
-        </ul>
-    </div>
-  </div>
-</div>
-<div class="popup" id="terms">
-  <div class="page">
-    <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
-    <div class="page-content">
-      <div class="block-title block-title-large">Terms of Service</div>
-      <div class="block block-strong inset">
-        <p>Welcome to AppRealm – the ultimate all-in-one utility for your Apple, Android and OpenHarmony Devices. We highly value your privacy and security, which is why we have meticulously crafted the following terms of service to ensure absolute clarity and transparency:</p>
-        <p><strong>1. Privacy First:</strong> Your privacy is our top priority. We assure you that we do not collect any of your personal data. Your information remains strictly yours and is treated with the highest level of respect.</p>
-        <p><strong>2. Enhanced User Experience:</strong> To enhance your experience, we use cookies exclusively to save your settings. This enables you to effortlessly customize your AppRealm experience according to your preferences.</p>
-        <p><strong>3. Third-party Apps and Data Collection:</strong> It's important to note that certain tweaks or apps available through AppRealm may involve data collection. By utilizing these, you acknowledge and consent to their respective data collection practices. Kindly review their terms and privacy policies for additional details.</p>
-        <p><strong>4. User Responsibility:</strong> While we relentlessly strive for excellence, it's essential to clarify that we cannot be held responsible for any damages stemming from the use of Jailbreaking apps or other applications facilitated by AppRealm. You hold the responsibility for your device and its usage.</p>
-        <p><strong>5. Open Dialogue:</strong> We wholeheartedly encourage you to reach out with any questions or concerns. We value your feedback and aim to continuously elevate your AppRealm experience.</p>
-        <p><strong>Thank you for choosing AppRealm.</strong></p>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="popup" id="changelog">
-  <div class="page">
-    <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
-    <div class="page-content">
-      <div class="block-title block-title-large">What's new?</div>
-      <div class="block block-strong inset">
-        <p>Last updated: <span class="badge">Unknown</span></p>
-        <center><h1>v26.0</h1></center>      
-         🎉 First release
-      </div>
-      <br><br>
-    </div>
-  </div>
-</div>
-<div class="popup" id="settings">
-  <div class="page">
-    <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
-    <div class="page-content">
-      <div class="block-title block-title-large">Settings</div>
-      <div class="list separated media-list inset">
-                            <ul>
-                                
-                                <li>
-                                    <div class="item-content">
-                                        <div class="item-media">
-                                            
-                                                <img loading="lazy" src="https://apprealm.pages.dev/favicon.png">
-                                            </a>
-                                        </div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title">
-                                                    <script>
-                                                        var userAgent = navigator.userAgent,
-                                                            iosMatch = userAgent.match(/(iPhone|iPad|iPod).*? OS (\d+)_?(\d+)?_?(\d+)?/i),
-                                                            ipadMatch = userAgent.match(/iPad.*? OS (\d+)_?(\d+)?_?(\d+)?/i),
-                                                            macosMatch = userAgent.match(/Mac OS X (\d+)[_.](\d+)(?:[_.](\d+))?/i),
-                                                            iosVersion = iosMatch ? iosMatch.slice(2).filter(Boolean).join(". ") : null,
-                                                            ipadVersion = ipadMatch ? ipadMatch.slice(1).filter(Boolean).join(". ") : null,
-                                                            macosVersion = macosMatch ? macosMatch.slice(1).filter(Boolean).join(". ") : null;
-                                                        iosVersion && document.write("iOS " + iosVersion);
-                                                        ipadVersion && document.write("iPadOS " + ipadVersion);
-                                                        macosVersion && document.write("macOS " + macosVersion);
-                                                    </script>
+                                                        <img loading="lazy" src="https://apprealm.pages.dev/favicon.png">
+                                                        </a>
+                                                    </div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">
+                                                                <script>
+                                                                    var userAgent = navigator.userAgent,
+                                                                        iosMatch = userAgent.match(/(iPhone|iPad|iPod).*? OS (\d+)_?(\d+)?_?(\d+)?/i),
+                                                                        ipadMatch = userAgent.match(/iPad.*? OS (\d+)_?(\d+)?_?(\d+)?/i),
+                                                                        macosMatch = userAgent.match(/Mac OS X (\d+)[_.](\d+)(?:[_.](\d+))?/i),
+                                                                        iosVersion = iosMatch ? iosMatch.slice(2).filter(Boolean).join(". ") : null,
+                                                                        ipadVersion = ipadMatch ? ipadMatch.slice(1).filter(Boolean).join(". ") : null,
+                                                                        macosVersion = macosMatch ? macosMatch.slice(1).filter(Boolean).join(". ") : null;
+                                                                    iosVersion && document.write("iOS " + iosVersion);
+                                                                    ipadVersion && document.write("iPadOS " + ipadVersion);
+                                                                    macosVersion && document.write("macOS " + macosVersion);
+                                                                </script>
+                                                            </div>
+                                                        </div>
+                                                        <div class="item-subtitle small-text">
+                                                            <script>
+                                                                var mydate = new Date,
+                                                                    year = mydate.getYear(),
+                                                                    day = mydate.getDay(),
+                                                                    month = mydate.getMonth(),
+                                                                    daym = mydate.getDate();
+                                                                daym < 10 && (daym = "0" + daym);
+                                                                var dayarray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                                                                    montharray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                                                                document.write(dayarray[day] + ", " + montharray[month] + " " + daym);
+                                                            </script>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="item-subtitle small-text">
-                                                <script>
-                                                    var mydate = new Date,
-                                                        year = mydate.getYear(),
-                                                        day = mydate.getDay(),
-                                                        month = mydate.getMonth(),
-                                                        daym = mydate.getDate();
-                                                    daym < 10 && (daym = "0" + daym);
-                                                    var dayarray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-                                                        montharray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                                                    document.write(dayarray[day] + ", " + montharray[month] + " " + daym);
-                                                </script>
-                                            </div>
+                                            </li>
+
+                                            <li>
+                                                <a onclick="shareURL()" class="item-link item-content">
+                                                    <div class="item-media"><i class="f7-icons">square_arrow_up</i></div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">Share AppRealm</div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="list media-list separated inset">
+                                        <ul>
+                                            <li class="flex-between accent-li item-content">
+                                                <div class="flex-align">
+                                                    <div class="item-media"><i class="icon f7-icons">paintbrush_fill</i></div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row" style="margin-top:3px;">
+                                                            <div class="item-title">Accent color</div>
+                                                        </div>
+                                                    </div>
+                                                </div> <span class="accent-color-indicator" id="accent-color"></span>
+                                            </li>
+                                            <li>
+                                                <a class="item-link item-content popup-open" data-popup="#terms">
+                                                    <div class="item-media"><i class="f7-icons">exclamationmark_octagon_fill</i></div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">Terms of service</div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="item-link item-content popup-open" data-popup="#changelog">
+                                                    <div class="item-media"><i class="f7-icons">rocket_fill</i></div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">What's new? </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="https://x.com/TechLxrd07/" class="item-link item-content external">
+                                                    <div class="item-media"><i class="f7-icons">logo_twitter</i></div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">Follow us</div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a onclick="reset()" class="item-link item-content">
+                                                    <div class="item-media"><i class="icon f7-icons if-not-md color-red">trash_fill</i></div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">Reset</div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <center>
+                                            <p>AppRealm v1.0</p>
+                                        </center>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="popup popup-report" id="report-app">
+                            <div class="page">
+                                <div class="navbar">
+                                    <div class="navbar-inner">
+                                        <div class="title">Report app</div>
+                                        <div class="right">
+                                            <a class="link popup-close">Cancel</a>
                                         </div>
                                     </div>
-                                </li>
-                               
-                                <li>
-                                    <a onclick="shareURL()" class="item-link item-content">
-                                        <div class="item-media"><i class="f7-icons">square_arrow_up</i></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title">Share AppRealm</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="list media-list separated inset">
-                            <ul>
-                               <li class="flex-between accent-li item-content">
-    <div class="flex-align">
-        <div class="item-media"><i class="icon f7-icons">paintbrush_fill</i></div>
-        <div class="item-inner">
-            <div class="item-title-row" style="margin-top:3px;">
-                <div class="item-title">Accent color</div>
-            </div>
-        </div>
-    </div> <span class="accent-color-indicator" id="accent-color"></span>
+                                </div>
+
+                                <div class="page-content">
+                                    <form action="https://formsubmit.co/ajax/outland3r2007@gmail.com" method="POST" class="list separated inset" id="report-form">
+                                        <input type="text" name="_honey" class="display-none">
+
+                                        <input type="hidden" name="_captcha" value="false">
+                                        <ul>
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">App name</div>
+                                                        <div class="item-input-wrap">
+                                                            <input type="text" name="App Name" id="report-app-name" readonly required />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">Email</div>
+                                                        <div class="item-input-wrap">
+                                                            <input type="email" name="Email" required />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+  <a class="item-link smart-select" data-open-in="popover">
+    <select name="Reason" required>
+      <option value="" disabled selected>Select reason</option>
+      <option value="Malicious">Malicious</option>
+      <option value="Outdated">Outdated</option>
+      <option value="Not working">Not working</option>
+      <option value="Other">Other (Specify)</option>
+    </select>
+    <div class="item-content">
+      <div class="item-inner">
+        <div class="item-title">Reason</div>
+      </div>
+    </div>
+  </a>
 </li>
-                                <li>
-                                    <a class="item-link item-content popup-open" data-popup="#terms">
-                                        <div class="item-media"><i class="f7-icons">exclamationmark_octagon_fill</i></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title">Terms of service</div>
-                                            </div>
+
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">Feedback (optional unless you chose Other)</div>
+                                                        <div class="item-input-wrap">
+                                                            <textarea name="Feedback"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="block">
+                                            <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
+            <span class="preloader"></span>
+      <span>Send report</span>
+          </button>
                                         </div>
-                                    </a>
-                                </li>
-                                  <li class="accordion-item"> <a class="item-link item-content">  <div class="item-media"><i class="f7-icons">rocket_fill</i></div><div class="item-inner"> <div class="item-title">Changelog</div> </div> </a> <div class="accordion-item-content"><div class="block"><strong>No changelog available at the moment</strong></div></li>
-                                <li>
-                                    <a href="https://x.com/TechLxrd07/" class="item-link item-content external">
-                                        <div class="item-media"><i class="f7-icons">logo_twitter</i></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title">Follow us</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                
-                              <li>
-                                    <a onclick="reset()" class="item-link item-content">
-                                        <div class="item-media"><i class="icon f7-icons if-not-md color-red">trash_fill</i></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title">Reset</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>  
-                            </ul>
-                            <center><p>AppRealm v1.0</p></center>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-  </div>
-</div>
-<style>   
-.no-margin-top {
-  margin-top: 0;
-}
-.centered-empty {
-  text-align: center;
-}
-.icon-small {
-  font-size: 15px;
-}
-.mt-negative {
-  margin-top:-25px;
-}
-.small-text {
-  font-size: 12px;
-}
-.flex-between {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-left: 16px;
-  padding-right: 15px;
-}
-.flex-align {
-  display: flex;
-  align-items: center;
-}
-.bg-img {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-.popup-img {
-  width: 40%;
-  margin-top: 15%;
-  border-radius: 24%;
-}
-.more{margin-left:35% !important;}
-.accent-color-indicator {
-  width: 27px;
-  height: 27px; 
-  border-radius: 50%;
- background-color: var(--f7-ios-primary);
-  border: 1px solid grey;
-  display: block; 
-}
-.news-card{font-size:auto;color:#fff}
-.swiper-slide-news {
-  height: auto;
-  display: flex;
-}
-
-.repo-news-card {
-  border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0,0,0,.12);
-  border: none;
-  width:100%;
-  border-radius:20px;
-}
-
-.repo-news-card .card-content {
-  padding: 16px;
-}
-.repo-news-card .size-12:first-child {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-}
-
-.repo-news-card .text-weight-bold {
-  font-size: 17px;
-  font-weight: 800;
-  line-height: 1.35;
-}
-.repo-news-card .size-12:not(:first-child) {
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.repo-news-card .card-footer {
-  padding: 12px 16px;
-  border-top: 1px solid rgba(0,0,0,.06);
-}
-
-.repo-news-card .card-footer .link {
-  font-size: 13px;
-  font-weight: 600;
-  opacity: .75;
-}
-
-.repo-news-card .card-footer .link:active {
-  opacity: 1;
-}
-
-.news-card .card-content {
-  padding: 0;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0,0,0,.12);
-}
-
-.news-card .card-image {
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-}
-
-.news-card .newsimg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.news-card .card-header {
-  padding: 14px 16px 10px;
-  font-size: 17px;
-  font-weight: 700;
-  line-height: 1.35;
-}
-
-.news-card .card-footer {
-  padding: 10px 16px 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.news-card .card-footer a {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.news-card .card-footer i {
-  font-size: 20px;
-}
-</style>
-<script>let themeColor = localStorage.getItem("ios-primary-color") || "#007AFF";
-let colorPicker;
-
-
-const setCustomColor = (newColor) => {
-  themeColor = newColor;
-  
-  
-  app.setColorTheme(newColor);
-  
-  const indicator = document.getElementById('accent-color');
-  if (indicator) {
-    indicator.style.backgroundColor = newColor;
-  }
-  
-  localStorage.setItem("ios-primary-color", newColor);
-};
-
-document.addEventListener("DOMContentLoaded", () => {
-  setCustomColor(themeColor);
-
-  let timeout;
-  colorPicker = app.colorPicker.create({
-    targetEl: '#accent-color', 
-    value: {
-      hex: themeColor,
-    },
-    on: {
-      change(cp, value) {       
-        clearTimeout(timeout);
-        timeout = setTimeout(function () {
-          if (themeColor === value.hex) return;
-          setCustomColor(value.hex);
-        }, 200);
-      },
-    },
-  });
-});
- 
-window.addEventListener('error', function (event) {
-    
-    if (event.target.tagName === 'IMG') {
-        
-        event.target.onerror = null; 
-        
-       
-        event.target.src = 'assets/default.png';
-    }
-}, true); 
-</script>
-   <script src="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.js"></script>
-    <script src="js/app.js"></script>
-    <script>
-        var swiperguides = new Swiper(".guides", { slidesPerView: "auto", spaceBetween: 10 })
-    </script>   
-    <script src="js/instantclick.min.js" data-no-instant></script>
-    <script data-no-instant>InstantClick.init()</script>
+                        <script src="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.js"></script>
+                        <script src="js/app.js"></script>
+                        <script>
+                            var swiperguides = new Swiper(".guides", {
+                                slidesPerView: "auto",
+                                spaceBetween: 10
+                            })
+                        </script>
+                        <script src="js/instantclick.min.js" data-no-instant></script>
+                        <script data-no-instant>
+                            InstantClick.init()
+                        </script>
 </body>
+
 </html>
