@@ -10,6 +10,10 @@ const app = new Framework7({
     push: true,
     swipeToClose: true,
   },
+  colors: {
+    // specify primary color theme
+    primary: '#ff0000'
+  }, 
   popover: {
     verticalPosition: 'bottom', 
   },
@@ -32,9 +36,9 @@ const app = new Framework7({
     <div class="page" data-name="other">
       <div class="navbar">
         <div class="navbar-bg"></div>
-        <div class="navbar-inner sliding">
+        <div class="navbar-inner">
           <div class="left">
-            <a href="#" class="link back">
+            <a  class="link back">
               <i class="icon icon-back"></i>
             </a>
           </div>
@@ -42,7 +46,7 @@ const app = new Framework7({
         </div>
       </div>
       <div class="page-content">
-        <div class="block block-strong inset">
+        <div class="block inset">
           <center>
             <img loading="lazy" src="https://i.imgur.com/YQxY1aO.png" style="max-width:340px;width:97%;border-radius:20px;margin-bottom:18px;">
           </center>
@@ -78,15 +82,15 @@ const app = new Framework7({
     <div class="page">
       <div class="navbar">
         <div class="navbar-bg"></div>
-        <div class="navbar-inner sliding">
+        <div class="navbar-inner">
           <div class="left">
-            <a href="#" class="link back"><i class="icon icon-back"></i></a>
+            <a " class="link back"><i class="icon icon-back"></i></a>
           </div>
           <div class="title">Unable to install application</div>
         </div>
       </div>
       <div class="page-content">
-        <div class="block block-strong inset">
+        <div class="block inset">
           <center>
             <img loading="lazy" src="https://i.imgur.com/tETxFue.png" style="max-width:340px;width:97%;border-radius:20px;margin-bottom:18px;">
           </center>
@@ -123,8 +127,8 @@ const app = new Framework7({
     <div class="page" data-name="other">
       <div class="navbar">
         <div class="navbar-bg"></div>
-        <div class="navbar-inner sliding">
-          <div class="left"><a href="#" class="link back"><i class="icon icon-back"></i></a></div>
+        <div class="navbar-inner">
+          <div class="left"><a class="link back"><i class="icon icon-back"></i></a></div>
           <div class="title">Allow Marketplace from (eg. AltStore)</div>
         </div>
       </div>
@@ -165,7 +169,7 @@ const app = new Framework7({
         <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
         <div class="page-content">
           <div class="block-title block-title">Developer Mode required</div>
-          <div class="block block-strong inset">
+          <div class="block inset">
             <center>
               <img loading="lazy" src="https://i.imgur.com/qLbsliJ.png" style="max-width:340px;width:97%;border-radius:20px;margin-bottom:18px;">
             </center>
@@ -198,13 +202,13 @@ const app = new Framework7({
     <div class="page">
       <div class="navbar">
         <div class="navbar-bg"></div>
-        <div class="navbar-inner sliding">
-          <div class="left"><a href="#" class="link back"><i class="icon icon-back"></i></a></div>
+        <div class="navbar-inner">
+          <div class="left"><a class="link back"><i class="icon icon-back"></i></a></div>
           <div class="title">Developer Mode required</div>
         </div>
       </div>
       <div class="page-content">
-        <div class="block block-strong inset">
+        <div class="block inset">
           <center>
             <img loading="lazy" src="https://i.imgur.com/qLbsliJ.png" style="max-width:340px;width:97%;border-radius:20px;margin-bottom:18px;">
           </center>
@@ -331,59 +335,7 @@ function applyDarkModeSetting() {
   applyDarkMode(darkModeQuery);
 }
 applyDarkModeSetting();
-let colorPickerInstance = null;
 
-function updateThemeColor(color) {
-  const root = document.documentElement;
-  root.style.setProperty("--f7-ios-primary", color);
-  root.style.setProperty("--f7-ios-primary-shade", color + "D9");
-  root.style.setProperty("--f7-ios-primary-tint", color + "4D");
-  localStorage.setItem("ios-primary-color", color);
-  localStorage.setItem("ios-primary-shade", color + "D9");
-  localStorage.setItem("ios-primary-tint", color + "4D");
-}
-
-const debouncedUpdateThemeColor = debounce(updateThemeColor, 250);
-
-function openColorPicker(initialColor) {
-  colorPickerInstance = app.colorPicker.create({
-    inputEl: "#accent-color",
-    openIn: "popover",
-    closeOnSelect: true,
-    value: { hex: initialColor },
-    on: {
-      change: (picker, value) => {
-        debouncedUpdateThemeColor(value.hex);
-      },
-      closed: () => {
-        colorPickerInstance.destroy();
-        colorPickerInstance = null;
-      }
-    }
-  });
-  colorPickerInstance.open();
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const initialColor = localStorage.getItem("ios-primary-color") || "#007AFF";
-  updateThemeColor(initialColor);
-  document.getElementById("accent-color").addEventListener("click", () => {
-    if (colorPickerInstance) {
-      colorPickerInstance.setValue({ hex: initialColor });
-      colorPickerInstance.open();
-    } else {
-      openColorPicker(initialColor);
-    }
-  });
-});
-
-function debounce(func, wait) {
-  let timeout;
-  return function(...args) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, args), wait);
-  };
-}
 fetch("https://www.idownloadblog.com/feed/")
   .then(response => response.text())
   .then(data => {
@@ -706,7 +658,7 @@ function displayFavorites() {
       `
       <li class="swipeout">
         <div class="swipeout-content">
-          <a class="item-link popup-open" href="#" data-popup="#${fav.id}">
+          <a class="item-link popup-open" data-popup="#${fav.id}">
             <div class="item-content">
               <div class="item-media">
                 <img loading="lazy" src="${fav.image}">
@@ -724,7 +676,7 @@ function displayFavorites() {
           </a>
         </div>
         <div class="swipeout-actions-right">
-          <a href="#" class="swipeout-delete"
+          <a class="swipeout-delete"
              onclick="removeFromFavorites('${fav.title}')">
             Unfavorite <i class="f7-icons">heart_slash_fill</i>
           </a>
@@ -748,6 +700,148 @@ function removeFromFavorites(title) {
 document.addEventListener("DOMContentLoaded", function () {
   fetchAndLoadApps();
   displayFavorites();
+});/* =========================
+   ADD TO FAVORITES
+========================= */
+function addToFavorites(item) {
+  let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  let favOrder = JSON.parse(localStorage.getItem("favOrder")) || [];
+
+  if (favorites.some(fav => fav.id === item.id)) {
+    app.dialog.alert("This app is already in your favorites.", "Error");
+    return;
+  }
+
+  favorites.push(item);
+  favOrder.push(item.id);
+
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+  localStorage.setItem("favOrder", JSON.stringify(favOrder));
+
+  app.toast.create({
+    icon: '<i class="f7-icons">heart_fill</i>',
+    text: "Added to Favorites",
+    position: "center",
+    closeTimeout: 1500,
+  }).open();
+
+  displayFavorites();
+}
+
+/* =========================
+   DISPLAY FAVORITES
+========================= */
+function displayFavorites() {
+  const favContainer = document.getElementById("fav");
+  if (!favContainer) return;
+
+  const favList = favContainer.querySelector("ul");
+  if (!favList) return;
+
+  const favEmptyElement = document.getElementById("favempty");
+
+  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  const savedOrder = JSON.parse(localStorage.getItem("favOrder")) || [];
+
+  favList.innerHTML = "";
+
+  if (favorites.length === 0) {
+    if (favEmptyElement) favEmptyElement.style.display = "block";
+    return;
+  }
+
+  if (favEmptyElement) favEmptyElement.style.display = "none";
+
+  // build ordered favorites
+  const favMap = new Map(favorites.map(f => [f.id, f]));
+  const orderedFavorites = [];
+
+  savedOrder.forEach(id => {
+    if (favMap.has(id)) {
+      orderedFavorites.push(favMap.get(id));
+      favMap.delete(id);
+    }
+  });
+
+  // append new / unordered favorites
+  orderedFavorites.push(...favMap.values());
+
+  orderedFavorites.forEach(fav => {
+    favList.insertAdjacentHTML(
+      "beforeend",
+      `
+      <li class="swipeout" id="fav-${fav.id}">
+        <div class="swipeout-content">
+          <a class="item-link popup-open" data-popup="#${fav.id}">
+            <div class="item-content">
+              <div class="item-media">
+                <img loading="lazy" src="${fav.image}">
+              </div>
+              <div class="item-inner">
+                <div class="item-title-row">
+                  <div class="item-title">
+                    ${fav.title}
+                    <i style="font-size:17px;color:${fav.color}" class="f7-icons">${fav.icon}</i>
+                  </div>
+                </div>
+                <div class="item-subtitle">${fav.subtitle}</div>
+              </div>
+            </div>
+          </a>
+        </div>
+        <div class="swipeout-actions-right">
+          <a class="swipeout-delete"
+             onclick="removeFromFavorites('${fav.title}')">
+            Unfavorite <i class="f7-icons">heart_slash_fill</i>
+          </a>
+        </div>
+      </li>`
+    );
+  });
+
+  // sortable listener (once)
+  if (!favList.favSortableInitialized) {
+    favList.addEventListener("sortable:sort", () => {
+      const order = Array.from(favList.children).map(li =>
+        li.id.replace("fav-", "")
+      );
+      localStorage.setItem("favOrder", JSON.stringify(order));
+    });
+
+    favList.favSortableInitialized = true;
+  }
+}
+
+/* =========================
+   REMOVE FROM FAVORITES
+========================= */
+function removeFromFavorites(title) {
+  let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  let favOrder = JSON.parse(localStorage.getItem("favOrder")) || [];
+
+  const removed = favorites.find(f => f.title === title);
+  if (!removed) return;
+
+  favorites = favorites.filter(f => f.title !== title);
+  favOrder = favOrder.filter(id => id !== removed.id);
+
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+  localStorage.setItem("favOrder", JSON.stringify(favOrder));
+
+  displayFavorites();
+
+  if (favorites.length === 0) {
+    const favEmptyElement = document.getElementById("favempty");
+    if (favEmptyElement) favEmptyElement.style.display = "";
+  }
+}
+
+/* =========================
+   INIT
+========================= */
+document.addEventListener("DOMContentLoaded", () => {
+  fetchAndLoadApps();
+  displayFavorites();
 });
 
 
@@ -766,7 +860,7 @@ function shareURL() {
     navigator.share({
       title: "AppRealm",
       text: "Take your iDevice experience to the next level with our awesome app!",
-      url: "https://tweakrain.pages.dev/"
+      url: "https://apprealm.pages.dev/"
     });
   }
 }
@@ -776,7 +870,7 @@ function shareSource() {
     navigator.share({
       title: "AppRealm",
       text: "Official AltStore source provided by AppRealm",
-      url: "https://tweakrain.pages.dev/ios/altstore.json"
+      url: "https://apprealm.pages.dev/ios/altstore.json"
     });
   }
 }
@@ -801,43 +895,69 @@ function copySource() {
 }
 
 function reset() {
+  const defaultColor = '#007AFF';
+
   app.dialog.create({
     title: 'Reset',
-    text: 'Choose an option below to proceed:',
     verticalButtons: true,
     buttons: [
       {
-        text: 'Restore accent color',
+        text: 'Reset Accent Color',
         onClick: function () {
-          updateThemeColor("#007AFF");
-          app.dialog.alert('Accent color has been restored to default.', 'Done');
+          
+          app.setColorTheme(defaultColor);
+
+          
+          localStorage.setItem("ios-primary-color", defaultColor);
+
+          
+          const indicator = document.getElementById('accent-color');
+          if (indicator) {
+            indicator.style.backgroundColor = defaultColor;
+          }
+
+          
+          if (colorPicker) {
+            colorPicker.setValue({ hex: defaultColor });
+          }
+
+          app.toast.create({
+            text: 'Accent color restored!',
+            closeTimeout: 2000,
+          }).open();
         }
       },
       {
-        text: 'Erase All Data and Preferences',
+        text: 'Erase all data',
+        color: 'red',
         onClick: function () {
           app.dialog.confirm(
-            'Please confirm if you want to erase all data and settings. This action cannot be undone.',
-            'Confirm Reset',
+            'This will delete all settings and local data. This action cannot be undone. Are you sure?',
+            'Confirm Wipe',
             () => {
               app.preloader.show();
+              
+              
               setTimeout(() => {
+                
                 document.cookie.split(';').forEach(cookie => {
                   const eqPos = cookie.indexOf('=');
                   const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-                  document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
-                });
+                  document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+                });              
                 localStorage.clear();
-                app.preloader.hide();
+
+                app.preloader.hide();             
+               
                 window.location.href = 'app.html';
-              }, 2000);
+              }, 1500);
             }
           );
         }
       },
       {
-        text: 'Close',
-        close: true
+        text: 'Cancel',
+        close: true,       
       }
     ]
   }).open();
