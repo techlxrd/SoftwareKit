@@ -566,10 +566,12 @@ function createPopupHtml(item) {
                   <a class="popover-open more" data-popover=".popover-menu">
                     <i class="f7-icons">ellipsis_circle_fill</i>
                   </a>
+                  
                 </div>
               </div>
             </div>
                       </div>
+                      
              
           <div class="block-title" style="font-size: 20px; color: #000; margin-top: 25px;">Preview</div>
          <center>
@@ -600,25 +602,25 @@ function createPopupHtml(item) {
                 <span style="color: #8e8e93;">${item.type}</span>
               </li>
             </ul>
-          </div>           
-        </div>
-      </div>
-    </div>
-    <div class="popover popover-menu">
+          </div> 
+           <div class="popover popover-menu">
     <div class="popover-inner">
       <div class="list" style="text-align: left!important;">
         <ul>
          
-         <li><a onclick="navigator.share({ title: '${item.title}', url: '${item.get_link}' })" class="item-link item-content external"><div class="item-media"><i class="f7-icons">square_arrow_up </i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Share</div></div></div></a></li><li><a onclick="addToFavorites({
+         <li><a onclick="navigator.share({ title: '${item.title}', url: '${item.get_link}' })" class="item-link item-content external popover-close"><div class="item-media"><i class="f7-icons">square_arrow_up </i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Share</div></div></div></a></li><li><a onclick="addToFavorites({
                   id: '${item.id}',
                   icon: '${item.badge}',
                   image: '${item.icon}',
                   title: '${item.title}',
                   subtitle: '${item.category}',
                   color: '${item.badgecolor}'
-                })"  class="item-link item-content external"><div class="item-media"><i class="f7-icons">heart_fill</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Favorite</div></div></div></a></li><li>         
+                })"  class="item-link item-content external popover-close"><div class="item-media"><i class="f7-icons">heart_fill</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Favorite</div></div></div></a></li><li>         
         </ul>
+      </div>          
+        </div>
       </div>
+    </div>
   `;
 }
 
@@ -657,28 +659,51 @@ async function fetchAndLoadApps() {
 }
 
 function addToFavorites(item) {
-  const favEmptyElement = document.getElementById("favempty");
-  if (favEmptyElement) favEmptyElement.style.display = "none";
+  let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+
+  if (favorites.some(fav => fav.id === item.id)) {
+    app.dialog.alert("This app is already in your favorites.", 'Error');
+    return;
+  }
+
+  favorites.push(item);
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+
   app.toast.create({
     icon: '<i class="f7-icons">heart_fill</i>',
     text: "Added to Favorites",
     position: "center",
     closeTimeout: 1500,
   }).open();
-  let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-  if (!favorites.some(fav => fav.title === item.title)) {
-    favorites.push(item);
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-    displayFavorites();
-  }
+
+  displayFavorites();
 }
 
+
 function displayFavorites() {
+  const favContainer = document.getElementById("fav");
+  if (!favContainer) return;
+
+  const favList = favContainer.querySelector("ul");
+  if (!favList) return;
+
+  const favEmptyElement = document.getElementById("favempty");
   const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-  const favList = document.getElementById("fav").querySelector("ul");
+
   favList.innerHTML = "";
+
+  if (favorites.length === 0) {
+    if (favEmptyElement) favEmptyElement.style.display = "block";
+    return;
+  }
+
+  if (favEmptyElement) favEmptyElement.style.display = "none";
+
   favorites.forEach(fav => {
-    const favItemHtml = `
+    favList.insertAdjacentHTML(
+      "beforeend",
+      `
       <li class="swipeout">
         <div class="swipeout-content">
           <a class="item-link popup-open" href="#" data-popup="#${fav.id}">
@@ -689,23 +714,23 @@ function displayFavorites() {
               <div class="item-inner">
                 <div class="item-title-row">
                   <div class="item-title">
-                    ${fav.title} <i style="font-size: 17px; color: ${fav.color};" class="f7-icons">${fav.icon}</i>
+                    ${fav.title}
+                    <i style="font-size:17px;color:${fav.color}" class="f7-icons">${fav.icon}</i>
                   </div>
                 </div>
                 <div class="item-subtitle">${fav.subtitle}</div>
-                <div class="item-footer"></div>
               </div>
             </div>
           </a>
         </div>
-         <div class="swipeout-actions-left">
-          <a href="#" class="swipeout-delete" onclick="removeFromFavorites('${fav.title}')">Sort <i class="f7-icons">bars</i></a>
-        </div>
         <div class="swipeout-actions-right">
-          <a href="#" class="swipeout-delete " onclick="removeFromFavorites('${fav.title}')">Unfavorite <i class="f7-icons">heart_slash_fill</i></a>
+          <a href="#" class="swipeout-delete"
+             onclick="removeFromFavorites('${fav.title}')">
+            Unfavorite <i class="f7-icons">heart_slash_fill</i>
+          </a>
         </div>
-      </li>`;
-    favList.insertAdjacentHTML("beforeend", favItemHtml);
+      </li>`
+    );
   });
 }
 
@@ -785,7 +810,7 @@ function reset() {
         text: 'Restore accent color',
         onClick: function () {
           updateThemeColor("#007AFF");
-          app.dialog.alert('Accent color has been restored to default setting.', 'Done');
+          app.dialog.alert('Accent color has been restored to default.', 'Done');
         }
       },
       {
