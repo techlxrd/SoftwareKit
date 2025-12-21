@@ -212,7 +212,7 @@
     "id": "iconfighub",
     "title": "iConfigHub",
     "category": "Other",
-    "icon": "https://iconfigrealm.netlify.app/assets/images/iconfig-hub-logo.png",
+    "icon": "https://iconfigrealm.netlify.app/assets/images/iconfigrealm.jpeg",
     "description": "Install creative device mods, download screen savers, join TestFlight betas, and access exclusive configuration profiles—all in one hub.",
     "compatible": "Unknown",
     "get_link": "https://iconfighub.netlify.App",
@@ -777,7 +777,7 @@
     "get_link": "https://altstore.io",
     "type": "App",
     "screenshots": [
-      "https://altstore.io/images/newmyApp-p-800.png"
+      "https://altstore.io/images/Tuesday-23-Jan-2024-165319.png", "https://altstore.io/images/DeltaStorePage.PNG", "https://altstore.io/images/Monday-08-May-2023-162140.PNG"
     ]
   },
   {
