@@ -3,892 +3,398 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
-  <title>AppRealm</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Audiowide&display=swap" rel="stylesheet">
+  <title>AppRealm — The Standard for System Utility</title>
+  
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-  <meta name="description" content="AppRealm — A futuristic, cross-platform app utility for advanced device customization. Free & open-source.">
-
   <style>
-    :root{
-      --accent: #6EE7F3;
-      --accent-2: #8A5CFF;
-      --muted: rgba(233,240,246,0.78);
-      --text-color: #F6F9FC;
-      --max-width: 1100px;
-      --safe-pad-top: env(safe-area-inset-top, 12px);
+ :root {
+      --accent: #007AFF;
+      --bg-color: #ffffff;
+      --text-main: #1d1d1f;
+      --text-sub: #86868b;
+      --glass: rgba(255, 255, 255, 0.72);
+      --card-bg: #f5f5f7;
+      --border: rgba(0,0,0,0.08);
+      --nav-height: 52px;
+      --section-pad: 140px;
     }
 
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-    html,body {
-      min-height:100%;
-      margin:0;
-      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      color:var(--text-color);
-      overflow-x:hidden;
-      padding-top: calc(var(--safe-pad-top) + 8px);
-      padding-bottom: 64px;
-    }
-
-    .wrap {
-      max-width:var(--max-width);
-      margin: 24px auto;
-      padding: 20px;
-      position:relative;
-      z-index:2;
-    }
-
-    .glass-effect {
-      background: rgba(255, 255, 255, 0.13);
-  backdrop-filter: blur(30px) saturate(180%);
-  -webkit-backdrop-filter: blur(30px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow:
-    0px 0px 0px 2px rgba(255, 255, 255, 0.05) inset,
-    0px 0px 100px 10px rgba(255, 255, 255, 0.05) inset,
-    0 0.5px 0px rgba(255, 255, 255, 0.525) inset;
-    }
-
-    header {
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:18px;
-    }
-    .brand { display:flex; align-items:center; gap:14px; min-width:0; }
-   
-    .icon-wrap img { width:48px; height:48px; border-radius:15px; display:block;border: 1px solid rgba(255, 255, 255, 0.25);
-  box-shadow:
-    0px 0px 0px 2px rgba(255, 255, 255, 0.05) inset,
-    0px 0px 100px 10px rgba(255, 255, 255, 0.05) inset,
-    0 0.5px 0px rgba(255, 255, 255, 0.525) inset;; }
-    .brand h1 { margin:0; font-family:"Audiowide", "Inter", sans-serif; font-weight:700; letter-spacing:1.6px; font-size:20px; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .brand p { margin:0; color:var(--muted); font-size:13px; opacity:0.95; }
-
-    nav .socials { display:flex; gap:10px; align-items:center; }
-    .socials a {
-      display:inline-flex; align-items:center; justify-content:center;
-      width:44px; height:44px; border-radius:10px; color:#fff; text-decoration:none;
-      background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05);
-      backdrop-filter: blur(8px);
-    }
-    .hero {
-      display:grid;
-      grid-template-columns: 1fr 460px;
-      gap:28px;
-      align-items:center;
-      position:relative;
-    }
-    .hero-content { position:relative; z-index:3; }
-    .hero .eyebrow { color:var(--accent); font-weight:600; letter-spacing:1px; margin-bottom:12px; font-size:13px; }
-    .hero h2 { margin:0 0 16px 0; font-size:clamp(28px,5vw,44px); line-height:1.03; letter-spacing:-0.6px; font-weight:800; color:#FFF; text-shadow: 0 6px 30px rgba(106,78,255,0.05); }
-    .hero p.lead { margin:0 0 16px 0; color:var(--muted); font-size:16px; max-width:720px; }
-
-    .cta-row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:6px; position:relative; z-index:4; }
-    .btn {
-      display:inline-flex; align-items:center; gap:10px; padding:12px 18px; border-radius:24px !important; text-decoration:none;
-      color:#011627; font-weight:800; background:linear-gradient(90deg,var(--accent),var(--accent-2)); box-shadow:0 10px 28px rgba(106,78,255,0.08);
-      border:none;
-    }
-    .btn.ghost { color:var(--accent); background:transparent; border:1px solid rgba(110,231,243,0.12); padding:10px 14px; border-radius:12px; }
-
-    .muted-note { color:var(--muted); font-size:13px; opacity:0.95; }
-    .device {
-      width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      position:relative;
-      perspective:1200px;
-      z-index:1;
-    }
-    .device-card {
-      width:360px;
-      height:780px;
-      border-radius:44px!important;
-      overflow:hidden;
-      display:block;
-      transition:transform 280ms ease;
-      will-change:transform;
-    }
-    .device-card img {
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-      pointer-events:none;
-      -webkit-user-select:none;
-      user-select:none;
-    }
-    .features { margin-top:36px; display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
-    .card { padding:15px; border-radius:25px; display:flex; flex-direction:column; gap:10px; min-height:144px; }
-    .card h3 { margin:0; font-size:18px; }
-    .card p { margin:0; color:var(--muted); font-size:14px; }
-
-    .carousel-wrap { margin-top:28px; display:flex; gap:18px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; }
-    .carousel { flex:1 1 620px; border-radius:23px; padding:16px; position:relative; overflow:visible; }
-    .tabs { display:flex; gap:8px; margin-bottom:12px; flex-wrap:wrap; }
-    .tab { padding:8px 12px; border-radius:23px; background:transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.06); cursor:pointer; font-weight:700; font-size:14px; }
-    .tab.active { background: linear-gradient(90deg, rgba(110,231,243,0.12), rgba(138,92,255,0.08)); color:#fff; border-color: rgba(110,231,243,0.16); }
-
-    .carousel-stage { display:flex; align-items:center; justify-content:center; gap:12px; position:relative;}
-    .carousel-stage img { width:100%; max-width:min(520px,88vw); border-radius:12px; }
-
-    .side { width:320px; display:flex; flex-direction:column; gap:14px; }
-    .glass { border-radius:14px; padding:14px; }
-
-    .cta-band { margin-top:33px; padding:16px; border-radius:24px; display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
-    .credits { margin-top:28px; display:flex; gap:18px; align-items:center; justify-content:space-between; }
-
-    footer { margin-top:18px; color:var(--muted); font-size:13px; text-align:center; }
-
-    .glow { position:absolute; pointer-events:none; filter:blur(38px); opacity:0.7; mix-blend-mode:screen; z-index:0; }
-    .tech-grid { position:absolute; inset:0; background-image: linear-gradient(transparent 95%, rgba(255,255,255,0.01) 95%), linear-gradient(90deg, transparent 95%, rgba(255,255,255,0.01) 95%); background-size:48px 48px; opacity:0.04; pointer-events:none; z-index:0; }
-    @media (max-width:1100px){
-      .hero { grid-template-columns: 1fr 1fr; }
-      .device-card { transform:scale(.96); }
-      .carousel-stage { min-height:300px; }
-    }
-    @media (max-width:820px){
-      .wrap { padding:14px; }
-      header { flex-direction:column; align-items:flex-start; gap:12px; }
-      .hero { grid-template-columns: 1fr; gap:20px; }
-      .hero-content { order:1; }
-      .device { order:2; margin-top:-8px; }
-      .device-card {
-        width:min(360px,74vw);
-        height:auto;
-        aspect-ratio:360 / 780;
-        border-radius:28px;
-        margin:0 auto;
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-color: #000000;
+        --text-main: #f5f5f7;
+        --text-sub: #86868b;
+        --glass: rgba(22, 22, 23, 0.72);
+        --card-bg: #161617;
+        --border: rgba(255,255,255,0.12);
       }
-      .carousel-wrap { flex-direction:column; }
-      .side { width:100%; order:2; }
-      .carousel { order:1; width:100%; }
-      .cta-row { margin-top:6px; }
-      .features { grid-template-columns: 1fr; }
     }
-    @media (max-width:420px){
-      .brand h1 { font-size:18px; }
-      .cta-row { gap:8px; }
-      .btn { padding:10px 14px; font-size:14px; border-radius:12px; }
-      .hero h2 { font-size:26px; }
+
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      overflow-x: hidden;
+      line-height: 1.15;
     }
-  </style>
-  <style>@keyframes move {
-    100% {
-        transform: translate3d(0, 0, 1px) rotate(360deg);
+
+    nav {
+      position: fixed;
+      top: 0; width: 100%; height: var(--nav-height);
+      background: var(--glass);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      z-index: 9999;
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: center;
     }
-}
 
-.background {
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
-    top: 0;
-    left: 0;
-    background: #000000;
-    overflow: hidden;
-}
+    .nav-container {
+      width: 100%; max-width: 1024px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 22px;
+    }
 
-.background span {
-    width: 17vmin;
-    height: 17vmin;
-    border-radius: 17vmin;
-    backface-visibility: hidden;
-    position: absolute;
-    animation: move;
-    animation-duration: 45;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-}
+    .nav-brand { font-weight: 600; font-size: 19px; letter-spacing: -0.5px; }
+    .hero {
+      padding: 160px 20px 80px;
+      text-align: center;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
 
+    h1 {
+      font-size: clamp(44px, 12vw, 92px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      background: linear-gradient(180deg, var(--text-main) 50%, var(--text-sub));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-.background span:nth-child(0) {
-    color: #e7d391;
-    top: 98%;
-    left: 14%;
-    animation-duration: 39s;
-    animation-delay: -25s;
-    transform-origin: -21vw 15vh;
-    box-shadow: -34vmin 0 4.77016155223199vmin currentColor;
-}
-.background span:nth-child(1) {
-    color: #f7017a;
-    top: 88%;
-    left: 25%;
-    animation-duration: 44s;
-    animation-delay: -25s;
-    transform-origin: 1vw 17vh;
-    box-shadow: -34vmin 0 5.08516687258524vmin currentColor;
-}
-.background span:nth-child(2) {
-    color: #5a90f7;
-    top: 84%;
-    left: 29%;
-    animation-duration: 31s;
-    animation-delay: -43s;
-    transform-origin: -21vw -21vh;
-    box-shadow: -34vmin 0 5.100821715309834vmin currentColor;
-}
-.background span:nth-child(3) {
-    color: #42d10e;
-    top: 45%;
-    left: 10%;
-    animation-duration: 7s;
-    animation-delay: -27s;
-    transform-origin: 25vw 2vh;
-    box-shadow: -34vmin 0 5.23184997292463vmin currentColor;
-}
-.background span:nth-child(4) {
-    color: #e7d391;
-    top: 85%;
-    left: 69%;
-    animation-duration: 28s;
-    animation-delay: -11s;
-    transform-origin: -12vw -12vh;
-    box-shadow: -34vmin 0 5.155448305965543vmin currentColor;
-}
-.background span:nth-child(5) {
-    color: #efbedd;
-    top: 43%;
-    left: 29%;
-    animation-duration: 18s;
-    animation-delay: -49s;
-    transform-origin: -12vw -21vh;
-    box-shadow: 34vmin 0 5.073288677742289vmin currentColor;
-}
-.background span:nth-child(6) {
-    color: #73fff8;
-    top: 79%;
-    left: 59%;
-    animation-duration: 11s;
-    animation-delay: -48s;
-    transform-origin: 11vw 10vh;
-    box-shadow: 34vmin 0 4.3136023362249745vmin currentColor;
-}
-.background span:nth-child(7) {
-    color: #efbedd;
-    top: 81%;
-    left: 81%;
-    animation-duration: 43s;
-    animation-delay: -19s;
-    transform-origin: -16vw -17vh;
-    box-shadow: -34vmin 0 4.375308297012815vmin currentColor;
-}
-.background span:nth-child(8) {
-    color: #f7017a;
-    top: 87%;
-    left: 7%;
-    animation-duration: 12s;
-    animation-delay: -36s;
-    transform-origin: -17vw -3vh;
-    box-shadow: -34vmin 0 4.316274088837767vmin currentColor;
-}
-.background span:nth-child(9) {
-    color: #00ff00;
-    top: 38%;
-    left: 48%;
-    animation-duration: 37s;
-    animation-delay: -21s;
-    transform-origin: -13vw 12vh;
-    box-shadow: 34vmin 0 5.004655988565104vmin currentColor;
-}
-.background span:nth-child(10) {
-    color: #00ff00;
-    top: 73%;
-    left: 88%;
-    animation-duration: 38s;
-    animation-delay: -39s;
-    transform-origin: -24vw 8vh;
-    box-shadow: 34vmin 0 4.319100349029948vmin currentColor;
-}
-.background span:nth-child(11) {
-    color: #f7017a;
-    top: 90%;
-    left: 50%;
-    animation-duration: 40s;
-    animation-delay: -32s;
-    transform-origin: -11vw -13vh;
-    box-shadow: -34vmin 0 4.999694558210329vmin currentColor;
-}
-.background span:nth-child(12) {
-    color: #00ff00;
-    top: 24%;
-    left: 27%;
-    animation-duration: 42s;
-    animation-delay: -37s;
-    transform-origin: -9vw -12vh;
-    box-shadow: 34vmin 0 4.328758177838739vmin currentColor;
-}
-.background span:nth-child(13) {
-    color: #f7017a;
-    top: 98%;
-    left: 61%;
-    animation-duration: 43s;
-    animation-delay: -50s;
-    transform-origin: 10vw 0vh;
-    box-shadow: 34vmin 0 4.957125242935865vmin currentColor;
-}
-.background span:nth-child(14) {
-    color: #00ff00;
-    top: 68%;
-    left: 4%;
-    animation-duration: 38s;
-    animation-delay: -36s;
-    transform-origin: -4vw 14vh;
-    box-shadow: 34vmin 0 5.008716990414456vmin currentColor;
-}
-.background span:nth-child(15) {
-    color: #5a90f7;
-    top: 21%;
-    left: 30%;
-    animation-duration: 49s;
-    animation-delay: -25s;
-    transform-origin: 9vw 14vh;
-    box-shadow: -34vmin 0 4.686565043381322vmin currentColor;
-}
-.background span:nth-child(16) {
-    color: #42d10e;
-    top: 75%;
-    left: 88%;
-    animation-duration: 6s;
-    animation-delay: -29s;
-    transform-origin: -11vw -21vh;
-    box-shadow: -34vmin 0 5.04362829028484vmin currentColor;
-}
-.background span:nth-child(17) {
-    color: #0000ff;
-    top: 5%;
-    left: 39%;
-    animation-duration: 33s;
-    animation-delay: -40s;
-    transform-origin: 23vw -1vh;
-    box-shadow: -34vmin 0 4.390551408415057vmin currentColor;
-}
-.background span:nth-child(18) {
-    color: #e7d391;
-    top: 30%;
-    left: 70%;
-    animation-duration: 47s;
-    animation-delay: -36s;
-    transform-origin: 14vw 1vh;
-    box-shadow: -34vmin 0 4.801585889207411vmin currentColor;
-}
-.background span:nth-child(19) {
-    color: #5a90f7;
-    top: 77%;
-    left: 2%;
-    animation-duration: 12s;
-    animation-delay: -20s;
-    transform-origin: 22vw -8vh;
-    box-shadow: -34vmin 0 4.5190393912992vmin currentColor;
-}
-.background span:nth-child(20) {
-    color: #f7017a;
-    top: 60%;
-    left: 87%;
-    animation-duration: 7s;
-    animation-delay: -40s;
-    transform-origin: 16vw 18vh;
-    box-shadow: -34vmin 0 4.366817837003713vmin currentColor;
-}
-.background span:nth-child(21) {
-    color: #0000ff;
-    top: 89%;
-    left: 86%;
-    animation-duration: 36s;
-    animation-delay: -26s;
-    transform-origin: -12vw -8vh;
-    box-shadow: -34vmin 0 4.460293665692312vmin currentColor;
-}
-.background span:nth-child(22) {
-    color: #e7d391;
-    top: 88%;
-    left: 24%;
-    animation-duration: 24s;
-    animation-delay: -12s;
-    transform-origin: 10vw -16vh;
-    box-shadow: 34vmin 0 5.0666637758281805vmin currentColor;
-}
-.background span:nth-child(23) {
-    color: #73fff8;
-    top: 55%;
-    left: 53%;
-    animation-duration: 15s;
-    animation-delay: -29s;
-    transform-origin: 14vw -24vh;
-    box-shadow: 34vmin 0 4.298452354698984vmin currentColor;
-}
-.background span:nth-child(24) {
-    color: #efbedd;
-    top: 40%;
-    left: 4%;
-    animation-duration: 54s;
-    animation-delay: -4s;
-    transform-origin: -24vw 19vh;
-    box-shadow: 34vmin 0 4.787806074832713vmin currentColor;
-}
-.background span:nth-child(25) {
-    color: #00ff00;
-    top: 96%;
-    left: 56%;
-    animation-duration: 9s;
-    animation-delay: -36s;
-    transform-origin: -8vw -22vh;
-    box-shadow: -34vmin 0 5.0488951899072365vmin currentColor;
-}
-.background span:nth-child(26) {
-    color: #efbedd;
-    top: 20%;
-    left: 51%;
-    animation-duration: 46s;
-    animation-delay: -41s;
-    transform-origin: -10vw 5vh;
-    box-shadow: 34vmin 0 4.606684508141161vmin currentColor;
-}
-.background span:nth-child(27) {
-    color: #efbedd;
-    top: 4%;
-    left: 49%;
-    animation-duration: 47s;
-    animation-delay: -46s;
-    transform-origin: -12vw -7vh;
-    box-shadow: -34vmin 0 4.41549240902448vmin currentColor;
-}
-.background span:nth-child(28) {
-    color: #e7d391;
-    top: 45%;
-    left: 6%;
-    animation-duration: 42s;
-    animation-delay: -27s;
-    transform-origin: -13vw -7vh;
-    box-shadow: -34vmin 0 4.286231209625717vmin currentColor;
-}
-.background span:nth-child(29) {
-    color: #00ff00;
-    top: 11%;
-    left: 28%;
-    animation-duration: 12s;
-    animation-delay: -14s;
-    transform-origin: -6vw -12vh;
-    box-shadow: -34vmin 0 4.690798334508682vmin currentColor;
-}
-.background span:nth-child(30) {
-    color: #00ff00;
-    top: 73%;
-    left: 5%;
-    animation-duration: 53s;
-    animation-delay: -50s;
-    transform-origin: -3vw 0vh;
-    box-shadow: 34vmin 0 4.5983549716557635vmin currentColor;
-}
-.background span:nth-child(31) {
-    color: #f7017a;
-    top: 44%;
-    left: 9%;
-    animation-duration: 31s;
-    animation-delay: -23s;
-    transform-origin: 4vw -16vh;
-    box-shadow: 34vmin 0 4.607302652187146vmin currentColor;
-}
-.background span:nth-child(32) {
-    color: #e7d391;
-    top: 61%;
-    left: 32%;
-    animation-duration: 38s;
-    animation-delay: -3s;
-    transform-origin: -4vw -4vh;
-    box-shadow: -34vmin 0 5.031687353137487vmin currentColor;
-}
-.background span:nth-child(33) {
-    color: #0000ff;
-    top: 28%;
-    left: 51%;
-    animation-duration: 32s;
-    animation-delay: -18s;
-    transform-origin: -3vw -16vh;
-    box-shadow: -34vmin 0 4.648094311460951vmin currentColor;
-}
-.background span:nth-child(34) {
-    color: #73fff8;
-    top: 41%;
-    left: 55%;
-    animation-duration: 26s;
-    animation-delay: -48s;
-    transform-origin: -9vw 6vh;
-    box-shadow: 34vmin 0 4.967639850143728vmin currentColor;
-}
-.background span:nth-child(35) {
-    color: #00ff00;
-    top: 47%;
-    left: 61%;
-    animation-duration: 13s;
-    animation-delay: -26s;
-    transform-origin: -14vw -5vh;
-    box-shadow: -34vmin 0 4.908238050717898vmin currentColor;
-}
-.background span:nth-child(36) {
-    color: #efbedd;
-    top: 6%;
-    left: 42%;
-    animation-duration: 55s;
-    animation-delay: -20s;
-    transform-origin: 5vw 25vh;
-    box-shadow: -34vmin 0 4.562466761936076vmin currentColor;
-}
-.background span:nth-child(37) {
-    color: #e7d391;
-    top: 68%;
-    left: 80%;
-    animation-duration: 36s;
-    animation-delay: -17s;
-    transform-origin: -5vw -16vh;
-    box-shadow: 34vmin 0 4.533912422167612vmin currentColor;
-}
-.background span:nth-child(38) {
-    color: #0000ff;
-    top: 10%;
-    left: 24%;
-    animation-duration: 40s;
-    animation-delay: -39s;
-    transform-origin: 8vw -8vh;
-    box-shadow: 34vmin 0 4.44724294900802vmin currentColor;
-}
-.background span:nth-child(39) {
-    color: #42d10e;
-    top: 38%;
-    left: 91%;
-    animation-duration: 21s;
-    animation-delay: -33s;
-    transform-origin: 17vw 10vh;
-    box-shadow: -34vmin 0 4.372664985919891vmin currentColor;
-}
-.background span:nth-child(40) {
-    color: #0000ff;
-    top: 19%;
-    left: 67%;
-    animation-duration: 33s;
-    animation-delay: -4s;
-    transform-origin: -15vw -22vh;
-    box-shadow: 34vmin 0 5.1816055573414275vmin currentColor;
-}
-.background span:nth-child(41) {
-    color: #efbedd;
-    top: 93%;
-    left: 46%;
-    animation-duration: 6s;
-    animation-delay: -10s;
-    transform-origin: -12vw 22vh;
-    box-shadow: -34vmin 0 4.81080737658018vmin currentColor;
-}
-.background span:nth-child(42) {
-    color: #0000ff;
-    top: 73%;
-    left: 57%;
-    animation-duration: 12s;
-    animation-delay: -40s;
-    transform-origin: 23vw -23vh;
-    box-shadow: -34vmin 0 5.048814560402742vmin currentColor;
-}
-.background span:nth-child(43) {
-    color: #5a90f7;
-    top: 42%;
-    left: 87%;
-    animation-duration: 34s;
-    animation-delay: -28s;
-    transform-origin: 16vw 18vh;
-    box-shadow: 34vmin 0 4.26591075285417vmin currentColor;
-}
-.background span:nth-child(44) {
-    color: #0000ff;
-    top: 54%;
-    left: 32%;
-    animation-duration: 7s;
-    animation-delay: -24s;
-    transform-origin: 2vw 11vh;
-    box-shadow: 34vmin 0 4.670627037943779vmin currentColor;
-}
-.background span:nth-child(45) {
-    color: #73fff8;
-    top: 40%;
-    left: 5%;
-    animation-duration: 12s;
-    animation-delay: -6s;
-    transform-origin: -2vw -21vh;
-    box-shadow: 34vmin 0 4.883445472340543vmin currentColor;
-}
-.background span:nth-child(46) {
-    color: #5a90f7;
-    top: 94%;
-    left: 85%;
-    animation-duration: 30s;
-    animation-delay: -22s;
-    transform-origin: 7vw 14vh;
-    box-shadow: -34vmin 0 5.071048106000389vmin currentColor;
-}
-.background span:nth-child(47) {
-    color: #0000ff;
-    top: 92%;
-    left: 47%;
-    animation-duration: 53s;
-    animation-delay: -10s;
-    transform-origin: 21vw 15vh;
-    box-shadow: 34vmin 0 5.159351562259833vmin currentColor;
-}
-.background span:nth-child(48) {
-    color: #73fff8;
-    top: 27%;
-    left: 29%;
-    animation-duration: 47s;
-    animation-delay: -36s;
-    transform-origin: -14vw 1vh;
-    box-shadow: -34vmin 0 4.829835787520898vmin currentColor;
-}
-.background span:nth-child(49) {
-    color: #0000ff;
-    top: 22%;
-    left: 12%;
-    animation-duration: 10s;
-    animation-delay: -39s;
-    transform-origin: -5vw -12vh;
-    box-shadow: -34vmin 0 5.242095454950435vmin currentColor;
-}
-</style>
-</head>
-<body>
-    <div class="background">
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
-   <span></span>
+    .hero p.lead {
+      font-size: clamp(20px, 4vw, 28px);
+      color: var(--text-sub);
+      font-weight: 500;
+      margin-bottom: 48px;
+      line-height: 1.3;
+      max-width: 720px;
+      margin: 0 auto 48px;
+    }
+    .download-grid {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-bottom: 100px;
+    }
+
+    .btn-get {
+      background: var(--accent); color: #fff; padding: 14px 28px; border-radius: 980px;
+      font-size: 15px; font-weight: 600; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 10px;
+      transition: all 0.4s cubic-bezier(0.2, 1, 0.2, 1);
+    }
+
+    .btn-get:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 122, 255, 0.2); }
+    .btn-get.alt { background: var(--text-main); color: var(--bg-color); }
+    .btn-get.outline { background: transparent; border: 1.5px solid var(--accent); color: var(--accent); }    
+    .showcase { width: 100%; overflow: hidden; margin-bottom: var(--section-pad); perspective: 1000px; }
+    .screenshot-gallery {
+      display: flex; gap: 40px; padding: 40px 0 80px; overflow-x: auto;
+      scrollbar-width: none; padding-left: calc(50vw - 150px); padding-right: 50vw;
+      align-items: center;
+    }
+    .screenshot-gallery::-webkit-scrollbar { display: none; }
+
+    .screenshot-item {
+      flex: 0 0 300px; height: 640px; border-radius: 38px; overflow: hidden;     
+      box-shadow: 0 30px 60px -12px rgba(0,0,0,0.25), 0 18px 36px -18px rgba(0,0,0,0.3);
+      background: #000;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+    }
+
   
-</div>
-  <div class="tech-grid" aria-hidden="true"></div>
+    .screenshot-item::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background-image: inherit;
+      background-size: cover;
+      transform: scaleY(-1);
+      filter: blur(8px);
+      opacity: 0.15;
+      pointer-events: none;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
+    }
 
-  <div class="wrap" role="main">
-    <header>
-      <div class="brand" data-aos="fade-right">
-        <div class="icon-wrap">
-          <img src="favicon.png" alt="AppRealm icon">
-        </div>
-        <div style="min-width:0">
-          <h1>AppRealm</h1>
-          <p>Third‑party app utility · iOS · Android · OpenHarmony</p>
-        </div>
-      </div>
+    .screenshot-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-      <nav class="socials" data-aos="fade-left" aria-label="Social links">
-        <a class="btn ghost" onclick="comingSoon()" title="GitHub"><i class="bi bi-github"></i></a>
-        <a class="btn ghost" href="https://x.com/TechLXRD07" title="X / Twitter"><i class="bi bi-twitter"></i></a>
-      </nav>
-    </header>
-    <section class="hero" aria-labelledby="hero-heading">
-      <div class="hero-content">
-        <div class="eyebrow" data-aos="fade-up">COMING IN 2026 🎉</div>
-        <h2 id="hero-heading" data-aos="fade-up">Customize, Secure, and Extend your device — without compromise.</h2>
+    .bento-section {
+      max-width: 1080px; margin: 0 auto var(--section-pad);
+      display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; padding: 0 24px;
+    }
+    .bento-card {
+      background: var(--card-bg); border-radius: 34px; padding: 52px;
+      grid-column: span 6; border: 1px solid var(--border);
+      display: flex; flex-direction: column; min-height: 400px; position: relative;
+    }
+    .bento-card.full { grid-column: span 12; min-height: 440px; }
+    .bento-card h3 { font-size: 32px; margin-bottom: 18px; font-weight: 700; letter-spacing: -0.8px; }
+    .bento-card p { font-size: 19px; color: var(--text-sub); line-height: 1.5; max-width: 480px; }
+    .platform-badge {
+      display: inline-block; padding: 7px 16px; border-radius: 100px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 24px; background: rgba(0,122,255,0.12); color: var(--accent);
+    }
 
-        <p class="lead" data-aos="fade-up">
-          AppRealm is a curated, open-source utility that brings powerful customization to iOS, Android and OpenHarmony.
-          Carefully audited and a native-feeling experience across platforms. All built with Web technologies.
-        </p>
-
-        <div class="cta-row" data-aos="fade-up" data-aos-delay="80">
-          <a class="btn"   onclick="comingSoon()" aria-label="Get for iOS"><i class="bi bi-apple" style="font-size:18px"></i> Get for iOS</a>
-           <a class="btn"   onclick="comingSoon()" aria-label="Get for iOS"><i class="bi bi-apple" style="font-size:18px"></i>Legacy iOS</a>
-          <a class="btn"   onclick="comingSoon()" aria-label="Get for Android" style="background:linear-gradient(90deg,#79F2B0,#6EE7F3)"><i class="bi bi-android" style="font-size:18px"></i> Android</a>
-          <a class="btn ghost"   onclick="comingSoon()" aria-label="OpenHarmony"><i class="bi bi-phone-fill" style="font-size:18px"></i>OpenHarmony</a>
-        </div>
-
-        <div class="muted-note" data-aos="fade-up" data-aos-delay="160">
-          Free and open-source. Verified modified apps & security-first packaging.
-        </div>
-      </div>
-
-      <div class="device" data-aos="zoom-in" aria-hidden="false">
-        <svg class="glow" style="right:8%; top:12%; width:420px; height:200px;" viewBox="0 0 600 200" fill="none" aria-hidden="true">
-          <circle cx="200" cy="60" r="120" fill="#6EE7F3" opacity="0.18" />
-          <circle cx="420" cy="80" r="100" fill="#8A5CFF" opacity="0.12" />
-        </svg>      
-      </div>
-    </section>
-    <section class="features" aria-label="Key features" data-aos="fade-up" data-aos-delay="120">
-      <div class="card glass-effect">
-        <h3><i class="bi bi-shield-lock-fill" style="margin-right:8px;color:var(--accent)"></i> Security-first</h3>
-        <p>All apps and tweaks are manually verified to ensure best security</p>
-      </div>
-
-      <div class="card glass-effect">
-        <h3><i class="bi bi-palette-fill" style="margin-right:8px;color:var(--accent)"></i> Deep Customization</h3>
-        <p>Themes, system tweaks, and UI mods to make your device uniquely yours — with native behavior and polish.</p>
-      </div>
-
-      <div class="card glass-effect">
-        <h3><i class="bi bi-code-slash" style="margin-right:8px;color:var(--accent)"></i> Open Source</h3>
-        <p>Completely open-source. Contributions are always welcome.</p>
-      </div>
-    </section>
-
-    <section class="carousel-wrap" data-aos="fade-up" data-aos-delay="160">
-      <div class="carousel glass-effect" aria-label="Platform mockup chooser">
-        <div class="tabs" role="tablist" aria-label="Platform tabs">
-          <button class="tab active" data-platform="ios" role="tab" aria-selected="true">iOS</button>
-          <button class="tab" data-platform="android" role="tab" aria-selected="false">Android</button>
-          <button class="tab" data-platform="openhm" role="tab" aria-selected="false">OpenHarmony</button>
-        </div>
-
-        <div class="carousel-stage" id="carousel-stage" aria-live="polite">
-          <img data-aos="zoom-in" id="carousel-main" src="" alt="Platform mockup">
-        </div>
-      </div>
-      <aside class="side" aria-label="Compatibility">
-       <div class="card glass-effect">
-        <h3><i class="bi bi-phone-fill" style="margin-right:8px;color:var(--accent)"></i> Compatibility</h3>
-            <p><strong>•iOS:</strong> iOS 14, iPhone X and later (Recommended)</p>
-            <p><strong>•Android:</strong> Android 12 or later</p>
-            <p><strong>•OpenHarmony:</strong> OpenHarmony 5.0 or later</p>       
-      </div>
-      
-        <div class="card glass-effect" data-aos="fade-left" data-aos-delay="160">
-          <h4>Need help?</h4>
-          <p class="muted-small">Contact me on Twitter</p>
-          <div style="margin-top:8px;">
-            <a class="btn ghost" href="https://x.com/TechLXRD07"><i class="bi bi-twitter"></i> Twitter</a>
-          </div>
-        </div>
-      </aside>
-    </section>
-
-    <section class="cta-band glass-effect" data-aos="fade-up" data-aos-delay="200" aria-label="Call to action">
-      <div>
-        <strong style="display:block; font-size:16px">Ready to unlock the full potential of your device?</strong>
-       
-      </div>
-      <div style="display:flex; gap:10px;">
-        <a   onclick="comingSoon()" class="btn"><i class="bi bi-download"></i> Get AppRealm</a>
-        <a class="btn ghost"   onclick="comingSoon()">View Source</a>
-      </div>
-    </section>
-
-    <section class="credits" data-aos="fade-up" data-aos-delay="240" aria-label="Credits">
-      <div class="profile">
-        <img src="https://techlxrd.github.io/assets/favicon.ico" alt="TechLxrd" style="width:84px;height:84px;border-radius:99px;border:1px solid rgba(255,255,255,0.05)">
-        <div>
-          <strong>TechLxrd</strong>
-          <div class="muted-note">Founder & Developer</div>
-        </div>
-      </div>
-      <div style="display:flex; gap:12px; align-items:center;">
-        <a class="btn ghost" href="https://techlxrd.pages.dev" title="Website"><i class="bi bi-browser-safari"></i></a>
-        <a class="btn ghost" href="https://github.com/TechLxrd" title="GitHub"><i class="bi bi-github"></i></a>
-      </div>
-    </section>
-
-    <footer role="contentinfo" data-aos="fade-in" data-aos-delay="280">
-      <div>© AppRealm 2025</div>
-    </footer>
-  </div>
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    AOS.init();
-
-    const galleries = {
-      ios: { src: 'https://i.imgur.com/IzGxhXP.png' },
-      android: { src: 'https://i.imgur.com/XNoSSsV.png', alt: 'Android mockup' },
-      openhm: { src: 'https://i.imgur.com/XNoSSsV.png', alt: 'OpenHarmony mockup' }
-    };
-
-    let activePlatform = 'ios';
-    const mainImg = document.getElementById('carousel-main');
-    const tabs = document.querySelectorAll('.tab');
-
-    function setActivePlatform(platform) {
-      if (!galleries[platform]) return;
-      activePlatform = platform;
-      tabs.forEach(t => {
-        const p = t.getAttribute('data-platform');
-        const isActive = p === platform;
-        t.classList.toggle('active', isActive);
-        t.setAttribute('aria-selected', isActive ? 'true' : 'false');
-      });
-
-      mainImg.style.opacity = '0';
-      setTimeout(() => {
-        mainImg.src = galleries[platform].src;
-        mainImg.alt = galleries[platform].alt || `${platform} mockup`;
-        mainImg.style.opacity = '1';
-      }, 900);
+    
+    .legacy-section {
+      /* Classic iOS Linen Texture */
+      background-color: #4c566c;
+      padding: 140px 24px;
+      text-align: center;
+      position: relative;      
+      box-shadow: inset 0 10px 30px rgba(0,0,0,0.6);
+      margin-bottom: var(--section-pad);
+      /* Stitched border effect */
+      border-top: 1px dashed rgba(0,0,0,0.3);
+      border-bottom: 1px dashed rgba(0,0,0,0.3);
     }
     
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => setActivePlatform(tab.dataset.platform));
+    .legacy-section::before, .legacy-section::after {
+      content: ''; position: absolute; left: 0; right: 0; height: 1px;
+    }
+    .legacy-section::before { top: -1px; background: rgba(255,255,255,0.1); }
+    .legacy-section::after { bottom: -1px; background: rgba(255,255,255,0.1); }
+
+    .legacy-content { max-width: 800px; margin: 0 auto; position: relative; z-index: 2; }
+    
+    .legacy-content h2 { 
+      font-size: 58px; color: #fff; font-weight: 700; margin-bottom: 24px;
+      text-shadow: 0 -1px 1px rgba(0,0,0,1);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .legacy-content p { 
+      font-size: 24px; color: #d0d0d0; margin-bottom: 48px; 
+      text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+    }    
+    .legacy-icon-container {
+      width: 96px; height: 96px;
+      margin: 0 auto 36px;
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 
+        0 10px 20px rgba(0,0,0,0.5), 
+        inset 0 1px 0 rgba(255,255,255,0.6),
+        inset 0 -1px 0 rgba(0,0,0,0.2); /* Bottom inner shadow */
+      background: linear-gradient(to bottom, #e6e6e6 0%, #d9d9d9 100%);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }   
+    .legacy-icon-container::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 50%;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 100%);
+      border-top-left-radius: 22px;
+      border-top-right-radius: 22px;
+    }
+    
+    .ios6-btn {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 18px 42px; font-size: 22px; font-weight: 700; color: #fff;
+      text-decoration: none; border-radius: 12px;
+      border: 1px solid #1c3f7f;
+      font-family: "Helvetica Neue", Arial, sans-serif;     
+      background: linear-gradient(to bottom, 
+        #8ab4f8 0%, 
+        #4c87e6 50%, 
+        #3369c6 51%, 
+        #2a5db5 100%
+      );     
+      box-shadow: 
+        inset 0 1px 0 rgba(255,255,255,0.5), 
+        0 6px 15px -4px rgba(0,0,0,0.7),
+        0 2px 4px rgba(0,0,0,0.4);
+      text-shadow: 0 -1px 1px rgba(0,0,0,0.7);
+      transition: all 0.2s;
+    }
+
+    .ios6-btn:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    .ios6-btn:active {     
+      background: linear-gradient(to bottom, #2a5db5 0%, #4c87e6 100%);
+      box-shadow: 
+        inset 0 3px 8px rgba(0,0,0,0.6),
+        0 1px 2px rgba(0,255,255,0.1);
+      transform: translateY(2px);
+    }
+
+    footer {
+      background: var(--bg-color); padding: 80px 24px; color: var(--text-sub);
+      font-size: 13px; line-height: 1.7; border-top: 1px solid var(--border);
+    }
+    .footer-wrap { max-width: 1024px; margin: 0 auto; }
+    .footer-links a { color: var(--text-sub); text-decoration: none; transition: color 0.2s; cursor: pointer; }
+    .footer-links a:hover { color: var(--accent); }
+
+    @media (max-width: 850px) {
+      .bento-card { grid-column: span 12; }
+      .legacy-content h2 { font-size: 42px; }
+    }
+
+.screenshot-swiper .swiper-slide {
+  display: flex;
+  justify-content: center;
+}
+
+.screenshot-swiper img {
+  width: 260px;
+  height: auto;
+  max-width: 100%;
+  display: block;
+  border-radius: 10px;
+}
+.techlxrd{text-decoration:none;color:#007AFF;}
+    @media (max-width: 850px) {
+      .bento-card { grid-column: span 12; }
+      .legacy-content h2 { font-size: 42px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-container">
+      <div class="nav-brand">AppRealm</div>
+      <div style="font-size: 12px; font-weight: 500; opacity: 0.8; display: flex; gap: 24px;">
+        <span>Built with ❤️ by <a href="https://x.com/TechLxrd07" class="techlxrd">TechLxrd</a></span>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div data-aos="fade-up" style="font-weight: 600; font-size: 18px; margin-bottom: 20px; color: var(--accent);">Coming in 2026</div>
+      <h1 data-aos="fade-up" data-aos-delay="100">Every device.<br>Fully realized.</h1>
+      <p class="lead" data-aos="fade-up" data-aos-delay="200">
+        Professional-grade system utilities for iOS, Android, and OpenHarmony. Designed for those who demand more of their devices.
+      </p>
+      <div class="download-grid" data-aos="fade-up" data-aos-delay="300">
+        <a href="#" class="btn-get"><i class="bi bi-apple"></i> iOS 14+</a>
+        <a href="#" class="btn-get alt"><i class="bi bi-android2"></i> Android</a>
+        <a href="#" class="btn-get outline"><i class="bi bi-phone"></i> OpenHarmony</a>
+      </div>
+    </section>
+
+   <section class="showcase">
+  <div class="swiper screenshot-swiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <img src="https://i.imgur.com/DkjRDgI.png" alt="iOS">
+      </div>
+      <div class="swiper-slide">
+        <img src="https://i.imgur.com/VfM7rOg.png" alt="Android">
+      </div>
+      <div class="swiper-slide">
+        <img src="https://i.imgur.com/ULTc2VA.png" alt="Harmony">
+      </div>
+      <div class="swiper-slide">
+        <img src="https://i.imgur.com/zvupprI.png" alt="Legacy">
+      </div>
+    </div>
+<br><br>
+    <div class="swiper-pagination"></div>
+  </div>
+</section>
+
+    <section class="bento-section">
+      <div class="bento-card full" data-aos="fade-up">
+        <span class="platform-badge">Universal Architecture</span>
+        <h3>Built for the <br>Global Ecosystem.</h3>
+        <p>AppRealm is engineered to respect the unique design languages of every OS.</p>
+        <div style="position: absolute; right: 50px; bottom: 37px; display: flex; gap: 40px; font-size: 48px; opacity: 0.1;">
+          <i class="bi bi-apple"></i><i class="bi bi-android2"></i><i class="bi bi-phone"></i>
+        </div>
+      </div>
+      <div class="bento-card" data-aos="fade-up">
+        <span class="platform-badge">iOS & AltStore</span>
+        <h3>Sideloading, <br>Perfected.</h3>
+        <p>Integrated support for AltStore sources. Download iPAs from your favorite AltStore sources. AppRealm can load thousands of apps with no performance loss. </p>
+      </div>
+      <div class="bento-card" data-aos="fade-up" data-aos-delay="100">
+        <span class="platform-badge">HarmonyOS & Android</span>
+        <h3>Native Control.</h3>
+        <p>Seamless HarmonyOS integration for Huawei devices and deep Material You customization for Android.</p>
+      </div>
+    </section>
+
+    <section class="legacy-section">
+      <div class="legacy-content" data-aos="zoom-in">
+        <div class="legacy-icon-container">
+            <i class="bi bi-archive-fill" style="font-size: 48px; color: #4c566c; z-index: 2; filter: drop-shadow(0 1px 1px rgba(255,255,255,0.8));"></i>
+        </div>
+        <span class="platform-badge" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(0,0,0,0.2); box-shadow: inset 0 1px 0 rgba(255,255,255,0.3); text-shadow: 0 -1px 0 rgba(0,0,0,0.5);">One more thing...</span>
+        <h2>Legacy iOS Support.</h2>
+        <p>We haven't forgotten the classics. Support for iOS 6 through iOS 9, bringing modern power to the devices that started it all.</p>
+        <a href="#" class="ios6-btn">
+            <i class="bi bi-download"></i>AppRealm Legacy
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-wrap">
+      <div style="padding-bottom: 24px; border-bottom: 1px solid var(--border); margin-bottom: 24px; opacity: 0.8;">
+        AppRealm is a non-commercial system utility. iOS and iPhone are trademarks of Apple Inc. Android is a trademark of Google LLC. OpenHarmony is a project by the OpenAtom Foundation.
+      </div>
+
+        <center>© 2025 AppRealm
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  new Swiper('.screenshot-swiper', {
+    loop: true,
+    spaceBetween: 16,
+    autoplay: {
+      delay: 2800,
+      disableOnInteraction: false
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true
+    }
+  });
+</script>
+  <script>
+    AOS.init({ duration: 1000, once: true, easing: 'ease-out-quart' });
+    const gallery = document.querySelector('.screenshot-gallery');
+    gallery.addEventListener('wheel', (evt) => {
+      if (window.innerWidth > 850) {
+        evt.preventDefault();
+        gallery.scrollLeft += evt.deltaY;
+      }
     });
-    (function(){
-      const device = document.querySelector('.device-card');
-      const wrap = document.querySelector('.device');
-      if(!device || !wrap) return;
-
-      let raf = null;
-      let last = { x:0, y:0 };
-
-      function applyTransform(x, y) {
-        device.style.transform = `rotateY(${x * 5}deg) rotateX(${ -y * 4 }deg) translateZ(6px)`;
-      }
-
-      wrap.addEventListener('pointermove', (e) => {
-        const rect = wrap.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width - 0.5;
-        const y = (e.clientY - rect.top) / rect.height - 0.5;
-        last.x = x; last.y = y;
-        if (raf) return;
-        raf = requestAnimationFrame(() => {
-          applyTransform(last.x, last.y);
-          raf = null;
-        });
-      });
-
-      wrap.addEventListener('pointerleave', () => {
-        if (raf) { cancelAnimationFrame(raf); raf = null; }
-        device.style.transform = 'rotateY(0deg) rotateX(0deg) translateZ(0)';
-      });
-    })();
-
-    setActivePlatform(activePlatform);
-    (function(){
-      const mq = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
-      if (mq && mq.matches) {
-        document.querySelectorAll('[data-aos]').forEach(el => el.removeAttribute('data-aos'));
-      }
-    })();
   </script>
-  <script>function comingSoon() {
-  alert("COMING SOON");
-}</script>
 </body>
 </html>
