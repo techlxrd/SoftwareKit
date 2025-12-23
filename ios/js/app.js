@@ -240,20 +240,29 @@ const mainView = app.views.create(".view-main");
 window.addEventListener('error', function (event) {
     const img = event.target;
 
-  
-    if (img.tagName !== 'IMG' || img.closest('.screenshots')) return;
+    if (!(img instanceof HTMLImageElement)) return;
 
-   
-    if (img.src.includes('fallback=true')) return;
+    if (img.closest('.screenshots')) return;
 
-   
-    img.onerror = null;
-    img.removeAttribute('onerror');
+    if (img.dataset.fallbackApplied) return;
 
-    
-    img.src = './assets/default.png?fallback=true';
+    img.dataset.fallbackApplied = 'true';
+    img.src = './assets/default.png';
 }, true);
+const failedImages = new Set();
 
+window.addEventListener('error', function (event) {
+    const img = event.target;
+
+    if (!(img instanceof HTMLImageElement)) return;
+    if (img.closest('.screenshots')) return;
+
+    const src = img.getAttribute('src');
+    if (!src || failedImages.has(src)) return;
+
+    failedImages.add(src);
+    img.src = './assets/default.png';
+}, true);
 document.addEventListener('DOMContentLoaded', () => {
 
   function updateNavbarTitleFromTab(tabId) {
@@ -431,6 +440,45 @@ reportForm.addEventListener('submit', function (e) {
     });
   });
 });
+(function () {
+  const feedbackForm = document.getElementById('feedback-form');
+  const submitBtn = feedbackForm.querySelector('button[type="submit"]');
+
+  feedbackForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    app.dialog.confirm('Are you sure you want to send this feedback?', 'Confirm Submission', function () {
+      
+      submitBtn.classList.add('button-loading');
+      submitBtn.disabled = true;
+
+      const formData = new FormData(feedbackForm);
+      const actionUrl = feedbackForm.getAttribute('action');
+
+      fetch(actionUrl, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(response => response.json())
+      .then(data => {
+        submitBtn.classList.remove('button-loading');
+        submitBtn.disabled = false;
+        
+        app.dialog.alert('Thanks for the feedback!', 'Success', function () {
+          feedbackForm.reset(); 
+          app.popup.close('#feedback');
+        });
+      })
+      .catch(error => {
+        submitBtn.classList.remove('button-loading');
+        submitBtn.disabled = false;
+        app.dialog.alert('Failed to send report. Please check your connection.', 'Error');
+        console.error('Submission Error:', error);
+      });
+    });
+  });
+})();
 document.addEventListener('DOMContentLoaded', () => {
     const STORAGE_KEY = 'altstore_repos_v3';
     const LOCAL_REPO_URL = './altstore.json';
@@ -1153,7 +1201,7 @@ function displayFavorites() {
           <a class="item-link popup-open" data-popup="#${fav.id}">
             <div class="item-content">
               <div class="item-media">
-                <img loading="lazy" src="${fav.image}">
+                <img decoding="async" loading="lazy" src="${fav.image}">
               </div>
               <div class="item-inner">
                 <div class="item-title-row">
