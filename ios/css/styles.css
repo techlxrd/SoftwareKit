@@ -12,12 +12,7 @@ body {
     background-color: var(--f7-ios-primary);
 }
 
-.ios {
-    --f7-toolbar-height: 46px !important;
-    --f7-toolbar-font-size: 14px;
-    --f7-tabbar-icons-height: 70px;
-    --f7-tabbar-label-font-size: 10px;
-}
+
 
 #faviconimg {
     width: 40px;
