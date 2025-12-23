@@ -635,6 +635,16 @@
                                                     </div>
                                                 </a>
                                             </li>
+<li>
+                                                <a class="item-link item-content popup-open" data-popup="#feedback">
+                                                    <div class="item-media"><i class="f7-icons">bubble_left_fill</i></div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">Send Feedback</div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
 
                                             <li>
                                                 <a onclick="reset()" class="item-link item-content">
@@ -687,7 +697,7 @@
                                                     <div class="item-inner">
                                                         <div class="item-title item-label">Email</div>
                                                         <div class="item-input-wrap">
-                                                            <input type="email" name="Email" required />
+                                                            <input placeholder="youremail@something.com" type="email" name="Email" required />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -700,6 +710,7 @@
       <option value="Malicious">Malicious</option>
       <option value="Outdated">Outdated</option>
       <option value="Not working">Not working</option>
+      <option value="Takedown request">Takedown request</option>
       <option value="Other">Other (Specify)</option>
     </select>
     <div class="item-content">
@@ -713,9 +724,9 @@
                                             <li>
                                                 <div class="item-content item-input">
                                                     <div class="item-inner">
-                                                        <div class="item-title item-label">Feedback (optional unless you chose Other)</div>
+                                                        <div class="item-title item-label">Feedback</div>
                                                         <div class="item-input-wrap">
-                                                            <textarea name="Feedback"></textarea>
+                                                            <textarea placeholder="e.g., The download link is broken, the app crashes on startup, or the version is outdated." name="Feedback" required></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -725,6 +736,72 @@
                                             <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
             <span class="preloader"></span>
       <span>Send report</span>
+          </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="popup popup-report" id="feedback">
+                            <div class="page">
+                                <div class="navbar">
+                                    <div class="navbar-inner">
+                                        <div class="title">Send Feedback</div>
+                                        <div class="right">
+                                            <a class="link popup-close">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="page-content">
+                                    <form action="https://formsubmit.co/ajax/outland3r2007@gmail.com" method="POST" class="list separated inset" id="feedback-form">
+                                        <input type="text" name="_honey" class="display-none">
+
+                                        <input type="hidden" name="_captcha" value="false">
+                                        <ul>
+                                            
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">Email</div>
+                                                        <div class="item-input-wrap">
+                                                            <input placeholder="youremail@something.com" type="email" name="Email" required />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+  <a class="item-link smart-select" data-open-in="popover">
+    <select name="Feedback type" required>
+      <option value="" disabled selected>Feedback type</option>
+      <option value="Issue/Bug">Issue/Bug</option>
+      <option value="Feature request">Feature request</option>
+      <option value="Other">Other</option>    
+    </select>
+    <div class="item-content">
+      <div class="item-inner">
+        <div class="item-title">Feedback type</div>
+      </div>
+    </div>
+  </a>
+</li>
+
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">Feedback</div>
+                                                        <div class="item-input-wrap">
+                                                            <textarea placeholder="e.g., A bug in the Sources tab, missing data on the home page, or a feature request." name="Feedback" required/></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="block">
+                                            <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
+            <span class="preloader"></span>
+      <span>Send Feedback</span>
           </button>
                                         </div>
                                     </form>
