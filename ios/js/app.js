@@ -820,7 +820,7 @@ function renderSourcesList(repos) {
     }
 
     document.getElementById('add-source-fab').addEventListener('click', () => {
-        app.dialog.prompt('Enter source link','Add source', async (url) => {
+        app.dialog.prompt('Add a new source by entering the link below. AppRealm is designed to work exclusively with <strong>AltStore</strong> format sources.','Add source', async (url) => {
             if (!url) return;                  
             const repos = getRepos();
             const existingRepo = repos.find(r => r.sourceURL === url);
