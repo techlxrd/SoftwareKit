@@ -1,409 +1,578 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
-  <title>SoftwareKit</title>
-  
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
+    <title>SoftwareKit</title>
 
-  <style>
- :root {
-      --accent: #007AFF;
-      --bg-color: #ffffff;
-      --text-main: #1d1d1f;
-      --text-sub: #86868b;
-      --glass: rgba(255, 255, 255, 0.72);
-      --card-bg: #f5f5f7;
-      --border: rgba(0,0,0,0.08);
-      --nav-height: 52px;
-      --section-pad: 140px;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg-color: #000000;
-        --text-main: #f5f5f7;
-        --text-sub: #86868b;
-        --glass: rgba(22, 22, 23, 0.72);
-        --card-bg: #161617;
-        --border: rgba(255,255,255,0.12);
-      }
-    }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; margin: 0; padding: 0; 
-  -webkit-tap-highlight-color: transparent;
+    <style>
+        :root {
+            --accent: #007AFF;
+            --bg-color: #ffffff;
+            --text-main: #1d1d1f;
+            --text-sub: #86868b;
+            --glass: rgba(255, 255, 255, 0.72);
+            --card-bg: #f5f5f7;
+            --border: rgba(0, 0, 0, 0.08);
+            --nav-height: 52px;
+            --section-pad: 140px;
+        }
 
-}
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #000000;
+                --text-main: #f5f5f7;
+                --text-sub: #86868b;
+                --glass: rgba(22, 22, 23, 0.72);
+                --card-bg: #161617;
+                --border: rgba(255, 255, 255, 0.12);
+            }
+        }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      overflow-x: hidden;
-      line-height: 1.15;
-    }
-    nav {
-      position: fixed;
-      top: 0; width: 100%; height: var(--nav-height);
-      background: var(--glass);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      z-index: 9999;
-      border-bottom: 1px solid var(--border);
-      display: flex; justify-content: center;
-    }
+        * {
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
 
-    .nav-container {
-      width: 100%; max-width: 1024px;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 22px;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.15;
+        }
 
-    .nav-brand { font-weight: 600; font-size: 19px; letter-spacing: -0.5px; }
-    .hero {
-      padding: 160px 20px 80px;
-      text-align: center;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: var(--nav-height);
+            background: var(--glass);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            z-index: 9999;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+        }
 
-    h1 {
-      font-size: clamp(44px, 12vw, 92px);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      margin-bottom: 24px;
-      background: linear-gradient(180deg, var(--text-main) 50%, var(--text-sub));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
+        .nav-container {
+            width: 100%;
+            max-width: 1024px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px;
+        }
 
-    .hero p.lead {
-      font-size: clamp(20px, 4vw, 28px);
-      color: var(--text-sub);
-      font-weight: 500;
-      margin-bottom: 48px;
-      line-height: 1.3;
-      max-width: 720px;
-      margin: 0 auto 48px;
-    }
-    .download-grid {
-      display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-bottom: 100px;
-    }
+        .nav-brand {
+            font-weight: 600;
+            font-size: 19px;
+            letter-spacing: -0.5px;
+        }
 
-    .btn-get {
-      background: var(--accent); color: #fff; padding: 14px 28px; border-radius: 980px;
-      font-size: 15px; font-weight: 600; text-decoration: none;
-      display: inline-flex; align-items: center; gap: 10px;
-      transition: all 0.4s cubic-bezier(0.2, 1, 0.2, 1);
-    }
+        .hero {
+            padding: 160px 20px 80px;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
 
-    .btn-get:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0, 122, 255, 0.2); }
-    .btn-get.alt { background: var(--text-main); color: var(--bg-color); }
-    .btn-get.outline { background: transparent; border: 1.5px solid var(--accent); color: var(--accent); }    
-    .showcase { width: 100%; overflow: hidden; margin-bottom: var(--section-pad); perspective: 1000px; }
-    .screenshot-gallery {
-      display: flex; gap: 40px; padding: 40px 0 80px; overflow-x: auto;
-      scrollbar-width: none; padding-left: calc(50vw - 150px); padding-right: 50vw;
-      align-items: center;
-    }
-    .screenshot-gallery::-webkit-scrollbar { display: none; }
+        h1 {
+            font-size: clamp(44px, 12vw, 92px);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            background: linear-gradient(180deg, var(--text-main) 50%, var(--text-sub));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    .screenshot-item {
-      flex: 0 0 300px; height: 640px; border-radius: 38px; overflow: hidden;     
-      box-shadow: 0 30px 60px -12px rgba(0,0,0,0.25), 0 18px 36px -18px rgba(0,0,0,0.3);
-      background: #000;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.5s ease;
-    }
+        .hero p.lead {
+            font-size: clamp(20px, 4vw, 28px);
+            color: var(--text-sub);
+            font-weight: 500;
+            margin-bottom: 48px;
+            line-height: 1.3;
+            max-width: 720px;
+            margin: 0 auto 48px;
+        }
 
-  
-    .screenshot-item::after {
-      content: '';
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      height: 40%;
-      background-image: inherit;
-      background-size: cover;
-      transform: scaleY(-1);
-      filter: blur(8px);
-      opacity: 0.15;
-      pointer-events: none;
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
-      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));
-    }
+        .download-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 100px;
+        }
 
-    .screenshot-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .btn-get {
+            background: var(--accent);
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 980px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.4s cubic-bezier(0.2, 1, 0.2, 1);
+        }
 
-    .bento-section {
-      max-width: 1080px; margin: 0 auto var(--section-pad);
-      display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; padding: 0 24px;
-    }
-    .bento-card {
-      background: var(--card-bg); border-radius: 34px; padding: 52px;
-      grid-column: span 6; border: 1px solid var(--border);
-      display: flex; flex-direction: column; min-height: 400px; position: relative;
-    }
-    .bento-card.full { grid-column: span 12; min-height: 440px; }
-    .bento-card h3 { font-size: 32px; margin-bottom: 18px; font-weight: 700; letter-spacing: -0.8px; }
-    .bento-card p { font-size: 19px; color: var(--text-sub); line-height: 1.5; max-width: 480px; }
-    .platform-badge {
-      display: inline-block; padding: 7px 16px; border-radius: 100px;
-      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-      margin-bottom: 24px; background: rgba(0,122,255,0.12); color: var(--accent);
-    }
+        .btn-get:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 122, 255, 0.2);
+        }
 
-    
-    .legacy-section {
-      background-image: url("https://i.imgur.com/dmVMy5S.jpeg");
-      background-size:cover;
-      background-repeat:no-repeat;
-      background-color: #4c566c;
-      padding: 140px 24px;
-      text-align: center;
-      position: relative;      
-      box-shadow: inset 0 10px 30px rgba(0,0,0,0.6);
-      margin-bottom: var(--section-pad);
-      border-top: 1px dashed rgba(0,0,0,0.3);
-      border-bottom: 1px dashed rgba(0,0,0,0.3);
-    }
-    
-    .legacy-section::before, .legacy-section::after {
-      content: ''; position: absolute; left: 0; right: 0; height: 1px;
-    }
-    .legacy-section::before { top: -1px; background: rgba(255,255,255,0.1); }
-    .legacy-section::after { bottom: -1px; background: rgba(255,255,255,0.1); }
+        .btn-get.alt {
+            background: var(--text-main);
+            color: var(--bg-color);
+        }
 
-    .legacy-content { max-width: 800px; margin: 0 auto; position: relative; z-index: 2; }
-    
-    .legacy-content h2 { 
-      font-size: 58px; color: #fff; font-weight: 700; margin-bottom: 24px;
-      text-shadow: 0 -1px 1px rgba(0,0,0,1);
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    }
+        .btn-get.outline {
+            background: transparent;
+            border: 1.5px solid var(--accent);
+            color: var(--accent);
+        }
 
-    .legacy-content p { 
-      font-size: 24px; color: #d0d0d0; margin-bottom: 48px; 
-      text-shadow: 0 1px 1px rgba(0,0,0,0.5);
-    }    
-    .legacy-icon-container {
-      width: 96px; height: 96px;
-      margin: 0 auto 36px;
-      background: #fff;
-      border-radius: 22px;
-      box-shadow: 
-        0 10px 20px rgba(0,0,0,0.5), 
-        inset 0 1px 0 rgba(255,255,255,0.6),
-        inset 0 -1px 0 rgba(0,0,0,0.2);
-      background: linear-gradient(to bottom, #e6e6e6 0%, #d9d9d9 100%);
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }   
-    .legacy-icon-container::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 50%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 100%);
-      border-top-left-radius: 22px;
-      border-top-right-radius: 22px;
-    }
-    
-    .ios6-btn {
-      display: inline-flex; align-items: center; gap: 12px;
-      padding: 18px 42px; font-size: 22px; font-weight: 700; color: #fff;
-      text-decoration: none; border-radius: 12px;
-      border: 1px solid #1c3f7f;
-      font-family: "Helvetica Neue", Arial, sans-serif;     
-      background: linear-gradient(to bottom, 
-        #8ab4f8 0%, 
-        #4c87e6 50%, 
-        #3369c6 51%, 
-        #2a5db5 100%
-      );     
-      box-shadow: 
-        inset 0 1px 0 rgba(255,255,255,0.5), 
-        0 6px 15px -4px rgba(0,0,0,0.7),
-        0 2px 4px rgba(0,0,0,0.4);
-      text-shadow: 0 -1px 1px rgba(0,0,0,0.7);
-      transition: all 0.2s;
-    }
+        .showcase {
+            width: 100%;
+            overflow: hidden;
+            margin-bottom: var(--section-pad);
+            perspective: 1000px;
+        }
 
-    .ios6-btn:hover {
-      filter: brightness(1.08);
-      transform: translateY(-1px);
-    }
+        .screenshot-gallery {
+            display: flex;
+            gap: 40px;
+            padding: 40px 0 80px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding-left: calc(50vw - 150px);
+            padding-right: 50vw;
+            align-items: center;
+        }
 
-    .ios6-btn:active {     
-      background: linear-gradient(to bottom, #2a5db5 0%, #4c87e6 100%);
-      box-shadow: 
-        inset 0 3px 8px rgba(0,0,0,0.6),
-        0 1px 2px rgba(0,255,255,0.1);
-      transform: translateY(2px);
-    }
+        .screenshot-gallery::-webkit-scrollbar {
+            display: none;
+        }
 
-    footer {
-      background: var(--bg-color); padding: 80px 24px; color: var(--text-sub);
-      font-size: 13px; line-height: 1.7; border-top: 1px solid var(--border);
-    }
-    .footer-wrap { max-width: 1024px; margin: 0 auto; }
-    .footer-links a { color: var(--text-sub); text-decoration: none; transition: color 0.2s; cursor: pointer; }
-    .footer-links a:hover { color: var(--accent); }
-    @media (max-width: 850px) {
-      .bento-card { grid-column: span 12; }
-      .legacy-content h2 { font-size: 42px; }
-    }
+        .screenshot-item {
+            flex: 0 0 300px;
+            height: 640px;
+            border-radius: 38px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3);
+            background: #000;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
 
-.screenshot-swiper .swiper-slide {
-  display: flex;
-  justify-content: center;
-}
+        .screenshot-item::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background-image: inherit;
+            background-size: cover;
+            transform: scaleY(-1);
+            filter: blur(8px);
+            opacity: 0.15;
+            pointer-events: none;
+            mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+            -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+        }
 
-.screenshot-swiper img {
-  width: 260px;
-  height: auto;
-  max-width: 100%;
-  display: block;
-  border-radius: 10px;
-}
-.apple-logo{color:var(--text-main);}
-.android-logo{color:#3DDC84;}
-.harmony-logo{color:#007AFF;}
-.techlxrd{text-decoration:none;color:#007AFF;}
-    @media (max-width: 850px) {
-      .bento-card { grid-column: span 12; }
-      .legacy-content h2 { font-size: 42px; }
-    }
-  </style>
+        .screenshot-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .bento-section {
+            max-width: 1080px;
+            margin: 0 auto var(--section-pad);
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+            padding: 0 24px;
+        }
+
+        .bento-card {
+            background: var(--card-bg);
+            border-radius: 34px;
+            padding: 52px;
+            grid-column: span 6;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            min-height: 400px;
+            position: relative;
+        }
+
+        .bento-card.full {
+            grid-column: span 12;
+            min-height: 440px;
+        }
+
+        .bento-card h3 {
+            font-size: 32px;
+            margin-bottom: 18px;
+            font-weight: 700;
+            letter-spacing: -0.8px;
+        }
+
+        .bento-card p {
+            font-size: 19px;
+            color: var(--text-sub);
+            line-height: 1.5;
+            max-width: 480px;
+        }
+
+        .platform-badge {
+            display: inline-block;
+            padding: 7px 16px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 24px;
+            background: rgba(0, 122, 255, 0.12);
+            color: var(--accent);
+        }
+
+        .legacy-section {
+            background-image: url("https://i.imgur.com/dmVMy5S.jpeg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-color: #4c566c;
+            padding: 140px 24px;
+            text-align: center;
+            position: relative;
+            box-shadow: inset 0 10px 30px rgba(0, 0, 0, 0.6);
+            margin-bottom: var(--section-pad);
+            border-top: 1px dashed rgba(0, 0, 0, 0.3);
+            border-bottom: 1px dashed rgba(0, 0, 0, 0.3);
+        }
+
+        .legacy-section::before,
+        .legacy-section::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+        }
+
+        .legacy-section::before {
+            top: -1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .legacy-section::after {
+            bottom: -1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .legacy-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .legacy-content h2 {
+            font-size: 58px;
+            color: #fff;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-shadow: 0 -1px 1px rgba(0, 0, 0, 1);
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .legacy-content p {
+            font-size: 24px;
+            color: #d0d0d0;
+            margin-bottom: 48px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+        }
+
+        .legacy-icon-container {
+            width: 96px;
+            height: 96px;
+            margin: 0 auto 36px;
+            background: #fff;
+            border-radius: 22px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.6), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+            background: linear-gradient(to bottom, #e6e6e6 0%, #d9d9d9 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .legacy-icon-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.1) 100%);
+            border-top-left-radius: 22px;
+            border-top-right-radius: 22px;
+        }
+
+        .ios6-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 42px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 12px;
+            border: 1px solid #1c3f7f;
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(to bottom, #8ab4f8 0%, #4c87e6 50%, #3369c6 51%, #2a5db5 100%);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 6px 15px -4px rgba(0, 0, 0, 0.7), 0 2px 4px rgba(0, 0, 0, 0.4);
+            text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.7);
+            transition: all 0.2s;
+        }
+
+        .ios6-btn:hover {
+            filter: brightness(1.08);
+            transform: translateY(-1px);
+        }
+
+        .ios6-btn:active {
+            background: linear-gradient(to bottom, #2a5db5 0%, #4c87e6 100%);
+            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 255, 255, 0.1);
+            transform: translateY(2px);
+        }
+
+        footer {
+            background: var(--bg-color);
+            padding: 80px 24px;
+            color: var(--text-sub);
+            font-size: 13px;
+            line-height: 1.7;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-wrap {
+            max-width: 1024px;
+            margin: 0 auto;
+        }
+
+        .footer-links a {
+            color: var(--text-sub);
+            text-decoration: none;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 850px) {
+            .bento-card {
+                grid-column: span 12;
+            }
+            .legacy-content h2 {
+                font-size: 42px;
+            }
+        }
+
+        .screenshot-swiper .swiper-slide {
+            display: flex;
+            justify-content: center;
+        }
+
+        .screenshot-swiper img {
+            width: 260px;
+            height: auto;
+            max-width: 100%;
+            display: block;
+            border-radius: 10px;
+        }
+
+        .apple-logo {
+            color: var(--text-main);
+        }
+
+        .android-logo {
+            color: #3DDC84;
+        }
+
+        .harmony-logo {
+            color: #007AFF;
+        }
+
+        .techlxrd {
+            text-decoration: none;
+            color: #007AFF;
+        }
+
+        @media (max-width: 850px) {
+            .bento-card {
+                grid-column: span 12;
+            }
+            .legacy-content h2 {
+                font-size: 42px;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-  <nav>
-    <div class="nav-container">
-      <div class="nav-brand">SoftwareKit.</div>
-      <div style="font-size: 12px; font-weight: 500; opacity: 0.8; display: flex; gap: 24px;">
-        <span>Built with ❤️ by <a href="https://x.com/TechLxrd07" class="techlxrd">TechLxrd</a></span>
-      </div>
-    </div>
-  </nav>
-
-  <main>
-    <section class="hero">
-      <div data-aos="fade-up" style="font-weight: 600; font-size: 18px; margin-bottom: 20px; color: var(--accent);">Coming in 2026</div>
-      <h1 data-aos="fade-up" data-aos-delay="100">Every device.<br>At its best.</h1>
-      <p class="lead" data-aos="fade-up" data-aos-delay="200">
-        System utilities for iOS, Android, and OpenHarmony. Built for people who actually want control over their devices.
-      </p>
-      <div class="download-grid" data-aos="fade-up" data-aos-delay="300">
-        <a href="#" class="btn-get"><i class="bi bi-apple"></i> iOS 14+</a>
-        <a href="#" class="btn-get alt"><i class="bi bi-android2"></i> Android</a>
-        <a href="#" class="btn-get outline"><i class="bi bi-phone"></i> OpenHarmony</a>
-      </div>
-    </section>
-
-   <section class="showcase">
-  <div class="swiper screenshot-swiper">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <img src="https://i.imgur.com/DkjRDgI.png" alt="iOS">
-      </div>
-      <div class="swiper-slide">
-        <img src="https://i.imgur.com/VfM7rOg.png" alt="Android">
-      </div>
-      <div class="swiper-slide">
-        <img src="https://i.imgur.com/ULTc2VA.png" alt="Harmony">
-      </div>
-      <div class="swiper-slide">
-        <img src="https://i.imgur.com/zvupprI.png" alt="Legacy">
-      </div>
-    </div>
-<br><br>
-    <div class="swiper-pagination"></div>
-  </div>
-</section>
-
-    <section class="bento-section">
-      <div class="bento-card full" data-aos="fade-up">
-        <span class="platform-badge">Universal Architecture</span>
-        <h3>Designed for Every OS.</h3>
-        <p>SoftwareKit is built to feel almost native on every OS.</p>
-        <div style="position: absolute; right: 50px; bottom: 37px; display: flex; gap: 40px; font-size: 48px;">
-          <i class="bi bi-apple apple-logo"></i><i class="bi bi-android2 android-logo"></i><i class="bi bi-phone harmony-logo"></i>
+    <nav>
+        <div class="nav-container">
+            <div class="nav-brand">SoftwareKit.</div>
+            <div style="font-size: 12px; font-weight: 500; opacity: 0.8; display: flex; gap: 24px;">
+                <span>Built with ❤️ by <a href="https://x.com/TechLxrd07" class="techlxrd">TechLxrd</a></span>
+            </div>
         </div>
-      </div>
-      <div class="bento-card" data-aos="fade-up">
-        <span class="platform-badge">iOS & AltStore</span>
-        <h3>Sideloading, <br>Perfected.</h3>
-        <p>Integrated AltStore source support. Browse and download IPAs from your favorite sources, with instant loading even at massive scale. </p>
-      </div>
-      <div class="bento-card" data-aos="fade-up" data-aos-delay="100">
-        <span class="platform-badge">HarmonyOS & Android</span>
-        <h3>Native Control.</h3>
-        <p>HarmonyOS support built for Huawei devices, with full Material You control on Android.</p>
-      </div>
-       <div class="bento-card" data-aos="fade-up" data-aos-delay="100">
-        <span class="platform-badge">Free</span>
-        <h3>100% Free</h3>
-        <p>SoftwareKit is completely free, with no subscriptions, ads, or interruptions, and includes automatic updates.</p>
-      </div>
-    </section>
+    </nav>
 
-    <section class="legacy-section">
-      <div class="legacy-content" data-aos="zoom-in">
-        <div class="legacy-icon-container">
-            <i class="bi bi-archive-fill" style="font-size: 48px; color: #4c566c; z-index: 2; filter: drop-shadow(0 1px 1px rgba(255,255,255,0.8));"></i>
-        </div>
-        <span class="platform-badge" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(0,0,0,0.2); box-shadow: inset 0 1px 0 rgba(255,255,255,0.3); text-shadow: 0 -1px 0 rgba(0,0,0,0.5);">One more thing...</span>
-        <h2>Legacy iOS Support.</h2>
-        <p>We haven’t forgotten the classics. iOS 6 through iOS 9 are fully supported, bringing modern power to the devices that started it all.</p>
-        <a href="#" class="ios6-btn">
+    <main>
+        <section class="hero">
+            <div data-aos="fade-up" style="font-weight: 600; font-size: 18px; margin-bottom: 20px; color: var(--accent);">Coming in 2026</div>
+            <h1 data-aos="fade-up" data-aos-delay="100">Every device.<br>At its best.</h1>
+            <p class="lead" data-aos="fade-up" data-aos-delay="200">
+                System utilities for iOS, Android, and OpenHarmony. Built for people who actually want control over their devices.
+            </p>
+            <div class="download-grid" data-aos="fade-up" data-aos-delay="300">
+                <a href="#" class="btn-get"><i class="bi bi-apple"></i> iOS 14+</a>
+                <a href="#" class="btn-get alt"><i class="bi bi-android2"></i> Android</a>
+                <a href="#" class="btn-get outline"><i class="bi bi-phone"></i> OpenHarmony</a>
+            </div>
+        </section>
+
+        <section class="showcase">
+            <div class="swiper screenshot-swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img src="https://i.imgur.com/DkjRDgI.png" alt="iOS">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://i.imgur.com/VfM7rOg.png" alt="Android">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://i.imgur.com/ULTc2VA.png" alt="Harmony">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="https://i.imgur.com/zvupprI.png" alt="Legacy">
+                    </div>
+                </div>
+                <br><br>
+                <div class="swiper-pagination"></div>
+            </div>
+        </section>
+
+        <section class="bento-section">
+            <div class="bento-card full" data-aos="fade-up">
+                <span class="platform-badge">Universal Architecture</span>
+                <h3>Designed for Every OS.</h3>
+                <p>SoftwareKit is built to feel almost native on every OS.</p>
+                <div style="position: absolute; right: 50px; bottom: 37px; display: flex; gap: 40px; font-size: 48px;">
+                    <i class="bi bi-apple apple-logo"></i><i class="bi bi-android2 android-logo"></i><i class="bi bi-phone harmony-logo"></i>
+                </div>
+            </div>
+            <div class="bento-card" data-aos="fade-up">
+                <span class="platform-badge">iOS & AltStore</span>
+                <h3>Sideloading, <br>Perfected.</h3>
+                <p>Integrated AltStore source support. Browse and download IPAs from your favorite sources, with instant loading even at massive scale. </p>
+            </div>
+            <div class="bento-card" data-aos="fade-up" data-aos-delay="100">
+                <span class="platform-badge">HarmonyOS & Android</span>
+                <h3>Native Control.</h3>
+                <p>HarmonyOS support built for Huawei devices, with full Material You control on Android.</p>
+            </div>
+            <div class="bento-card" data-aos="fade-up" data-aos-delay="100">
+                <span class="platform-badge">Free</span>
+                <h3>100% Free</h3>
+                <p>SoftwareKit is completely free, with no subscriptions, ads, or interruptions, and includes automatic updates.</p>
+            </div>
+        </section>
+
+        <section class="legacy-section">
+            <div class="legacy-content" data-aos="zoom-in">
+                <div class="legacy-icon-container">
+                    <i class="bi bi-archive-fill" style="font-size: 48px; color: #4c566c; z-index: 2; filter: drop-shadow(0 1px 1px rgba(255,255,255,0.8));"></i>
+                </div>
+                <span class="platform-badge" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(0,0,0,0.2); box-shadow: inset 0 1px 0 rgba(255,255,255,0.3); text-shadow: 0 -1px 0 rgba(0,0,0,0.5);">One more thing...</span>
+                <h2>Legacy iOS Support.</h2>
+                <p>We haven’t forgotten the classics. iOS 6 through iOS 9 are fully supported, bringing modern power to the devices that started it all.</p>
+                <a href="#" class="ios6-btn">
             <i class="bi bi-download"></i>SoftwareKit Legacy
         </a>
-      </div>
-    </section>
-  </main>
+            </div>
+        </section>
+    </main>
 
-  <footer>
-    <div class="footer-wrap">
-      <div style="padding-bottom: 24px; border-bottom: 1px solid var(--border); margin-bottom: 24px; opacity: 0.8;">
-        SoftwareKit is a non-commercial system utility. iOS and iPhone are trademarks of Apple Inc. Android is a trademark of Google LLC. OpenHarmony is a project by the OpenAtom Foundation.
-      </div>
+    <footer>
+        <div class="footer-wrap">
+            <div style="padding-bottom: 24px; border-bottom: 1px solid var(--border); margin-bottom: 24px; opacity: 0.8;">
+                SoftwareKit is a non-commercial system utility. iOS and iPhone are trademarks of Apple Inc. Android is a trademark of Google LLC. OpenHarmony is a project by the OpenAtom Foundation.
+            </div>
 
-        <center>© 2025 SoftwareKit
-      </div>
-    </div>
-  </footer>
+            <center>© 2025 SoftwareKit
+        </div>
+        </div>
+    </footer>
 
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script>
-  new Swiper('.screenshot-swiper', {
-    loop: true,
-    spaceBetween: 16,
-    autoplay: {
-      delay: 2800,
-      disableOnInteraction: false
-    },
-    pagination: {
-      el: '.swiper-pagination',
-      clickable: true
-    }
-  });
-</script>
-  <script>
-    AOS.init({ duration: 1000, once: true, easing: 'ease-out-quart' });
-    const gallery = document.querySelector('.screenshot-gallery');
-    gallery.addEventListener('wheel', (evt) => {
-      if (window.innerWidth > 850) {
-        evt.preventDefault();
-        gallery.scrollLeft += evt.deltaY;
-      }
-    });
-  </script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        new Swiper('.screenshot-swiper', {
+            loop: true,
+            spaceBetween: 16,
+            autoplay: {
+                delay: 2800,
+                disableOnInteraction: false
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true
+            }
+        });
+    </script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+            easing: 'ease-out-quart'
+        });
+        const gallery = document.querySelector('.screenshot-gallery');
+        gallery.addEventListener('wheel', (evt) => {
+            if (window.innerWidth > 850) {
+                evt.preventDefault();
+                gallery.scrollLeft += evt.deltaY;
+            }
+        });
+    </script>
 </body>
+
 </html>
