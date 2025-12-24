@@ -431,7 +431,6 @@
             text-decoration: none;
             color: #007AFF;
         }
-
         @media (max-width: 850px) {
             .bento-card {
                 grid-column: span 12;
@@ -532,7 +531,7 @@
 
     <footer>
         <div class="footer-wrap">
-            <div style="padding-bottom: 24px; border-bottom: 1px solid var(--border); margin-bottom: 24px; opacity: 0.8;">
+            <div style="padding-bottom: 24px; border-bottom: 1px solid var(--border);  opacity: 0.8;">
                 SoftwareKit is a non-commercial system utility. iOS and iPhone are trademarks of Apple Inc. Android is a trademark of Google LLC. OpenHarmony is a project by the OpenAtom Foundation.
             </div>
 
@@ -558,21 +557,13 @@
                 clickable: true
             }
         });
-    </script>
-    <script>
         AOS.init({
             duration: 1000,
             once: true,
             easing: 'ease-out-quart'
-        });
-        const gallery = document.querySelector('.screenshot-gallery');
-        gallery.addEventListener('wheel', (evt) => {
-            if (window.innerWidth > 850) {
-                evt.preventDefault();
-                gallery.scrollLeft += evt.deltaY;
-            }
-        });
+        }); 
     </script>
+   
 </body>
 
 </html>
