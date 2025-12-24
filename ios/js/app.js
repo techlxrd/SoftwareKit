@@ -1,8 +1,8 @@
 const app = new Framework7({
   el: "#app",
   theme: "ios",
-  name: "AppRealm",
-  id: "com.techlxrd.AppRealm",
+  name: "SoftwareKit",
+  id: "com.techlxrd.SoftwareKit",
   touch: {touchHighlight: true, 
   tapHold: true, 
   },
@@ -524,7 +524,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = localStorage.getItem(STORAGE_KEY);
             let repos = data ? JSON.parse(data) : [];
             if (!repos.some(r => r.sourceURL === LOCAL_REPO_URL)) {
-                repos.unshift({ sourceURL: LOCAL_REPO_URL, name: "AppRealm", apps: [], isSystem: true });
+                repos.unshift({ sourceURL: LOCAL_REPO_URL, name: "SoftwareKit", apps: [], isSystem: true });
             }
             return repos;
         } catch { return []; }
@@ -820,7 +820,7 @@ function renderSourcesList(repos) {
     }
 
     document.getElementById('add-source-fab').addEventListener('click', () => {
-        app.dialog.prompt('Add a new source by entering the link below. AppRealm is designed to work exclusively with <strong>AltStore</strong> format sources.','Add source', async (url) => {
+        app.dialog.prompt('Add a new source by entering the link below. SoftwareKit is designed to work exclusively with <strong>AltStore</strong> format sources.','Add source', async (url) => {
             if (!url) return;                  
             const repos = getRepos();
             const existingRepo = repos.find(r => r.sourceURL === url);
@@ -1384,9 +1384,9 @@ var swiperFeatured = new Swiper(".featured", {
 function shareURL() {
   if (navigator.share) {
     navigator.share({
-      title: "AppRealm",
+      title: "SoftwareKit",
       text: "Take your iDevice experience to the next level with our awesome app!",
-      url: "https://apprealm.pages.dev/"
+      url: "https://softwarekit.pages.dev/"
     });
   }
 }
@@ -1394,15 +1394,15 @@ function shareURL() {
 function shareSource() {
   if (navigator.share) {
     navigator.share({
-      title: "AppRealm",
-      text: "Official AltStore source provided by AppRealm",
-      url: "https://apprealm.pages.dev/ios/altstore.json"
+      title: "SoftwareKit",
+      text: "Official AltStore source provided by SoftwareKit",
+      url: "https://softwarekit.pages.dev/ios/altstore.json"
     });
   }
 }
 
 function copySource() {
-  navigator.clipboard.writeText('https://apprealm.pages.dev/ios/altstore.json')
+  navigator.clipboard.writeText('https://softwarekit.pages.dev/ios/altstore.json')
     .then(() => {
       app.toast.create({
         text: 'Source link copied!',
