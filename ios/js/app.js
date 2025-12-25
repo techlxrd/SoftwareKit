@@ -27,6 +27,19 @@ routes: [
   ],
 });
 const mainView = app.views.create(".view-main");
+document.addEventListener('click', function (e) {
+  const clickedLink = e.target.closest('.sidebar-list .item-link');
+  
+  if (!clickedLink) return;
+
+  const allLinks = document.querySelectorAll('.sidebar-list .item-link');
+  
+  allLinks.forEach(link => {
+    link.classList.remove('tab-link-active');
+  });
+
+  clickedLink.classList.add('tab-link-active');
+});
 window.addEventListener('error', function (event) {
     const img = event.target;
 
@@ -504,19 +517,7 @@ function renderSourcesList(repos) {
     function openRepoPage(repo) {
         const pageId = `repo-${Date.now()}`;
         const pageHtml = `
-            <div class="sidebar">
-  <div class="sidebar-header">
-    <i class="f7-icons">cube_box_fill</i>
-  </div>
-  <div class="sidebar-list">
-    <ul>
-      <li><a class="item-link popup-open" data-popup="#settings"><i class="f7-icons">gear</i> Settings</a></li>
-       
-    </ul>
-  </div>
-  <br>
-  <center>SoftwareKit v1.0</center>
-</div><div class="page page-with-subnavbar" data-name="repo-detail">
+           <div class="page page-with-subnavbar" data-name="repo-detail">
                 <div class="navbar">
                     <div class="navbar-bg"></div>
                     <div class="navbar-inner">
