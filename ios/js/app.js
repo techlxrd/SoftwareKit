@@ -504,7 +504,19 @@ function renderSourcesList(repos) {
     function openRepoPage(repo) {
         const pageId = `repo-${Date.now()}`;
         const pageHtml = `
-            <div class="page page-with-subnavbar" data-name="repo-detail">
+            <div class="sidebar">
+  <div class="sidebar-header">
+    <i class="f7-icons">cube_box_fill</i>
+  </div>
+  <div class="sidebar-list">
+    <ul>
+      <li><a class="item-link popup-open" data-popup="#settings"><i class="f7-icons">gear</i> Settings</a></li>
+       
+    </ul>
+  </div>
+  <br>
+  <center>SoftwareKit v1.0</center>
+</div><div class="page page-with-subnavbar" data-name="repo-detail">
                 <div class="navbar">
                     <div class="navbar-bg"></div>
                     <div class="navbar-inner">
@@ -531,19 +543,7 @@ function renderSourcesList(repos) {
                      <div class="list list-strong simple-list searchbar-not-found inset">
                 <ul><li>Unfortunately, no items were found.</li></ul>
             </div>
-            </div><div class="sidebar">
-  <div class="sidebar-header">
-    <i class="f7-icons">cube_box_fill</i>
-  </div>
-  <div class="sidebar-list">
-    <ul>
-      <li><a class="item-link popup-open" data-popup="#settings"><i class="f7-icons">gear</i> Settings</a></li>
-       
-    </ul>
-  </div>
-  <br>
-  <center>SoftwareKit v1.0</center>
-</div>`;
+            </div>`;
 
         app.views.main.router.navigate({
             url: `/repo-detail/${pageId}/`,
