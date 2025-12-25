@@ -450,11 +450,14 @@ body {
   z-index: 1000;
   display: block;
   background-color: var(--f7-page-bg-color, #fff);
-  transform: translateZ(0);
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .sidebar-header {
-  margin-top: 30%;
+  margin-top: 15vh;
   text-align: center;
   padding: 30px 0;
 }
@@ -486,9 +489,10 @@ body {
 }
 
 .sidebar-list .item-link.tab-link-active {
-  background: var(--f7-ios-primary, #007aff);
+  background: var(--f7-ios-primary);
   color: #fff;
-}  #app {
+}
+  #app {
     margin-left: var(--sidebar-width, 260px);
     width: calc(100vw - var(--sidebar-width, 260px));
     max-width: calc(100vw - var(--sidebar-width, 260px));
