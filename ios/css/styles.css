@@ -343,7 +343,7 @@ body {
     }
 
 
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 500px) {
     .grid-list ul {
         display: grid;
         grid-template-columns: repeat(2, minmax(200px, 1fr));
@@ -448,8 +448,7 @@ body {
   overflow-y: auto;
   z-index: 1000;
   display: block;
-  background-color: var(--f7-page-bg-color
- );
+  background-color: var(--f7-page-bg-color);
 }
 
 .sidebar-header {
@@ -474,11 +473,10 @@ body {
   padding: 12px 16px;
   margin: 5px 10px;
   border-radius: 30px;
-  color: var(--f7-tabbar-link-color
- );
-  background-color: var(--f7-list-strong-bg-color);
+  color: var(--f7-tabbar-link-color);
+  background-color: var(--f7-list-strong-bg-color); ;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.3s;
 }
 
 .sidebar-list .item-link i {
