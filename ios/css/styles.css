@@ -516,6 +516,83 @@ body {
 .sidebar-list .item-link:active {
   opacity: 0.7;
 }
+.custom-sidebar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 260px !important;
+  height: 100% !important;
+  height: 100dvh !important;
+  background-color: #ffffff !important;
+  z-index: 99999 !important; /* Forces it above all F7 layers */
+  display: flex !important;
+  flex-direction: column !important;
+  border-right: 1px solid #e0e0e0 !important;
+  -webkit-transform: translate3d(0,0,0) !important;
+  transform: translate3d(0,0,0) !important;
+}
+
+.sidebar-header {
+  padding: 60px 20px 20px 20px !important;
+  text-align: center !important;
+  flex-shrink: 0 !important;
+  display: block !important;
+}
+
+.sidebar-header i {
+  font-size: 40px !important;
+  color: #007aff !important;
+  display: inline-block !important;
+}
+
+.sidebar-list {
+  flex-grow: 1 !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+.sidebar-list ul {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.sidebar-list li {
+  margin: 8px 12px !important;
+  display: block !important;
+}
+
+.sidebar-list .item-link {
+  display: flex !important;
+  align-items: center !important;
+  padding: 14px 16px !important;
+  text-decoration: none !important;
+  border-radius: 12px !important;
+  background-color: #f2f2f7 !important;
+  color: #333333 !important;
+  font-weight: 500 !important;
+  -webkit-appearance: none !important;
+}
+
+.sidebar-list .item-link i {
+  margin-right: 15px !important;
+  font-size: 22px !important;
+  width: 28px !important;
+  text-align: center !important;
+}
+
+.sidebar-list .item-link.tab-link-active {
+  background-color: #007aff !important;
+  color: #ffffff !important;
+}
+
+.sidebar-footer {
+  padding: 20px !important;
+  text-align: center !important;
+  font-size: 12px !important;
+  color: #8e8e93 !important;
+  background: #ffffff !important;
+}
   #app {
     margin-left: var(--sidebar-width, 260px);
     width: calc(100vw - var(--sidebar-width, 260px));
