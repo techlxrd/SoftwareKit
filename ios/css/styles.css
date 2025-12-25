@@ -343,7 +343,7 @@ body {
     }
 
 
-@media only screen and (min-width: 500px) {
+@media only screen and (min-width: 1000px) {
     .grid-list ul {
         display: grid;
         grid-template-columns: repeat(2, minmax(200px, 1fr));
@@ -439,72 +439,53 @@ body {
     }
     
 .sidebar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 260px;
-  width: var(--sidebar-width, 260px);
-  height: 100vh;
-  height: 100dvh;
-  box-sizing: border-box;
-  overflow-y: auto;
-  z-index: 1000;
-  display: block !important;
-  background-color: #ffffff;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  -webkit-overflow-scrolling: touch;
+position: fixed;
+top: 0;
+left: 0;
+width: var(--sidebar-width, 260px);
+height: 100vh;
+box-sizing: border-box;
+overflow-y: auto;
+z-index: 1000;
+display: block;
+background-color: var(--f7-page-bg-color);
 }
 
 .sidebar-header {
-  margin-top: 15vh;
-  text-align: center;
-  padding: 30px 0;
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
+margin-top:30%;
+text-align: center;
+padding: 30px 0;
 }
 
 .sidebar-header i {
-  font-size: 36px;
-  color: #000000;
-  color: var(--f7-theme-color, #000000);
-  display: inline-block !important;
+font-size: 36px;
 }
 
 .sidebar-list ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: block !important;
+list-style: none;
+padding: 0;
+margin: 0;
 }
 
 .sidebar-list .item-link {
-  display: flex !important;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  align-items: center;
-  padding: 12px 16px;
-  margin: 5px 10px;
-  border-radius: 30px;
-  color: #8e8e93;  background-color: #f2f2f7;
-  background-color: #f2f2f7);
-  cursor: pointer;
-  -webkit-transition: background 0.3s;
-  transition: background 0.3s;
-  visibility: visible !important;
-  opacity: 1 !important;
+display: flex;
+align-items: center;
+padding: 12px 16px;
+margin: 5px 10px;
+border-radius: 30px;
+color: var(--f7-tabbar-link-color);
+background-color: var(--f7-list-strong-bg-color); ;
+cursor: pointer;
+transition: background 0.3s;
 }
 
 .sidebar-list .item-link i {
-  margin-right: 10px;
-  color: inherit;
+margin-right: 10px;
 }
 
 .sidebar-list .item-link.tab-link-active {
-  background-color: #007aff;
-  background:  #007aff);
-  color: #ffffff !important;
+background: var(--f7-ios-primary);
+color: #fff;
 }
   #app {
     margin-left: var(--sidebar-width, 260px);
