@@ -444,15 +444,17 @@ body {
   left: 0;
   width: var(--sidebar-width, 260px);
   height: 100vh;
+  height: 100dvh;
   box-sizing: border-box;
   overflow-y: auto;
   z-index: 1000;
   display: block;
-  background-color: var(--f7-page-bg-color);
+  background-color: var(--f7-page-bg-color, #fff);
+  transform: translateZ(0);
 }
 
 .sidebar-header {
-  margin-top:30%;
+  margin-top: 30%;
   text-align: center;
   padding: 30px 0;
 }
@@ -473,8 +475,8 @@ body {
   padding: 12px 16px;
   margin: 5px 10px;
   border-radius: 30px;
-  color: var(--f7-tabbar-link-color);
-  background-color: var(--f7-list-strong-bg-color); ;
+  color: var(--f7-tabbar-link-color, #8e8e93);
+  background-color: var(--f7-list-strong-bg-color, #f2f2f7);
   cursor: pointer;
   transition: background 0.3s;
 }
@@ -484,11 +486,9 @@ body {
 }
 
 .sidebar-list .item-link.tab-link-active {
-  background: var(--f7-ios-primary);
+  background: var(--f7-ios-primary, #007aff);
   color: #fff;
-}
-
-  #app {
+}  #app {
     margin-left: var(--sidebar-width, 260px);
     width: calc(100vw - var(--sidebar-width, 260px));
     max-width: calc(100vw - var(--sidebar-width, 260px));
