@@ -442,55 +442,76 @@ body {
   position: fixed;
   top: 0;
   left: 0;
+  width: 260px;
   width: var(--sidebar-width, 260px);
   height: 100vh;
   height: 100dvh;
   box-sizing: border-box;
   overflow-y: auto;
   z-index: 1000;
-  display: block;
-  background-color: var(--f7-page-bg-color, #fff);
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  background-color: #ffffff;
+  background-color: var(--f7-page-bg-color, #ffffff);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-overflow-scrolling: touch;
 }
 
 .sidebar-header {
   margin-top: 15vh;
   text-align: center;
   padding: 30px 0;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .sidebar-header i {
   font-size: 36px;
+  color: #000000;
+  color: var(--f7-theme-color, #000000);
+  display: inline-block !important;
 }
 
 .sidebar-list ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: block !important;
 }
 
 .sidebar-list .item-link {
-  display: flex;
+  display: -webkit-box !important;
+  display: -webkit-flex !important;
+  display: flex !important;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
   align-items: center;
   padding: 12px 16px;
   margin: 5px 10px;
   border-radius: 30px;
+  color: #8e8e93;
   color: var(--f7-tabbar-link-color, #8e8e93);
+  background-color: #f2f2f7;
   background-color: var(--f7-list-strong-bg-color, #f2f2f7);
   cursor: pointer;
+  -webkit-transition: background 0.3s;
   transition: background 0.3s;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .sidebar-list .item-link i {
   margin-right: 10px;
+  color: inherit;
 }
 
 .sidebar-list .item-link.tab-link-active {
-  background: var(--f7-ios-primary);
-  color: #fff;
+  background-color: #007aff;
+  background: var(--f7-ios-primary, #007aff);
+  color: #ffffff !important;
 }
   #app {
     margin-left: var(--sidebar-width, 260px);
