@@ -16,224 +16,14 @@ const app = new Framework7({
   popover: {
     verticalPosition: 'bottom', 
   },
-  sheet: {
-    push: true,
-    swipeToClose: true,
-  },
-  dialog: {
-    backdrop: true,
-    closeByBackdropClick: false,
-  },
   serviceWorker: {
     path: "./service-worker.js",
   },
-  routes: [
-  
-   {
-  path: "/trustcert/",
-  content: `
-    <div class="page" data-name="other">
-      <div class="navbar">
-        <div class="navbar-bg"></div>
-        <div class="navbar-inner">
-          <div class="left">
-            <a  class="link back">
-              <i class="icon icon-back"></i>
-            </a>
-          </div>
-          <div class="title">Untrusted Enterprise Developer</div>
-        </div>
-      </div>
-      <div class="page-content">
-        <div class="block inset">
-          <center>
-            <img loading="lazy" src="https://i.imgur.com/YQxY1aO.png" style="max-width:340px;width:97%;border-radius:20px;margin-bottom:18px;">
-          </center>
-          <strong>How to Trust an Enterprise Certificate</strong>
-          <ol style="margin-top:14px;padding-left:20px;">
-            <li>Open <b>Settings</b> on your device.</li>
-            <li>Go to <b>General</b> &rarr; <b>VPN & Device Management</b>.</li>
-            <li>Find the relevant <b>Enterprise App</b> profile under "Enterprise App" or "Device Management".</li>
-            <li>Tap the profile, then tap <b>Trust</b> and confirm your choice.</li>
-            <li>After trusting, you can open the app as normal.</li>
-          </ol>
-          <p style="margin-top:10px;color:#888;">Trusting the certificate ensures the app is authenticated and can run on your device securely.</p>
-        </div>
-        <div class="list separated inset">
-          <ul>
-            <li>
-              <a href="com.apple.Preferences://" class="item-link item-content external">
-                <div class="item-media"><i class="f7-icons">gear</i></div>
-                <div class="item-inner"><div class="item-title-row"><div class="item-title">Open Settings</div></div></div>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <br><br>
-      </div>
-    </div>
-  `,
-  options: { transition: "f7-cover" },
-},
-{
-  path: "/verifyintegrity/",
-  content: `
-    <div class="page">
-      <div class="navbar">
-        <div class="navbar-bg"></div>
-        <div class="navbar-inner">
-          <div class="left">
-            <a " class="link back"><i class="icon icon-back"></i></a>
-          </div>
-          <div class="title">Unable to install application</div>
-        </div>
-      </div>
-      <div class="page-content">
-        <div class="block inset">
-          <center>
-            <img loading="lazy" src="https://i.imgur.com/tETxFue.png" style="max-width:340px;width:97%;border-radius:20px;margin-bottom:18px;">
-          </center>
-          <strong>How to Fix "Unable to Verify App" or "Integrity Could Not Be Verified"</strong>
-          <ol style="margin-top:14px;padding-left:20px;">
-            <li>This error often means the certificate has been revoked or blacklisted.</li>
-            <li>First, try deleting the app completely and reinstalling it.</li>
-            <li>If the issue persists, <b>backup your data</b> and <b>reset your device to factory settings</b>:</li>
-            <ul>
-              <li>Go to <b>Settings &rarr; General &rarr; Transfer or Reset iPhone &rarr; Erase All Content and Settings</b>.</li>
-            </ul>
-            <li>After reset, restore your backup and try installing again.</li>
-          </ol>
-          <p style="margin-top:10px;color:#888;">Note: Always ensure your data is backed up before performing a factory reset.</p>
-        </div>
-        <div class="list separated inset">
-          <ul>
-            <li>
-              <a href="com.apple.Preferences://" class="item-link item-content external">
-                <div class="item-media"><i class="f7-icons">gear</i></div>
-                <div class="item-inner"><div class="item-title-row"><div class="item-title">Open Settings</div></div></div>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  `,
-  options: { transition: "f7-cover" },
-},
-{
-  path: "/truststore/",
-  content: `
-    <div class="page" data-name="other">
-      <div class="navbar">
-        <div class="navbar-bg"></div>
-        <div class="navbar-inner">
-          <div class="left"><a class="link back"><i class="icon icon-back"></i></a></div>
-          <div class="title">Allow Marketplace from (eg. AltStore)</div>
-        </div>
-      </div>
-      <div class="page-content">
-        <div class="block">
-          <center>
-            <img loading="lazy" src="https://i.imgur.com/UQTwAyS.jpeg" style="max-width:340px;width:97%;border-radius:20px;margin-bottom:18px;">
-          </center>
-          <strong>How to Allow a 3rd Party App Store</strong>
-          <ol style="margin-top:14px;padding-left:20px;">
-            <li>When prompted, tap <b>OK</b> to allow installation.<br>
-              <img loading="lazy" src="https://i.imgur.com/6B57i5A.jpeg" style="max-width:340px;width:97%;border-radius:20px;margin:10px 0;">
-            </li>
-            <li>Open <b>Settings</b>, go to <b>General &rarr; Device Management</b>, and trust the store profile.<br>
-              <img loading="lazy" src="https://i.imgur.com/QAFnPr1.jpeg" style="max-width:340px;width:97%;border-radius:20px;margin:10px 0;">
-            </li>
-            <li>Return to the website and tap <b>Install App Marketplace</b>.<br>
-              <img loading="lazy" src="https://i.imgur.com/WclZ4so.jpeg" style="max-width:340px;width:97%;border-radius:20px;margin:10px 0;">
-            </li>
-          </ol>
-          <p style="margin-top:10px;color:#888;">You can now use the 3rd party marketplace on your device.</p>
-        </div>
-        <div class="list separated inset">
-          <ul>
-            <li>
-              <a href="com.apple.Preferences://" class="item-link item-content external">
-                <div class="item-media"><i class="f7-icons">gear</i></div>
-                <div class="item-inner"><div class="item-title-row"><div class="item-title">Open Settings</div></div></div>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <br><br>
-      </div>
-    </div>
-    <div class="popup" id="devmode">
-      <div class="page">
-        <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
-        <div class="page-content">
-          <div class="block-title block-title">Developer Mode required</div>
-          <div class="block inset">
-            <center>
-              <img loading="lazy" src="https://i.imgur.com/qLbsliJ.png" style="max-width:340px;width:97%;border-radius:20px;margin-bottom:18px;">
-            </center>
-            <strong>How to Enable Developer Mode</strong>
-            <ol style="margin-top:14px;padding-left:20px;">
-              <li>Open <b>Settings</b> on your device.</li>
-              <li>Go to <b>Privacy & Security</b>.</li>
-              <li>Scroll down and enable <b>Developer Mode</b>.</li>
-            </ol>
-          </div>
-          <div class="list separated inset">
-            <ul>
-              <li>
-                <a href="com.apple.Preferences://" class="item-link item-content external">
-                  <div class="item-media"><i class="f7-icons">gear</i></div>
-                  <div class="item-inner"><div class="item-title-row"><div class="item-title">Open Settings</div></div></div>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  `,
-  options: { transition: "f7-cover" },
-},
-{
-  path: "/devmode/",
-  content: `
-    <div class="page">
-      <div class="navbar">
-        <div class="navbar-bg"></div>
-        <div class="navbar-inner">
-          <div class="left"><a class="link back"><i class="icon icon-back"></i></a></div>
-          <div class="title">Developer Mode required</div>
-        </div>
-      </div>
-      <div class="page-content">
-        <div class="block inset">
-          <center>
-            <img loading="lazy" src="https://i.imgur.com/qLbsliJ.png" style="max-width:340px;width:97%;border-radius:20px;margin-bottom:18px;">
-          </center>
-          <strong>How to Enable Developer Mode</strong>
-          <ol style="margin-top:14px;padding-left:20px;">
-            <li>Open <b>Settings</b> on your device.</li>
-            <li>Go to <b>Privacy & Security</b>.</li>
-            <li>Scroll down and toggle <b>Developer Mode</b> ON.</li>
-            <li>Follow any on-screen prompts to confirm.</li>
-          </ol>
-        </div>
-        <div class="list separated inset">
-          <ul>
-            <li>
-              <a href="com.apple.Preferences://" class="item-link item-content external">
-                <div class="item-media"><i class="f7-icons">gear</i></div>
-                <div class="item-inner"><div class="item-title-row"><div class="item-title">Open Settings</div></div></div>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  `,
-  options: { transition: "f7-cover" },
-},
+routes: [
+    {
+      path: '/index/',
+      url: 'index.html',
+    },
   ],
 });
 const mainView = app.views.create(".view-main");
@@ -549,9 +339,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof screenshotUrls === 'string') screenshotUrls = JSON.parse(screenshotUrls);
         const pb = app.photoBrowser.create({
             photos: screenshotUrls.map(url => ({ url })),
-            type: 'standalone',
+            type: 'popup',
             navbar: true,
-            toolbar: false,
+            toolbar: true,
             swiper: { zoom: true }
         });
         pb.open();
@@ -589,7 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="block block-strong inset margin-top">
                                 <div style="font-size: 15px; line-height: 1.5;">${item.localizedDescription.replace(/\n/g, '<br>')}</div>
                             </div>
-                            <div class="list simple-list inset list-separated">
+                            <div class="list simple-list list-strong inset">
                                 <ul>
                                     <li><span>Version</span><span>${item.version}</span></li>
                                     <li><span>Size</span><span>${(item.size / 1024 / 1024).toFixed(1)} MB</span></li>
@@ -736,12 +526,24 @@ function renderSourcesList(repos) {
                         <div class="right"> <a onclick="navigator.share({url: '${repo.sourceURL}' })" class="link icon-only"><i class="icon f7-icons">square_arrow_up</i></a></div>
                     </div>
                 </div>
-                <div class="page-content">                         
+                <div class="page-content repo-page">                         
                     <div class="list media-list separated inset virtual-list virtual-list-${pageId} searchbar-found"></div>
                      <div class="list list-strong simple-list searchbar-not-found inset">
                 <ul><li>Unfortunately, no items were found.</li></ul>
             </div>
-            </div>`;
+            </div><div class="sidebar">
+  <div class="sidebar-header">
+    <i class="f7-icons">cube_box_fill</i>
+  </div>
+  <div class="sidebar-list">
+    <ul>
+      <li><a class="item-link popup-open" data-popup="#settings"><i class="f7-icons">gear</i> Settings</a></li>
+       
+    </ul>
+  </div>
+  <br>
+  <center>SoftwareKit v1.0</center>
+</div>`;
 
         app.views.main.router.navigate({
             url: `/repo-detail/${pageId}/`,
@@ -920,20 +722,18 @@ function checkConnection() {
           <div style="display:flex;align-items:center;">
             <i class="icon f7-icons color-red" style="font-size:32px;margin-right:12px;">wifi_slash</i>
             <div>
-              <div style="font-weight:bold;">Connection to the server could not be established.</div>
+              <div style="font-weight:bold;">Connection to the server could not be established.Some features will not be available.</div>
               <div style="margin-top:4px;">Please check your internet connection and try again.</div>
             </div>
           </div>
         `,
         buttons: [{
           text: 'Dismiss',
-          close: true,
-          cssClass: 'color-red'
+          close: true,        
         }],
         closeByBackdropClick: false,
         closeByOutsideClick: false,
         destroyOnClose: true,
-        cssClass: 'connection-dialog'
       });
       dialogInstance.open();
     }
@@ -1018,7 +818,7 @@ function createItemHtml(item) {
           <div class="item-inner">
             <div class="item-title-row">
               <div class="item-title">
-                ${item.title} <i style="font-size: 17px; color: ${item.badgeColor};" class="f7-icons">${item.badge}</i>
+                ${item.title}
               </div>
             </div>
             <div class="item-subtitle">${item.category}</div>
@@ -1057,7 +857,7 @@ function createPopupHtml(item) {
                       </div>
                       
              
-          <div class="block-title" style="font-size: 20px; color: #000; margin-top: 25px;">Preview</div>
+          <div class="block-title">Preview</div>
          <center>
                 <div class="screenshot" onclick="openPhotoBrowser(${JSON.stringify(item.screenshots).replace(/"/g, "&quot;")})">
                   ${generateScreenshotElements(item.screenshots)}          
@@ -1071,7 +871,7 @@ function createPopupHtml(item) {
              </div>
           </div>
 
-          <div class="list simple-list inset">
+          <div class="list simple-list list-strong inset">
             <ul>
               <li>
                 <span>Category</span>
