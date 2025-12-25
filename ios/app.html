@@ -13,11 +13,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons@5.0.5/css/framework7-icons.css" integrity="sha256-RSzKDnaL5c8/Ksi7QeDBiOtJSr5k3LbqDGqs4NKDl7M=" crossorigin="anonymous">
     <link rel="apple-touch-icon" href="https://softwarekit.pages.dev/favicon.png" id="favicon">
 </head>
-
 <body>
     <div id="app">
         <div class="view view-main">
-            <div class="page">
+            <div class="page safe-area-right">              
                 <div class="navbar navbar-large navbar-transparent">
                     <div class="navbar-bg"></div>
                     <div class="navbar-inner">
@@ -41,7 +40,22 @@
                             </form>
                         </div>
                     </div>
-                </div>
+                </div><div class="sidebar">
+  <div class="sidebar-header">
+    <i class="f7-icons">cube_box_fill</i>
+  </div>
+  <div class="sidebar-list">
+    <ul>
+      <li><a href="#homeTab" class="item-link tab-link tab-link-active" data-tab-title="Today"><i class="f7-icons">today_fill</i> Apps</a></li>
+      <li><a href="#globalTab" class="item-link tab-link" data-tab-title="Global" ><i class="f7-icons">globe</i> Global</a></li>
+      <li><a href="#searchTab" class="item-link tab-link" data-tab-title="Library"><i class="f7-icons">square_stack_3d_up_fill</i> App Library</a></li>
+      <li><a href="#sourcesTab" class="item-link tab-link" data-tab-title="Sources"><i class="f7-icons">arrow_down_circle_fill</i> Sources</a></li>
+    </ul>
+  </div>
+  <br>
+  <center>SoftwareKit v1.0</center>
+</div>
+   
                 <div class="toolbar tabbar tabbar-icons toolbar-bottom searchbar-hide-on-enable">
                     <div class="toolbar-inner">
                         <div class="toolbar-pane">
@@ -207,29 +221,29 @@
 
 
                         </div>
-                        <div class="block-title">Guides <i class="f7-icons icon-small">bookmark_fill</i></div>
+                        <div class="block-title">Guides <i class="f7-icons icon-small">book_fill</i></div>
                         <div class="swiper swiper-padding guides swiper-initialized swiper-horizontal swiper-ios swiper-backface-hidden">
                             <div class="swiper-wrapper" aria-live="polite">
                                 <div class="swiper-slide guides guides-active" role="group" aria-label="1 / 5">
-                                    <a class="link" href="/truststore/" data-no-instant>
+                                    <a class="link popup-open" data-popup="#trustStore">
                                         <img loading="lazy" src="https://i.imgur.com/UQTwAyS.jpeg">
                                         <div class="backout"></div>
                                     </a>
                                 </div>
                                 <div class="swiper-slide guides" role="group" aria-label="2 / 5">
-                                    <a class="link" href="/trustcert/" data-no-instant>
+                                    <a class="link popup-open"  data-popup="#trustCert">
                                         <img loading="lazy" src="https://i.imgur.com/YQxY1aO.png">
                                         <div class="backout"></div>
                                     </a>
                                 </div>
                                 <div class="swiper-slide guides guides-next" role="group" aria-label="3 / 5">
-                                    <a class="link" href="/verifyintegrity/" data-no-instant>
+                                    <a class="link popup-open" data-popup="#verifyintegrity">
                                         <img loading="lazy" src="https://i.imgur.com/tETxFue.png">
                                         <div class="backout"></div>
                                     </a>
                                 </div>
                                 <div class="swiper-slide guides" role="group" aria-label="4 / 5">
-                                    <a class="link" href="/devmode/" data-no-instant>
+                                    <a class="link popup-open" data-popup="#devmode">
                                         <img loading="lazy" src="https://i.imgur.com/qLbsliJ.png">
                                         <div class="backout"></div>
                                     </a>
@@ -239,7 +253,7 @@
                         </div>
                         <div class="block-title">Favorites<i class="f7-icons icon-small">heart_fill</i></div>
 
-                        <div class="list separated media-list inset sortable sortable-tap-hold" id="fav">
+                        <div class="list separated media-list inset  sortable sortable-tap-hold" id="fav">
                             <ul></ul>
                             <p id="favempty" class="centered-empty">Nothing to see here <i class="f7-icons icon-small">tray_fill</i></p>
                         </div>
@@ -261,7 +275,7 @@
                                 <li>Unfortunately, no items were found.</li>
                             </ul>
                         </div>
-                        <div class="list media-list virtual-list separated inset grid-list mt-negative">
+                        <div class="list media-list virtual-list separated inset  mt-negative">
                             <ul></ul>
                         </div>
 
@@ -280,7 +294,7 @@
                             </div>
                         </div>
                         <div class="block-title">Sources</div>
-                        <div class="list media-list separated inset grid-list sortable sortable-tap-hold" id="sources-list-container">
+                        <div class="list media-list separated inset sortable sortable-tap-hold" id="sources-list-container">
                             <ul id="sources-list"></ul>
                         </div>
 
@@ -380,7 +394,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="popup popup-tablet-fullscreen" id="hs" data-close-on-escape="false" data-swipe-to-close="false" data-push="false">
+                    <div class="popup" id="hs" data-close-on-escape="false" data-swipe-to-close="false" data-push="false">
                         <div class="page">
                             <div class="page-content bg-img">
                                 <div class="block block-strong inset liquid-glass">
@@ -808,6 +822,140 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
+                         <div class="popup" id="trustCert">
+                            <div class="page">
+                                <div class="swipe-nav">
+                                    <div><i class="f7-icons">minus</i></div>
+                                </div>
+                                <div class="page-content">
+                                    <div class="block-title block-title-large">Untrusted Enterprise Developer</div>
+        <div class="block inset">
+          <center>
+            <img loading="lazy" src="https://i.imgur.com/YQxY1aO.png" style="max-width:340px;width:97%;border-radius:20px;">
+          </center>
+          <strong>How to Trust an Enterprise Certificate</strong>
+          <ol>
+            <li>Open <b>Settings</b> on your device.</li>
+            <li>Go to <b>General</b> &rarr; <b>VPN & Device Management</b>.</li>
+            <li>Find the relevant <b>Enterprise App</b> profile under "Enterprise App" or "Device Management".</li>
+            <li>Tap the profile, then tap <b>Trust</b> and confirm your choice.</li>
+            <li>After trusting, you can open the app as normal.</li>
+          </ol>
+          <p style="color:#888;">Trusting the certificate ensures the app is authenticated and can run on your device securely.</p>
+        </div>
+        <div class="list separated inset">
+          <ul>
+            <li>
+              <a href="com.apple.Preferences://" class="item-link item-content external">
+                <div class="item-media"><i class="f7-icons">gear</i></div>
+                <div class="item-inner"><div class="item-title-row"><div class="item-title">Open Settings</div></div></div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <br><br>
+      </div>
+    </div>
+    <div class="popup" id="verifyintegrity">
+                            <div class="page">
+                                <div class="swipe-nav">
+                                    <div><i class="f7-icons">minus</i></div>
+                                </div>
+                                <div class="page-content">
+                                    <div class="block-title block-title-large">Unable to install application</div>
+        <div class="block inset">
+          <center>
+            <img loading="lazy" src="https://i.imgur.com/tETxFue.png" style="max-width:340px;width:97%;border-radius:20px;">
+          </center>
+          <strong>How to Fix "Unable to Verify App" or "Integrity Could Not Be Verified"</strong>
+          <ol>
+            <li>This error often means the certificate has been revoked or blacklisted.</li>
+            <li>First, try deleting the app completely and reinstalling it.</li>
+            <li>If the issue persists, <b>backup your data</b> and <b>reset your device to factory settings</b>:</li>
+            <ul>
+              <li>Go to <b>Settings &rarr; General &rarr; Transfer or Reset iPhone &rarr; Erase All Content and Settings</b>.</li>
+            </ul>
+            <li>After reset, restore your backup and try installing again.</li>
+          </ol>
+          <p style="color:#888;">Note: Always ensure your data is backed up before performing a factory reset.</p>
+        </div>
+        <div class="list separated inset">
+          <ul>
+            <li>
+              <a href="com.apple.Preferences://" class="item-link item-content external">
+                <div class="item-media"><i class="f7-icons">gear</i></div>
+                <div class="item-inner"><div class="item-title-row"><div class="item-title">Open Settings</div></div></div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+     <div class="popup" id="devmode">
+      <div class="page">
+        <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
+        <div class="page-content">
+          <div class="block-title block-title-large">Developer Mode required</div>
+          <div class="block inset">
+            <center>
+              <img loading="lazy" src="https://i.imgur.com/qLbsliJ.png" style="max-width:340px;width:97%;border-radius:20px;">
+            </center>
+            <strong>How to Enable Developer Mode</strong>
+            <ol >
+              <li>Open <b>Settings</b> on your device.</li>
+              <li>Go to <b>Privacy & Security</b>.</li>
+              <li>Scroll down and enable <b>Developer Mode</b>.</li>
+            </ol>
+          </div>
+          <div class="list separated inset">
+            <ul>
+              <li>
+                <a href="com.apple.Preferences://" class="item-link item-content external">
+                  <div class="item-media"><i class="f7-icons">gear</i></div>
+                  <div class="item-inner"><div class="item-title-row"><div class="item-title">Open Settings</div></div></div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+ <div class="popup" id="trustStore">
+                            <div class="page">
+                                <div class="swipe-nav">
+                                    <div><i class="f7-icons">minus</i></div>
+                                </div>
+                                <div class="page-content">
+                                    <div class="block-title block-title-large">Allow Marketplace from (eg. AltStore)</div>       
+        <div class="block">  
+            <center>                       
+            <img loading="lazy" src="https://i.imgur.com/UQTwAyS.jpeg" style="max-width:340px;width:97%;border-radius:20px;"> </center>
+            <br>      
+          <strong>How to Allow a 3rd Party App Store</strong>
+          <ol>
+            <li>When prompted, tap <b>OK</b> to allow installation.
+            </li>
+            <li>Open <b>Settings</b>, go to <b>General &rarr; Device Management</b>, and trust the store profile.<br>           
+            </li>
+            <li>Return to the website and tap <b>Install App Marketplace</b>.<br>     
+            </li>
+          </ol>
+          <p style="color:#888;">You can now use the 3rd party marketplace on your device.</p>
+        </div>
+        <div class="list separated inset">
+          <ul>
+            <li>
+              <a href="com.apple.Preferences://" class="item-link item-content external">
+                <div class="item-media"><i class="f7-icons">gear</i></div>
+                <div class="item-inner"><div class="item-title-row"><div class="item-title">Open Settings</div></div></div>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <br><br>
+      </div>
+    </div>
                         <script src="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.js"></script>
                         <script src="js/app.js"></script>
                         <script>

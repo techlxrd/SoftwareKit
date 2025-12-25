@@ -1,11 +1,11 @@
 {
-  "name": "AppRealm",
+  "name": "SoftwareKit Repo",
   "subtitle": "",
-  "description": "Official AltStore source provided by AppRealm. ",
+  "description": "Official AltStore source provided by SoftwareKit. ",
   "iconURL": "https://i.imgur.com/gNCFPYq.png",
-  "website": "https://apprealm.pages.dev",
+  "website": "https://softwarekit.pages.dev",
   "patreonURL": "",
-  "tintColor": "#b2b2b2",
+  "tintColor": "#007AFF",
   "featuredApps": [
     "com.atebits.Tweetie2",
     "com.kdt.livecontainer",
@@ -769,11 +769,11 @@
   ],
   "news": [
     {
-      "title": "AppRealm v1.0 was released 🎉",
+      "title": "SoftwareKit v1.0 was released 🎉",
       "identifier": "news_0df3yswqwr",
-      "caption": "See what's new in the app! ",
+      "caption": "Let's celebrate the release of SoftwareKit! ",
       "date": "2025-12-18T14:46",
-      "tintColor": "#b2b2b2",
+      "tintColor": "#007AFF",
       "imageURL": "",
       "notify": true,
       "url": "",
