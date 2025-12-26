@@ -12,17 +12,6 @@
     "screenshots": ["https://i.imgur.com/71vSVyZ.jpeg"]
   },
   {
-    "id": "pojavlauncher",
-    "title": "Pojav Launcher",
-    "category": "Other",
-    "icon": "https://pojavlauncher.app/logo.png",
-    "description": "Experience Minecraft Java Edition on your Android or iOS device with Pojav Launcher—fast, flexible, and open-source for ultimate compatibility.",
-    "compatible": "Unknown",
-    "get_link": "https://pojavlauncherteam.github.io/INSTALL.html#ios",
-    "type": "App",
-    "screenshots": []
-  },
-  {
     "id": "walls",
     "title": "Show Walls",
     "category": "Customisation",
@@ -104,7 +93,7 @@
     ]
   },
   {
-    "id": "Appraven",
+    "id": "appraven",
     "title": "AppRaven",
     "category": "Other",
     "icon": "https://i.imgur.com/I8tG6lq.png",
@@ -318,21 +307,6 @@
     ]
   },
   {
-    "id": "sleepsaver",
-    "title": "SleepSaver",
-    "category": "Other",
-    "icon": "https://caspd3v.github.io/SleepSaverSite/img/icon.png",
-    "description": "Enjoy Apple’s legendary screensavers—minus the DemoUnit watermark—on your device, with SleepSaver.",
-    "compatible": "Unknown",
-    "get_link": "https://github.com/caspd3v/SleepSaverJailed/releases/download/1.3.1/SleepSaver.Jailed.1.3.1.ipa",
-    "type": "App",
-    "screenshots": [
-      "https://i.imgur.com/3Pc3QwS.png",
-      "https://i.imgur.com/WJaYsMm.png",
-      "https://i.imgur.com/Sg7PpyM.png"
-    ]
-  },
-  {
     "id": "textastic",
     "title": "Textastic",
     "category": "DeveloperTool",
@@ -357,45 +331,6 @@
     "type": "App",
     "screenshots": [
       "https://taurine.App/assets/images/iphones.png"
-    ]
-  },
-  {
-    "id": "gbox",
-    "title": "GBox",
-    "category": "Sideloading",
-    "icon": "https://gbox.pub/Public/resources/icon256.png",
-    "description": "GBox is a powerful, free resigning tool for iOS—no jailbreak required. Sign and install third-party apps with ease.",
-    "compatible": "14 or later",
-    "get_link": "https://ts.gbox.run/GBox_v4.5.2.ipa",
-    "type": "App",
-    "screenshots": [
-      "https://i.imgur.com/FzFCOTe.png"
-    ]
-  },
-  {
-    "id": "esign",
-    "title": "ESign",
-    "category": "Sideloading",
-    "icon": "https://esign.yyyue.xyz/ESignLogo200.png",
-    "description": "Sign and install IPA files for free on your iOS device with ESign—a user-friendly, powerful IPA signing app.",
-    "compatible": "11 or later",
-    "get_link": "https://pan.yyyue.xyz/d/esign/esign_5.0.2_unsigned.ipa",
-    "type": "App",
-    "screenshots": [
-      "https://i.imgur.com/ozbY9KF.png"
-    ]
-  },
-  {
-    "id": "uyouplus",
-    "title": "uYou+",
-    "category": "TweakedApp",
-    "icon": "https://img.freepik.com/premium-vector/red-youtube-logo-social-media-logo_197792-1803.jpg",
-    "description": "uYou+ is the ultimate modded YouTube app—enjoy advanced features for an enhanced video experience.",
-    "compatible": "14 or later",
-    "get_link": "https://github.com/qnblackcat/uYouPlus/releases/download/v18.14.1-3.0/uYouPlus_18.14.1_3.0.ipa",
-    "type": "App",
-    "screenshots": [
-      "https://i.imgur.com/21gbFjQ.jpg"
     ]
   },
   {
@@ -430,7 +365,7 @@
     ]
   },
   {
-    "id": "bullfrog",
+    "id": "bullfrogassistant",
     "title": "BullfrogAssistant",
     "category": "Other",
     "icon": "https://api.ios222.com/logo256.png",
@@ -456,7 +391,7 @@
     ]
   },
   {
-    "id": "Appdb",
+    "id": "appdb",
     "title": "AppDB",
     "category": "3rd Party App Store",
     "icon": "https://pbs.twimg.com/profile_images/1838260547944394752/UfYijXbB.jpg",
@@ -728,27 +663,13 @@
     ]
   },
   {
-    "id": "scarlet",
-    "title": "Scarlet",
-    "category": "3rd Party AppStore",
-    "icon": "https://pbs.twimg.com/profile_images/1367920028813787144/cwvAQV9f_400x400.jpg",
-    "description": "Scarlet delivers the fastest, smoothest experience for installing and managing your favorite apps, with direct and computer-based install options.",
-    "compatible": "Unknown",
-    "get_link": "https://usescarlet.com",
-    "type": "App",
-    "device": "iPhone/iPad/Mac",
-    "screenshots": [
-      "https://i.imgur.com/btUCPVM.png"
-    ]
-  },
-  {
     "id": "zeus",
     "title": "Zeus",
     "category": "3rd Party App Store",
-    "icon": "https://i.imgur.com/YlIxZud.png",
-    "description": "Zeus is a leading free signing service for iOS—get your favorite tweaked apps and classic jailbreak tools effortlessly.",
+    "icon": "https://i.imgur.com/g78yZP4.jpeg",
+    "description": "The easiest way to install apps on your iPhone or iPad.No computer required.",
     "compatible": "Unknown",
-    "get_link": "https://getzeus.app/app/index.html",
+    "get_link": "https://getzeus.app/",
     "type": "App",
     "screenshots": [
       "https://i.imgur.com/HN9AwVQ.jpg"

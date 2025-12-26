@@ -15,6 +15,66 @@
   ],
   "apps": [
     {
+      "name": "Taurine",
+      "bundleIdentifier": "org.coolstar.taurine",
+      "marketplaceID": "",
+      "developerName": "Example Developer",
+      "subtitle": "An awesome app.",
+      "localizedDescription": "This is an awesome app only available on AltStore.",
+      "iconURL": "https://i.imgur.com/WXL3mle.png",
+      "tintColor": "#cf3c5a",
+      "category": "other",
+      "screenshots": [],
+      "versions": [
+        {
+          "downloadURL": "https://github.com/Odyssey-Team/Taurine/releases/download/1.1.7-3/Taurine.1.1.7-3.ipa",
+          "size": 32200000,
+          "version": "1.1.7-3",
+          "buildVersion": null,
+          "date": "2025-12-26T10:02:00+02:00",
+          "localizedDescription": null,
+          "minOSVersion": null
+        }
+      ],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {
+          "NSAccentColorName": "AccentColor"
+        }
+      },
+      "patreon": {}
+    },
+    {
+      "name": "Opium Tool",
+      "bundleIdentifier": "com.iRayanKhan.Opium-Tool",
+      "marketplaceID": "",
+      "developerName": "Example Developer",
+      "subtitle": "",
+      "localizedDescription": "",
+      "iconURL": "https://i.imgur.com/30Mwq1v.png",
+      "tintColor": "#c9af29",
+      "category": "utilities",
+      "screenshots": [],
+      "versions": [
+        {
+          "downloadURL": "https://github.com/iRayanKhan/TanaraSign/raw/main/TanaraSign.ipa",
+          "size": 2200000,
+          "version": "1.00",
+          "buildVersion": null,
+          "date": "2025-12-26T10:00:00+02:00",
+          "localizedDescription": null,
+          "minOSVersion": null
+        }
+      ],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {
+          "NSPhotoLibraryAddUsageDescription": "Save image to camera roll."
+        }
+      },
+      "patreon": {}
+    },
+    {
       "name": "Feather",
       "bundleIdentifier": "thewonderofyou.Feather",
       "marketplaceID": "",
