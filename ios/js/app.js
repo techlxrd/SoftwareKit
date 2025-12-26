@@ -107,49 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
 });
-const CACHE_KEY = 'bingWallpapers';
-const CACHE_TTL = 24 * 60 * 60 * 1000;
-const WALLPAPER_COUNT = 20; 
 
-function fadeInBg(el) {
-  el.style.opacity = 0;
-  el.style.transition = 'opacity 3s';
-  void el.offsetWidth;
-  el.style.opacity = 1;
-}
-
-async function setRandomBingWallpaperBgImg() {
-  let cached = JSON.parse(localStorage.getItem(CACHE_KEY) || '{}');
-  const now = Date.now();
-
-  if (!cached.images || !cached.timestamp || (now - cached.timestamp) > CACHE_TTL) {
-    try {
-      const res = await fetch('https://corsproxy.io/?https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=8&mkt=en-US');
-      const data = await res.json();
-      const images = data.images.map(img => "https://www.bing.com" + img.url);
-      cached = { images, timestamp: now };
-      localStorage.setItem(CACHE_KEY, JSON.stringify(cached));
-    } catch (e) {
-      console.error("Failed to fetch Bing wallpapers!", e);
-    
-      if (!cached.images) cached.images = [];
-    }
-  }
-  const urls = cached.images || [];
-  const randomUrl = urls.length ? urls[Math.floor(Math.random() * urls.length)] : null;
-
-  document.querySelectorAll('.bg-img').forEach(el => {
-    if (randomUrl) {
-  el.style.backgroundImage = `url('${randomUrl}')`;
-  fadeInBg(el);
-} else {
-  el.style.backgroundImage = "url('./assets/background.png')";
-  fadeInBg(el);
-}
-  });
-}
-
-setRandomBingWallpaperBgImg();
 function toggleDarkMode() {
   document.querySelector("html").classList.toggle("dark");
 }
