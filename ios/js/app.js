@@ -26,7 +26,6 @@ routes: [
     },
   ],
 });
-
 const mainView = app.views.create(".view-main");
 document.addEventListener("DOMContentLoaded", () => {
   new Swiper(".guides", {
@@ -110,11 +109,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 const CACHE_KEY = 'bingWallpapers';
 const CACHE_TTL = 24 * 60 * 60 * 1000;
-const WALLPAPER_COUNT = 8; 
+const WALLPAPER_COUNT = 20; 
 
 function fadeInBg(el) {
   el.style.opacity = 0;
-  el.style.transition = 'opacity 1s';
+  el.style.transition = 'opacity 3s';
   void el.offsetWidth;
   el.style.opacity = 1;
 }
@@ -432,7 +431,7 @@ function renderSourcesList(repos) {
         <a class="item-link repo-link" href="#" data-url="${repo.sourceURL}">
           <div class="item-content">
             <div class="item-media">
-              <img src="${iconSrc}" width="45" height="45">
+              <img src="${iconSrc}">
             </div>
             <div class="item-inner">
               <div class="item-title-row">
@@ -608,31 +607,26 @@ function renderSourcesList(repos) {
         });
     }
 
-async function refreshData(force = false) {
-    let repos = getRepos();
+    async function refreshData(force = false) {
+        let repos = getRepos();
+        if (force) app.dialog.preloader('Refreshing Sources');
 
-    if (force) app.dialog.preloader('Refreshing Sources');
+        try {
+            if (force || repos.some(r => !r.apps || r.apps.length === 0)) {
+                const waitPromise = force ? new Promise(resolve => setTimeout(resolve, 2000)) : Promise.resolve();
+                const fetchPromise = Promise.all(repos.map(r => fetchRepo(r.sourceURL)));
+                
+                const [_, updates] = await Promise.all([waitPromise, fetchPromise]);
+                repos = updates.map((newRepo, i) => newRepo || repos[i]);
+                saveRepos(repos);
+            }
+        } finally {
+            if (force) app.dialog.close();
+        }
 
-    try {
-        const waitPromise = force
-            ? new Promise(resolve => setTimeout(resolve, 2000))
-            : Promise.resolve();
-
-        const fetchPromise = Promise.all(
-            repos.map(r => fetchRepo(r.sourceURL))
-        );
-
-        const [, updates] = await Promise.all([waitPromise, fetchPromise]);
-
-        repos = updates.map((newRepo, i) => newRepo || repos[i]);
-        saveRepos(repos);
-    } finally {
-        if (force) app.dialog.close();
+        renderSourcesList(repos);
+        renderNews(repos);
     }
-
-    renderSourcesList(repos);
-    renderNews(repos);
-}
 
     document.getElementById('add-source-fab').addEventListener('click', () => {
         app.dialog.prompt('Add a new source by entering the link below. SoftwareKit is designed to work exclusively with <strong>AltStore</strong> format sources.','Add source', async (url) => {
