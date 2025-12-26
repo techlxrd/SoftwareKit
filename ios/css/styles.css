@@ -100,13 +100,13 @@ body {
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;     
-        background: url('https://www.sourcesplash.com/i/23069a2cd3bd');       
+        background: url('../assets/bg-dark.jpeg');       
     }
      .bg-img{
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;     
-        background: url('https://www.sourcesplash.com/i/5693e4202dfe');       
+        background: url('../assets/bg-light.jpeg');       
     }
 
     .popup-img {
