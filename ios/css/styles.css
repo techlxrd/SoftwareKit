@@ -93,17 +93,17 @@ body {
         display: flex;
         align-items: center;
     }
-    .bg-img {
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;     
-        background: url('https://www.sourcesplash.com/i/5693e4202dfe');       
-    }
-     .bg-img.dark{
+   .bg-img.dark, .bg-img .dark, .dark .bg-img{
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;     
         background: url('https://www.sourcesplash.com/i/4a37ca983c31');       
+    }
+     .bg-img{
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;     
+        background: url('https://www.sourcesplash.com/i/5693e4202dfe');       
     }
 
     .popup-img {
