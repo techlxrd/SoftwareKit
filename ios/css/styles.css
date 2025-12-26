@@ -97,7 +97,7 @@ body {
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;     
-        background: url('https://www.sourcesplash.com/i/4a37ca983c31');       
+        background: url('https://www.sourcesplash.com/i/23069a2cd3bd');       
     }
      .bg-img{
         background-size: cover;
@@ -114,6 +114,7 @@ body {
     .more {
         margin-left: 50% !important;
     }
+   .app-icon{width: 110px; height: 110px; border-radius: 30%; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); object-fit:cover;}
        .accent-color-indicator {
         width: 27px;
         height: 27px;
