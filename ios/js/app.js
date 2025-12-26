@@ -26,7 +26,14 @@ routes: [
     },
   ],
 });
+
 const mainView = app.views.create(".view-main");
+document.addEventListener("DOMContentLoaded", () => {
+  new Swiper(".guides", {
+    slidesPerView: "auto",
+    spaceBetween: 10
+  });
+});
 document.addEventListener('click', function (e) {
   const clickedLink = e.target.closest('.sidebar-list .item-link');
   
@@ -908,7 +915,7 @@ function createPopupHtml(item) {
   <div class="item-inner">
     <div class="item-title">Report</div>
   </div>
-</a>  
+</a> </li> 
         </ul>       
       </div>                        
       </div>
@@ -1170,8 +1177,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAndLoadApps();
   displayFavorites();
 });
-
-
+ 
 var swiperFeatured = new Swiper(".featured", {
   slidesPerView: "auto",
   spaceBetween: 10,
@@ -1181,7 +1187,7 @@ var swiperFeatured = new Swiper(".featured", {
     disableOnInteraction: true
   }
 });
-
+                        
 function shareURL() {
   if (navigator.share) {
     navigator.share({
