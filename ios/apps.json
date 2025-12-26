@@ -429,21 +429,6 @@
     ]
   },
   {
-    "id": "cowabungalite",
-    "title": "CowabungaLite",
-    "category": "Customisation",
-    "icon": "https://i.imgur.com/HEdpcRN.jpg",
-    "description": "CowabungaLite is a jailed customization toolbox for iOS 15+, requiring a Mac or Windows PC. Backup your device before use!",
-    "compatible": "15 or later",
-    "get_link": "https://github.com/leminlimez/CowabungaLite",
-    "type": "Unknown",
-    "screenshots": [
-      "https://github.com/LeminLimez/CowabungaLite/raw/main/Images/Dark/Explore.png",
-      "https://github.com/LeminLimez/CowabungaLite/raw/main/Images/Dark/Theming.png",
-      "https://github.com/LeminLimez/CowabungaLite/raw/main/Images/Dark/ControlCenter.png"
-    ]
-  },
-  {
     "id": "Appbox",
     "title": "AppBox",
     "category": "3rd Party App Store",
