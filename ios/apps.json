@@ -209,11 +209,11 @@
     ]
   },
   {
-    "id": "iconfighub",
-    "title": "iConfigHub",
-    "category": "Other",
+    "id": "iconfigrealm",
+    "title": "iConfigRealm",
+    "category": "Utilities",
     "icon": "https://iconfigrealm.netlify.app/assets/images/iconfigrealm.jpeg",
-    "description": "Install creative device mods, download screen savers, join TestFlight betas, and access exclusive configuration profiles—all in one hub.",
+    "description": "Customize your device with cool lite modifications—no jailbreak needed (computer required). Download powerful iOS Shortcuts, stunning screen savers, cool configuration profiles, and much more! Dive in now! 🍏✨",
     "compatible": "Unknown",
     "get_link": "https://iconfighub.netlify.App",
     "type": "Website",
