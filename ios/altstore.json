@@ -2,7 +2,7 @@
   "name": "SoftwareKit Repo",
   "subtitle": "",
   "description": "Official AltStore source provided by SoftwareKit. ",
-  "iconURL": "https://i.imgur.com/gNCFPYq.png",
+  "iconURL": "https://i.imgur.com/63OGO4y.png",
   "website": "https://softwarekit.pages.dev",
   "patreonURL": "",
   "tintColor": "#007AFF",
@@ -769,14 +769,14 @@
   ],
   "news": [
     {
-      "title": "SoftwareKit v1.0 was released 🎉",
+      "title": "SoftwareKit is live 🎉",
       "identifier": "news_0df3yswqwr",
       "caption": "Let's celebrate the release of SoftwareKit! ",
-      "date": "2025-12-18T14:46",
+      "date": "2026-02-18T14:46",
       "tintColor": "#007AFF",
-      "imageURL": "",
-      "notify": true,
-      "url": "",
+      "imageURL": "https://i.imgur.com/aW6Gpaw.png",
+      "notify": false,
+      "url": "https://softwarekit.pages.dev",
       "appID": null
     }
   ]
