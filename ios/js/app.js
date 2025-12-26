@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
                          <div style="margin-top: 40px; padding: 0px;">
           <div class="block" style="margin-top: 27px; margin-bottom: 20px;">
             <div style="display: flex; gap: 15px;">
-                                    <img src="${item.iconURL}" style="width: 110px; height: 110px; border-radius: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); object-fit:cover;">
+                                    <img src="${item.iconURL}" class="app-icon">
                                     <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
                                         <div style="font-size: 22px; font-weight: 700; line-height: 1.2;">${item.name}</div>
                                         <div style="font-size: 15px; color: #8e8e93; margin-top: 4px;"">${item.developerName}</div>
@@ -805,7 +805,7 @@ function createPopupHtml(item) {
           
           <div class="block" style="margin-top: 27px; margin-bottom: 20px;">
             <div style="display: flex; gap: 15px;">
-              <img src="${item.icon}" style="width: 110px; height: 110px; border-radius: 22px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05);">
+              <img src="${item.icon}" class="app-icon">
               <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
                 <div style="font-size: 22px; font-weight: 700; line-height: 1.2;">${item.title}</div>
                 <div style="font-size: 15px; color: #8e8e93; margin-top: 4px;">${item.category}</div>
