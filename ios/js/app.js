@@ -608,26 +608,31 @@ function renderSourcesList(repos) {
         });
     }
 
-    async function refreshData(force = false) {
-        let repos = getRepos();
-        if (force) app.dialog.preloader('Refreshing Sources');
+async function refreshData(force = false) {
+    let repos = getRepos();
 
-        try {
-            if (force || repos.some(r => !r.apps || r.apps.length === 0)) {
-                const waitPromise = force ? new Promise(resolve => setTimeout(resolve, 2000)) : Promise.resolve();
-                const fetchPromise = Promise.all(repos.map(r => fetchRepo(r.sourceURL)));
-                
-                const [_, updates] = await Promise.all([waitPromise, fetchPromise]);
-                repos = updates.map((newRepo, i) => newRepo || repos[i]);
-                saveRepos(repos);
-            }
-        } finally {
-            if (force) app.dialog.close();
-        }
+    if (force) app.dialog.preloader('Refreshing Sources');
 
-        renderSourcesList(repos);
-        renderNews(repos);
+    try {
+        const waitPromise = force
+            ? new Promise(resolve => setTimeout(resolve, 2000))
+            : Promise.resolve();
+
+        const fetchPromise = Promise.all(
+            repos.map(r => fetchRepo(r.sourceURL))
+        );
+
+        const [, updates] = await Promise.all([waitPromise, fetchPromise]);
+
+        repos = updates.map((newRepo, i) => newRepo || repos[i]);
+        saveRepos(repos);
+    } finally {
+        if (force) app.dialog.close();
     }
+
+    renderSourcesList(repos);
+    renderNews(repos);
+}
 
     document.getElementById('add-source-fab').addEventListener('click', () => {
         app.dialog.prompt('Add a new source by entering the link below. SoftwareKit is designed to work exclusively with <strong>AltStore</strong> format sources.','Add source', async (url) => {
