@@ -1110,26 +1110,72 @@ function openSignerPopup() {
   }).open();
 }
 </script>
-<script>function cleanUrl() {
+<script>// Clean URL by removing query parameters
+function cleanUrl() {
     let currentUrl = window.location.href;
     const cleanUrl = currentUrl.split("/?")[0];
     if (currentUrl !== cleanUrl) {
-        window.location.href = cleanUrl;
+        history.replaceState(null, '', cleanUrl); // avoids breaking PWA navigation
     }
 }
 
+// Save device info from URL parameter
+function saveDeviceInfo() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const deviceBase64 = urlParams.get('device');
+    if (deviceBase64) {
+        try {
+            const decodedData = atob(deviceBase64);
+            const deviceInfo = JSON.parse(decodedData);
+            localStorage.setItem('deviceInfo', JSON.stringify(deviceInfo));
+        } catch (error) {
+            console.error("Failed to parse device info:", error);
+        }
+    }
+}
+
+// Display saved device info in the page
+function displayDeviceInfo() {
+    const savedDeviceInfo = localStorage.getItem('deviceInfo');
+    if (savedDeviceInfo) {
+        const deviceInfo = JSON.parse(savedDeviceInfo);
+
+        // Create or update a container element
+        let infoContainer = document.getElementById('device-info');
+        if (!infoContainer) {
+            infoContainer = document.createElement('pre'); // pre preserves formatting
+            infoContainer.id = 'device-info';
+            infoContainer.style.whiteSpace = 'pre-wrap';
+            infoContainer.style.background = '#f0f0f0';
+            infoContainer.style.padding = '10px';
+            infoContainer.style.borderRadius = '5px';
+            infoContainer.style.margin = '10px 0';
+            infoContainer.style.fontFamily = 'monospace';
+            document.body.appendChild(infoContainer);
+        }
+
+        infoContainer.textContent = JSON.stringify(deviceInfo, null, 2);
+    }
+}
+
+// Post request to get UDID/config and trigger download
 async function postRequest() {
     try {
         const currentUrl = window.location.href;
+
+        // Bypass service worker
         const response = await fetch('https://udid.s0n1c.ca/setup', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache'
             },
             body: JSON.stringify({
                 redirect_url: currentUrl,
                 message: 'Hello, World!'
-            })
+            }),
+            cache: 'no-store', // ensures SW doesn't cache
+            credentials: 'omit'
         });
 
         if (!response.ok) {
@@ -1137,38 +1183,27 @@ async function postRequest() {
         }
 
         const responseText = await response.text();
-        const configFileUrl = 'data:application/x-apple-aspen-config;charset=utf-8,' + encodeURIComponent(responseText);
-        window.location.href = configFileUrl;
+
+        // Create downloadable file (works in PWA)
+        const blob = new Blob([responseText], { type: 'application/x-apple-aspen-config' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'device.mobileconfig';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
 
     } catch (error) {
-        alert("Error: " + error.message);
+        console.error("Error:", error.message);
     }
 }
 
-function saveDeviceInfo() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const deviceBase64 = urlParams.get('device');
-    if (deviceBase64) {
-        const decodedData = atob(deviceBase64);
-        try {
-            const deviceInfo = JSON.parse(decodedData);
-            localStorage.setItem('deviceInfo', JSON.stringify(deviceInfo));
-        } catch (error) {}
-    }
-}
-
-function showSavedDeviceInfo() {
-    const savedDeviceInfo = localStorage.getItem('deviceInfo');
-    if (savedDeviceInfo) {
-        const deviceInfo = JSON.parse(savedDeviceInfo);
-        alert(JSON.stringify(deviceInfo, null, 2));
-    }
-}
-
-window.onload = function() {
+// Run on load
+window.addEventListener('load', () => {
     saveDeviceInfo();
     cleanUrl();
-};
+    displayDeviceInfo(); // automatically display device info
+});
 </script>                       
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js"></script>
