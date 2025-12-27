@@ -952,50 +952,66 @@
 
     try {
       const zip = new JSZip();
+      // Use arrayBuffer directly to avoid string conversion stack issues
       const contents = await zip.loadAsync(await this.ipa.arrayBuffer());
-      const p12Raw = await this.p12.arrayBuffer();
+      const p12Buffer = await this.p12.arrayBuffer();
       
-      // 1. EXTRACT IDENTITY
-      dialog.setText("Extracting P12 Certificate...");
-      const p12Der = forge.util.createBuffer(p12Raw);
+      // 1. EXTRACT P12 (Memory Safe)
+      dialog.setText("Extracting P12...");
+      const p12Der = forge.util.createBuffer(new Uint8Array(p12Buffer));
       const p12Asn1 = forge.asn1.fromDer(p12Der);
       const p12 = forge.pkcs12.pkcs12FromAsn1(p12Asn1, pass);
       
-      let keyBag = p12.getBags({ bagType: forge.pki.oids.pkcs8ShroudedKeyBag })[forge.pki.oids.pkcs8ShroudedKeyBag][0];
-      let certBag = p12.getBags({ bagType: forge.pki.oids.certBag })[forge.pki.oids.certBag][0];
-      const privateKey = keyBag.key;
-      const certificate = certBag.cert;
+      const keyBags = p12.getBags({ bagType: forge.pki.oids.pkcs8ShroudedKeyBag })[forge.pki.oids.pkcs8ShroudedKeyBag];
+      const certBags = p12.getBags({ bagType: forge.pki.oids.certBag })[forge.pki.oids.certBag];
+      
+      if (!keyBags || !certBags) throw new Error("Invalid P12 or Password");
+      
+      const privateKey = keyBags[0].key;
+      const certificate = certBags[0].cert;
 
-      // 2. GENERATE CODERESOURCES (The "Seal")
-      dialog.setText("Hashing File Tree...");
+      // 2. GENERATE CODERESOURCES
+      dialog.setText("Hashing files...");
       let appPath = "";
       let codeResources = { files: {}, files2: {} };
       
+      // Find app path first
       for (let path in contents.files) {
-        if (path.startsWith("Payload/") && path.endsWith(".app/")) appPath = path;
+        if (path.startsWith("Payload/") && path.endsWith(".app/")) {
+          appPath = path;
+          break;
+        }
+      }
+
+      const fileKeys = Object.keys(contents.files);
+      for (let i = 0; i < fileKeys.length; i++) {
+        const path = fileKeys[i];
         if (!contents.files[path].dir) {
           const fileData = await contents.files[path].async("uint8array");
+          
+          // Hashing in chunks or using a fresh MD instance per file
           const md = forge.md.sha256.create();
           md.update(forge.util.binary.raw.encode(fileData));
           const hash = forge.util.encode64(md.digest().getBytes());
           
-          // Map hashes for iOS verification
           let relPath = path.replace(appPath, "");
           codeResources.files2[relPath] = { hash: { 'content': hash } };
         }
+        // Update progress bar based on file count
+        dialog.setProgress((i / fileKeys.length) * 40);
       }
 
-      // 3. INJECT PROVISION & CODERESOURCES
+      // 3. INJECT & SIGN
+      dialog.setText("Signing Binary...");
       contents.file(appPath + "embedded.mobileprovision", await this.prov.arrayBuffer());
       contents.file(appPath + "_CodeSignature/CodeResources", JSON.stringify(codeResources));
 
-      // 4. SIGN THE EXECUTABLE
-      dialog.setText("Signing Mach-O Binary...");
       const exeName = appPath.split('/').filter(Boolean).pop().replace('.app', '');
       const exeData = await contents.file(appPath + exeName).async("uint8array");
       
+      // CMS Signature
       const p7 = forge.pkcs7.createSignedData();
-      p7.content = forge.util.createBuffer(exeData);
+      p7.content = forge.util.createBuffer(forge.util.binary.raw.encode(exeData));
       p7.addCertificate(certificate);
       p7.addSigner({
         key: privateKey, certificate: certificate, digestAlgorithm: forge.pki.oids.sha256,
@@ -1007,11 +1023,12 @@
       });
       p7.sign();
       
-      // 5. PACK & UPLOAD
+      // 4. PACK & UPLOAD
       dialog.setProgress(60);
-      dialog.setText("Uploading to GitHub...");
-      const finalIpa = await contents.generateAsync({ type: "blob" });
+      dialog.setText("Packaging...");
+      const finalIpa = await contents.generateAsync({ type: "blob", compression: "STORE" });
 
+      dialog.setText("Uploading...");
       const rel = await fetch(`${this.proxyUrl}/create-release`, {
         method: 'POST',
         body: JSON.stringify({ tag: tag, name: this.ipa.name })
@@ -1023,9 +1040,8 @@
         method: 'POST', body: finalIpa
       });
 
-      // 6. MANIFEST & INSTALL
-      const ipaLink = `https://github.com/techlxrd/softwarekit-signer/releases/download/${tag}/${encodeURIComponent(this.ipa.name)}`;
-      const plist = `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>items</key><array><dict><key>assets</key><array><dict><key>kind</key><string>software-package</string><key>url</key><string>${ipaLink}</string></dict></array><key>metadata</key><dict><key>bundle-identifier</key><string>com.softwarekit.sign</string><key>bundle-version</key><string>1.0</string><key>kind</key><string>software</string><key>title</key><string>${this.ipa.name}</string></dict></dict></array></dict></plist>`;
+      // 5. FINAL INSTALL
+      const plist = `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>items</key><array><dict><key>assets</key><array><dict><key>kind</key><string>software-package</string><key>url</key><string>https://github.com/techlxrd/softwarekit-signer/releases/download/${tag}/${encodeURIComponent(this.ipa.name)}</string></dict></array><key>metadata</key><dict><key>bundle-identifier</key><string>com.softwarekit.sign</string><key>bundle-version</key><string>1.0</string><key>kind</key><string>software</string><key>title</key><string>${this.ipa.name}</string></dict></dict></array></dict></plist>`;
       
       await fetch(`${this.proxyUrl}/upload-asset?url=${encodeURIComponent(upBase)}&name=manifest.plist`, {
         method: 'POST', body: new Blob([plist], {type: 'text/xml'})
@@ -1036,7 +1052,7 @@
 
     } catch (e) {
       app.dialog.close();
-      app.dialog.alert("Signing Failed: " + e.message);
+      app.dialog.alert("Error: " + e.message);
     }
   }
 };
