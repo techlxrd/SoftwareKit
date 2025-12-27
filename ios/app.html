@@ -941,7 +941,8 @@
     <script>var SignerEngine = {
   ipa: null,
   p12: null,
-  ghToken: "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", 
+  prov: null, // Added mobileprovision storage
+  ghToken: "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",
   owner: "techlxrd",
   repo: "softwarekit-signer",
 
@@ -949,52 +950,31 @@
     this[type] = input.files[0];
   },
 
-  // NEW: Extracts Version from Binary or XML Info.plist
-  extractVersion: async function(ipaBuffer) {
-    const zip = new JSZip();
-    const contents = await zip.loadAsync(ipaBuffer);
-    
-    // Find Info.plist inside the .app bundle
+  extractVersion: async function(zip) {
     let plistPath = "";
-    Object.keys(contents.files).forEach(path => {
+    Object.keys(zip.files).forEach(path => {
       if (path.includes(".app/Info.plist") && !path.includes("__MACOSX")) {
         plistPath = path;
       }
     });
 
-    if (!plistPath) return "v1.0.0-unknown";
+    if (!plistPath) return "1.0.0";
 
-    // Get raw data as ArrayBuffer
-    const rawPlist = await contents.file(plistPath).async("arraybuffer");
-    const uint8Array = new Uint8Array(rawPlist);
+    const rawPlist = await zip.file(plistPath).async("arraybuffer");
+    const uint8 = new Uint8Array(rawPlist);
+    let version = "1.0.0";
 
     try {
-      let parsed;
-      // Check if it's Binary (Starts with 'bplist')
-      if (uint8Array[0] === 0x62 && uint8Array[1] === 0x70) {
-        // Use the library we just added
-        parsed = PlistBinary.parse(rawPlist);
+      if (uint8[0] === 0x62 && uint8[1] === 0x70) {
+        const parsed = PlistBinary.parse(rawPlist);
+        version = parsed.CFBundleShortVersionString || "1.0.0";
       } else {
-        // Fallback: Parse as XML String
-        const xmlString = await contents.file(plistPath).async("string");
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlString, "text/xml");
-        // Simple extraction for XML
-        const keys = xmlDoc.getElementsByTagName('key');
-        for (let i = 0; i < keys.length; i++) {
-          if (keys[i].textContent === 'CFBundleShortVersionString') {
-            parsed = { CFBundleShortVersionString: keys[i].nextElementSibling.textContent };
-            break;
-          }
-        }
+        const xml = await zip.file(plistPath).async("string");
+        const match = xml.match(/<key>CFBundleShortVersionString<\/key>\s*<string>(.*?)<\/string>/);
+        version = match ? match[1] : "1.0.0";
       }
-
-      const version = parsed.CFBundleShortVersionString || "1.0.0";
-      return "v" + version;
-    } catch (e) {
-      console.error("Plist Error:", e);
-      return "v1.0.0-error";
-    }
+    } catch (e) { console.error("Plist Parsing Error", e); }
+    return version;
   },
 
   process: async function(btn) {
@@ -1002,57 +982,86 @@
     var log = p.querySelector('#status');
     var pass = p.querySelector('#p12-pass').value;
 
-    if (!this.ipa || !this.p12 || !pass) {
-      app.dialog.alert("Missing files or password.");
+    if (!this.ipa || !this.p12 || !this.prov || !pass) {
+      app.dialog.alert("Missing files! Ensure IPA, P12, and MobileProvision are selected.");
       return;
     }
 
     btn.disabled = true;
-    log.innerHTML = "Processing IPA binary...";
+    log.innerHTML = "Opening IPA and Injecting Provision...";
 
     try {
-      const ipaBuffer = await this.ipa.arrayBuffer();
+      // 1. Load IPA and Inject MobileProvision
+      const zip = new JSZip();
+      const ipaData = await this.ipa.arrayBuffer();
+      const contents = await zip.loadAsync(ipaData);
       
-      // AUTO VERSIONING
-      const autoTag = await this.extractVersion(ipaBuffer);
-      log.innerHTML = `Found Version: ${autoTag}. Uploading to GitHub...`;
+      // Find the .app directory
+      let appPath = "";
+      Object.keys(contents.files).forEach(path => {
+        if (path.startsWith("Payload/") && path.endsWith(".app/")) appPath = path;
+      });
 
-      // 1. Create GitHub Release
-      const releaseRes = await fetch(`https://api.github.com/repos/${this.owner}/${this.repo}/releases`, {
+      // Inject the .mobileprovision file (Crucial for validation)
+      const provData = await this.prov.arrayBuffer();
+      contents.file(appPath + "embedded.mobileprovision", provData);
+
+      // 2. Extract Version for GitHub Tagging
+      const appVersion = await this.extractVersion(contents);
+      // Create a unique tag using the version + current date/time to avoid "Validation Failed"
+      const uniqueTag = `v${appVersion}-${Date.now()}`;
+
+      log.innerHTML = "Generating signed bundle...";
+      const finalIpaBlob = await contents.generateAsync({ type: "blob" });
+
+      log.innerHTML = `Creating Release: ${uniqueTag}...`;
+
+      // 3. GitHub API: Create Release
+      const relRes = await fetch(`https://api.github.com/repos/${this.owner}/${this.repo}/releases`, {
         method: 'POST',
-        headers: { 'Authorization': `token ${this.ghToken}` },
+        headers: { 
+          'Authorization': `token ${this.ghToken}`,
+          'Accept': 'application/vnd.github.v3+json'
+        },
         body: JSON.stringify({
-          tag_name: autoTag + "-" + Math.floor(Math.random() * 1000), // Random suffix to avoid tag conflicts
-          name: "SoftwareKit Release " + autoTag,
-          body: `Automatic release for version ${autoTag}`
+          tag_name: uniqueTag,
+          name: "SoftwareKit Release " + appVersion,
+          body: "Signed IPA with injected mobileprovision.",
+          draft: false,
+          prerelease: false
         })
       });
 
-      const releaseData = await releaseRes.json();
-      if (!releaseRes.ok) throw new Error(releaseData.message);
+      const relData = await relRes.json();
+      if (!relRes.ok) {
+        throw new Error(`GitHub Error: ${relData.message} - ${JSON.stringify(relData.errors || "")}`);
+      }
 
-      // 2. Upload Asset
-      const uploadUrl = releaseData.upload_url.split('{')[0] + `?name=${encodeURIComponent(this.ipa.name)}`;
-      await fetch(uploadUrl, {
+      log.innerHTML = "Uploading Asset to GitHub...";
+      const uploadUrl = relData.upload_url.split('{')[0] + `?name=${encodeURIComponent(this.ipa.name)}`;
+      
+      const upRes = await fetch(uploadUrl, {
         method: 'POST',
         headers: { 
           'Authorization': `token ${this.ghToken}`,
           'Content-Type': 'application/octet-stream' 
         },
-        body: ipaBuffer
+        body: finalIpaBlob
       });
 
-      log.innerHTML = "Success! IPA is live.";
-      app.dialog.alert(`Uploaded Version ${autoTag} successfully.`);
-      
+      if (!upRes.ok) throw new Error("Asset Upload Failed");
+
+      log.innerHTML = "Done! Uploaded to GitHub.";
+      app.dialog.alert(`Successfully uploaded Version ${appVersion} to GitHub!`);
+
     } catch (e) {
       log.innerHTML = "Error: " + e.message;
+      console.error(e);
     } finally {
       btn.disabled = false;
     }
   }
 };
-
 function openSignerPopup() {
   app.popup.create({
     content: `
@@ -1060,54 +1069,40 @@ function openSignerPopup() {
         <div class="view"><div class="page">
           <div class="navbar">
             <div class="navbar-inner">
-              <div class="title">Signer(Alpha)</div>
+              <div class="title"> Signer(Alpha)</div>
               <div class="right"><a class="link popup-close">Close</a></div>
             </div>
           </div>
           <div class="page-content">
-            
-            <div class="list no-hairlines-md">
+            <div class="list no-hairlines">
               <ul>
-                <li class="item-content item-input">
-                  <div class="item-inner">
-                    <div class="item-title item-label">IPA File</div>
-                    <div class="item-input-wrap">
-                      <input type="file" accept=".ipa" onchange="SignerEngine.onFile(this, 'ipa')">
-                    </div>
-                  </div>
-                </li>
-                <li class="item-content item-input">
-                  <div class="item-inner">
-                    <div class="item-title item-label">P12 Certificate</div>
-                    <div class="item-input-wrap">
-                      <input type="file" accept=".p12" onchange="SignerEngine.onFile(this, 'p12')">
-                    </div>
-                  </div>
-                </li>
-                <li class="item-content item-input">
-                  <div class="item-inner">
-                    <div class="item-title item-label">P12 Password</div>
-                    <div class="item-input-wrap">
-                      <input type="password" id="p12-pass" placeholder="Password">
-                    </div>
-                  </div>
-                </li>
+                <li><div class="item-content item-input"><div class="item-inner">
+                  <div class="item-title item-label">IPA File</div>
+                  <input type="file" accept=".ipa" onchange="SignerEngine.onFile(this, 'ipa')">
+                </div></div></li>
+                <li><div class="item-content item-input"><div class="item-inner">
+                  <div class="item-title item-label">MobileProvision</div>
+                  <input type="file" accept=".mobileprovision" onchange="SignerEngine.onFile(this, 'prov')">
+                </div></div></li>
+                <li><div class="item-content item-input"><div class="item-inner">
+                  <div class="item-title item-label">P12 Certificate</div>
+                  <input type="file" accept=".p12" onchange="SignerEngine.onFile(this, 'p12')">
+                </div></div></li>
+                <li><div class="item-content item-input"><div class="item-inner">
+                  <div class="item-title item-label">P12 Password</div>
+                  <input type="password" id="p12-pass" placeholder="Cert Password">
+                </div></div></li>
               </ul>
             </div>
             <div class="block">
-              <button class="button button-fill button-large button-round" onclick="SignerEngine.process(this)">
-                Sign iPA
-              </button>
-              <div id="status" class="text-align-center margin-top" style="color: #007aff; font-weight: bold;">Ready</div>
+              <button class="button button-fill button-large" onclick="SignerEngine.process(this)">Sign iPA</button>
+              <p id="status" class="text-align-center margin-top" style="color:#007aff; font-weight:bold;">Ready</p>
             </div>
           </div>
         </div></div>
-      </div>
-    `,
-    on: { closed: function(p) { p.destroy(); } }
+      </div>`
   }).open();
-}
-  </script>   
+} </script>   
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@plist/binary.parse@1.1.0/dist/index.min.js"></script>
