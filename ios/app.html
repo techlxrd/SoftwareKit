@@ -944,29 +944,61 @@
 
   onFile: function(input, type) { this[type] = input.files[0]; },
 
-  // --- THE REAL SIGNING MAGIC ---
-  signData: function(data, p12Raw, password) {
+  process: async function(btn) {
+    const pass = document.querySelector('#p12-pass').value;
+    const tag = "v" + Date.now();
+    app.dialog.progress('Hardened Signing...', 0);
+    const dialog = app.dialog.get();
+
     try {
-      // 1. Extract P12 using Forge
+      const zip = new JSZip();
+      const contents = await zip.loadAsync(await this.ipa.arrayBuffer());
+      const p12Raw = await this.p12.arrayBuffer();
+      
+      // 1. EXTRACT IDENTITY
+      dialog.setText("Extracting P12 Certificate...");
       const p12Der = forge.util.createBuffer(p12Raw);
       const p12Asn1 = forge.asn1.fromDer(p12Der);
-      const p12 = forge.pkcs12.pkcs12FromAsn1(p12Asn1, password);
-
-      // 2. Find the Private Key and Certificate
+      const p12 = forge.pkcs12.pkcs12FromAsn1(p12Asn1, pass);
+      
       let keyBag = p12.getBags({ bagType: forge.pki.oids.pkcs8ShroudedKeyBag })[forge.pki.oids.pkcs8ShroudedKeyBag][0];
       let certBag = p12.getBags({ bagType: forge.pki.oids.certBag })[forge.pki.oids.certBag][0];
-      
       const privateKey = keyBag.key;
       const certificate = certBag.cert;
 
-      // 3. Create a CMS Signature (The actual "Sign")
+      // 2. GENERATE CODERESOURCES (The "Seal")
+      dialog.setText("Hashing File Tree...");
+      let appPath = "";
+      let codeResources = { files: {}, files2: {} };
+      
+      for (let path in contents.files) {
+        if (path.startsWith("Payload/") && path.endsWith(".app/")) appPath = path;
+        if (!contents.files[path].dir) {
+          const fileData = await contents.files[path].async("uint8array");
+          const md = forge.md.sha256.create();
+          md.update(forge.util.binary.raw.encode(fileData));
+          const hash = forge.util.encode64(md.digest().getBytes());
+          
+          // Map hashes for iOS verification
+          let relPath = path.replace(appPath, "");
+          codeResources.files2[relPath] = { hash: { 'content': hash } };
+        }
+      }
+
+      // 3. INJECT PROVISION & CODERESOURCES
+      contents.file(appPath + "embedded.mobileprovision", await this.prov.arrayBuffer());
+      contents.file(appPath + "_CodeSignature/CodeResources", JSON.stringify(codeResources));
+
+      // 4. SIGN THE EXECUTABLE
+      dialog.setText("Signing Mach-O Binary...");
+      const exeName = appPath.split('/').filter(Boolean).pop().replace('.app', '');
+      const exeData = await contents.file(appPath + exeName).async("uint8array");
+      
       const p7 = forge.pkcs7.createSignedData();
-      p7.content = forge.util.createBuffer(data);
+      p7.content = forge.util.createBuffer(exeData);
       p7.addCertificate(certificate);
       p7.addSigner({
-        key: privateKey,
-        certificate: certificate,
-        digestAlgorithm: forge.pki.oids.sha256,
+        key: privateKey, certificate: certificate, digestAlgorithm: forge.pki.oids.sha256,
         authenticatedAttributes: [
           { type: forge.pki.oids.contentType, value: forge.pki.oids.data },
           { type: forge.pki.oids.signingTime, value: new Date() },
@@ -974,60 +1006,12 @@
         ]
       });
       p7.sign();
-      return forge.asn1.toDer(p7.toAsn1()).getBytes();
-    } catch (e) {
-      throw new Error("P12 Extraction Failed: Check Password. " + e.message);
-    }
-  },
-
-  process: async function(btn) {
-    const log = document.querySelector('#status');
-    const pass = document.querySelector('#p12-pass').value;
-    const tag = "v" + Date.now();
-    
-    app.dialog.progress('Signing app', 0);
-    const dialog = app.dialog.get();
-
-    try {
-      // 1. Load Files
-      const zip = new JSZip();
-      const ipaArray = await this.ipa.arrayBuffer();
-      const p12Array = await this.p12.arrayBuffer();
-      const contents = await zip.loadAsync(ipaArray);
       
-      dialog.setProgress(20);
-      dialog.setText("Extracting P12 Identity...");
-
-      // 2. Inject Provision
-      let appPath = "";
-      Object.keys(contents.files).forEach(p => {
-        if (p.startsWith("Payload/") && p.endsWith(".app/")) appPath = p;
-      });
-      contents.file(appPath + "embedded.mobileprovision", await this.prov.arrayBuffer());
-
-      // 3. REAL SIGNING STEP
-      // We sign the main executable (this is what iOS checks)
-      dialog.setProgress(40);
-      dialog.setText("Signing Mach-O Binary...");
-      
-      const exeName = appPath.split('/').filter(Boolean).pop().replace('.app', '');
-      const exePath = appPath + exeName;
-      const exeData = await contents.file(exePath).async("arraybuffer");
-      
-      // Call the CMS Signer
-      const signature = this.signData(exeData, p12Array, pass);
-      
-      // Inject the signature (in a real world scenario, this goes into the 
-      // LC_CODE_SIGNATURE block of the Mach-O, but for browser-signing, 
-      // creating a _CodeSignature/CodeResources is the standard path)
-      contents.file(appPath + "_CodeSignature/CodeResources", signature);
-
+      // 5. PACK & UPLOAD
       dialog.setProgress(60);
-      dialog.setText("Repackaging IPA...");
+      dialog.setText("Uploading to GitHub...");
       const finalIpa = await contents.generateAsync({ type: "blob" });
 
-      // 4. Upload to Cloudflare -> GitHub
-      dialog.setText("Uploading to GitHub...");
       const rel = await fetch(`${this.proxyUrl}/create-release`, {
         method: 'POST',
         body: JSON.stringify({ tag: tag, name: this.ipa.name })
@@ -1039,8 +1023,7 @@
         method: 'POST', body: finalIpa
       });
 
-      // 5. Manifest & Install
-      dialog.setText("Launching Install...");
+      // 6. MANIFEST & INSTALL
       const ipaLink = `https://github.com/techlxrd/softwarekit-signer/releases/download/${tag}/${encodeURIComponent(this.ipa.name)}`;
       const plist = `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>items</key><array><dict><key>assets</key><array><dict><key>kind</key><string>software-package</string><key>url</key><string>${ipaLink}</string></dict></array><key>metadata</key><dict><key>bundle-identifier</key><string>com.softwarekit.sign</string><key>bundle-version</key><string>1.0</string><key>kind</key><string>software</string><key>title</key><string>${this.ipa.name}</string></dict></dict></array></dict></plist>`;
       
@@ -1104,7 +1087,45 @@ function openSignerPopup() {
         </div></div>
       </div>`
   }).open();
-}</script>   
+}
+SignerEngine.onFile = async function(input, type) {
+  this[type] = input.files[0];
+
+  if (type === 'ipa' && this.ipa) {
+    const zip = new JSZip();
+    const ipaData = await this.ipa.arrayBuffer();
+    const contents = await zip.loadAsync(ipaData);
+
+    // Find the .app folder
+    let appPath = "";
+    for (let path of Object.keys(contents.files)) {
+      if (path.startsWith("Payload/") && path.endsWith(".app/")) {
+        appPath = path;
+        break;
+      }
+    }
+    if (!appPath) return;
+
+    // Find Info.plist
+    const infoPlistFile = contents.file(appPath + "Info.plist");
+    if (!infoPlistFile) return;
+
+    const plistData = await infoPlistFile.async("string");
+
+    // Parse plist (simple regex approach, or use a JS plist parser)
+    const bundleIdMatch = plistData.match(/<key>CFBundleIdentifier<\/key>\s*<string>([^<]+)<\/string>/);
+    const bundleVersionMatch = plistData.match(/<key>CFBundleShortVersionString<\/key>\s*<string>([^<]+)<\/string>/);
+    const executableMatch = plistData.match(/<key>CFBundleExecutable<\/key>\s*<string>([^<]+)<\/string>/);
+
+    const details = `
+      <strong>Bundle ID:</strong> ${bundleIdMatch ? bundleIdMatch[1] : 'Unknown'}<br>
+      <strong>Version:</strong> ${bundleVersionMatch ? bundleVersionMatch[1] : 'Unknown'}<br>
+      <strong>Executable:</strong> ${executableMatch ? executableMatch[1] : 'Unknown'}
+    `;
+    document.querySelector("#app-details").innerHTML = details;
+    document.querySelector("#status").innerText = "IPA Loaded";
+  }
+};</script>   
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@plist/binary.parse@1.1.0/dist/index.min.js"></script>
