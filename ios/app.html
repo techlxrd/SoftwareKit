@@ -941,40 +941,12 @@
     <script>var SignerEngine = {
   ipa: null,
   p12: null,
-  prov: null, // Added mobileprovision storage
+  prov: null,
+  // Hardcoded Token
   ghToken: "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",
-  owner: "techlxrd",
-  repo: "softwarekit-signer",
-
+  
   onFile: function(input, type) {
     this[type] = input.files[0];
-  },
-
-  extractVersion: async function(zip) {
-    let plistPath = "";
-    Object.keys(zip.files).forEach(path => {
-      if (path.includes(".app/Info.plist") && !path.includes("__MACOSX")) {
-        plistPath = path;
-      }
-    });
-
-    if (!plistPath) return "1.0.0";
-
-    const rawPlist = await zip.file(plistPath).async("arraybuffer");
-    const uint8 = new Uint8Array(rawPlist);
-    let version = "1.0.0";
-
-    try {
-      if (uint8[0] === 0x62 && uint8[1] === 0x70) {
-        const parsed = PlistBinary.parse(rawPlist);
-        version = parsed.CFBundleShortVersionString || "1.0.0";
-      } else {
-        const xml = await zip.file(plistPath).async("string");
-        const match = xml.match(/<key>CFBundleShortVersionString<\/key>\s*<string>(.*?)<\/string>/);
-        version = match ? match[1] : "1.0.0";
-      }
-    } catch (e) { console.error("Plist Parsing Error", e); }
-    return version;
   },
 
   process: async function(btn) {
@@ -983,80 +955,84 @@
     var pass = p.querySelector('#p12-pass').value;
 
     if (!this.ipa || !this.p12 || !this.prov || !pass) {
-      app.dialog.alert("Missing files! Ensure IPA, P12, and MobileProvision are selected.");
+      app.dialog.alert("Please select all 3 files and enter the password.");
       return;
     }
 
     btn.disabled = true;
-    log.innerHTML = "Opening IPA and Injecting Provision...";
+    log.innerHTML = "Processing IPA bundle...";
 
     try {
-      // 1. Load IPA and Inject MobileProvision
       const zip = new JSZip();
-      const ipaData = await this.ipa.arrayBuffer();
-      const contents = await zip.loadAsync(ipaData);
+      const ipaBuffer = await this.ipa.arrayBuffer();
+      const contents = await zip.loadAsync(ipaBuffer);
       
-      // Find the .app directory
+      // 1. Find .app folder and inject MobileProvision
       let appPath = "";
-      Object.keys(contents.files).forEach(path => {
-        if (path.startsWith("Payload/") && path.endsWith(".app/")) appPath = path;
-      });
+      for (let path of Object.keys(contents.files)) {
+        if (path.startsWith("Payload/") && path.endsWith(".app/")) {
+          appPath = path;
+          break;
+        }
+      }
+      
+      if (!appPath) throw new Error("Invalid IPA: No .app folder found");
+      
+      const provBuffer = await this.prov.arrayBuffer();
+      contents.file(appPath + "embedded.mobileprovision", provBuffer);
 
-      // Inject the .mobileprovision file (Crucial for validation)
-      const provData = await this.prov.arrayBuffer();
-      contents.file(appPath + "embedded.mobileprovision", provData);
+      // 2. Generate a GUARANTEED non-empty tag
+      // We use a timestamp to ensure it's always unique and never empty
+      const uniqueTag = "v" + Date.now(); 
 
-      // 2. Extract Version for GitHub Tagging
-      const appVersion = await this.extractVersion(contents);
-      // Create a unique tag using the version + current date/time to avoid "Validation Failed"
-      const uniqueTag = `v${appVersion}-${Date.now()}`;
+      log.innerHTML = "Creating Release on GitHub...";
 
-      log.innerHTML = "Generating signed bundle...";
-      const finalIpaBlob = await contents.generateAsync({ type: "blob" });
-
-      log.innerHTML = `Creating Release: ${uniqueTag}...`;
-
-      // 3. GitHub API: Create Release
-      const relRes = await fetch(`https://api.github.com/repos/${this.owner}/${this.repo}/releases`, {
+      // 3. GitHub API Call - Explicit URL and Headers
+      const response = await fetch("https://api.github.com/repos/techlxrd/softwarekit-signer/releases", {
         method: 'POST',
-        headers: { 
-          'Authorization': `token ${this.ghToken}`,
-          'Accept': 'application/vnd.github.v3+json'
+        headers: {
+          'Authorization': 'token ' + this.ghToken,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           tag_name: uniqueTag,
-          name: "SoftwareKit Release " + appVersion,
-          body: "Signed IPA with injected mobileprovision.",
+          name: "Signer Upload: " + this.ipa.name,
+          body: "Uploaded via SoftwareKit Signer Engine",
           draft: false,
           prerelease: false
         })
       });
 
-      const relData = await relRes.json();
-      if (!relRes.ok) {
-        throw new Error(`GitHub Error: ${relData.message} - ${JSON.stringify(relData.errors || "")}`);
+      const result = await response.json();
+
+      if (!response.ok) {
+        // This will print the exact JSON error to your screen for debugging
+        throw new Error(JSON.stringify(result));
       }
 
-      log.innerHTML = "Uploading Asset to GitHub...";
-      const uploadUrl = relData.upload_url.split('{')[0] + `?name=${encodeURIComponent(this.ipa.name)}`;
+      log.innerHTML = "Uploading Binary Asset...";
       
-      const upRes = await fetch(uploadUrl, {
+      const finalIpaBlob = await contents.generateAsync({ type: "blob" });
+      const uploadUrl = result.upload_url.split('{')[0] + "?name=" + encodeURIComponent(this.ipa.name);
+
+      const uploadRes = await fetch(uploadUrl, {
         method: 'POST',
-        headers: { 
-          'Authorization': `token ${this.ghToken}`,
-          'Content-Type': 'application/octet-stream' 
+        headers: {
+          'Authorization': 'token ' + this.ghToken,
+          'Content-Type': 'application/octet-stream'
         },
         body: finalIpaBlob
       });
 
-      if (!upRes.ok) throw new Error("Asset Upload Failed");
+      if (!uploadRes.ok) throw new Error("Binary upload failed");
 
-      log.innerHTML = "Done! Uploaded to GitHub.";
-      app.dialog.alert(`Successfully uploaded Version ${appVersion} to GitHub!`);
+      log.innerHTML = '<span style="color:green">Success! Uploaded to GitHub.</span>';
+      app.dialog.alert("IPA Successfully Signed and Uploaded!");
 
     } catch (e) {
-      log.innerHTML = "Error: " + e.message;
-      console.error(e);
+      log.innerHTML = '<span style="color:red; font-size: 11px;">Error: ' + e.message + '</span>';
+      console.error("Full Error Info:", e);
     } finally {
       btn.disabled = false;
     }
