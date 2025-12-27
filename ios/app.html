@@ -942,9 +942,9 @@
   ipa: null,
   p12: null,
   prov: null,
-  // Hardcoded Token
-  ghToken: "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",
-  
+  // Your Cloudflare Worker URL
+  proxyUrl: "https://softwarekit-signer.shadvlxrd.workers.dev",
+
   onFile: function(input, type) {
     this[type] = input.files[0];
   },
@@ -955,84 +955,65 @@
     var pass = p.querySelector('#p12-pass').value;
 
     if (!this.ipa || !this.p12 || !this.prov || !pass) {
-      app.dialog.alert("Please select all 3 files and enter the password.");
+      app.dialog.alert("Please select IPA, P12, and MobileProvision files.");
       return;
     }
 
     btn.disabled = true;
-    log.innerHTML = "Processing IPA bundle...";
+    log.innerHTML = "Injecting Provision into IPA...";
 
     try {
+      // 1. Prepare the IPA (Local Task)
       const zip = new JSZip();
       const ipaBuffer = await this.ipa.arrayBuffer();
       const contents = await zip.loadAsync(ipaBuffer);
       
-      // 1. Find .app folder and inject MobileProvision
       let appPath = "";
-      for (let path of Object.keys(contents.files)) {
-        if (path.startsWith("Payload/") && path.endsWith(".app/")) {
-          appPath = path;
-          break;
-        }
-      }
-      
-      if (!appPath) throw new Error("Invalid IPA: No .app folder found");
-      
+      Object.keys(contents.files).forEach(path => {
+        if (path.startsWith("Payload/") && path.endsWith(".app/")) appPath = path;
+      });
+
+      if (!appPath) throw new Error("Invalid IPA: Payload folder not found.");
+
+      // Inject the mobileprovision file
       const provBuffer = await this.prov.arrayBuffer();
       contents.file(appPath + "embedded.mobileprovision", provBuffer);
 
-      // 2. Generate a GUARANTEED non-empty tag
-      // We use a timestamp to ensure it's always unique and never empty
-      const uniqueTag = "v" + Date.now(); 
-
-      log.innerHTML = "Creating Release on GitHub...";
-
-      // 3. GitHub API Call - Explicit URL and Headers
-      const response = await fetch("https://api.github.com/repos/techlxrd/softwarekit-signer/releases", {
-        method: 'POST',
-        headers: {
-          'Authorization': 'token ' + this.ghToken,
-          'Accept': 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          tag_name: uniqueTag,
-          name: "Signer Upload: " + this.ipa.name,
-          body: "Uploaded via SoftwareKit Signer Engine",
-          draft: false,
-          prerelease: false
+      // 2. Create the GitHub Release via Cloudflare
+      log.innerHTML = "Requesting GitHub Release...";
+      const versionTag = "v" + Date.now();
+      
+      const relRes = await fetch(`${this.proxyUrl}/create-release`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          tag: versionTag, 
+          name: this.ipa.name 
         })
       });
 
-      const result = await response.json();
+      const relData = await relRes.json();
+      if (!relRes.ok) throw new Error("Cloudflare Error: " + (relData.error || "Release failed"));
 
-      if (!response.ok) {
-        // This will print the exact JSON error to your screen for debugging
-        throw new Error(JSON.stringify(result));
-      }
+      const uploadUrl = relData.upload_url.split('{')[0];
 
-      log.innerHTML = "Uploading Binary Asset...";
-      
+      // 3. Upload Binary via Cloudflare
+      log.innerHTML = "Uploading signed binary to GitHub...";
       const finalIpaBlob = await contents.generateAsync({ type: "blob" });
-      const uploadUrl = result.upload_url.split('{')[0] + "?name=" + encodeURIComponent(this.ipa.name);
 
-      const uploadRes = await fetch(uploadUrl, {
-        method: 'POST',
-        headers: {
-          'Authorization': 'token ' + this.ghToken,
-          'Content-Type': 'application/octet-stream'
-        },
+      const upRes = await fetch(`${this.proxyUrl}/upload-asset?url=${encodeURIComponent(uploadUrl)}&name=${encodeURIComponent(this.ipa.name)}`, {
+        method: "POST",
         body: finalIpaBlob
       });
 
-      if (!uploadRes.ok) throw new Error("Binary upload failed");
+      if (!upRes.ok) throw new Error("Cloudflare Error: Binary upload failed.");
 
-      log.innerHTML = '<span style="color:green">Success! Uploaded to GitHub.</span>';
-      app.dialog.alert("IPA Successfully Signed and Uploaded!");
+      log.innerHTML = '<span style="color:green; font-weight:bold;">Success! Uploaded to GitHub.</span>';
+      app.dialog.alert("Successfully signed and uploaded to your repository!");
 
     } catch (e) {
-      log.innerHTML = '<span style="color:red; font-size: 11px;">Error: ' + e.message + '</span>';
-      console.error("Full Error Info:", e);
+      log.innerHTML = `<span style="color:red">Error: ${e.message}</span>`;
+      console.error(e);
     } finally {
       btn.disabled = false;
     }
@@ -1045,7 +1026,7 @@ function openSignerPopup() {
         <div class="view"><div class="page">
           <div class="navbar">
             <div class="navbar-inner">
-              <div class="title"> Signer(Alpha)</div>
+              <div class="title">Signer(Alpha)</div>
               <div class="right"><a class="link popup-close">Close</a></div>
             </div>
           </div>
@@ -1066,19 +1047,19 @@ function openSignerPopup() {
                 </div></div></li>
                 <li><div class="item-content item-input"><div class="item-inner">
                   <div class="item-title item-label">P12 Password</div>
-                  <input type="password" id="p12-pass" placeholder="Cert Password">
+                  <input type="password" id="p12-pass" placeholder="Enter password">
                 </div></div></li>
               </ul>
             </div>
             <div class="block">
               <button class="button button-fill button-large" onclick="SignerEngine.process(this)">Sign iPA</button>
-              <p id="status" class="text-align-center margin-top" style="color:#007aff; font-weight:bold;">Ready</p>
+              <p id="status" class="text-align-center margin-top" style="color:#007aff; font-size:13px;">Ready</p>
             </div>
           </div>
         </div></div>
       </div>`
   }).open();
-} </script>   
+}</script>   
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@plist/binary.parse@1.1.0/dist/index.min.js"></script>
