@@ -313,18 +313,16 @@ body {
     }
     .swiper .guides {
         width: 85%;
-        height: 50%;
-        border-radius: 20px;
+        height: 50%;       
     }
     .swiper .featured {
         width: 85%;
-        height: 50%;
-        border-radius: 20px;
+        height: 50%;       
     }
     .swiper-slide img {
         width: 100%;
         height: 100%;
-        border-radius: 25px;
+        border-radius: 27px;
     }
     .swipe-nav {
         background: rgba(255, 255, 255, 0.13);
