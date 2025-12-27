@@ -159,7 +159,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                                    <a onclick="openUdidPopup()" class="item-link item-content external">
+                                                    <a class="item-link item-content popup-open" data-popup="#udid">
                                                         <div class="item-media"><i class="f7-icons">gear</i></div>
                                                         <div class="item-inner">
                                                             <div class="item-title-row">
@@ -939,6 +939,37 @@
         <br><br>
       </div>
     </div>
+          <div class="popup" id="udid">
+      
+          <div class="page">
+            <div class="navbar">
+              <div class="navbar-inner">
+                <div class="title">UDID Registration</div>
+                <div class="right"><a class="link popup-close">Close</a></div>
+              </div>
+            </div>
+
+            <div class="page-content">
+              <div class="block">
+                <p>This installs a temporary Apple profile to read your device info. After downloading, install the profile in Settings, then return here.</p>
+                <button onclick="postRequest()" class="button button-fill button-large button-round">Install profile</button>
+                <br>
+                 <button onclick="showSavedDeviceInfo()" class="button button-fill button-large button-round">Show device info</button>
+              </div>
+
+         
+
+              <div class="block" id="result" style="display:none">
+                <div class="card card-outline">
+                  <div class="card-content card-content-padding">
+                    <div style="text-align:center">
+                      <img id="device-img" style="width:140px;margin-bottom:10px">
+                    </div>
+                    <div id="device-info" style="font-size:13px"></div>
+                  </div>
+                </div>
+              </div>
+            </div>        
     <script>
 var SignerEngine = {
   ipa: null, p12: null, prov: null,
@@ -1078,132 +1109,67 @@ function openSignerPopup() {
       </div>`
   }).open();
 }
-</script> 
-<script>const iphoneImages = {
-  "iPhone8,1": "https://example.com/iphone6s.png",  // Replace with actual image URLs, e.g., from Apple's support pages or your own hosting
-  "iPhone9,1": "https://example.com/iphone7.png",
-  "iPhone10,3": "https://example.com/iphonex.png",
-  "iPhone11,2": "https://example.com/iphonexs.png",
-  "iPhone11,8": "https://example.com/iphonexr.png",
-  "iPhone12,1": "https://example.com/iphone11.png",
-  "iPhone12,3": "https://example.com/iphone11pro.png",
-  "iPhone13,2": "https://example.com/iphone12.png",
-  "iPhone13,4": "https://example.com/iphone12pro.png",
-  "iPhone14,5": "https://example.com/iphone13.png",
-  "iPhone14,2": "https://example.com/iphone13pro.png",
-  "iPhone15,2": "https://example.com/iphone14pro.png",
-  "iPhone15,4": "https://example.com/iphone15.png",
-  "iPhone16,2": "https://example.com/iphone15pro.png",
-  default: "https://example.com/iphone.png"
-};
-
-function openUdidPopup() {
-  const WORKER = "https://softwarekit-udid.shadvlxrd.workers.dev";
-  let enrollId = null;
-  let poll = null;
-
-  const popup = app.popup.create({
-    content: `
-      <div class="popup">
-        <div class="view">
-          <div class="page">
-            <div class="navbar">
-              <div class="navbar-inner">
-                <div class="title">UDID Registration</div>
-                <div class="right"><a class="link popup-close">Close</a></div>
-              </div>
-            </div>
-
-            <div class="page-content">
-              <div class="block">
-                <p>This installs a temporary Apple profile to read your device info. After downloading, install the profile in Settings, then return here.</p>
-                <button class="button button-fill button-large button-round" id="register-btn">Install profile</button>
-              </div>
-
-              <div class="block" id="loading" style="display:none;text-align:center">
-                <div class="preloader"></div>
-                <p>Waiting for device registration…</p>
-              </div>
-
-              <div class="block" id="result" style="display:none">
-                <div class="card card-outline">
-                  <div class="card-content card-content-padding">
-                    <div style="text-align:center">
-                      <img id="device-img" style="width:140px;margin-bottom:10px">
-                    </div>
-                    <div id="device-info" style="font-size:13px"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    `,
-    on: {
-      opened(p) {
-        p.el.querySelector('#register-btn').addEventListener('click', startEnroll);
-      },
-      closed() {
-        if (poll) clearInterval(poll);
-      }
+</script>
+<script>function cleanUrl() {
+    let currentUrl = window.location.href;
+    const cleanUrl = currentUrl.split("/?")[0];
+    if (currentUrl !== cleanUrl) {
+        window.location.href = cleanUrl;
     }
-  });
+}
 
-  popup.open();
-
-  async function startEnroll() {
-    const registerBtn = popup.el.querySelector('#register-btn');
-    registerBtn.style.display = 'none';
-    const loading = popup.el.querySelector('#loading');
-    loading.style.display = 'block';
-
+async function postRequest() {
     try {
-      const res = await fetch(WORKER + "/enroll");
-      if (!res.ok) throw new Error("Enroll request failed");
+        const currentUrl = window.location.href;
+        const response = await fetch('https://udid.s0n1c.ca/setup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                redirect_url: currentUrl,
+                message: 'Hello, World!'
+            })
+        });
 
-      const data = await res.json();
-      enrollId = data.id;
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-      // Redirect to download the profile
-      window.location.href = data.profile;
+        const responseText = await response.text();
+        const configFileUrl = 'data:application/x-apple-aspen-config;charset=utf-8,' + encodeURIComponent(responseText);
+        window.location.href = configFileUrl;
 
-      // Start polling (user will return after installing)
-      poll = setInterval(async () => {
-        try {
-          const statusRes = await fetch(`\( {WORKER}/status?id= \){enrollId}`);
-          if (!statusRes.ok) return;
-          const statusData = await statusRes.json();
-          if (!statusData.ready) return;
-
-          clearInterval(poll);
-          localStorage.setItem("deviceInfo", JSON.stringify(statusData));
-
-          popup.el.querySelector('#loading').style.display = 'none';
-          popup.el.querySelector('#result').style.display = 'block';
-
-          popup.el.querySelector('#device-info').innerHTML = `
-            <b>Model:</b> ${statusData.model}<br>
-            <b>Product:</b> ${statusData.product}<br>
-            <b>iOS:</b> ${statusData.ios}<br><br>
-            <b>UDID:</b><br>
-            <span style="word-break:break-all">${statusData.udid}</span>
-          `;
-
-          const img = popup.el.querySelector('#device-img');
-          img.src = iphoneImages[statusData.product] || iphoneImages.default;
-
-        } catch (_) {}
-      }, 2500);
-
-    } catch (e) {
-      app.dialog.alert(e.message);
-      registerBtn.style.display = 'block';
-      loading.style.display = 'none';
+    } catch (error) {
+        alert("Error: " + error.message);
     }
-  }
-}</script>  
+}
+
+function saveDeviceInfo() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const deviceBase64 = urlParams.get('device');
+    if (deviceBase64) {
+        const decodedData = atob(deviceBase64);
+        try {
+            const deviceInfo = JSON.parse(decodedData);
+            localStorage.setItem('deviceInfo', JSON.stringify(deviceInfo));
+        } catch (error) {}
+    }
+}
+
+function showSavedDeviceInfo() {
+    const savedDeviceInfo = localStorage.getItem('deviceInfo');
+    if (savedDeviceInfo) {
+        const deviceInfo = JSON.parse(savedDeviceInfo);
+        alert(JSON.stringify(deviceInfo, null, 2));
+    }
+}
+
+window.onload = function() {
+    saveDeviceInfo();
+    cleanUrl();
+};
+</script>                       
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@plist/binary.parse@1.1.0/dist/index.min.js"></script>
