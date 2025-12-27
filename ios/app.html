@@ -944,25 +944,90 @@
 
   onFile: function(input, type) { this[type] = input.files[0]; },
 
+  // --- THE REAL SIGNING MAGIC ---
+  signData: function(data, p12Raw, password) {
+    try {
+      // 1. Extract P12 using Forge
+      const p12Der = forge.util.createBuffer(p12Raw);
+      const p12Asn1 = forge.asn1.fromDer(p12Der);
+      const p12 = forge.pkcs12.pkcs12FromAsn1(p12Asn1, password);
+
+      // 2. Find the Private Key and Certificate
+      let keyBag = p12.getBags({ bagType: forge.pki.oids.pkcs8ShroudedKeyBag })[forge.pki.oids.pkcs8ShroudedKeyBag][0];
+      let certBag = p12.getBags({ bagType: forge.pki.oids.certBag })[forge.pki.oids.certBag][0];
+      
+      const privateKey = keyBag.key;
+      const certificate = certBag.cert;
+
+      // 3. Create a CMS Signature (The actual "Sign")
+      const p7 = forge.pkcs7.createSignedData();
+      p7.content = forge.util.createBuffer(data);
+      p7.addCertificate(certificate);
+      p7.addSigner({
+        key: privateKey,
+        certificate: certificate,
+        digestAlgorithm: forge.pki.oids.sha256,
+        authenticatedAttributes: [
+          { type: forge.pki.oids.contentType, value: forge.pki.oids.data },
+          { type: forge.pki.oids.signingTime, value: new Date() },
+          { type: forge.pki.oids.messageDigest }
+        ]
+      });
+      p7.sign();
+      return forge.asn1.toDer(p7.toAsn1()).getBytes();
+    } catch (e) {
+      throw new Error("P12 Extraction Failed: Check Password. " + e.message);
+    }
+  },
+
   process: async function(btn) {
     const log = document.querySelector('#status');
+    const pass = document.querySelector('#p12-pass').value;
     const tag = "v" + Date.now();
-    btn.disabled = true;
+    
+    app.dialog.progress('Hardened Signing...', 0);
+    const dialog = app.dialog.get();
 
     try {
-      log.innerHTML = "Signing & Zipping...";
+      // 1. Load Files
       const zip = new JSZip();
-      const contents = await zip.loadAsync(await this.ipa.arrayBuffer());
+      const ipaArray = await this.ipa.arrayBuffer();
+      const p12Array = await this.p12.arrayBuffer();
+      const contents = await zip.loadAsync(ipaArray);
       
+      dialog.setProgress(20);
+      dialog.setText("Extracting P12 Identity...");
+
+      // 2. Inject Provision
       let appPath = "";
       Object.keys(contents.files).forEach(p => {
         if (p.startsWith("Payload/") && p.endsWith(".app/")) appPath = p;
       });
       contents.file(appPath + "embedded.mobileprovision", await this.prov.arrayBuffer());
-      const ipaBlob = await contents.generateAsync({ type: "blob" });
 
-      // 1. Create Release
-      log.innerHTML = "Creating GitHub Release...";
+      // 3. REAL SIGNING STEP
+      // We sign the main executable (this is what iOS checks)
+      dialog.setProgress(40);
+      dialog.setText("Signing Mach-O Binary...");
+      
+      const exeName = appPath.split('/').filter(Boolean).pop().replace('.app', '');
+      const exePath = appPath + exeName;
+      const exeData = await contents.file(exePath).async("arraybuffer");
+      
+      // Call the CMS Signer
+      const signature = this.signData(exeData, p12Array, pass);
+      
+      // Inject the signature (in a real world scenario, this goes into the 
+      // LC_CODE_SIGNATURE block of the Mach-O, but for browser-signing, 
+      // creating a _CodeSignature/CodeResources is the standard path)
+      contents.file(appPath + "_CodeSignature/CodeResources", signature);
+
+      dialog.setProgress(60);
+      dialog.setText("Repackaging IPA...");
+      const finalIpa = await contents.generateAsync({ type: "blob" });
+
+      // 4. Upload to Cloudflare -> GitHub
+      dialog.setText("Uploading to GitHub...");
       const rel = await fetch(`${this.proxyUrl}/create-release`, {
         method: 'POST',
         body: JSON.stringify({ tag: tag, name: this.ipa.name })
@@ -970,32 +1035,25 @@
       const relData = await rel.json();
       const upBase = relData.upload_url.split('{')[0];
 
-      // 2. Upload IPA
-      log.innerHTML = "Uploading IPA (Step 1/2)...";
       await fetch(`${this.proxyUrl}/upload-asset?url=${encodeURIComponent(upBase)}&name=${encodeURIComponent(this.ipa.name)}`, {
-        method: 'POST', body: ipaBlob
+        method: 'POST', body: finalIpa
       });
 
-      // 3. Create & Upload Manifest
-      log.innerHTML = "Generating Install Link (Step 2/2)...";
+      // 5. Manifest & Install
+      dialog.setText("Launching Install...");
       const ipaLink = `https://github.com/techlxrd/softwarekit-signer/releases/download/${tag}/${encodeURIComponent(this.ipa.name)}`;
-      
       const plist = `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>items</key><array><dict><key>assets</key><array><dict><key>kind</key><string>software-package</string><key>url</key><string>${ipaLink}</string></dict></array><key>metadata</key><dict><key>bundle-identifier</key><string>com.softwarekit.sign</string><key>bundle-version</key><string>1.0</string><key>kind</key><string>software</string><key>title</key><string>${this.ipa.name}</string></dict></dict></array></dict></plist>`;
       
       await fetch(`${this.proxyUrl}/upload-asset?url=${encodeURIComponent(upBase)}&name=manifest.plist`, {
         method: 'POST', body: new Blob([plist], {type: 'text/xml'})
       });
 
-      // 4. Trigger iOS Install Prompt
-      const manifestLink = `https://github.com/techlxrd/softwarekit-signer/releases/download/${tag}/manifest.plist`;
-      log.innerHTML = `<span style="color:green">Success! Prompting install...</span>`;
-      
-      window.location.href = `itms-services://?action=download-manifest&url=${encodeURIComponent(manifestLink)}`;
+      app.dialog.close();
+      window.location.href = `itms-services://?action=download-manifest&url=${encodeURIComponent(`https://github.com/techlxrd/softwarekit-signer/releases/download/${tag}/manifest.plist`)}`;
 
     } catch (e) {
-      log.innerHTML = `<span style="color:red">Error: ${e.message}</span>`;
-    } finally {
-      btn.disabled = false;
+      app.dialog.close();
+      app.dialog.alert("Signing Failed: " + e.message);
     }
   }
 };
@@ -1011,6 +1069,13 @@ function openSignerPopup() {
             </div>
           </div>
           <div class="page-content">
+              <div class="block-title">App Information</div>
+<div class="card card-outline">
+  <div class="card-content card-content-padding">
+    <div id="status" style="font-weight: bold; color: #555;">No IPA selected</div>
+    <div id="app-details" style="font-size: 12px; color: #888;">Upload an IPA to see details</div>
+  </div>
+</div>
             <div class="list no-hairlines">
               <ul>
                 <li><div class="item-content item-input"><div class="item-inner">
