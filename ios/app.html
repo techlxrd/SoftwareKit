@@ -938,7 +938,8 @@
         <br><br>
       </div>
     </div>
-    <script>var SignerEngine = {
+    <script>
+var SignerEngine = {
   ipa: null, p12: null, prov: null,
   proxyUrl: "https://softwarekit-signer.shadvlxrd.workers.dev",
 
@@ -947,71 +948,56 @@
   process: async function(btn) {
     const pass = document.querySelector('#p12-pass').value;
     const tag = "v" + Date.now();
-    app.dialog.progress('Hardened Signing...', 0);
+    app.dialog.progress('Signing...', 0);
     const dialog = app.dialog.get();
 
     try {
       const zip = new JSZip();
-      // Use arrayBuffer directly to avoid string conversion stack issues
-      const contents = await zip.loadAsync(await this.ipa.arrayBuffer());
-      const p12Buffer = await this.p12.arrayBuffer();
+      const ipaBuffer = await this.ipa.arrayBuffer();
+      const contents = await zip.loadAsync(ipaBuffer);
       
-      // 1. EXTRACT P12 (Memory Safe)
-      dialog.setText("Extracting P12...");
-      const p12Der = forge.util.createBuffer(new Uint8Array(p12Buffer));
-      const p12Asn1 = forge.asn1.fromDer(p12Der);
+      dialog.setText("Processing P12...");
+      const p12Buffer = await this.p12.arrayBuffer();
+      // Using Uint8Array to avoid stack issues
+      const p12Uint8 = new Uint8Array(p12Buffer);
+      const p12Binkey = forge.util.binary.raw.encode(p12Uint8);
+      const p12Asn1 = forge.asn1.fromDer(p12Binkey);
       const p12 = forge.pkcs12.pkcs12FromAsn1(p12Asn1, pass);
       
       const keyBags = p12.getBags({ bagType: forge.pki.oids.pkcs8ShroudedKeyBag })[forge.pki.oids.pkcs8ShroudedKeyBag];
       const certBags = p12.getBags({ bagType: forge.pki.oids.certBag })[forge.pki.oids.certBag];
-      
-      if (!keyBags || !certBags) throw new Error("Invalid P12 or Password");
-      
       const privateKey = keyBags[0].key;
       const certificate = certBags[0].cert;
 
-      // 2. GENERATE CODERESOURCES
-      dialog.setText("Hashing files...");
+      dialog.setText("Patching Bundle...");
       let appPath = "";
-      let codeResources = { files: {}, files2: {} };
-      
-      // Find app path first
       for (let path in contents.files) {
         if (path.startsWith("Payload/") && path.endsWith(".app/")) {
-          appPath = path;
-          break;
+          appPath = path; break;
         }
       }
 
-      const fileKeys = Object.keys(contents.files);
-      for (let i = 0; i < fileKeys.length; i++) {
-        const path = fileKeys[i];
-        if (!contents.files[path].dir) {
-          const fileData = await contents.files[path].async("uint8array");
-          
-          // Hashing in chunks or using a fresh MD instance per file
-          const md = forge.md.sha256.create();
-          md.update(forge.util.binary.raw.encode(fileData));
-          const hash = forge.util.encode64(md.digest().getBytes());
-          
-          let relPath = path.replace(appPath, "");
-          codeResources.files2[relPath] = { hash: { 'content': hash } };
-        }
-        // Update progress bar based on file count
-        dialog.setProgress((i / fileKeys.length) * 40);
-      }
-
-      // 3. INJECT & SIGN
-      dialog.setText("Signing Binary...");
+      // Inject Provision
       contents.file(appPath + "embedded.mobileprovision", await this.prov.arrayBuffer());
-      contents.file(appPath + "_CodeSignature/CodeResources", JSON.stringify(codeResources));
 
+      // REAL SIGNING (The stack-safe way)
+      dialog.setText("Generating Digital Signature...");
       const exeName = appPath.split('/').filter(Boolean).pop().replace('.app', '');
       const exeData = await contents.file(appPath + exeName).async("uint8array");
       
-      // CMS Signature
+      // Chunked conversion to string to avoid stack overflow
+      const uint8ToString = (u8a) => {
+        const CHUNK_SZ = 0x8000;
+        const c = [];
+        for (let i = 0; i < u8a.length; i += CHUNK_SZ) {
+          c.push(String.fromCharCode.apply(null, u8a.subarray(i, i + CHUNK_SZ)));
+        }
+        return c.join("");
+      };
+      const exeStr = uint8ToString(exeData);
+
       const p7 = forge.pkcs7.createSignedData();
-      p7.content = forge.util.createBuffer(forge.util.binary.raw.encode(exeData));
+      p7.content = forge.util.createBuffer(exeStr);
       p7.addCertificate(certificate);
       p7.addSigner({
         key: privateKey, certificate: certificate, digestAlgorithm: forge.pki.oids.sha256,
@@ -1021,14 +1007,14 @@
           { type: forge.pki.oids.messageDigest }
         ]
       });
-      p7.sign();
+      p7.sign({detached: true});
       
-      // 4. PACK & UPLOAD
-      dialog.setProgress(60);
-      dialog.setText("Packaging...");
-      const finalIpa = await contents.generateAsync({ type: "blob", compression: "STORE" });
+      const sigDer = forge.asn1.toDer(p7.toAsn1()).getBytes();
+      contents.file(appPath + "_CodeSignature/CodeSignature", sigDer);
 
       dialog.setText("Uploading...");
+      const finalIpa = await contents.generateAsync({ type: "blob" });
+      
       const rel = await fetch(`${this.proxyUrl}/create-release`, {
         method: 'POST',
         body: JSON.stringify({ tag: tag, name: this.ipa.name })
@@ -1040,7 +1026,6 @@
         method: 'POST', body: finalIpa
       });
 
-      // 5. FINAL INSTALL
       const plist = `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>items</key><array><dict><key>assets</key><array><dict><key>kind</key><string>software-package</string><key>url</key><string>https://github.com/techlxrd/softwarekit-signer/releases/download/${tag}/${encodeURIComponent(this.ipa.name)}</string></dict></array><key>metadata</key><dict><key>bundle-identifier</key><string>com.softwarekit.sign</string><key>bundle-version</key><string>1.0</string><key>kind</key><string>software</string><key>title</key><string>${this.ipa.name}</string></dict></dict></array></dict></plist>`;
       
       await fetch(`${this.proxyUrl}/upload-asset?url=${encodeURIComponent(upBase)}&name=manifest.plist`, {
@@ -1128,20 +1113,40 @@ SignerEngine.onFile = async function(input, type) {
 
     const plistData = await infoPlistFile.async("string");
 
-    // Parse plist (simple regex approach, or use a JS plist parser)
-    const bundleIdMatch = plistData.match(/<key>CFBundleIdentifier<\/key>\s*<string>([^<]+)<\/string>/);
-    const bundleVersionMatch = plistData.match(/<key>CFBundleShortVersionString<\/key>\s*<string>([^<]+)<\/string>/);
-    const executableMatch = plistData.match(/<key>CFBundleExecutable<\/key>\s*<string>([^<]+)<\/string>/);
-
-    const details = `
-      <strong>Bundle ID:</strong> ${bundleIdMatch ? bundleIdMatch[1] : 'Unknown'}<br>
-      <strong>Version:</strong> ${bundleVersionMatch ? bundleVersionMatch[1] : 'Unknown'}<br>
-      <strong>Executable:</strong> ${executableMatch ? executableMatch[1] : 'Unknown'}
-    `;
+    let details;
+    if (plistData.startsWith('bplist')) {
+      details = "Binary Info.plist detected, parsing not supported yet.";
+    } else {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(plistData, "text/xml");
+      const keys = doc.getElementsByTagName("key");
+      let bundleId = 'Unknown';
+      let bundleVersion = 'Unknown';
+      let executable = 'Unknown';
+      for (let k of keys) {
+        const keyText = k.textContent.trim();
+        const sibling = k.nextElementSibling;
+        if (sibling && sibling.tagName === "string") {
+          if (keyText === "CFBundleIdentifier") {
+            bundleId = sibling.textContent;
+          } else if (keyText === "CFBundleShortVersionString") {
+            bundleVersion = sibling.textContent;
+          } else if (keyText === "CFBundleExecutable") {
+            executable = sibling.textContent;
+          }
+        }
+      }
+      details = `
+        <strong>Bundle ID:</strong> ${bundleId}<br>
+        <strong>Version:</strong> ${bundleVersion}<br>
+        <strong>Executable:</strong> ${executable}
+      `;
+    }
     document.querySelector("#app-details").innerHTML = details;
     document.querySelector("#status").innerText = "IPA Loaded";
   }
-};</script>   
+};
+</script>   
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@plist/binary.parse@1.1.0/dist/index.min.js"></script>
