@@ -1170,7 +1170,10 @@ window.onload = function() {
 saveDeviceInfo();
 cleanUrl();
 };
-</script>                       
+</script>       
+<script>window.onload = function() {
+  app.dialog.alert('If you encounter any bugs or issues, please navigate to Settings, scroll down to Feedback, and provide a detailed description of the issue.', 'SoftwareKit Beta Testing');
+};</script>                
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@plist/binary.parse@1.1.0/dist/index.min.js"></script>
