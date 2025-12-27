@@ -939,81 +939,61 @@
       </div>
     </div>
     <script>var SignerEngine = {
-  ipa: null,
-  p12: null,
-  prov: null,
-  // Your Cloudflare Worker URL
+  ipa: null, p12: null, prov: null,
   proxyUrl: "https://softwarekit-signer.shadvlxrd.workers.dev",
 
-  onFile: function(input, type) {
-    this[type] = input.files[0];
-  },
+  onFile: function(input, type) { this[type] = input.files[0]; },
 
   process: async function(btn) {
-    var p = btn.closest('.popup');
-    var log = p.querySelector('#status');
-    var pass = p.querySelector('#p12-pass').value;
-
-    if (!this.ipa || !this.p12 || !this.prov || !pass) {
-      app.dialog.alert("Please select IPA, P12, and MobileProvision files.");
-      return;
-    }
-
+    const log = document.querySelector('#status');
+    const tag = "v" + Date.now();
     btn.disabled = true;
-    log.innerHTML = "Injecting Provision into IPA...";
 
     try {
-      // 1. Prepare the IPA (Local Task)
+      log.innerHTML = "Signing & Zipping...";
       const zip = new JSZip();
-      const ipaBuffer = await this.ipa.arrayBuffer();
-      const contents = await zip.loadAsync(ipaBuffer);
+      const contents = await zip.loadAsync(await this.ipa.arrayBuffer());
       
       let appPath = "";
-      Object.keys(contents.files).forEach(path => {
-        if (path.startsWith("Payload/") && path.endsWith(".app/")) appPath = path;
+      Object.keys(contents.files).forEach(p => {
+        if (p.startsWith("Payload/") && p.endsWith(".app/")) appPath = p;
+      });
+      contents.file(appPath + "embedded.mobileprovision", await this.prov.arrayBuffer());
+      const ipaBlob = await contents.generateAsync({ type: "blob" });
+
+      // 1. Create Release
+      log.innerHTML = "Creating GitHub Release...";
+      const rel = await fetch(`${this.proxyUrl}/create-release`, {
+        method: 'POST',
+        body: JSON.stringify({ tag: tag, name: this.ipa.name })
+      });
+      const relData = await rel.json();
+      const upBase = relData.upload_url.split('{')[0];
+
+      // 2. Upload IPA
+      log.innerHTML = "Uploading IPA (Step 1/2)...";
+      await fetch(`${this.proxyUrl}/upload-asset?url=${encodeURIComponent(upBase)}&name=${encodeURIComponent(this.ipa.name)}`, {
+        method: 'POST', body: ipaBlob
       });
 
-      if (!appPath) throw new Error("Invalid IPA: Payload folder not found.");
-
-      // Inject the mobileprovision file
-      const provBuffer = await this.prov.arrayBuffer();
-      contents.file(appPath + "embedded.mobileprovision", provBuffer);
-
-      // 2. Create the GitHub Release via Cloudflare
-      log.innerHTML = "Requesting GitHub Release...";
-      const versionTag = "v" + Date.now();
+      // 3. Create & Upload Manifest
+      log.innerHTML = "Generating Install Link (Step 2/2)...";
+      const ipaLink = `https://github.com/techlxrd/softwarekit-signer/releases/download/${tag}/${encodeURIComponent(this.ipa.name)}`;
       
-      const relRes = await fetch(`${this.proxyUrl}/create-release`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          tag: versionTag, 
-          name: this.ipa.name 
-        })
+      const plist = `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>items</key><array><dict><key>assets</key><array><dict><key>kind</key><string>software-package</string><key>url</key><string>${ipaLink}</string></dict></array><key>metadata</key><dict><key>bundle-identifier</key><string>com.softwarekit.sign</string><key>bundle-version</key><string>1.0</string><key>kind</key><string>software</string><key>title</key><string>${this.ipa.name}</string></dict></dict></array></dict></plist>`;
+      
+      await fetch(`${this.proxyUrl}/upload-asset?url=${encodeURIComponent(upBase)}&name=manifest.plist`, {
+        method: 'POST', body: new Blob([plist], {type: 'text/xml'})
       });
 
-      const relData = await relRes.json();
-      if (!relRes.ok) throw new Error("Cloudflare Error: " + (relData.error || "Release failed"));
-
-      const uploadUrl = relData.upload_url.split('{')[0];
-
-      // 3. Upload Binary via Cloudflare
-      log.innerHTML = "Uploading signed binary to GitHub...";
-      const finalIpaBlob = await contents.generateAsync({ type: "blob" });
-
-      const upRes = await fetch(`${this.proxyUrl}/upload-asset?url=${encodeURIComponent(uploadUrl)}&name=${encodeURIComponent(this.ipa.name)}`, {
-        method: "POST",
-        body: finalIpaBlob
-      });
-
-      if (!upRes.ok) throw new Error("Cloudflare Error: Binary upload failed.");
-
-      log.innerHTML = '<span style="color:green; font-weight:bold;">Success! Uploaded to GitHub.</span>';
-      app.dialog.alert("Successfully signed and uploaded to your repository!");
+      // 4. Trigger iOS Install Prompt
+      const manifestLink = `https://github.com/techlxrd/softwarekit-signer/releases/download/${tag}/manifest.plist`;
+      log.innerHTML = `<span style="color:green">Success! Prompting install...</span>`;
+      
+      window.location.href = `itms-services://?action=download-manifest&url=${encodeURIComponent(manifestLink)}`;
 
     } catch (e) {
       log.innerHTML = `<span style="color:red">Error: ${e.message}</span>`;
-      console.error(e);
     } finally {
       btn.disabled = false;
     }
