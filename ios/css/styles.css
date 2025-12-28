@@ -115,7 +115,10 @@ body {
         border-radius: 24%;
     }
     .more {
-        margin-left: 50% !important;
+        margin-left: 50% !important;     
+    }
+     .more i{
+        font-size:34px; 
     }
    .app-icon{width: 110px; height: 110px; border-radius: 30%; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); object-fit:cover;}
        .accent-color-indicator {
@@ -129,6 +132,8 @@ body {
     .news-card {
         font-size: auto;
         color: #fff;
+        border:none!important;
+        border-radius:26px!important;
     }
     .swiper-slide-news {
         height: auto;
@@ -168,12 +173,11 @@ body {
         font-weight: 600;
         opacity: .75;
     }
-    .repo-news-card .card-footer .link:active {
-        opacity: 1;
-    }
+   
     .news-card .card-content {
         padding: 0;
-        border-radius: 16px;
+        border-radius: 25px;
+        border:none;
         overflow: hidden;
         box-shadow: 0 6px 18px rgba(0, 0, 0, .12);
     }
@@ -232,7 +236,7 @@ body {
         height: auto;
     }
     .screenshot img {
-        width: 230px;
+        width: 200px;
         border-radius: 16px;
         margin: 5px;
     }
