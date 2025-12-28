@@ -1067,77 +1067,34 @@ function openSignerPopup() {
   }).open();
 }
 </script>
-<script>const WORKER_URL = "https://softwarekit-udid.shadvlxrd.workers.dev";
-
-// 1. Check for data automatically when the app is opened or resumed
-document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === 'visible') {
-        autoSync();
-    }
-});
-
-window.onload = autoSync;
-
-async function autoSync() {
-    const requestId = localStorage.getItem('pendingRequestID');
-    const existingData = localStorage.getItem('deviceInfo');
-
-    // If we have data, show it and stop
-    if (existingData) {
-        displayInfo(JSON.parse(existingData));
-        return;
-    }
-
-    // If a request is out, try to grab the result
-    if (requestId) {
-        document.getElementById('status').innerText = "Checking for device data...";
-        await fetchFromWorker(requestId);
-    }
-}
-
-async function fetchFromWorker(id) {
-    try {
-        const resp = await fetch(`${WORKER_URL}/retrieve?requestId=${id}`);
-        const { data } = await resp.json();
-
-        if (data) {
-            const decoded = JSON.parse(atob(data));
-            localStorage.setItem('deviceInfo', JSON.stringify(decoded));
-            localStorage.removeItem('pendingRequestID');
-            displayInfo(decoded);
-        }
-    } catch (e) {
-        console.error("Sync error", e);
-    }
-}
-
-function displayInfo(info) {
-    const ui = document.getElementById('device-ui');
-    ui.innerHTML = `
-        <div style="background:#e7f3ff; padding:15px; border-radius:8px; margin-top:10px;">
-            <p><strong>UDID:</strong> ${info.udid || info.UDID}</p>
-            <p><strong>Model:</strong> ${info.product || 'Unknown'}</p>
-        </div>
-    `;
-    document.getElementById('status').innerText = "Device Identified";
-}
-
-// Helper to trigger the whole process
-async function startProcess() {
+<script>// Replace your entire postRequest function with this simple version
+function postRequest() {
     const requestId = Math.random().toString(36).substring(2, 15);
     localStorage.setItem('pendingRequestID', requestId);
-    
-    const setupUrl = `${WORKER_URL}/callback?requestId=${requestId}`;
-    
-    // Call your existing API (s0n1c.ca) with the worker as the redirect
-    const response = await fetch('https://udid.s0n1c.ca/setup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ redirect_url: setupUrl, message: 'Verifying...' })
-    });
 
-    const text = await response.text();
-    window.location.href = 'data:application/x-apple-aspen-config;charset=utf-8,' + encodeURIComponent(text);
+    // Instead of fetching the text and turning it into a data URI,
+    // we go straight to the Worker. This "breaks out" of the PWA sandbox.
+    window.location.href = `https://softwarekit-udid.shadvlxrd.workers.dev/get-profile?requestId=${requestId}`;
+    
+    // Start looking for the data immediately
+    startPolling(requestId);
+}
+
+function startPolling(id) {
+    const interval = setInterval(async () => {
+        try {
+            const res = await fetch(`https://softwarekit-udid.shadvlxrd.workers.dev/retrieve?requestId=${id}`);
+            const { deviceInfo } = await res.json();
+            
+            if (deviceInfo) {
+                clearInterval(interval);
+                localStorage.setItem('deviceInfo', JSON.stringify(deviceInfo));
+                // Show the data automatically
+                alert("Success! Device Info: " + JSON.stringify(deviceInfo));
+                location.reload(); 
+            }
+        } catch (e) { console.log("Waiting..."); }
+    }, 2000);
 }
 </script>       
 <script>window.onload = function() {
