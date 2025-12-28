@@ -205,7 +205,7 @@ function renderDeviceData(deviceInfo) {
                 <li>
                     <div class="item-content">
                         <div class="item-media">
-                           <i class="f7-icons" style="width:58px;height;58px;">device_phone_portrait</i>
+                           <i class="f7-icons" style="font-size:58px;">device_phone_portrait</i>
                         </div>
                         <div class="item-inner">
                             <div class="item-title">
