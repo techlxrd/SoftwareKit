@@ -1134,7 +1134,7 @@ function renderDeviceData(deviceInfo) {
                 <li>
                     <div class="item-content">
                         <div class="item-media">
-                            <img src="assets/device-placeholder.png" id="device-photo">
+                            <img src="" id="device-photo">
                         </div>
                         <div class="item-inner">
                             <div class="item-title">
@@ -1215,7 +1215,8 @@ function renderDeviceData(deviceInfo) {
             </a>
         </div>
     `;
-   
+
+    // --- START: per-model photo selection (safe to edit paths below) ---
     try {
         const photoEl = document.getElementById('device-photo');
         if (photoEl) {
@@ -1257,48 +1258,88 @@ function renderDeviceData(deviceInfo) {
                 'iPhone 15 Pro Max': 'assets/iphone-15-pro-max.png',
                 'iPhone 16': 'assets/iphone-16.png',
                 'iPhone 16 Plus': 'assets/iphone-16-plus.png',
-                'iPhone 16 Pro': 'https://flekstore.com/client/img/device/devices/iPhone17,4.png',
+                'iPhone 16 Pro': 'assets/iphone-16-pro.png',
                 'iPhone 16 Pro Max': 'https://i.imgur.com/6VwMOtF.png'
             };
-          
-            let chosen = null;
-            const nameLower = modelName ? modelName.toLowerCase() : '';
 
-            for (const modelKey of Object.keys(modelImageMap)) {
-                if (nameLower.includes(modelKey.toLowerCase())) {
-                    chosen = modelImageMap[modelKey];
+            // Normalize inputs
+            const name = (modelName || '').trim();
+            const nameLower = name.toLowerCase();
+            const id = (modelIdentifier || '').trim();
+
+            let chosen = null;
+
+            // 0) Exact key match (case-insensitive)
+            for (const key of Object.keys(modelImageMap)) {
+                if (key.toLowerCase() === nameLower) {
+                    chosen = modelImageMap[key];
                     break;
                 }
             }
 
-           
-            if (!chosen && typeof modelIdentifier === 'string') {
-                const idMatch = modelIdentifier.match(/^iPhone(\d+),/i);
-                if (idMatch) {
-                    const gen = parseInt(idMatch[1], 10);
-                    if (!Number.isNaN(gen)) {
-                        const genKey = 'iPhone ' + gen;
-                        if (modelImageMap[genKey]) chosen = modelImageMap[genKey];
+            // 1) Try matching by inclusion (e.g. "iPhone 14 Pro" includes "iPhone 14")
+            if (!chosen) {
+                for (const key of Object.keys(modelImageMap)) {
+                    if (nameLower.includes(key.toLowerCase())) {
+                        chosen = modelImageMap[key];
+                        break;
                     }
                 }
             }
-           
+
+            // 2) Use model identifier (e.g. "iPhone14,2") to try generation-specific keys,
+            //    prefer more specific qualifiers found in the modelName (Pro, Pro Max, Plus, mini, SE)
+            if (!chosen && typeof id === 'string') {
+                const idMatch = id.match(/^iPhone\s*?(\d+),/i) || id.match(/^iPhone(\d+),/i);
+                if (idMatch) {
+                    const gen = parseInt(idMatch[1], 10);
+                    if (!Number.isNaN(gen)) {
+                        // build ordered candidates based on qualifiers present in the name
+                        const qualifiersPriority = [];
+                        if (nameLower.includes('pro max') || nameLower.includes('max')) qualifiersPriority.push('Pro Max');
+                        if (nameLower.includes('pro')) qualifiersPriority.push('Pro');
+                        if (nameLower.includes('plus')) qualifiersPriority.push('Plus');
+                        if (nameLower.includes('mini')) qualifiersPriority.push('mini');
+                        if (nameLower.includes('se')) qualifiersPriority.push('SE');
+                        // fallback order if no qualifier found
+                        const fallbackOrder = ['Pro Max', 'Pro', 'Plus', 'mini', 'SE', ''];
+                        // create final ordered list
+                        const finalOrder = Array.from(new Set([...qualifiersPriority, ...fallbackOrder]));
+
+                        for (const q of finalOrder) {
+                            const candidate = ('iPhone ' + gen + (q ? ' ' + q : '')).trim();
+                            if (modelImageMap[candidate]) {
+                                chosen = modelImageMap[candidate];
+                                break;
+                            }
+                        }
+                        // as a final try for the generation, check plain "iPhone <gen>" key
+                        if (!chosen) {
+                            const genKey = 'iPhone ' + gen;
+                            if (modelImageMap[genKey]) chosen = modelImageMap[genKey];
+                        }
+                    }
+                }
+            }
+
+            // 3) Another fallback: extract digits from modelName like "iPhone 12" and look up
             if (!chosen) {
-                const numMatch = modelName.match(/iPhone\s*(\d{1,2})/i);
+                const numMatch = name.match(/iPhone\s*(\d{1,2})/i);
                 if (numMatch) {
                     const genKey = 'iPhone ' + numMatch[1];
                     if (modelImageMap[genKey]) chosen = modelImageMap[genKey];
                 }
             }
 
-            // 4) final fallback: placeholder (keeps existing placeholder)
+            // 4) final fallback: keep existing placeholder
             photoEl.src = chosen || photoEl.src || 'assets/device-placeholder.png';
         }
     } catch (err) {
         // don't break rendering if something goes wrong; keep the placeholder
         console.error('photo selection error', err);
     }
-  
+    // --- END: per-model photo selection ---
+
     const copyBtn = document.getElementById('copyUdidBtn');
     if (copyBtn) {
         copyBtn.addEventListener('click', async () => {
@@ -1324,17 +1365,6 @@ function renderDeviceData(deviceInfo) {
     };
 
     app.dialog.close();
-}
-function formatLabel(key) {
-    
-    const upperKeys = ['bdid', 'cpid'];
-    if (upperKeys.includes(key.toLowerCase())) {
-        return key.toUpperCase();
-    }
-   
-    return key
-        .replace(/_/g, ' ')
-        .replace(/\b\w/g, c => c.toUpperCase());
 }</script>       
 <script>window.onload = function() {
   app.dialog.alert('If you encounter any bugs or issues, please navigate to Settings, scroll down to Feedback, and provide a detailed description of the issue.', 'SoftwareKit Beta Testing');
