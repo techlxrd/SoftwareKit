@@ -973,95 +973,52 @@
     <script>
 var SignerEngine = {
   ipa: null, p12: null, prov: null,
-  proxyUrl: "https://softwarekit-signer.shadvlxrd.workers.dev",
+  // Your Cococloud API Key from: https://cococloud-signing.online/en/user/developer
+  apiKey: "sk_hiCZrFuWbR9jJjizAXEVWA0M0hZydN61liCfceSj", 
 
-  onFile: function(input, type) { this[type] = input.files[0]; },
+  onFile: function(input, type) { 
+    this[type] = input.files[0]; 
+  },
 
   process: async function(btn) {
-    const pass = document.querySelector('#p12-pass').value;
-    const tag = "v" + Date.now();
-    app.dialog.progress('Signing...', 0);
-    const dialog = app.dialog.get();
+    if (!this.ipa || !this.p12 || !this.prov) {
+      app.dialog.alert("Please upload the IPA, P12, and MobileProvision first.");
+      return;
+    }
+
+    const password = document.querySelector('#p12-pass').value;
+    app.dialog.progress('Sending to Cococloud...', 0);
 
     try {
-      const zip = new JSZip();
-      const ipaBuffer = await this.ipa.arrayBuffer();
-      const contents = await zip.loadAsync(ipaBuffer);
-      
-      dialog.setText("Processing P12...");
-      const p12Buffer = await this.p12.arrayBuffer();     
-      const p12Uint8 = new Uint8Array(p12Buffer);
-      const p12Binkey = forge.util.binary.raw.encode(p12Uint8);
-      const p12Asn1 = forge.asn1.fromDer(p12Binkey);
-      const p12 = forge.pkcs12.pkcs12FromAsn1(p12Asn1, pass);
-      
-      const keyBags = p12.getBags({ bagType: forge.pki.oids.pkcs8ShroudedKeyBag })[forge.pki.oids.pkcs8ShroudedKeyBag];
-      const certBags = p12.getBags({ bagType: forge.pki.oids.certBag })[forge.pki.oids.certBag];
-      const privateKey = keyBags[0].key;
-      const certificate = certBags[0].cert;
+      // 1. Create a FormData object (The standard for file uploads)
+      const formData = new FormData();
+      formData.append('key', this.apiKey);
+      formData.append('ipa', this.ipa);
+      formData.append('p12', this.p12);
+      formData.append('password', password);
+      formData.append('provision', this.prov);
 
-      dialog.setText("Patching Bundle...");
-      let appPath = "";
-      for (let path in contents.files) {
-        if (path.startsWith("Payload/") && path.endsWith(".app/")) {
-          appPath = path; break;
-        }
-      }
-
-      contents.file(appPath + "embedded.mobileprovision", await this.prov.arrayBuffer());
-     
-      dialog.setText("Generating Digital Signature...");
-      const exeName = appPath.split('/').filter(Boolean).pop().replace('.app', '');
-      const exeData = await contents.file(appPath + exeName).async("uint8array");
-           
-      const uint8ToString = (u8a) => {
-        const CHUNK_SZ = 0x8000;
-        const c = [];
-        for (let i = 0; i < u8a.length; i += CHUNK_SZ) {
-          c.push(String.fromCharCode.apply(null, u8a.subarray(i, i + CHUNK_SZ)));
-        }
-        return c.join("");
-      };
-      const exeStr = uint8ToString(exeData);
-
-      const p7 = forge.pkcs7.createSignedData();
-      p7.content = forge.util.createBuffer(exeStr);
-      p7.addCertificate(certificate);
-      p7.addSigner({
-        key: privateKey, certificate: certificate, digestAlgorithm: forge.pki.oids.sha256,
-        authenticatedAttributes: [
-          { type: forge.pki.oids.contentType, value: forge.pki.oids.data },
-          { type: forge.pki.oids.signingTime, value: new Date() },
-          { type: forge.pki.oids.messageDigest }
-        ]
-      });
-      p7.sign({detached: true});
-      
-      const sigDer = forge.asn1.toDer(p7.toAsn1()).getBytes();
-      contents.file(appPath + "_CodeSignature/CodeSignature", sigDer);
-
-      dialog.setText("Uploading...");
-      const finalIpa = await contents.generateAsync({ type: "blob" });
-      
-      const rel = await fetch(`${this.proxyUrl}/create-release`, {
+      // 2. Post to the Cococloud Signing Endpoint
+      const response = await fetch('https://cococloud-signing.online/api/v2/sign', {
         method: 'POST',
-        body: JSON.stringify({ tag: tag, name: this.ipa.name })
-      });
-      const relData = await rel.json();
-      const upBase = relData.upload_url.split('{')[0];
-
-      await fetch(`${this.proxyUrl}/upload-asset?url=${encodeURIComponent(upBase)}&name=${encodeURIComponent(this.ipa.name)}`, {
-        method: 'POST', body: finalIpa
+        body: formData
       });
 
-      const plist = `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>items</key><array><dict><key>assets</key><array><dict><key>kind</key><string>software-package</string><key>url</key><string>https://github.com/techlxrd/softwarekit-signer/releases/download/${tag}/${encodeURIComponent(this.ipa.name)}</string></dict></array><key>metadata</key><dict><key>bundle-identifier</key><string>com.softwarekit.sign</string><key>bundle-version</key><string>1.0</string><key>kind</key><string>software</string><key>title</key><string>${this.ipa.name}</string></dict></dict></array></dict></plist>`;
-      
-      await fetch(`${this.proxyUrl}/upload-asset?url=${encodeURIComponent(upBase)}&name=manifest.plist`, {
-        method: 'POST', body: new Blob([plist], {type: 'text/xml'})
-      });
+      const result = await response.json();
 
-      app.dialog.close();
-      window.location.href = `itms-services://?action=download-manifest&url=${encodeURIComponent(`https://github.com/techlxrd/softwarekit-signer/releases/download/${tag}/manifest.plist`)}`;
+      if (result.status === 'success' || result.success) {
+        app.dialog.close();
+        
+        // 3. Cococloud usually provides a direct manifest or install link
+        // We use the 'install_url' or 'url' provided by their API
+        const installUrl = result.install_url || result.url;
+        
+        app.dialog.confirm('IPA Signed! Do you want to install it now?', 'Success', function () {
+          window.location.href = installUrl;
+        });
+      } else {
+        throw new Error(result.message || "Signing failed on Cococloud side.");
+      }
 
     } catch (e) {
       app.dialog.close();
@@ -1110,66 +1067,78 @@ function openSignerPopup() {
   }).open();
 }
 </script>
-<script>function cleanUrl() {
-let currentUrl = window.location.href;
-const cleanUrl = currentUrl.split("/?")[0];
-if (currentUrl !== cleanUrl) {
-window.location.href = cleanUrl;
-}
-}
+<script>const WORKER_URL = "https://softwarekit-udid.shadvlxrd.workers.dev";
 
-async function postRequest() {
-try {
-const currentUrl = window.location.href;
-const response = await fetch('https://udid.s0n1c.ca/setup', {
-method: 'POST',
-headers: {
-'Content-Type': 'application/json'
-},
-body: JSON.stringify({
-redirect_url: currentUrl,
-message: 'Hello, World!'
-})
+// 1. Check for data automatically when the app is opened or resumed
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === 'visible') {
+        autoSync();
+    }
 });
 
-if (!response.ok) {  
-        throw new Error(`HTTP error! Status: ${response.status}`);  
-    }  
+window.onload = autoSync;
 
-    const responseText = await response.text();  
-    const configFileUrl = 'data:application/x-apple-aspen-config;charset=utf-8,' + encodeURIComponent(responseText);  
-    window.location.href = configFileUrl;  
+async function autoSync() {
+    const requestId = localStorage.getItem('pendingRequestID');
+    const existingData = localStorage.getItem('deviceInfo');
 
-} catch (error) {  
-    alert("Error: " + error.message);  
+    // If we have data, show it and stop
+    if (existingData) {
+        displayInfo(JSON.parse(existingData));
+        return;
+    }
+
+    // If a request is out, try to grab the result
+    if (requestId) {
+        document.getElementById('status').innerText = "Checking for device data...";
+        await fetchFromWorker(requestId);
+    }
 }
 
+async function fetchFromWorker(id) {
+    try {
+        const resp = await fetch(`${WORKER_URL}/retrieve?requestId=${id}`);
+        const { data } = await resp.json();
+
+        if (data) {
+            const decoded = JSON.parse(atob(data));
+            localStorage.setItem('deviceInfo', JSON.stringify(decoded));
+            localStorage.removeItem('pendingRequestID');
+            displayInfo(decoded);
+        }
+    } catch (e) {
+        console.error("Sync error", e);
+    }
 }
 
-function saveDeviceInfo() {
-const urlParams = new URLSearchParams(window.location.search);
-const deviceBase64 = urlParams.get('device');
-if (deviceBase64) {
-const decodedData = atob(deviceBase64);
-try {
-const deviceInfo = JSON.parse(decodedData);
-localStorage.setItem('deviceInfo', JSON.stringify(deviceInfo));
-} catch (error) {}
-}
-}
-
-function showSavedDeviceInfo() {
-const savedDeviceInfo = localStorage.getItem('deviceInfo');
-if (savedDeviceInfo) {
-const deviceInfo = JSON.parse(savedDeviceInfo);
-alert(JSON.stringify(deviceInfo, null, 2));
-}
+function displayInfo(info) {
+    const ui = document.getElementById('device-ui');
+    ui.innerHTML = `
+        <div style="background:#e7f3ff; padding:15px; border-radius:8px; margin-top:10px;">
+            <p><strong>UDID:</strong> ${info.udid || info.UDID}</p>
+            <p><strong>Model:</strong> ${info.product || 'Unknown'}</p>
+        </div>
+    `;
+    document.getElementById('status').innerText = "Device Identified";
 }
 
-window.onload = function() {
-saveDeviceInfo();
-cleanUrl();
-};
+// Helper to trigger the whole process
+async function startProcess() {
+    const requestId = Math.random().toString(36).substring(2, 15);
+    localStorage.setItem('pendingRequestID', requestId);
+    
+    const setupUrl = `${WORKER_URL}/callback?requestId=${requestId}`;
+    
+    // Call your existing API (s0n1c.ca) with the worker as the redirect
+    const response = await fetch('https://udid.s0n1c.ca/setup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ redirect_url: setupUrl, message: 'Verifying...' })
+    });
+
+    const text = await response.text();
+    window.location.href = 'data:application/x-apple-aspen-config;charset=utf-8,' + encodeURIComponent(text);
+}
 </script>       
 <script>window.onload = function() {
   app.dialog.alert('If you encounter any bugs or issues, please navigate to Settings, scroll down to Feedback, and provide a detailed description of the issue.', 'SoftwareKit Beta Testing');
