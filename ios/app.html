@@ -163,7 +163,7 @@
                                                         <div class="item-media"><i class="f7-icons">gear</i></div>
                                                         <div class="item-inner">
                                                             <div class="item-title-row">
-                                                                <div class="item-title">UDID</div>
+                                                                <div class="item-title">Device Info</div>
                                                             </div>
                                                         </div>
                                                     </a>
@@ -942,17 +942,19 @@
           <div class="popup" id="udid">
       
           <div class="page">
-            <div class="navbar">
-              <div class="navbar-inner">
-                <div class="title">UDID Registration</div>
-                <div class="right"><a class="link popup-close">Close</a></div>
-              </div>
-            </div>
+                                <div class="navbar">
+                                    <div class="navbar-inner">
+                                        <div class="title">Device Info</div>
+                                        <div class="right">
+                                            <a class="link popup-close">Close</a>
+                                        </div>
+                                    </div>
+                                </div>
 
-            <div class="page-content">
+                                <div class="page-content">
               <div class="block udid-info-element">
                 <p>This installs a temporary Apple profile to read your device info. After downloading, install the profile in Settings, then return here.</p>
-                <button onclick="postRequest()" class="button button-fill button-large button-round udid-info-element">Install profile</button>
+                <button onclick="postRequest()" class="button button-fill button-large button-round ">Install profile</button>
                 <br>              
               </div>
   <div id="device-container"></div>
@@ -1117,17 +1119,13 @@ function renderDeviceData(deviceInfo) {
 
     container.innerHTML = `
         <!-- DEVICE HEADER -->
-        <div class="list inset">
+        <div class="list separated inset">
             <ul>
                 <li>
                     <div class="item-content">
                         <div class="item-media">
                             <img
-                                src="assets/device-placeholder.png"
-                                width="48"
-                                height="48"
-                                style="border-radius:12px"
-                            />
+                                src="assets/device-placeholder.png">
                         </div>
                         <div class="item-inner">
                             <div class="item-title">
@@ -1145,7 +1143,7 @@ function renderDeviceData(deviceInfo) {
         <!-- UDID BLOCK -->
         <div class="card udid-info-element" ${udidStyle}>
             <div class="card-content card-content-padding">
-                <div class="list no-hairlines">
+                <div class="list list-strong inset">
                     <ul>
                         <li class="item-content item-input">
                             <div class="item-inner">
@@ -1157,7 +1155,7 @@ function renderDeviceData(deviceInfo) {
                         </li>
                     </ul>
                 </div>
-
+<br>
                 <a class="button button-fill button-round" id="copyUdidBtn">
                     Copy UDID
                 </a>
@@ -1196,17 +1194,26 @@ function renderDeviceData(deviceInfo) {
             </a>
         </div>
     `;
-
-    // Copy UDID
-    if (!isRegistered && udid) {
-        document.getElementById('copyUdidBtn').onclick = () => {
-            navigator.clipboard.writeText(udid);
-            app.toast.create({
-                text: 'UDID copied',
-                closeTimeout: 2000
-            }).open();
-        };
+   
+ if (!isRegistered && udid) {
+    const copyBtn = document.getElementById('copyUdidBtn');
+    
+    if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(udid);
+                app.toast.create({
+                    text: 'UDID copied',
+                    closeTimeout: 2000
+                }).open();
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+                
+                fallbackCopyTextToClipboard(udid);
+            }
+        });
     }
+}
 
     // Remove device info only
     document.getElementById('removeDeviceBtn').onclick = () => {
