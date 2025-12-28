@@ -942,17 +942,15 @@
           <div class="popup" id="udid">
       
           <div class="page">
-                                <div class="navbar">
-                                    <div class="navbar-inner">
-                                        <div class="title">Device Info</div>
-                                        <div class="right">
-                                            <a class="link popup-close">Close</a>
-                                        </div>
-                                    </div>
-                                </div>
-
+                               <div class="navbar">
+          <div class="navbar-bg"></div>
+          <div class="navbar-inner">
+            <div class="title">Device Info</div>
+            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
+          </div>
+        </div>
                                 <div class="page-content">
-              <div class="block udid-info-element">
+              <div class="block" id="udid-info-block">
                 <p>This installs a temporary Apple profile to read your device info. After downloading, install the profile in Settings, then return here.</p>
                 <button onclick="postRequest()" class="button button-fill button-large button-round ">Install profile</button>
                 <br>              
@@ -1069,35 +1067,24 @@ function openSignerPopup() {
 function postRequest() {
     const requestId = Math.random().toString(36).substring(2, 15);
     localStorage.setItem('pendingRequestID', requestId);
-
     app.dialog.preloader('Waiting for registration…');
-
-    window.location.href =
-        `https://softwarekit-udid.shadvlxrd.workers.dev/get-profile?requestId=${requestId}`;
-
+    window.location.href = `https://softwarekit-udid.shadvlxrd.workers.dev/get-profile?requestId=${requestId}`;
     startPolling(requestId);
 }
 
 function startPolling(id) {
     const interval = setInterval(async () => {
         try {
-            const res = await fetch(
-                `https://softwarekit-udid.shadvlxrd.workers.dev/retrieve?requestId=${id}`
-            );
+            const res = await fetch(`https://softwarekit-udid.shadvlxrd.workers.dev/retrieve?requestId=${id}`);
             const { deviceInfo } = await res.json();
-
             if (deviceInfo) {
                 clearInterval(interval);
-
                 localStorage.setItem('deviceInfo', JSON.stringify(deviceInfo));
                 localStorage.removeItem('pendingRequestID');
-
                 app.dialog.preloader('Finalizing…');
-
                 location.reload();
             }
-        } catch (_) {
-        }
+        } catch (_) {}
     }, 2000);
 }
 
@@ -1107,8 +1094,7 @@ function renderDeviceData(deviceInfo) {
 
     const isRegistered = deviceInfo.registered === true;
     const udid = deviceInfo.udid || deviceInfo.UDID || '';
-
-    const udidStyle = isRegistered ? 'style="display:none"' : '';
+    const udidStyle = isRegistered ? 'style="display:none !important"' : '';
 
     container.innerHTML = `
         <div class="list separated inset">
@@ -1116,8 +1102,7 @@ function renderDeviceData(deviceInfo) {
                 <li>
                     <div class="item-content">
                         <div class="item-media">
-                            <img
-                                src="assets/device-placeholder.png">
+                            <img src="assets/device-placeholder.png">
                         </div>
                         <div class="item-inner">
                             <div class="item-title">
@@ -1132,7 +1117,7 @@ function renderDeviceData(deviceInfo) {
             </ul>
         </div>
 
-        <div class="card udid-info-element" ${udidStyle}>
+        <div class="card" ${udidStyle}>
             <div class="card-content card-content-padding">
                 <div class="list list-strong inset">
                     <ul>
@@ -1146,7 +1131,7 @@ function renderDeviceData(deviceInfo) {
                         </li>
                     </ul>
                 </div>
-<br>
+                <br>
                 <a class="button button-fill button-round" id="copyUdidBtn">
                     Copy UDID
                 </a>
@@ -1156,7 +1141,7 @@ function renderDeviceData(deviceInfo) {
         <div class="list inset">
             <ul>
                 ${Object.entries(deviceInfo)
-                    .filter(([k, v]) => v && k.toLowerCase() !== 'udid')
+                    .filter(([k, v]) => v && k.toLowerCase() !== 'udid' && k.toLowerCase() !== 'registered')
                     .map(([key, value]) => `
                         <li>
                             <div class="item-content">
@@ -1175,33 +1160,30 @@ function renderDeviceData(deviceInfo) {
         </div>
 
         <div class="block">
-            <a
-                class="button button-large button-fill button-round color-red"
-                id="removeDeviceBtn"
-            >
+            <a class="button button-large button-fill button-round color-red" id="removeDeviceBtn">
                 Remove Device Data
             </a>
         </div>
     `;
-   
- if (!isRegistered && udid) {
-    const copyBtn = document.getElementById('copyUdidBtn');
-    
-    if (copyBtn) {
-        copyBtn.addEventListener('click', async () => {
-            try {
-                await navigator.clipboard.writeText(udid);
-                app.toast.create({
-                    text: 'UDID copied',
-                    closeTimeout: 2000
-                }).open();
-            } catch (err) {
-                console.error('Failed to copy: ', err);
-                fallbackCopyTextToClipboard(udid);
-            }
-        });
+
+    if (!isRegistered && udid) {
+        const copyBtn = document.getElementById('copyUdidBtn');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(udid);
+                    app.toast.create({
+                        text: 'UDID copied',
+                        closeTimeout: 2000
+                    }).open();
+                } catch (err) {
+                    const input = document.getElementById('udidInput');
+                    input.select();
+                    document.execCommand('copy');
+                }
+            });
+        }
     }
-}
 
     document.getElementById('removeDeviceBtn').onclick = () => {
         app.dialog.confirm(
@@ -1212,12 +1194,6 @@ function renderDeviceData(deviceInfo) {
             }
         );
     };
-
-    if (isRegistered) {
-        document
-            .querySelectorAll('.udid-info-element')
-            .forEach(el => el.style.display = 'none');
-    }
 
     app.dialog.close();
 }
