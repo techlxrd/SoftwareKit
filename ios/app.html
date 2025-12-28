@@ -1094,23 +1094,17 @@ function renderDeviceData(deviceInfo) {
 
     const isRegistered = deviceInfo.registered === true;
     const udid = deviceInfo.udid || deviceInfo.UDID || '';
+    
+    const modelName = deviceInfo.name || deviceInfo.DeviceName || 'Unknown Device';
     const modelIdentifier = deviceInfo.model || 'Unknown';
-    const modelName = deviceInfo.name || deviceInfo.DeviceName || modelIdentifier;
+    const sysVer = deviceInfo.systemVersion || deviceInfo.version || '';
 
-    const installBlockStyle = isRegistered ? 'style="display:none !important"' : '';
+    if (isRegistered) {
+        const targetEl = document.getElementById('udid-info-block');
+        if (targetEl) targetEl.style.display = 'none';
+    }
 
     container.innerHTML = `
-        <div id="install-profile-section" class="block" ${installBlockStyle}>
-            <div class="card">
-                <div class="card-content card-content-padding">
-                    <p>This installs a temporary Apple profile to read your device info. After downloading, install the profile in Settings, then return here.</p>
-                    <a class="button button-fill button-round" onclick="postRequest()">
-                        Install profile
-                    </a>
-                </div>
-            </div>
-        </div>
-
         <div class="list separated inset">
             <ul>
                 <li>
@@ -1123,7 +1117,7 @@ function renderDeviceData(deviceInfo) {
                                 ${modelName}
                             </div>
                             <div class="item-subtitle">
-                                ${deviceInfo.systemVersion || deviceInfo.version || ''}
+                                ${sysVer}
                             </div>
                         </div>
                     </div>
@@ -1162,10 +1156,18 @@ function renderDeviceData(deviceInfo) {
                         </div>
                     </div>
                 </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title">System Version</div>
+                            <div class="item-after">${sysVer}</div>
+                        </div>
+                    </div>
+                </li>
                 ${Object.entries(deviceInfo)
                     .filter(([k, v]) => 
                         v && 
-                        !['udid', 'registered', 'model', 'name', 'devicename'].includes(k.toLowerCase())
+                        !['udid', 'registered', 'model', 'name', 'devicename', 'systemversion', 'version'].includes(k.toLowerCase())
                     )
                     .map(([key, value]) => `
                         <li>
