@@ -950,12 +950,55 @@
             </div>
 
             <div class="page-content">
-              <div class="block">
+              <div class="block udid-info-element">
                 <p>This installs a temporary Apple profile to read your device info. After downloading, install the profile in Settings, then return here.</p>
-                <button onclick="postRequest()" class="button button-fill button-large button-round">Install profile</button>
+                <button onclick="postRequest()" class="button button-fill button-large button-round udid-info-element">Install profile</button>
                 <br>              
               </div>
-              <div class="block device-data">Device info unavailable, install profile</div>                 
+             <!-- DEVICE HEADER -->
+<div class="card device-header" style="display:none">
+    <div class="card-content card-content-padding">
+        <div class="device-header-inner">
+            <img class="device-image" src="assets/device-placeholder.png" />
+            <div class="device-text">
+                <div class="device-model"></div>
+                <div class="device-version"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- UDID BLOCK -->
+<div class="card udid-info-element" style="display:none">
+    <div class="card-content card-content-padding">
+        <div class="list no-hairlines">
+            <ul>
+                <li class="item-content item-input">
+                    <div class="item-inner">
+                        <div class="item-title item-label">UDID</div>
+                        <div class="item-input-wrap">
+                            <input type="text" id="udidInput" readonly />
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <a class="button button-fill" id="copyUdidBtn">Copy UDID</a>
+    </div>
+</div>
+
+<!-- DEVICE INFO LIST -->
+<div class="list inset device-data" style="display:none">
+    <ul></ul>
+</div>
+
+<!-- REMOVE BUTTON -->
+<div class="block">
+    <a class="button button-outline color-red" id="removeDeviceBtn" style="display:none">
+        Remove Device Data
+    </a>
+</div>
                   </div>
                 </div>
               </div>
@@ -1069,7 +1112,7 @@ function postRequest() {
     const requestId = Math.random().toString(36).substring(2, 15);
     localStorage.setItem('pendingRequestID', requestId);
 
-    app.dialog.preloader('Registering device…');
+    app.dialog.preloader('Waiting for registration…');
 
     window.location.href =
         `https://softwarekit-udid.shadvlxrd.workers.dev/get-profile?requestId=${requestId}`;
@@ -1100,14 +1143,71 @@ function startPolling(id) {
         }
     }, 2000);
 }
-
+if (deviceInfo.registered === true) {
+    document
+        .querySelectorAll('.udid-info-element')
+        .forEach(el => el.style.display = 'none');
+}
 function renderDeviceData(deviceInfo) {
-    const el = document.querySelector('.device-data');
-    if (!el) return;
+    // HEADER
+    document.querySelector('.device-header').style.display = 'block';
+    document.querySelector('.device-model').textContent =
+        deviceInfo.model || 'Unknown Device';
+    document.querySelector('.device-version').textContent =
+        deviceInfo.systemVersion || deviceInfo.version || '';
 
-    el.textContent = Object.entries(deviceInfo)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join('\n');
+    // UDID
+    const udid = deviceInfo.udid || deviceInfo.UDID;
+    if (udid) {
+        document.getElementById('udidInput').value = udid;
+        document.querySelector('.udid-info-element').style.display = 'block';
+    }
+
+    // DEVICE LIST
+    const list = document.querySelector('.device-data ul');
+    list.innerHTML = '';
+
+    Object.entries(deviceInfo).forEach(([key, value]) => {
+        if (!value || key.toLowerCase() === 'udid') return;
+
+        const label = key
+            .replace(/_/g, ' ')
+            .replace(/\b\w/g, c => c.toUpperCase());
+
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <div class="item-content">
+                <div class="item-inner">
+                    <div class="item-title">${label}</div>
+                    <div class="item-after">${value}</div>
+                </div>
+            </div>
+        `;
+        list.appendChild(li);
+    });
+
+    document.querySelector('.device-data').style.display = 'block';
+    document.getElementById('removeDeviceBtn').style.display = 'block';
+
+    // COPY BUTTON
+    document.getElementById('copyUdidBtn').onclick = () => {
+        navigator.clipboard.writeText(udid);
+        app.toast.create({
+            text: 'UDID copied',
+            closeTimeout: 2000
+        }).open();
+    };
+
+    // REMOVE BUTTON
+    document.getElementById('removeDeviceBtn').onclick = () => {
+        app.dialog.confirm(
+            'Remove stored device data?',
+            () => {
+                localStorage.removeItem('deviceInfo');
+                location.reload();
+            }
+        );
+    };
 
     app.dialog.close();
 }
