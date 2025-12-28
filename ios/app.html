@@ -664,13 +664,12 @@
                         <div class="popup popup-report" id="report-app">
                             <div class="page">
                                 <div class="navbar">
-                                    <div class="navbar-inner">
-                                        <div class="title">Report app</div>
-                                        <div class="right">
-                                            <a class="link popup-close">Cancel</a>
-                                        </div>
-                                    </div>
-                                </div>
+          <div class="navbar-bg"></div>
+          <div class="navbar-inner">
+            <div class="title">Report</div>
+            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
+          </div>
+        </div>
 
                                 <div class="page-content">
                                     <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset" id="report-form">
@@ -742,13 +741,12 @@
                          <div class="popup popup-report" id="feedback">
                             <div class="page">
                                 <div class="navbar">
-                                    <div class="navbar-inner">
-                                        <div class="title">Send Feedback</div>
-                                        <div class="right">
-                                            <a class="link popup-close">Cancel</a>
-                                        </div>
-                                    </div>
-                                </div>
+          <div class="navbar-bg"></div>
+          <div class="navbar-inner">
+            <div class="title">Send feedback</div>
+            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
+          </div>
+        </div>
 
                                 <div class="page-content">
                                     <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset" id="feedback-form">
@@ -1136,7 +1134,7 @@ function renderDeviceData(deviceInfo) {
                 <li>
                     <div class="item-content">
                         <div class="item-media">
-                            <img src="assets/device-placeholder.png">
+                            <img src="assets/device-placeholder.png" id="device-photo">
                         </div>
                         <div class="item-inner">
                             <div class="item-title">
@@ -1217,7 +1215,90 @@ function renderDeviceData(deviceInfo) {
             </a>
         </div>
     `;
+   
+    try {
+        const photoEl = document.getElementById('device-photo');
+        if (photoEl) {
+            // Mapping: model name => image path (edit these paths to your real assets)
+            const modelImageMap = {
+                'iPhone 6': 'assets/iphone-6.png',
+                'iPhone 6 Plus': 'assets/iphone-6-plus.png',
+                'iPhone 6s': 'assets/iphone-6s.png',
+                'iPhone 6s Plus': 'assets/iphone-6s-plus.png',
+                'iPhone SE (1st generation)': 'assets/iphone-se-1.png',
+                'iPhone 7': 'assets/iphone-7.png',
+                'iPhone 7 Plus': 'assets/iphone-7-plus.png',
+                'iPhone 8': 'assets/iphone-8.png',
+                'iPhone 8 Plus': 'assets/iphone-8-plus.png',
+                'iPhone X': 'assets/iphone-x.png',
+                'iPhone XR': 'assets/iphone-xr.png',
+                'iPhone XS': 'assets/iphone-xs.png',
+                'iPhone XS Max': 'assets/iphone-xs-max.png',
+                'iPhone 11': 'assets/iphone-11.png',
+                'iPhone 11 Pro': 'assets/iphone-11-pro.png',
+                'iPhone 11 Pro Max': 'assets/iphone-11-pro-max.png',
+                'iPhone SE (2nd generation)': 'assets/iphone-se-2.png',
+                'iPhone 12 mini': 'assets/iphone-12-mini.png',
+                'iPhone 12': 'assets/iphone-12.png',
+                'iPhone 12 Pro': 'assets/iphone-12-pro.png',
+                'iPhone 12 Pro Max': 'assets/iphone-12-pro-max.png',
+                'iPhone 13 mini': 'assets/iphone-13-mini.png',
+                'iPhone 13': 'assets/iphone-13.png',
+                'iPhone 13 Pro': 'assets/iphone-13-pro.png',
+                'iPhone 13 Pro Max': 'assets/iphone-13-pro-max.png',
+                'iPhone SE (3rd generation)': 'assets/iphone-se-3.png',
+                'iPhone 14': 'assets/iphone-14.png',
+                'iPhone 14 Plus': 'assets/iphone-14-plus.png',
+                'iPhone 14 Pro': 'assets/iphone-14-pro.png',
+                'iPhone 14 Pro Max': 'assets/iphone-14-pro-max.png',
+                'iPhone 15': 'assets/iphone-15.png',
+                'iPhone 15 Plus': 'assets/iphone-15-plus.png',
+                'iPhone 15 Pro': 'assets/iphone-15-pro.png',
+                'iPhone 15 Pro Max': 'assets/iphone-15-pro-max.png',
+                'iPhone 16': 'assets/iphone-16.png',
+                'iPhone 16 Plus': 'assets/iphone-16-plus.png',
+                'iPhone 16 Pro': 'https://flekstore.com/client/img/device/devices/iPhone17,4.png',
+                'iPhone 16 Pro Max': 'https://i.imgur.com/6VwMOtF.png'
+            };
+          
+            let chosen = null;
+            const nameLower = modelName ? modelName.toLowerCase() : '';
 
+            for (const modelKey of Object.keys(modelImageMap)) {
+                if (nameLower.includes(modelKey.toLowerCase())) {
+                    chosen = modelImageMap[modelKey];
+                    break;
+                }
+            }
+
+           
+            if (!chosen && typeof modelIdentifier === 'string') {
+                const idMatch = modelIdentifier.match(/^iPhone(\d+),/i);
+                if (idMatch) {
+                    const gen = parseInt(idMatch[1], 10);
+                    if (!Number.isNaN(gen)) {
+                        const genKey = 'iPhone ' + gen;
+                        if (modelImageMap[genKey]) chosen = modelImageMap[genKey];
+                    }
+                }
+            }
+           
+            if (!chosen) {
+                const numMatch = modelName.match(/iPhone\s*(\d{1,2})/i);
+                if (numMatch) {
+                    const genKey = 'iPhone ' + numMatch[1];
+                    if (modelImageMap[genKey]) chosen = modelImageMap[genKey];
+                }
+            }
+
+            // 4) final fallback: placeholder (keeps existing placeholder)
+            photoEl.src = chosen || photoEl.src || 'assets/device-placeholder.png';
+        }
+    } catch (err) {
+        // don't break rendering if something goes wrong; keep the placeholder
+        console.error('photo selection error', err);
+    }
+  
     const copyBtn = document.getElementById('copyUdidBtn');
     if (copyBtn) {
         copyBtn.addEventListener('click', async () => {
@@ -1244,7 +1325,6 @@ function renderDeviceData(deviceInfo) {
 
     app.dialog.close();
 }
-
 function formatLabel(key) {
     
     const upperKeys = ['bdid', 'cpid'];
