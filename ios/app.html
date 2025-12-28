@@ -1090,12 +1090,30 @@ function startPolling(id) {
 
 function getIOSVersion() {
     const ua = navigator.userAgent;
-    const match = ua.match(/OS (\d+)_(\d+)_?(\d+)?/);
-    if (match) {
-        return match.slice(1).filter(x => x !== undefined).join('.');
+    if (ua.includes("Macintosh") && navigator.maxTouchPoints > 1) {
+        const macosMatch = ua.match(/Mac OS X (\d+)[_.](\d+)(?:[_.](\d+))?/i);
+        const version = macosMatch ? macosMatch.slice(1).filter(Boolean).join('.') : "Unknown";
+        return 'iPadOS ' + version;
     }
+
+    
+    const iosMatch = ua.match(/(iPhone|iPod|iPad).*? OS (\d+)_?(\d+)?_?(\d+)?/i);
+    if (iosMatch) {
+        const type = iosMatch[1] === 'iPad' ? 'iPadOS ' : 'iOS ';
+        const version = iosMatch.slice(2).filter(Boolean).join('.');
+        return type + version;
+    }
+
+   
+    const macosMatch = ua.match(/Mac OS X (\d+)[_.](\d+)(?:[_.](\d+))?/i);
+    if (macosMatch) {
+        return 'macOS ' + macosMatch.slice(1).filter(Boolean).join('.');
+    }
+
     return 'Unknown';
 }
+
+
 
 function renderDeviceData(deviceInfo) {
     const container = document.getElementById('device-container');
@@ -1228,6 +1246,12 @@ function renderDeviceData(deviceInfo) {
 }
 
 function formatLabel(key) {
+    
+    const upperKeys = ['bdid', 'cpid'];
+    if (upperKeys.includes(key.toLowerCase())) {
+        return key.toUpperCase();
+    }
+   
     return key
         .replace(/_/g, ' ')
         .replace(/\b\w/g, c => c.toUpperCase());
