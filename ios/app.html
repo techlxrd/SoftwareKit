@@ -1059,8 +1059,7 @@ function openSignerPopup() {
   }).open();
 }
 </script>
-<script>// Run on app/page load
-document.addEventListener('DOMContentLoaded', () => {
+<script>document.addEventListener('DOMContentLoaded', () => {
     const saved = localStorage.getItem('deviceInfo');
     if (saved) {
         renderDeviceData(JSON.parse(saved));
@@ -1098,15 +1097,10 @@ function startPolling(id) {
                 location.reload();
             }
         } catch (_) {
-            // still waiting, stay quiet
         }
     }, 2000);
 }
-if (deviceInfo.registered === true) {
-    document
-        .querySelectorAll('.udid-info-element')
-        .forEach(el => el.style.display = 'none');
-}
+
 function renderDeviceData(deviceInfo) {
     const container = document.getElementById('device-container');
     if (!container) return;
@@ -1114,11 +1108,9 @@ function renderDeviceData(deviceInfo) {
     const isRegistered = deviceInfo.registered === true;
     const udid = deviceInfo.udid || deviceInfo.UDID || '';
 
-    // Hide all UDID-related elements if registered
     const udidStyle = isRegistered ? 'style="display:none"' : '';
 
     container.innerHTML = `
-        <!-- DEVICE HEADER -->
         <div class="list separated inset">
             <ul>
                 <li>
@@ -1140,7 +1132,6 @@ function renderDeviceData(deviceInfo) {
             </ul>
         </div>
 
-        <!-- UDID BLOCK -->
         <div class="card udid-info-element" ${udidStyle}>
             <div class="card-content card-content-padding">
                 <div class="list list-strong inset">
@@ -1162,7 +1153,6 @@ function renderDeviceData(deviceInfo) {
             </div>
         </div>
 
-        <!-- DEVICE INFO -->
         <div class="list inset">
             <ul>
                 ${Object.entries(deviceInfo)
@@ -1184,7 +1174,6 @@ function renderDeviceData(deviceInfo) {
             </ul>
         </div>
 
-        <!-- REMOVE BUTTON -->
         <div class="block">
             <a
                 class="button button-large button-fill button-round color-red"
@@ -1208,14 +1197,12 @@ function renderDeviceData(deviceInfo) {
                 }).open();
             } catch (err) {
                 console.error('Failed to copy: ', err);
-                
                 fallbackCopyTextToClipboard(udid);
             }
         });
     }
 }
 
-    // Remove device info only
     document.getElementById('removeDeviceBtn').onclick = () => {
         app.dialog.confirm(
             'Remove stored device data?',
@@ -1226,7 +1213,6 @@ function renderDeviceData(deviceInfo) {
         );
     };
 
-    // Final safety: hide ALL udid-info-element if registered
     if (isRegistered) {
         document
             .querySelectorAll('.udid-info-element')
