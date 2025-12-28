@@ -126,6 +126,205 @@ function applyDarkModeSetting() {
   applyDarkMode(darkModeQuery);
 }
 applyDarkModeSetting();
+document.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('deviceInfo');
+    if (saved) {
+        renderDeviceData(JSON.parse(saved));
+    }
+});
+
+function postRequest() {
+    const requestId = Math.random().toString(36).substring(2, 15);
+    localStorage.setItem('pendingRequestID', requestId);
+    app.dialog.preloader('Waiting for registration…');
+    window.location.href = `https://softwarekit-udid.shadvlxrd.workers.dev/get-profile?requestId=${requestId}`;
+    startPolling(requestId);
+}
+
+function startPolling(id) {
+    const interval = setInterval(async () => {
+        try {
+            const res = await fetch(`https://softwarekit-udid.shadvlxrd.workers.dev/retrieve?requestId=${id}`);
+            const { deviceInfo } = await res.json();
+            if (deviceInfo) {
+                clearInterval(interval);
+                localStorage.setItem('deviceInfo', JSON.stringify(deviceInfo));
+                localStorage.removeItem('pendingRequestID');
+                
+                renderDeviceData(deviceInfo);
+            }
+        } catch (_) {}
+    }, 2000);
+}
+
+function getIOSVersion() {
+    const ua = navigator.userAgent;
+    if (ua.includes("Macintosh") && navigator.maxTouchPoints > 1) {
+        const macosMatch = ua.match(/Mac OS X (\d+)[_.](\d+)(?:[_.](\d+))?/i);
+        const version = macosMatch ? macosMatch.slice(1).filter(Boolean).join('.') : "Unknown";
+        return 'iPadOS ' + version;
+    }
+
+    
+    const iosMatch = ua.match(/(iPhone|iPod|iPad).*? OS (\d+)_?(\d+)?_?(\d+)?/i);
+    if (iosMatch) {
+        const type = iosMatch[1] === 'iPad' ? 'iPadOS ' : 'iOS ';
+        const version = iosMatch.slice(2).filter(Boolean).join('.');
+        return type + version;
+    }
+
+   
+    const macosMatch = ua.match(/Mac OS X (\d+)[_.](\d+)(?:[_.](\d+))?/i);
+    if (macosMatch) {
+        return 'macOS ' + macosMatch.slice(1).filter(Boolean).join('.');
+    }
+
+    return 'Unknown';
+}
+
+
+
+function renderDeviceData(deviceInfo) {
+    const container = document.getElementById('device-container');
+    const targetEl = document.getElementById('udid-info-block');
+    
+    if (targetEl) {
+        targetEl.style.setProperty('display', 'none', 'important');
+    }
+
+    if (!container) return;
+
+    const udid = deviceInfo.udid || deviceInfo.UDID || '';
+    const modelName = deviceInfo.name || deviceInfo.DeviceName || 'iPhone';
+    const modelIdentifier = deviceInfo.model || 'Unknown';
+    const sysVer = getIOSVersion();
+
+    container.innerHTML = `
+        <div class="list separated inset">
+            <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-media">
+                           <i class="f7-icons" style="width:58px;height;58px;">device_phone_portrait</i>
+                        </div>
+                        <div class="item-inner">
+                            <div class="item-title">
+                                ${modelName}
+                            </div>
+                            <div class="item-subtitle">                              
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="card-content card-content-padding">
+                <div class="list list-strong inset">
+                    <ul>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">UDID</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" id="udidInput" readonly value="${udid}">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <br>
+                <a class="button button-fill button-round" id="copyUdidBtn">
+                    Copy UDID
+                </a>
+            </div>
+        </div>
+
+        <div class="list inset">
+            <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title">Name</div>
+                            <div class="item-after">${modelIdentifier}</div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title">System Version</div>
+                            <div class="item-after">${sysVer}</div>
+                        </div>
+                    </div>
+                </li>
+                ${Object.entries(deviceInfo)
+                    .filter(([k, v]) => 
+                        v && 
+                        !['udid', 'registered', 'model', 'name', 'devicename', 'systemversion', 'version'].includes(k.toLowerCase())
+                    )
+                    .map(([key, value]) => `
+                        <li>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title">
+                                        ${formatLabel(key)}
+                                    </div>
+                                    <div class="item-after">
+                                        ${value}
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    `).join('')}
+            </ul>
+        </div>
+
+        <div class="block">
+            <a class="button button-large button-fill button-round color-red" id="removeDeviceBtn">
+                Remove Device Data
+            </a>
+        </div>
+    `;
+
+    const copyBtn = document.getElementById('copyUdidBtn');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(udid);
+                app.toast.create({ text: 'UDID copied', closeTimeout: 2000 }).open();
+            } catch (err) {
+                const input = document.getElementById('udidInput');
+                input.select();
+                document.execCommand('copy');
+            }
+        });
+    }
+
+    document.getElementById('removeDeviceBtn').onclick = () => {
+        app.dialog.confirm(
+            'Remove stored device data?',
+            () => {
+                localStorage.removeItem('deviceInfo');
+                location.reload();
+            }
+        );
+    };
+
+    app.dialog.close();
+}
+
+function formatLabel(key) {
+    
+    const upperKeys = ['bdid', 'cpid'];
+    if (upperKeys.includes(key.toLowerCase())) {
+        return key.toUpperCase();
+    }
+   
+    return key
+        .replace(/_/g, ' ')
+        .replace(/\b\w/g, c => c.toUpperCase());
+}
 let themeColor = localStorage.getItem("ios-primary-color") || "#007AFF";
 let colorPicker;
 
