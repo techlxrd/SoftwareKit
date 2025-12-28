@@ -953,15 +953,9 @@
               <div class="block">
                 <p>This installs a temporary Apple profile to read your device info. After downloading, install the profile in Settings, then return here.</p>
                 <button onclick="postRequest()" class="button button-fill button-large button-round">Install profile</button>
-                <br>
-                
-                <div class="device-data">
-    <p>No device data found. Please click the button below.</p>
-</div>
+                <br>              
               </div>
-
-     
-           
+              <div class="block device-data">Device info unavailable, install profile</div>                 
                   </div>
                 </div>
               </div>
@@ -1063,83 +1057,60 @@ function openSignerPopup() {
   }).open();
 }
 </script>
-<script>const WORKER_BASE = "https://softwarekit-udid.shadvlxrd.workers.dev";
-
-/**
- * 1. UI RENDERER
- * Displays the JSON data nicely inside the .device-data element
- */
-function displayDeviceInfo(info) {
-    const displayElement = document.querySelector('.device-data');
-    if (displayElement && info) {
-        // Pretty-print the JSON inside a pre tag for readability
-        displayElement.innerHTML = `
-            <div class="info-card">
-                <h3>Device Details</h3>
-                <pre style="text-align: left; background: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto;">${JSON.stringify(info, null, 2)}</pre>
-            </div>
-        `;
+<script>// Run on app/page load
+document.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('deviceInfo');
+    if (saved) {
+        renderDeviceData(JSON.parse(saved));
     }
-}
+});
 
-/**
- * 2. POLLING LOGIC
- * Silently checks the worker for data
- */
-function startPolling(id) {
-    const interval = setInterval(async () => {
-        try {
-            const res = await fetch(`${WORKER_BASE}/retrieve?requestId=${id}`);
-            const { deviceInfo } = await res.json();
-
-            if (deviceInfo) {
-                clearInterval(interval);
-                
-                // Save to localStorage for future visits
-                localStorage.setItem('deviceInfo', JSON.stringify(deviceInfo));
-                localStorage.removeItem('pendingRequestID');
-
-                // Update the UI immediately without reload/alert
-                displayDeviceInfo(deviceInfo);
-            }
-        } catch (e) { 
-            console.log("Waiting for profile installation..."); 
-        }
-    }, 2000);
-}
-
-/**
- * 3. THE TRIGGER
- * Starts the process and redirects to the worker
- */
 function postRequest() {
     const requestId = Math.random().toString(36).substring(2, 15);
     localStorage.setItem('pendingRequestID', requestId);
 
-    // Redirect to worker to trigger the system profile download
-    window.location.href = `${WORKER_BASE}/get-profile?requestId=${requestId}`;
-    
-    // Note: Polling will resume automatically when the user returns to the app
+    app.dialog.preloader('Registering device…');
+
+    window.location.href =
+        `https://softwarekit-udid.shadvlxrd.workers.dev/get-profile?requestId=${requestId}`;
+
+    startPolling(requestId);
 }
 
-/**
- * 4. INITIALIZATION
- * Runs every time the page loads
- */
-window.onload = function() {
-    const savedInfo = localStorage.getItem('deviceInfo');
-    const pendingId = localStorage.getItem('pendingRequestID');
+function startPolling(id) {
+    const interval = setInterval(async () => {
+        try {
+            const res = await fetch(
+                `https://softwarekit-udid.shadvlxrd.workers.dev/retrieve?requestId=${id}`
+            );
+            const { deviceInfo } = await res.json();
 
-    // If we already have data, show it
-    if (savedInfo) {
-        displayDeviceInfo(JSON.parse(savedInfo));
-    } 
-    
-    // If we were waiting for a profile, resume polling
-    if (pendingId && !savedInfo) {
-        startPolling(pendingId);
-    }
-};
+            if (deviceInfo) {
+                clearInterval(interval);
+
+                localStorage.setItem('deviceInfo', JSON.stringify(deviceInfo));
+                localStorage.removeItem('pendingRequestID');
+
+                app.dialog.preloader('Finalizing…');
+
+                location.reload();
+            }
+        } catch (_) {
+            // still waiting, stay quiet
+        }
+    }, 2000);
+}
+
+function renderDeviceData(deviceInfo) {
+    const el = document.querySelector('.device-data');
+    if (!el) return;
+
+    el.textContent = Object.entries(deviceInfo)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join('\n');
+
+    app.dialog.close();
+}
 </script>       
 <script>window.onload = function() {
   app.dialog.alert('If you encounter any bugs or issues, please navigate to Settings, scroll down to Feedback, and provide a detailed description of the issue.', 'SoftwareKit Beta Testing');
