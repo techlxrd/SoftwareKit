@@ -200,18 +200,18 @@ function renderDeviceData(deviceInfo) {
     const sysVer = getIOSVersion();
 
     container.innerHTML = `
-        <div class="list separated inset">
+        <div class="list media-list separated inset">
             <ul>
                 <li>
                     <div class="item-content">
                         <div class="item-media">
-                           <i class="f7-icons" style="font-size:58px;">device_phone_portrait</i>
+                           <i class="f7-icons" style="font-size:63px;">device_phone_portrait</i>
                         </div>
                         <div class="item-inner">
                             <div class="item-title">
                                 ${modelName}
                             </div>
-                            <div class="item-subtitle">                              
+                            <div class="item-subtitle">${sysVer}                            
                             </div>
                         </div>
                     </div>
@@ -249,15 +249,7 @@ function renderDeviceData(deviceInfo) {
                             <div class="item-after">${modelIdentifier}</div>
                         </div>
                     </div>
-                </li>
-                <li>
-                    <div class="item-content">
-                        <div class="item-inner">
-                            <div class="item-title">System Version</div>
-                            <div class="item-after">${sysVer}</div>
-                        </div>
-                    </div>
-                </li>
+                </li>              
                 ${Object.entries(deviceInfo)
                     .filter(([k, v]) => 
                         v && 
