@@ -1094,9 +1094,23 @@ function renderDeviceData(deviceInfo) {
 
     const isRegistered = deviceInfo.registered === true;
     const udid = deviceInfo.udid || deviceInfo.UDID || '';
-    const udidStyle = isRegistered ? 'style="display:none !important"' : '';
+    const modelIdentifier = deviceInfo.model || 'Unknown';
+    const modelName = deviceInfo.name || deviceInfo.DeviceName || modelIdentifier;
+
+    const installBlockStyle = isRegistered ? 'style="display:none !important"' : '';
 
     container.innerHTML = `
+        <div id="install-profile-section" class="block" ${installBlockStyle}>
+            <div class="card">
+                <div class="card-content card-content-padding">
+                    <p>This installs a temporary Apple profile to read your device info. After downloading, install the profile in Settings, then return here.</p>
+                    <a class="button button-fill button-round" onclick="postRequest()">
+                        Install profile
+                    </a>
+                </div>
+            </div>
+        </div>
+
         <div class="list separated inset">
             <ul>
                 <li>
@@ -1106,7 +1120,7 @@ function renderDeviceData(deviceInfo) {
                         </div>
                         <div class="item-inner">
                             <div class="item-title">
-                                ${deviceInfo.model || 'Unknown Device'}
+                                ${modelName}
                             </div>
                             <div class="item-subtitle">
                                 ${deviceInfo.systemVersion || deviceInfo.version || ''}
@@ -1117,7 +1131,7 @@ function renderDeviceData(deviceInfo) {
             </ul>
         </div>
 
-        <div class="card" ${udidStyle}>
+        <div class="card">
             <div class="card-content card-content-padding">
                 <div class="list list-strong inset">
                     <ul>
@@ -1140,8 +1154,19 @@ function renderDeviceData(deviceInfo) {
 
         <div class="list inset">
             <ul>
+                <li>
+                    <div class="item-content">
+                        <div class="item-inner">
+                            <div class="item-title">Name</div>
+                            <div class="item-after">${modelIdentifier}</div>
+                        </div>
+                    </div>
+                </li>
                 ${Object.entries(deviceInfo)
-                    .filter(([k, v]) => v && k.toLowerCase() !== 'udid' && k.toLowerCase() !== 'registered')
+                    .filter(([k, v]) => 
+                        v && 
+                        !['udid', 'registered', 'model', 'name', 'devicename'].includes(k.toLowerCase())
+                    )
                     .map(([key, value]) => `
                         <li>
                             <div class="item-content">
@@ -1166,23 +1191,18 @@ function renderDeviceData(deviceInfo) {
         </div>
     `;
 
-    if (!isRegistered && udid) {
-        const copyBtn = document.getElementById('copyUdidBtn');
-        if (copyBtn) {
-            copyBtn.addEventListener('click', async () => {
-                try {
-                    await navigator.clipboard.writeText(udid);
-                    app.toast.create({
-                        text: 'UDID copied',
-                        closeTimeout: 2000
-                    }).open();
-                } catch (err) {
-                    const input = document.getElementById('udidInput');
-                    input.select();
-                    document.execCommand('copy');
-                }
-            });
-        }
+    const copyBtn = document.getElementById('copyUdidBtn');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(udid);
+                app.toast.create({ text: 'UDID copied', closeTimeout: 2000 }).open();
+            } catch (err) {
+                const input = document.getElementById('udidInput');
+                input.select();
+                document.execCommand('copy');
+            }
+        });
     }
 
     document.getElementById('removeDeviceBtn').onclick = () => {
