@@ -951,7 +951,7 @@
         </div>
                                 <div class="page-content">
               <div class="block" id="udid-info-block">
-                <p>This installs a temporary Apple profile to read your device info. After downloading, install the profile in Settings, then return here.</p>
+                <p>This feature installs a temporary Apple configuration profile to read your device info. After downloading, install the profile in Settings, then return here.</p>
                 <button onclick="postRequest()" class="button button-fill button-large button-round ">Install profile</button>
                 <br>              
               </div>
@@ -1081,8 +1081,8 @@ function startPolling(id) {
                 clearInterval(interval);
                 localStorage.setItem('deviceInfo', JSON.stringify(deviceInfo));
                 localStorage.removeItem('pendingRequestID');
-                app.dialog.preloader('Finalizing…');
-                location.reload();
+                
+                renderDeviceData(deviceInfo);
             }
         } catch (_) {}
     }, 2000);
@@ -1118,13 +1118,14 @@ function renderDeviceData(deviceInfo) {
                 <li>
                     <div class="item-content">
                         <div class="item-media">
-                            <img src="https://www.pngmart.com/files/24/iPhone-17-Pro-Max-Orange-PNG-Pic.png">
+                            <img src="assets/device-placeholder.png">
                         </div>
                         <div class="item-inner">
                             <div class="item-title">
                                 ${modelName}
                             </div>
-                            <div class="item-subtitle">                             
+                            <div class="item-subtitle">
+                                iOS ${sysVer}
                             </div>
                         </div>
                     </div>
