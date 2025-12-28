@@ -1088,21 +1088,29 @@ function startPolling(id) {
     }, 2000);
 }
 
+function getIOSVersion() {
+    const ua = navigator.userAgent;
+    const match = ua.match(/OS (\d+)_(\d+)_?(\d+)?/);
+    if (match) {
+        return match.slice(1).filter(x => x !== undefined).join('.');
+    }
+    return 'Unknown';
+}
+
 function renderDeviceData(deviceInfo) {
     const container = document.getElementById('device-container');
+    const targetEl = document.getElementById('udid-info-block');
+    
+    if (targetEl) {
+        targetEl.style.setProperty('display', 'none', 'important');
+    }
+
     if (!container) return;
 
-    const isRegistered = deviceInfo.registered === true;
     const udid = deviceInfo.udid || deviceInfo.UDID || '';
-    
-    const modelName = deviceInfo.name || deviceInfo.DeviceName || 'Unknown Device';
+    const modelName = deviceInfo.name || deviceInfo.DeviceName || 'iPhone';
     const modelIdentifier = deviceInfo.model || 'Unknown';
-    const sysVer = deviceInfo.systemVersion || deviceInfo.version || '';
-
-    if (isRegistered) {
-        const targetEl = document.getElementById('udid-info-block');
-        if (targetEl) targetEl.style.display = 'none';
-    }
+    const sysVer = getIOSVersion();
 
     container.innerHTML = `
         <div class="list separated inset">
@@ -1117,7 +1125,7 @@ function renderDeviceData(deviceInfo) {
                                 ${modelName}
                             </div>
                             <div class="item-subtitle">
-                                ${sysVer}
+                                iOS ${sysVer}
                             </div>
                         </div>
                     </div>
