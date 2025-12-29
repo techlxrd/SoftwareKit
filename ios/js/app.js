@@ -51,7 +51,7 @@ function updateAppUI(isEnabled) {
     }
   });
 
-  const contents = document.querySelectorAll('.page-content');
+  const contents = document.querySelectorAll('.bg-img');
   contents.forEach(el => {
     if (isEnabled) {
       el.style.removeProperty('background-image');
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
           el.setAttribute('data-removed-classes', removed.join(' '));
           removed.forEach(cls => el.classList.remove(cls));
         });
-        container.querySelectorAll('.page-content').forEach(el => {
+        container.querySelectorAll('.bg-img ').forEach(el => {
           el.style.setProperty('background-image', 'none', 'important');
         });
       }
@@ -424,7 +424,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let timeout;
   colorPicker = app.colorPicker.create({
-    targetEl: '#accent-color', 
+    targetEl: '#accent-color',
+    popupPush: true,     
     value: {
       hex: themeColor,
     },
@@ -610,14 +611,14 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="view">
                 <div class="page">
                     <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
-                    <div class="page-content">
+                    <div class="page-content bg-img">
                          <div style="margin-top: 40px; padding: 0px;">
           <div class="block" style="margin-top: 27px; margin-bottom: 20px;">
             <div style="display: flex; gap: 15px;">
                                     <img src="${item.iconURL}" class="app-icon">
                                     <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
                                         <div style="font-size: 22px; font-weight: 700; line-height: 1.2;">${item.name}</div>
-                                        <div style="font-size: 15px; color: #8e8e93; margin-top: 4px;"">${item.developerName}</div>
+                                        <div style="font-size: 15px;margin-top: 4px;"">${item.developerName}</div>
                                         <div style="display: flex; gap: 10px; margin-top: auto; align-items: center;">
                                             <a href="${item.downloadURL}" class="external button button-fill button-round" style="padding: 0 24px; font-weight:bold;">GET</a>
                                             <a onclick="navigator.share({url: '${item.downloadURL}' })" class="more"><i class="f7-icons">square_arrow_up</i></a>
@@ -631,7 +632,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="block block-strong inset margin-top liquid-glass">
                                 <div style="font-size: 15px; line-height: 1.5;">${item.localizedDescription.replace(/\n/g, '<br>')}</div>
                             </div>
-                            <div class="list simple-list list-strong inset glass">
+                            <div class="list simple-list list-strong list-dividers inset glass">
                                 <ul>
                                     <li><span>Version</span><span>${item.version}</span></li>
                                     <li><span>Size</span><span>${(item.size / 1024 / 1024).toFixed(1)} MB</span></li>
@@ -728,13 +729,11 @@ function renderNews(repos) {
     wrapper.innerHTML = '';
     allNews.sort((a,b) => new Date(b.date) - new Date(a.date));
 
-    // Get current glass preference
     const savedPref = localStorage.getItem('glassUI_Enabled');
     const isGlassEnabled = savedPref === null ? true : savedPref === 'true';
 
     allNews.forEach(news => {
-        // Create the HTML string
-        const slideHtml = `
+                const slideHtml = `
             <div class="swiper-slide swiper-slide-news">
                 <div class="card repo-news-card liquid-glass">
                     <div class="card-content card-content-padding">
@@ -793,7 +792,7 @@ function renderNews(repos) {
                         <div class="right"> <a onclick="navigator.share({url: '${repo.sourceURL}' })" class="link icon-only"><i class="icon f7-icons">square_arrow_up</i></a></div>
                     </div>
                 </div>
-                <div class="page-content repo-page">                         
+                <div class="page-content repo-page bg-img">                         
                     <div class="list media-list separated inset virtual-list virtual-list-${pageId} searchbar-found glass"></div>
                      <div class="list list-strong simple-list searchbar-not-found inset glass">
                 <ul><li>Unfortunately, no items were found.</li></ul>
@@ -1090,7 +1089,7 @@ function createPopupHtml(item) {
  <div class="popup" id="${item.id}">
       <div class="page">
         <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
-        <div class="page-content">
+        <div class="page-content bg-img">
           <div style="margin-top: 40px; padding: 0px;">
           
           <div class="block" style="margin-top: 27px; margin-bottom: 20px;">
@@ -1098,7 +1097,7 @@ function createPopupHtml(item) {
               <img src="${item.icon}" class="app-icon">
               <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
                 <div style="font-size: 22px; font-weight: 700; line-height: 1.2;">${item.title}</div>
-                <div style="font-size: 15px; color: #8e8e93; margin-top: 4px;">${item.category}</div>
+                <div style="font-size: 15px; margin-top: 4px;">${item.category}</div>
                 
                 <div style="display: flex; gap: 10px; margin-top: auto; align-items: center;">
                   <a href="${item.get_link}" class="external button button-fill button-round" style="padding: 0 24px;">GET</a>
@@ -1126,19 +1125,19 @@ function createPopupHtml(item) {
              </div>
           </div>
 
-          <div class="list simple-list list-strong inset glass">
+          <div class="list simple-list list-strong list-dividers inset glass">
             <ul>
               <li>
                 <span>Category</span>
-                <span style="color: #8e8e93;">${item.category}</span>
+                <span>${item.category}</span>
               </li>
               <li>
                 <span>Compatibility</span>
-                <span style="color: #8e8e93;">${item.compatible}</span>
+                <span>${item.compatible}</span>
               </li>
               <li>
                 <span>Type</span>
-                <span style="color: #8e8e93;">${item.type}</span>
+                <span>${item.type}</span>
               </li>
             </ul>
           </div> 
@@ -1152,8 +1151,7 @@ function createPopupHtml(item) {
                   icon: '${item.badge}',
                   image: '${item.icon}',
                   title: '${item.title}',
-                  subtitle: '${item.category}',
-                  color: '${item.badgecolor}'
+                  subtitle: '${item.category}',               
                 })"  class="item-link item-content external popover-close"><div class="item-media"><i class="f7-icons">heart_fill</i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Favorite</div></div></div></a></li><li><a
   class="item-link item-content popover-close"
   onclick="openReportPopup('${item.title.replace(/'/g, "\\'")}')"
@@ -1262,7 +1260,7 @@ function displayFavorites() {
                 <div class="item-title-row">
                   <div class="item-title">
                     ${fav.title}
-                    <i style="font-size:17px;color:${fav.color}" class="f7-icons">${fav.icon}</i>
+                    <i style="font-size:17px;" class="f7-icons">${fav.icon}</i>
                   </div>
                 </div>
                 <div class="item-subtitle">${fav.subtitle}</div>
@@ -1369,7 +1367,7 @@ function displayFavorites() {
                 <div class="item-title-row">
                   <div class="item-title">
                     ${fav.title}
-                    <i style="font-size:17px;color:${fav.color}" class="f7-icons">${fav.icon}</i>
+                    <i style="font-size:17px;" class="f7-icons">${fav.icon}</i>
                   </div>
                 </div>
                 <div class="item-subtitle">${fav.subtitle}</div>
@@ -1508,8 +1506,7 @@ function reset() {
         }
       },
       {
-        text: 'Erase all data',
-        color: 'red',
+        text: 'Erase all data',       
         onClick: function () {
           app.dialog.confirm(
             'This will delete all your settings and data including added sources and favorites. This action cannot be undone.',
