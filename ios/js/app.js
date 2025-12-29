@@ -27,6 +27,90 @@ routes: [
   ],
 });
 const mainView = app.views.create(".view-main");
+function updateAppUI(isEnabled) {
+  const selectors = '.glass, .liquid-glass, [data-removed-classes]';
+  const glassElements = document.querySelectorAll(selectors);
+
+  glassElements.forEach(el => {
+    if (isEnabled) {
+      const savedClasses = el.getAttribute('data-removed-classes');
+      if (savedClasses) {
+        const classArray = savedClasses.split(' ');
+        classArray.forEach(cls => el.classList.add(cls));
+        el.removeAttribute('data-removed-classes');
+      }
+    } else {
+      let removed = [];
+      if (el.classList.contains('glass')) removed.push('glass');
+      if (el.classList.contains('liquid-glass')) removed.push('liquid-glass');
+
+      if (removed.length > 0) {
+        el.setAttribute('data-removed-classes', removed.join(' '));
+        removed.forEach(cls => el.classList.remove(cls));
+      }
+    }
+  });
+
+  const contents = document.querySelectorAll('.page-content');
+  contents.forEach(el => {
+    if (isEnabled) {
+      el.style.removeProperty('background-image');
+    } else {
+      el.style.setProperty('background-image', 'none', 'important');
+    }
+  });
+}
+
+function setGlassUI(isChecked) {
+  localStorage.setItem('glassUI_Enabled', isChecked);
+  updateAppUI(isChecked);
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const savedPref = localStorage.getItem('glassUI_Enabled');
+  const isEnabled = savedPref === null ? true : savedPref === 'true';
+
+  updateAppUI(isEnabled);
+
+  const toggleEl = document.getElementById('toggle-glassUI');
+  if (toggleEl) {
+    toggleEl.checked = isEnabled;
+    
+    setTimeout(() => {        
+        try {
+            const f7Toggle = app.toggle.get(toggleEl.closest('.toggle'));
+            if (f7Toggle) {
+                f7Toggle.on('change', (self) => setGlassUI(self.checked));
+            } else {
+                toggleEl.addEventListener('change', (e) => setGlassUI(e.target.checked));
+            }
+        } catch (err) {
+            toggleEl.addEventListener('change', (e) => setGlassUI(e.target.checked));
+        }
+    }, 300);
+  }
+
+  const f7Events = ['page:init', 'popup:open', 'sheet:open'];
+  f7Events.forEach(eventType => {
+    document.addEventListener(eventType, (e) => {
+      const currentPref = localStorage.getItem('glassUI_Enabled');
+      const currentlyEnabled = currentPref === null ? true : currentPref === 'true';
+
+      if (!currentlyEnabled) {
+        const container = e.target;
+        container.querySelectorAll('.glass, .liquid-glass').forEach(el => {
+          let removed = [];
+          if (el.classList.contains('glass')) removed.push('glass');
+          if (el.classList.contains('liquid-glass')) removed.push('liquid-glass');
+          el.setAttribute('data-removed-classes', removed.join(' '));
+          removed.forEach(cls => el.classList.remove(cls));
+        });
+        container.querySelectorAll('.page-content').forEach(el => {
+          el.style.setProperty('background-image', 'none', 'important');
+        });
+      }
+    });
+  });
+});
 document.addEventListener("DOMContentLoaded", () => {
   new Swiper(".guides", {
     slidesPerView: "auto",
@@ -200,7 +284,7 @@ function renderDeviceData(deviceInfo) {
     const sysVer = getIOSVersion();
 
     container.innerHTML = `
-        <div class="list media-list separated inset">
+        <div class="list media-list separated inset glass">
             <ul>
                 <li>
                     <div class="item-content">
@@ -544,10 +628,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             ${item.screenshots.length > 0 ? `
                             <div class="block-title" style="font-size: 20px; margin-top: 25px;">Preview</div>
                             <div class="screenshot" onclick="openPhotoBrowser(${screenshotsJson})">${screenshotsHtml}</div>` : ''}
-                            <div class="block block-strong inset margin-top">
+                            <div class="block block-strong inset margin-top liquid-glass">
                                 <div style="font-size: 15px; line-height: 1.5;">${item.localizedDescription.replace(/\n/g, '<br>')}</div>
                             </div>
-                            <div class="list simple-list list-strong inset">
+                            <div class="list simple-list list-strong inset glass">
                                 <ul>
                                     <li><span>Version</span><span>${item.version}</span></li>
                                     <li><span>Size</span><span>${(item.size / 1024 / 1024).toFixed(1)} MB</span></li>
@@ -626,50 +710,65 @@ function renderSourcesList(repos) {
         listEl.sortableInitialized = true; 
     }
 }
-    function renderNews(repos) {
-        let allNews = [];
-        repos.forEach(r => { if(r.news) allNews.push(...r.news.map(n => ({...n, source: r.name}))); });
-        
-        const wrapper = document.getElementById('news-swiper-wrapper');
-        const section = document.getElementById('news-section');
-        
-        if (allNews.length === 0) {
-            section.style.display = 'none';
-            return;
-        }
-
-        section.style.display = 'block';
-        wrapper.innerHTML = '';
-        allNews.sort((a,b) => new Date(b.date) - new Date(a.date));
-
-        allNews.forEach(news => {
-            wrapper.insertAdjacentHTML('beforeend', `
-              <div class="swiper-slide swiper-slide-news">
-  <div class="card card-outline repo-news-card">
-    <div class="card-content card-content-padding">
-      <div class="size-12">${news.source}</div>
-      <div class="text-weight-bold ">
-        ${news.title}
-      </div>
-      <div class="size-12">
-        ${news.caption.substring(0, 80)}...
-      </div>
-    </div>
-
-    <div class="card-footer">
-      <a href="${news.url}" class="link external">Open link</a>
-    </div>
-  </div>
-</div> 
-            `);
-        });
-
-        if (!document.getElementById('news-swiper-container').swiper) {
-            app.swiper.create('#news-swiper-container', { slidesPerView: 1 });
-        }
+function renderNews(repos) {
+    let allNews = [];
+    repos.forEach(r => { 
+        if(r.news) allNews.push(...r.news.map(n => ({...n, source: r.name}))); 
+    });
+    
+    const wrapper = document.getElementById('news-swiper-wrapper');
+    const section = document.getElementById('news-section');
+    
+    if (allNews.length === 0) {
+        if (section) section.style.display = 'none';
+        return;
     }
 
-    function openRepoPage(repo) {
+    if (section) section.style.display = 'block';
+    wrapper.innerHTML = '';
+    allNews.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+    // Get current glass preference
+    const savedPref = localStorage.getItem('glassUI_Enabled');
+    const isGlassEnabled = savedPref === null ? true : savedPref === 'true';
+
+    allNews.forEach(news => {
+        // Create the HTML string
+        const slideHtml = `
+            <div class="swiper-slide swiper-slide-news">
+                <div class="card repo-news-card liquid-glass">
+                    <div class="card-content card-content-padding">
+                        <div class="size-12">${news.source}</div>
+                        <div class="text-weight-bold">${news.title}</div>
+                        <div class="size-12">${news.caption.substring(0, 80)}...</div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="${news.url}" class="link external">Open link</a>
+                    </div>
+                </div>
+            </div>`;
+        
+        wrapper.insertAdjacentHTML('beforeend', slideHtml);
+    });
+    if (!isGlassEnabled) {
+        const newCards = wrapper.querySelectorAll('.liquid-glass, .glass');
+        newCards.forEach(el => {
+            let removed = [];
+            if (el.classList.contains('glass')) removed.push('glass');
+            if (el.classList.contains('liquid-glass')) removed.push('liquid-glass');
+            
+            el.setAttribute('data-removed-classes', removed.join(' '));
+            removed.forEach(cls => el.classList.remove(cls));
+        });
+    }
+
+    const swiperContainer = document.getElementById('news-swiper-container');
+    if (swiperContainer && !swiperContainer.swiper) {
+        app.swiper.create('#news-swiper-container', { slidesPerView: 1 });
+    } else if (swiperContainer && swiperContainer.swiper) {
+        swiperContainer.swiper.update();
+    }
+}    function openRepoPage(repo) {
         const pageId = `repo-${Date.now()}`;
         const pageHtml = `
            <div class="page page-with-subnavbar" data-name="repo-detail">
@@ -695,8 +794,8 @@ function renderSourcesList(repos) {
                     </div>
                 </div>
                 <div class="page-content repo-page">                         
-                    <div class="list media-list separated inset virtual-list virtual-list-${pageId} searchbar-found"></div>
-                     <div class="list list-strong simple-list searchbar-not-found inset">
+                    <div class="list media-list separated inset virtual-list virtual-list-${pageId} searchbar-found glass"></div>
+                     <div class="list list-strong simple-list searchbar-not-found inset glass">
                 <ul><li>Unfortunately, no items were found.</li></ul>
             </div>
             </div>`;
@@ -1021,13 +1120,13 @@ function createPopupHtml(item) {
             </div>
           
 
-          <div class="block block-strong inset">
+          <div class="block block-strong inset liquid-glass">
              <div style="font-size: 15px; line-height: 1.5;">
               ${item.description}
              </div>
           </div>
 
-          <div class="list simple-list list-strong inset">
+          <div class="list simple-list list-strong inset glass">
             <ul>
               <li>
                 <span>Category</span>
