@@ -121,6 +121,11 @@ body {
   background-position: center;
   background-repeat: no-repeat;
 }
+.glass.block-title,
+.glass .block-title,
+.block-title .glass {
+  color:#fff;
+}
     .popup-img {
         width: 40%;
         margin-top: 15%;
