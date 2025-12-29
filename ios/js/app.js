@@ -929,35 +929,45 @@ fetch("https://www.idownloadblog.com/feed/")
   .then(data => {
     const items = new window.DOMParser().parseFromString(data, "text/xml").getElementsByTagName("item");
     const newsContainer = document.getElementById("news");
+    const savedPref = localStorage.getItem('glassUI_Enabled');
+    const isGlassEnabled = savedPref === null ? true : savedPref === 'true';
+
     for (let i = 0; i < items.length; i++) {
       const title = items[i].getElementsByTagName("title")[0].textContent;
       const link = items[i].getElementsByTagName("link")[0].textContent;
       const content = items[i].getElementsByTagName("content:encoded")[0].textContent;
       const imgElement = new window.DOMParser().parseFromString(content, "text/html").querySelector("img");
       const imgSrc = imgElement ? imgElement.getAttribute("src") : "#";
+      
       const card = document.createElement("div");
-      card.classList.add("card", "card-raised", "liquid-glass", "news-card");
+           
+      card.classList.add("card", "card-raised", "news-card");
+      
+      if (isGlassEnabled) {
+        card.classList.add("liquid-glass");
+      } else {        card.setAttribute('data-removed-classes', 'liquid-glass');
+        
+      }
+
       card.innerHTML = `
         <div class="card-content">
-  <div class="card-image">
-    <img class="newsimg" src="${imgSrc}" loading="lazy">
-  </div>
-
-  <div class="card-header">${title}</div>
-
-  <div class="card-footer">
-    <a onclick="navigator.share({ title: '${title}', url: '${link}' })">
-      <i class="f7-icons">square_arrow_up</i>
-    </a>
-    <a href="${link}" class="external">
-      <i class="f7-icons">book_fill</i>
-    </a>
-  </div>
-</div>`;
+          <div class="card-image">
+            <img class="newsimg" src="${imgSrc}" loading="lazy">
+          </div>
+          <div class="card-header">${title}</div>
+          <div class="card-footer">
+            <a onclick="navigator.share({ title: '${title.replace(/'/g, "\\'")}', url: '${link}' })">
+              <i class="f7-icons">square_arrow_up</i>
+            </a>
+            <a href="${link}" class="external">
+              <i class="f7-icons">book_fill</i>
+            </a>
+          </div>
+        </div>`;
+        
       newsContainer.appendChild(card);
     }
-  });
-
+  }); 
 function checkConnection() {
   let dialogShown = false;
   let dialogInstance = null;
@@ -976,7 +986,7 @@ function checkConnection() {
           <div style="display:flex;align-items:center;">
             <i class="icon f7-icons color-red" style="font-size:32px;margin-right:12px;">wifi_slash</i>
             <div>
-              <div style="font-weight:bold;">Connection to the server could not be established.Some features will not be available.</div>
+              <div style="font-weight:bold;">Some features will not be available.</div>
               <div style="margin-top:4px;">Please check your internet connection and try again.</div>
             </div>
           </div>
