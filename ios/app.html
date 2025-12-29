@@ -136,7 +136,7 @@
                             <div class="preloader"></div>
                             <div class="ptr-arrow"></div>
                         </div>
-                        <div class="list separated inset">
+                        <div class="list separated inset glass">
                             <ul>
                                 <li>
                                     <a onclick="openSignerPopup()" class="item-link item-content external">
@@ -177,6 +177,7 @@
                                     </a>
                                     <div class="accordion-item-content">
                                         <div class="list">
+                                            
                                             <ul>
                                                 <li>
                                                     <a href="https://ios.cfw.guide" class="item-link item-content external">
@@ -248,7 +249,7 @@
                         </div>
                         <div class="block-title">Favorites<i class="f7-icons icon-small">heart_fill</i></div>
 
-                        <div class="list separated media-list inset sortable sortable-tap-hold" id="fav">
+                        <div class="list separated media-list inset sortable sortable-tap-hold glass" id="fav">
                             <ul></ul>
                             <p id="favempty" class="centered-empty">Nothing to see here <i class="f7-icons icon-small">tray_fill</i></p>
                         </div>
@@ -265,12 +266,12 @@
                         </div>
 
 
-                        <div class="list list-strong simple-list searchbar-not-found inset">
+                        <div class="list list-strong simple-list searchbar-not-found inset glass">
                             <ul>
                                 <li>Unfortunately, no items were found.</li>
                             </ul>
                         </div>
-                        <div class="list media-list virtual-list separated inset  mt-negative">
+                        <div class="list media-list virtual-list separated inset  mt-negative glass">
                             <ul></ul>
                         </div>
 
@@ -285,11 +286,11 @@
                             <div class="block-title margin-top">Repository news</div>
                             <div class="swiper-container margin-bottom repo-news-swiper" id="news-swiper-container">
                                 <div class="swiper-wrapper" id="news-swiper-wrapper"></div>
-                                <div class="swiper-pagination"></div>
+                               
                             </div>
                         </div>
                         <div class="block-title">Sources</div>
-                        <div class="list media-list separated inset sortable sortable-tap-hold" id="sources-list-container">
+                        <div class="list media-list separated inset sortable sortable-tap-hold glass">
                             <ul id="sources-list"></ul>
                         </div>
 
@@ -305,7 +306,7 @@
                             </div>
                             <div class="page-content">
                                 <div class="block-title block-title-large">Compatible apps</div>
-                                <div class="list separated inset">
+                                <div class="list separated inset glass">
                                     <ul>
                                         <li>
                                             <a href="https://flekstore.com" class="item-link item-content external">
@@ -444,7 +445,7 @@
                                 <center>
                                     <img class="popup-img" src="assets/altstore.png">
                                 </center>
-                                <div class="list separated inset">
+                                <div class="list separated inset glass">
                                     <ul>
                                         <li>
                                             <div class="item-content">
@@ -482,7 +483,7 @@
                                     <p><a onclick="shareSource()" class="button button-fill button-raised button-round">Share source</a>
                                 </div>
                                 <div class="block-title">Looking for something else? </div>
-                                <div class="list separated inset">
+                                <div class="list separated inset glass">
                                     <ul>
                                         <li>
                                             <a class="popup-close item-content item-link" onclick="goToTab('#sourcesTab')">
@@ -505,7 +506,7 @@
                                 </div>
                                 <div class="page-content">
                                     <div class="block-title block-title-large">Terms of Service</div>
-                                    <div class="block block-strong inset">
+                                    <div class="block block-strong inset liquid-glass">
                                         <p>Welcome to SoftwareKit – the ultimate all-in-one utility for your Apple, Android and OpenHarmony Devices. We highly value your privacy and security, which is why we have meticulously crafted the following terms of
                                             service to ensure absolute clarity and transparency:</p>
                                         <p><strong>1. Privacy First:</strong> Your privacy is our top priority. We assure you that we do not collect any of your personal data. Your information remains strictly yours and is treated with the highest level
@@ -546,7 +547,7 @@
                                 </div>
                                 <div class="page-content">
                                     <div class="block-title block-title-large">Settings</div>
-                                    <div class="list separated media-list inset">
+                                    <div class="list separated media-list inset glass">
                                         <ul>
 
                                             <li>
@@ -592,7 +593,7 @@
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="list media-list separated inset">
+                                    <div class="list media-list separated inset glass">
                                         <ul>
                                             <li class="flex-between accent-li item-content">
                                                 <div class="flex-align">
@@ -604,7 +605,21 @@
                                                     </div>
                                                 </div> <span class="accent-color-indicator" id="accent-color"></span>
                                             </li>
-                                            <li>
+ <li class="flex-between accent-li item-content glass-toggle">
+                                                <div class="flex-align">
+                                                    <div class="item-media"><i class="f7-icons">eye_fill</i></div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row" style="margin-top:3px;">
+                                                            <div class="item-title">GlassUI</div>
+                                                        </div>
+                                                    </div>
+                                                </div>  <label class="toggle toggle-init">
+          <input
+            id="toggle-glassUI"
+            type="checkbox" />
+          <span class="toggle-icon"></span>
+        </label>
+                                            </li>                                           <li>
                                                 <a class="item-link item-content popup-open" data-popup="#terms">
                                                     <div class="item-media"><i class="f7-icons">exclamationmark_octagon_fill</i></div>
                                                     <div class="item-inner">
@@ -625,11 +640,11 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="https://x.com/TechLxrd07/" class="item-link item-content external">
+                                                <a href="https://x.com/softwarekit_app/" class="item-link item-content external">
                                                     <div class="item-media"><i class="f7-icons">logo_twitter</i></div>
                                                     <div class="item-inner">
                                                         <div class="item-title-row">
-                                                            <div class="item-title">Follow us</div>
+                                                            <div class="item-title">Follow</div>
                                                         </div>
                                                     </div>
                                                 </a>
@@ -672,7 +687,7 @@
         </div>
 
                                 <div class="page-content">
-                                    <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset" id="report-form">
+                                    <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="report-form">
                                         <input type="text" name="_honey" class="display-none">
 
                                         <input type="hidden" name="_captcha" value="false">
@@ -749,7 +764,7 @@
         </div>
 
                                 <div class="page-content">
-                                    <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset" id="feedback-form">
+                                    <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="feedback-form">
                                         <input type="text" name="_honey" class="display-none">
 
                                         <input type="hidden" name="_captcha" value="false">
@@ -823,9 +838,9 @@
             <li>Tap the profile, then tap <b>Trust</b> and confirm your choice.</li>
             <li>After trusting, you can open the app as normal.</li>
           </ol>
-          <p style="color:#888;">Trusting the certificate ensures the app is authenticated and can run on your device securely.</p>
+          <p>Trusting the certificate ensures the app is authenticated and can run on your device securely.</p>
         </div>
-        <div class="list separated inset">
+        <div class="list separated inset glass">
           <ul>
             <li>
               <a href="com.apple.Preferences://" class="item-link item-content external">
@@ -859,9 +874,9 @@
             </ul>
             <li>After reset, restore your backup and try installing again.</li>
           </ol>
-          <p style="color:#888;">Note: Always ensure your data is backed up before performing a factory reset.</p>
+          <p>Note: Always ensure your data is backed up before performing a factory reset.</p>
         </div>
-        <div class="list separated inset">
+        <div class="list separated inset glass">
           <ul>
             <li>
               <a href="com.apple.Preferences://" class="item-link item-content external">
@@ -889,7 +904,7 @@
               <li>Scroll down and enable <b>Developer Mode</b>.</li>
             </ol>
           </div>
-          <div class="list separated inset">
+          <div class="list separated inset glass">
             <ul>
               <li>
                 <a href="com.apple.Preferences://" class="item-link item-content external">
@@ -922,9 +937,9 @@
             <li>Return to the website and tap <b>Install App Marketplace</b>.<br>     
             </li>
           </ol>
-          <p style="color:#888;">You can now use the 3rd party marketplace on your device.</p>
+          <p>You can now use the 3rd party marketplace on your device.</p>
         </div>
-        <div class="list separated inset">
+        <div class="list separated inset glass">
           <ul>
             <li>
               <a href="com.apple.Preferences://" class="item-link item-content external">
@@ -1026,7 +1041,7 @@ function openSignerPopup() {
             </div>
           </div>
           <div class="page-content">           
-            <div class="list separated inset">
+            <div class="list separated inset glass">
               <ul>
                 <li><div class="item-content item-input"><div class="item-inner">
                   <div class="item-title item-label">IPA File</div>
