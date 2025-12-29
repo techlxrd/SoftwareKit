@@ -305,7 +305,7 @@ function renderDeviceData(deviceInfo) {
 
         <div class="card">
             <div class="card-content card-content-padding">
-                <div class="list list-strong inset">
+                <div class="list list-strong inset glass">
                     <ul>
                         <li class="item-content item-input">
                             <div class="item-inner">
