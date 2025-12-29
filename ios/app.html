@@ -217,7 +217,7 @@
 
 
                         </div>
-                        <div class="block-title">Guides <i class="f7-icons icon-small">book_fill</i></div>
+                        <div class="block-title glass">Guides <i class="f7-icons icon-small">book_fill</i></div>
                         <div class="swiper swiper-padding guides swiper-initialized swiper-horizontal swiper-ios swiper-backface-hidden">
                             <div class="swiper-wrapper" aria-live="polite">
                                 <div class="swiper-slide guides guides-active" role="group" aria-label="1 / 5">
@@ -247,11 +247,11 @@
                             </div>
                             <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                         </div>
-                        <div class="block-title">Favorites<i class="f7-icons icon-small">heart_fill</i></div>
+                        <div class="block-title glass">Favorites<i class="f7-icons icon-small">heart_fill</i></div>
 
                         <div class="list separated media-list inset sortable sortable-tap-hold glass" id="fav">
                             <ul></ul>
-                            <p id="favempty" class="centered-empty">Nothing to see here <i class="f7-icons icon-small">tray_fill</i></p>
+                            <div class="block-title centered-empty glass" id="favempty">Nothing to see here <i class="f7-icons icon-small">tray_fill</i></div>
                         </div>
                     </div>
 
@@ -394,7 +394,7 @@
                         <div class="page">
                             <div class="page-content bg-img">
                                 <div class="block block-strong inset liquid-glass">
-                                    <div class="block-title block-title-large text-white">Install SoftwareKit<i class="f7-icons">arrow_down_circle_fill</i></div>
+                                    <div class="block-title block-title-large glass">Install SoftwareKit<i class="f7-icons">arrow_down_circle_fill</i></div>
                                     <p>Add SoftwareKit to your home screen and you're all set!</p>
                                 </div>
                                 <div class="list separated inset glass">
@@ -542,11 +542,14 @@
                         </div>
                         <div class="popup" id="settings">
                             <div class="page">
-                                <div class="swipe-nav">
-                                    <div><i class="f7-icons">minus</i></div>
-                                </div>
-                                <div class="page-content bg-img">
-                                    <div class="block-title block-title-large">Settings</div>
+                                <div class="navbar">
+          <div class="navbar-bg"></div>
+          <div class="navbar-inner">
+            <div class="title">Settings</div>
+            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
+          </div>
+        </div>
+                                <div class="page-content bg-img">                                   
                                     <div class="list separated media-list inset glass">
                                         <ul>
 
@@ -825,8 +828,8 @@
                                     <div><i class="f7-icons">minus</i></div>
                                 </div>
                                 <div class="page-content bg-img">
-                                    <div class="block-title block-title-large">Untrusted Enterprise Developer</div>
-        <div class="block inset">
+                                    <div class="block-title block-title-large glass">Untrusted Enterprise Developer</div>
+        <div class="block block-strong inset liquid-glass">
           <center>
             <img loading="lazy" src="https://i.imgur.com/YQxY1aO.png" style="max-width:340px;width:97%;border-radius:20px;">
           </center>
@@ -859,8 +862,8 @@
                                     <div><i class="f7-icons">minus</i></div>
                                 </div>
                                 <div class="page-content bg-img">
-                                    <div class="block-title block-title-large">Unable to install application</div>
-        <div class="block inset">
+                                    <div class="block-title block-title-large glass">Unable to install application</div>
+        <div class="block block-strong inset liquid-glass">
           <center>
             <img loading="lazy" src="https://i.imgur.com/tETxFue.png" style="max-width:340px;width:97%;border-radius:20px;">
           </center>
@@ -892,8 +895,8 @@
       <div class="page">
         <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
         <div class="page-content bg-img">
-          <div class="block-title block-title-large">Developer Mode required</div>
-          <div class="block inset">
+          <div class="block-title block-title-large glass">Developer Mode required</div>
+          <div class="block block-strong inset liquid-glass">
             <center>
               <img loading="lazy" src="https://i.imgur.com/qLbsliJ.png" style="max-width:340px;width:97%;border-radius:20px;">
             </center>
@@ -923,8 +926,8 @@
                                     <div><i class="f7-icons">minus</i></div>
                                 </div>
                                 <div class="page-content bg-img">
-                                    <div class="block-title block-title-large">Allow Marketplace from (eg. AltStore)</div>       
-        <div class="block">  
+                                    <div class="block-title block-title-large glass">Allow Marketplace from (eg. AltStore)</div>       
+        <div class="block block-strong inset liquid-glass">  
             <center>                       
             <img loading="lazy" src="https://i.imgur.com/UQTwAyS.jpeg" style="max-width:340px;width:97%;border-radius:20px;"> </center>
             <br>      
@@ -972,21 +975,19 @@
                   </div>
                 </div>
               </div>
-            </div>        
-    <script>
-// Frontend SignerEngine (worker-based)
+            </div>           
+<script>
 var SignerEngine = {
-  workerBase: 'https://cococloud-api.shadvlxrd.workers.dev', // <- update this
+  workerBase: 'https://cococloud-api.shadvlxrd.workers.dev',
   files: { ipa: null, p12: null, prov: null },
   processing: false,
 
   log: function(msg, color = '#ccc', escapeHtml = true) {
     const el = document.getElementById('signer-logs');
-    if (!el) return console.log(msg);
-    const safe = escapeHtml ? this._escapeHtml(String(msg)) : String(msg);
-    el.innerHTML += `<div style="color:${color}; margin-bottom:4px;">> ${safe}</div>`;
-    el.scrollTop = el.scrollHeight;
+    const s = escapeHtml ? this._escapeHtml(String(msg)) : String(msg);
+    if (el) el.innerHTML += `<div style="color:${color}; margin-bottom:4px;">> ${s}</div>`;
     console.log('[SignerEngine]', msg);
+    if (el) { el.scrollTop = el.scrollHeight; }
   },
 
   _escapeHtml: function (unsafe) {
@@ -1013,28 +1014,23 @@ var SignerEngine = {
     this.log(`${type.toUpperCase()} loaded: ${this.files[type].name}`, 'var(--f7-theme-color)');
   },
 
-  // helper to handle responses: try JSON, fallback to text snippet
   _parseResponse: async function(response) {
     const ct = (response.headers.get('content-type') || '').toLowerCase();
     if (ct.includes('application/json')) {
       try { return { type:'json', data: await response.json(), status: response.status }; }
       catch(e) { /* fallthrough */ }
     }
-
-    // binary (IPA) or other
-    if (ct.includes('application/octet-stream') || ct.includes('application/zip') || ct.includes('application/x-')) {
+    if (ct.includes('application/octet-stream') || ct.includes('application/zip') || ct.includes('application/vnd.apple.pkpass') || ct.includes('application/x-')) {
       const blob = await response.blob();
       return { type:'binary', blob: blob, headers: response.headers, status: response.status };
     }
-
-    // otherwise return text snippet (HTML or error)
     const text = await response.text();
     const stripped = text.replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<\/?[^>]+(>|$)/g,'');
     const snippet = stripped.slice(0, 1200);
     return { type:'text', text: text, snippet: snippet, status: response.status, headers: response.headers };
   },
 
-  // Cert check
+  // Certificate check via worker
   checkCert: async function() {
     if (!this.files.p12 && !this.files.prov) return app.dialog.alert('Upload P12 or Provision first');
     const fd = new FormData();
@@ -1060,24 +1056,20 @@ var SignerEngine = {
           this.log('Cert check failed: ' + (j.message || JSON.stringify(j)), '#ff3b30');
           app.dialog.alert('Cert check failed: ' + (j.message || 'See logs'));
         }
-      } else if (parsed.type === 'binary') {
-        this.log('Binary response received from cert checker (unexpected).', '#ffa500');
-        app.dialog.alert('Unexpected binary response. See logs.');
       } else {
-        // HTML or text
         this.log('Cert checker returned non-JSON. Snippet:', '#ff3b30');
         this.log(parsed.snippet || '(no body)', '#ff3b30');
-        app.dialog.alert('Cert checker returned HTML/text. Check worker logs and response snippet in UI.');
+        app.dialog.alert('Cert checker returned non-JSON. Check logs for snippet.');
       }
     } catch (e) {
       this.setProcessing(false);
       app.dialog.close();
-      this.log('Network error: ' + e.message, '#ff3b30');
-      app.dialog.alert('Network/CORS/Worker error: ' + e.message);
+      this.log('Network error: ' + (e.message || e), '#ff3b30');
+      app.dialog.alert('Network/CORS/Worker error: ' + (e.message || e));
     }
   },
 
-  // Sign (chooses custom vs free enterprise based on radio)
+  
   sign: async function() {
     const mode = document.querySelector('input[name="mode"]:checked')?.value || 'custom';
     if (!this.files.ipa) return app.dialog.alert('Select an IPA first');
@@ -1093,11 +1085,12 @@ var SignerEngine = {
       if (pass) fd.append('password', pass);
     }
 
+    
     this.setProcessing(true);
     app.dialog.preloader('Signing...');
 
     try {
-      const endpoint = mode === 'custom' ? 'customsign' : 'free-enterprise-sign';
+      const endpoint = (mode === 'custom') ? 'customsign' : 'free-enterprise-sign';
       const res = await fetch(`${this.workerBase}/${endpoint}`, { method: 'POST', body: fd });
       const parsed = await this._parseResponse(res);
       this.setProcessing(false);
@@ -1110,10 +1103,10 @@ var SignerEngine = {
           const link = j.itmsServicesUrl || j.manifestUrl || j.downloadUrl || j.download_url || j.manifest_url || j.itms_services_url;
           if (link) {
             this.log('Install link: ' + link, 'var(--f7-theme-color)');
-            // On mobile, this will trigger itms install
+          
             window.location.href = link;
           } else {
-            this.log('Signed but no install URL returned. Full response logged.', '#ffa500');
+            this.log('Signed but no install URL returned. See full response:', '#ffa500');
             this.log(JSON.stringify(j, null, 2), '#ffa500');
             app.dialog.alert('Signed but no install link returned. Check logs.');
           }
@@ -1122,11 +1115,11 @@ var SignerEngine = {
           app.dialog.alert('Signing failed: ' + (j.message || 'See logs'));
         }
       } else if (parsed.type === 'binary') {
-        // e.g., the worker returned an IPA file directly — download it
+        // Worker returned binary IPA — trigger download
         const blob = parsed.blob;
         const cd = parsed.headers.get('content-disposition') || 'attachment; filename="signed.ipa"';
-        const fnameMatch = cd.match(/filename="?([^"]+)"?/);
-        const filename = fnameMatch ? fnameMatch[1] : 'signed.ipa';
+        const fnMatch = cd.match(/filename="?([^"]+)"?/);
+        const filename = fnMatch ? fnMatch[1] : 'signed.ipa';
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -1138,16 +1131,15 @@ var SignerEngine = {
         this.log('Downloaded signed IPA: ' + filename, 'var(--f7-theme-color)');
         app.dialog.alert('Downloaded signed IPA.');
       } else {
-        // HTML/text — show snippet
         this.log('Signing returned non-JSON. Snippet:', '#ff3b30');
         this.log(parsed.snippet || '(no body)', '#ff3b30');
-        app.dialog.alert('Signing returned HTML/text. See logs for snippet.');
+        app.dialog.alert('Signing returned non-JSON. See logs for snippet.');
       }
     } catch (e) {
       this.setProcessing(false);
       app.dialog.close();
       this.log('Network error: ' + (e.message || e), '#ff3b30');
-      app.dialog.alert('Network/CORS/Worker error: ' + (e.message || e));
+      app.dialog.alert('Network/Worker error: ' + (e.message || e));
     }
   }
 };
@@ -1155,23 +1147,21 @@ function openSignerPopup() {
   app.popup.create({
     content: `
 <div class="popup signer-popup">
-  <div class="view"><div class="page">
-    <div class="navbar">
-      <div class="navbar-inner">
-        <div class="title">IPA Signer</div>
-        <div class="right"><a class="link popup-close">Close</a></div>
-      </div>
-    </div>
+ <div class="page">
+    <div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner">
+      <div class="title">Signer</div>
+      <div class="right"><a class="link popup-close"><i class="icon-close"></i></a></div>
+    </div></div>
 
-    <div class="page-content" style="padding-bottom:20px;">
-      <div class="block-title">Mode</div>
-      <div class="list inset">
+    <div class="page-content bg-img">
+      <div class="block-title glass">Mode</div>
+      <div class="list separated inset glass">
         <ul>
           <li>
             <label class="item-radio item-content">
               <input type="radio" name="mode" value="custom" checked onchange="toggleSignerMode()">
               <i class="icon icon-radio"></i>
-              <div class="item-inner"><div class="item-title">Custom (your cert)</div></div>
+              <div class="item-inner"><div class="item-title">Custom certificate</div></div>
             </label>
           </li>
           <li>
@@ -1184,12 +1174,12 @@ function openSignerPopup() {
         </ul>
       </div>
 
-      <div class="block-title">Files</div>
-      <div class="list inset no-hairlines-md">
+      <div class="block-title glass">Upload files</div>
+      <div class="list inset separated glass">
         <ul>
           <li class="item-content item-input">
             <div class="item-inner">
-              <div class="item-title item-label">IPA</div>
+              <div class="item-title item-label">iPA</div>
               <input type="file" accept=".ipa" onchange="SignerEngine.onFile(this,'ipa')">
             </div>
           </li>
@@ -1217,28 +1207,29 @@ function openSignerPopup() {
         </ul>
       </div>
 
-      <div class="block row" style="margin-top:12px;">
-        <div class="col"><button class="button button-outline button-large" onclick="SignerEngine.checkCert()">Check Cert</button></div>
-        <div class="col"><button class="button button-fill button-large" onclick="SignerEngine.sign()">Sign & Install</button></div>
+      <div class="block inset">      
+       <button class="button button-fill button-large button-round" onclick="SignerEngine.sign()">Sign & Install</button>
+       <br>
+        <button class="button button-outline button-large button-fill button-round color-green" onclick="SignerEngine.checkCert()">Check certificate status</button>
       </div>
 
-      <div class="block-title" style="margin-top:14px;">Logs</div>
-      <div class="block">
-        <div id="signer-logs" style="background:#000;color:#0f0;font-family:monospace;padding:10px;border-radius:10px;height:160px;overflow:auto;">
-          Ready.
-        </div>
+      <div class="block-title glass">Logs</div>
+      <div class="block block-strong inset liquid-glass">
+        <span id="signer-logs" style="font-family:monospace;">
+          Ready to Sign. 
+        </span>
       </div>
     </div>
   </div></div>
 </div>`
   }).open();
 
-  // initialize visibility
   toggleSignerMode();
 }
+
 function toggleSignerMode() {
   const mode = document.querySelector('input[name="mode"]:checked')?.value || 'custom';
-  document.querySelectorAll('.custom-only').forEach(el => el.style.display = mode === 'custom' ? '' : 'none');
+  document.querySelectorAll('.custom-only').forEach(el => el.style.display = (mode === 'custom') ? '' : 'none');
 }
 </script>
 <script>window.onload = function() {
