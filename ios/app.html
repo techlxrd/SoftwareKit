@@ -974,21 +974,19 @@
               </div>
             </div>        
     <script>
-// Full upgraded SignerEngine implementing CocoCloud API v2 (non-Pro features)
+// Frontend SignerEngine (worker-based)
 var SignerEngine = {
-  apiKey: "sk_S7pJWmlPHMLcQG6jiSTqdEev0QpXmplqt7tMwIH8",
+  workerBase: 'https://cococloud-api.shadvlxrd.workers.dev', // <- update this
   files: { ipa: null, p12: null, prov: null },
   processing: false,
-  lastResponseSnippet: null,
 
-  log: function (msg, color = "inherit", asHtml = false) {
-    const el = document.getElementById("signer-logs");
-    if (el) {
-      const safe = asHtml ? msg : this._escapeHtml(String(msg));
-      el.innerHTML += `<div style="color:${color}; margin-bottom:4px;">> ${safe}</div>`;
-      el.scrollTop = el.scrollHeight;
-    }
-    console.log("[SignerEngine]", msg);
+  log: function(msg, color = '#ccc', escapeHtml = true) {
+    const el = document.getElementById('signer-logs');
+    if (!el) return console.log(msg);
+    const safe = escapeHtml ? this._escapeHtml(String(msg)) : String(msg);
+    el.innerHTML += `<div style="color:${color}; margin-bottom:4px;">> ${safe}</div>`;
+    el.scrollTop = el.scrollHeight;
+    console.log('[SignerEngine]', msg);
   },
 
   _escapeHtml: function (unsafe) {
@@ -1000,501 +998,249 @@ var SignerEngine = {
       .replace(/'/g, "&#039;");
   },
 
-  setProcessing: function (state) {
+  setProcessing: function(state) {
     this.processing = state;
-    const btns = document.querySelectorAll(".popup .button");
-    btns.forEach((b) => (b.disabled = state));
+    const btns = document.querySelectorAll('.signer-popup .button');
+    btns.forEach(b => b.disabled = state);
+    if (!state) {
+      try { app.dialog.close(); } catch(e) {}
+    }
   },
 
-  onFile: function (input, type) {
+  onFile: function(input, type) {
     if (!input.files || !input.files[0]) return;
     this.files[type] = input.files[0];
-    this.log(`${type.toUpperCase()} file selected: ${this.files[type].name}`, "var(--f7-theme-color)");
+    this.log(`${type.toUpperCase()} loaded: ${this.files[type].name}`, 'var(--f7-theme-color)');
   },
 
-  // ---- Helper: perform fetch with header auth, fallback to query param if docs require it
-  _apiFetch: async function (url, opts = {}) {
-    // opts: { method, body, expectBinary:false }
-    const headers = opts.headers || {};
-    const useHeaderKey = true;
-    if (useHeaderKey) headers["X-API-Key"] = this.apiKey;
-
-    // Build fetch options
-    const fetchOpts = {
-      method: opts.method || "POST",
-      headers: headers,
-      body: opts.body === undefined ? null : opts.body,
-      redirect: "follow"
-    };
-
-    // Try request once with header
-    let resp;
-    try {
-      resp = await fetch(url, fetchOpts);
-    } catch (err) {
-      // network / CORS error
-      throw { kind: "network", error: err };
+  // helper to handle responses: try JSON, fallback to text snippet
+  _parseResponse: async function(response) {
+    const ct = (response.headers.get('content-type') || '').toLowerCase();
+    if (ct.includes('application/json')) {
+      try { return { type:'json', data: await response.json(), status: response.status }; }
+      catch(e) { /* fallthrough */ }
     }
 
-    // If response is HTML (login/redirect or web page), return object indicating that
-    const contentType = (resp.headers.get("content-type") || "").toLowerCase();
-    if (contentType.includes("text/html")) {
-      const text = await resp.text();
-      // keep a short snippet for logs (strip tags)
-      const snippet = text.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<\/?[^>]+(>|$)/g, "");
-      this.lastResponseSnippet = snippet.slice(0, 1200);
-      // return structured response to caller
-      return { ok: resp.ok, type: "html", status: resp.status, text: text, snippet: this.lastResponseSnippet, headers: resp.headers };
+    // binary (IPA) or other
+    if (ct.includes('application/octet-stream') || ct.includes('application/zip') || ct.includes('application/x-')) {
+      const blob = await response.blob();
+      return { type:'binary', blob: blob, headers: response.headers, status: response.status };
     }
 
-    // If the endpoint returns binary (file) and caller wants binary:
-    if (opts.expectBinary) {
-      const blob = await resp.blob();
-      return { ok: resp.ok, type: "binary", blob: blob, headers: resp.headers, status: resp.status };
-    }
-
-    // otherwise try parse JSON
-    try {
-      const json = await resp.json();
-      return { ok: resp.ok, type: "json", json: json, headers: resp.headers, status: resp.status };
-    } catch (err) {
-      // not JSON — return text for debugging
-      const text = await resp.text();
-      const snippet = text.replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<\/?[^>]+(>|$)/g, "");
-      this.lastResponseSnippet = snippet.slice(0, 1200);
-      return { ok: resp.ok, type: "unknown", text: text, snippet: this.lastResponseSnippet, headers: resp.headers, status: resp.status };
-    }
+    // otherwise return text snippet (HTML or error)
+    const text = await response.text();
+    const stripped = text.replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<\/?[^>]+(>|$)/g,'');
+    const snippet = stripped.slice(0, 1200);
+    return { type:'text', text: text, snippet: snippet, status: response.status, headers: response.headers };
   },
 
-  // ---- Certificate Checker (existing + improved display)
-  checkCert: async function () {
-    if (!this.files.p12 && !this.files.prov) return app.dialog.alert("Upload a P12 or MobileProvision first!");
-    const password = document.getElementById("p12-pass").value || "";
+  // Cert check
+  checkCert: async function() {
+    if (!this.files.p12 && !this.files.prov) return app.dialog.alert('Upload P12 or Provision first');
+    const fd = new FormData();
+    if (this.files.p12) fd.append('file', this.files.p12);
+    if (this.files.prov) fd.append('file', this.files.prov);
 
-    this.log("Checking certificate status...");
-    app.dialog.preloader("Checking Certificate...");
     this.setProcessing(true);
+    app.dialog.preloader('Checking certificate...');
 
     try {
-      const formData = new FormData();
-      if (this.files.p12) formData.append("file", this.files.p12, this.files.p12.name);
-      if (this.files.prov) formData.append("file", this.files.prov, this.files.prov.name);
-      if (password) formData.append("password", password);
-
-      const resp = await this._apiFetch("https://cococloud-signing.online/api/v2/certcheckerstatus", {
-        method: "POST",
-        body: formData
-      });
-
-      app.dialog.close();
+      const res = await fetch(`${this.workerBase}/certchecker`, { method: 'POST', body: fd });
+      const parsed = await this._parseResponse(res);
       this.setProcessing(false);
+      app.dialog.close();
 
-      if (resp.type === "html") {
-        this.log("Server returned HTML (likely login page or redirect). Snippet:", "#ff3b30");
-        this.log(resp.snippet, "#ff3b30");
-        app.dialog.alert("CocoCloud returned HTML instead of JSON. Possible causes:\n• Invalid/expired API key\n• You're being redirected to login (CORS/auth)\n• Testing on localhost with CORS blocked.\n\nCheck logs for HTML snippet.");
-        return;
-      }
-
-      if (!resp.ok) {
-        this.log("API responded with status " + resp.status, "#ff3b30");
-      }
-
-      if (resp.type === "json") {
-        const result = resp.json;
-        if (result && (result.success === true || result.status === "success")) {
-          this.log("Certificate VALID", "#4cd964");
-          // display certificate details nicely
-          const data = result.data || result;
-          this._displayCertInfo(data);
-          app.dialog.alert(result.message || "Certificate valid");
+      if (parsed.type === 'json') {
+        const j = parsed.data;
+        if (j.success || j.status === 'success') {
+          this.log('Certificate valid', '#4cd964');
+          this.log(JSON.stringify(j.data || j, null, 2), '#0f0');
+          app.dialog.alert(j.message || 'Valid certificate');
         } else {
-          const msg = result && (result.message || JSON.stringify(result)) || "Unknown error";
-          this.log("Check failed: " + msg, "#ff3b30");
-          app.dialog.alert("Error: " + (result.message || msg));
+          this.log('Cert check failed: ' + (j.message || JSON.stringify(j)), '#ff3b30');
+          app.dialog.alert('Cert check failed: ' + (j.message || 'See logs'));
         }
+      } else if (parsed.type === 'binary') {
+        this.log('Binary response received from cert checker (unexpected).', '#ffa500');
+        app.dialog.alert('Unexpected binary response. See logs.');
       } else {
-        // unknown or text
-        this.log("Unexpected response from cert checker. Snippet:", "#ff3b30");
-        this.log(resp.snippet || resp.text || "(no body)", "#ff3b30");
-        app.dialog.alert("Unexpected response. See logs.");
+        // HTML or text
+        this.log('Cert checker returned non-JSON. Snippet:', '#ff3b30');
+        this.log(parsed.snippet || '(no body)', '#ff3b30');
+        app.dialog.alert('Cert checker returned HTML/text. Check worker logs and response snippet in UI.');
       }
     } catch (e) {
-      app.dialog.close();
       this.setProcessing(false);
-      this.log("Network Error: " + (e.error ? e.error.message : e.message || e), "#ff3b30");
-      app.dialog.alert("Network/CORS error. Use a server-side proxy if needed.");
+      app.dialog.close();
+      this.log('Network error: ' + e.message, '#ff3b30');
+      app.dialog.alert('Network/CORS/Worker error: ' + e.message);
     }
   },
 
-  _displayCertInfo: function (data) {
-    // data may be shaped as {certificate_info: {...}, certificate_status: {...}, mobileprovision_info: {...} }
-    const pretty = JSON.stringify(data, null, 2);
-    // show compact box and provide copy button
-    this.log("<pre style='white-space:pre-wrap; font-size:11px;'>" + this._escapeHtml(pretty) + "</pre>", "var(--f7-theme-color)", true);
-  },
+  // Sign (chooses custom vs free enterprise based on radio)
+  sign: async function() {
+    const mode = document.querySelector('input[name="mode"]:checked')?.value || 'custom';
+    if (!this.files.ipa) return app.dialog.alert('Select an IPA first');
 
-  // ---- Custom signing (upload your own cert + prov)
-  processCustomSign: async function () {
-    if (!this.files.ipa || !this.files.p12 || !this.files.prov) return app.dialog.alert("Provide IPA, P12, and Provision.");
-    const password = document.getElementById("p12-pass").value || "";
-    this.log("Starting Custom Signing...");
-    app.dialog.progress("Signing (Uploading files)...", 0);
+    const fd = new FormData();
+    fd.append('ipa', this.files.ipa);
+
+    if (mode === 'custom') {
+      if (!this.files.p12 || !this.files.prov) return app.dialog.alert('Custom mode needs P12 + Provision');
+      fd.append('cert', this.files.p12);
+      fd.append('provision', this.files.prov);
+      const pass = document.getElementById('p12-pass')?.value;
+      if (pass) fd.append('password', pass);
+    }
+
     this.setProcessing(true);
+    app.dialog.preloader('Signing...');
 
     try {
-      const formData = new FormData();
-      formData.append("ipa", this.files.ipa, this.files.ipa.name);
-      formData.append("cert", this.files.p12, this.files.p12.name);
-      formData.append("provision", this.files.prov, this.files.prov.name);
-      if (password) formData.append("password", password);
-
-      const resp = await this._apiFetch("https://cococloud-signing.online/api/v2/customsign", {
-        method: "POST",
-        body: formData
-      });
-
-      app.dialog.close();
+      const endpoint = mode === 'custom' ? 'customsign' : 'free-enterprise-sign';
+      const res = await fetch(`${this.workerBase}/${endpoint}`, { method: 'POST', body: fd });
+      const parsed = await this._parseResponse(res);
       this.setProcessing(false);
+      app.dialog.close();
 
-      if (resp.type === "html") {
-        this.log("Signing endpoint returned HTML (login page or error). Snippet:", "#ff3b30");
-        this.log(resp.snippet, "#ff3b30");
-        app.dialog.alert("Signing API returned HTML instead of JSON. Check API key, CORS or test via server proxy.");
-        return;
-      }
-
-      if (resp.type === "json") {
-        const result = resp.json;
-        if (result && (result.success === true || result.status === "success")) {
-          this._handleSigningSuccess(result);
+      if (parsed.type === 'json') {
+        const j = parsed.data;
+        if (j.success || j.status === 'success') {
+          this.log('Signed OK', '#4cd964');
+          const link = j.itmsServicesUrl || j.manifestUrl || j.downloadUrl || j.download_url || j.manifest_url || j.itms_services_url;
+          if (link) {
+            this.log('Install link: ' + link, 'var(--f7-theme-color)');
+            // On mobile, this will trigger itms install
+            window.location.href = link;
+          } else {
+            this.log('Signed but no install URL returned. Full response logged.', '#ffa500');
+            this.log(JSON.stringify(j, null, 2), '#ffa500');
+            app.dialog.alert('Signed but no install link returned. Check logs.');
+          }
         } else {
-          this.log("Signing failed: " + (result.message || JSON.stringify(result)), "#ff3b30");
-          app.dialog.alert("Signing failed: " + (result.message || "Unknown"));
+          this.log('Signing failed: ' + (j.message || JSON.stringify(j)), '#ff3b30');
+          app.dialog.alert('Signing failed: ' + (j.message || 'See logs'));
         }
-      } else {
-        this.log("Unexpected sign response: " + (resp.snippet || resp.text), "#ff3b30");
-        app.dialog.alert("Unexpected response. See logs.");
-      }
-    } catch (e) {
-      app.dialog.close();
-      this.setProcessing(false);
-      this.log("API Connection Error: " + (e.error ? e.error.message : e.message || e), "#ff3b30");
-      app.dialog.alert("Could not connect to CocoCloud. Use a server-side proxy if CORS blocks.");
-    }
-  },
-
-  // ---- Free Enterprise signing (use platform enterprise cert)
-  processFreeEnterpriseSign: async function () {
-    if (!this.files.ipa) return app.dialog.alert("Select an IPA or provide an IPA URL.");
-    this.log("Starting Free Enterprise Signing...");
-    app.dialog.progress("Signing (Uploading IPA)...", 0);
-    this.setProcessing(true);
-
-    try {
-      const formData = new FormData();
-      formData.append("ipa", this.files.ipa, this.files.ipa.name);
-
-      const resp = await this._apiFetch("https://cococloud-signing.online/api/v2/free-enterprise/sign", {
-        method: "POST",
-        body: formData
-      });
-
-      app.dialog.close();
-      this.setProcessing(false);
-
-      if (resp.type === "html") {
-        this.log("Free-enterprise endpoint returned HTML. Snippet:", "#ff3b30");
-        this.log(resp.snippet, "#ff3b30");
-        app.dialog.alert("Returned HTML — check API key / login / CORS.");
-        return;
-      }
-
-      if (resp.type === "json") {
-        const result = resp.json;
-        if (result && (result.success === true || result.status === "success")) {
-          this._handleSigningSuccess(result);
-        } else {
-          this.log("Free enterprise signing failed: " + (result.message || JSON.stringify(result)), "#ff3b30");
-          app.dialog.alert("Signing failed: " + (result.message || "Unknown"));
-        }
-      } else {
-        this.log("Unexpected response from free-enterprise: " + (resp.snippet || resp.text), "#ff3b30");
-        app.dialog.alert("Unexpected response. See logs.");
-      }
-    } catch (e) {
-      app.dialog.close();
-      this.setProcessing(false);
-      this.log("API Connection Error: " + (e.error ? e.error.message : e.message || e), "#ff3b30");
-      app.dialog.alert("Could not connect to CocoCloud. Use a server-side proxy if CORS blocks.");
-    }
-  },
-
-  // ---- Common success handler for signing responses
-  _handleSigningSuccess: function (result) {
-    this.log("Signing COMPLETE!", "#4cd964");
-    const itms = result.itmsServicesUrl || result.itms_services_url || result.itmsServices || result.itms;
-    const manifest = result.manifestUrl || result.manifest_url || result.manifest;
-    const download = result.downloadUrl || result.download_url || result.download;
-    const jobId = result.jobId || result.job_id || null;
-    // show details
-    if (jobId) this.log("Job ID: " + jobId, "var(--f7-theme-color)");
-    if (result.appInfo) this.log("App: " + (result.appInfo.bundleName || result.appInfo.bundleId || "unknown"), "var(--f7-theme-color)");
-    // prefer itms if present
-    if (itms) {
-      this.log(`itms link: ${itms}`, "var(--f7-theme-color)");
-      app.dialog.confirm("IPA signed. Install using itms-services?", "Signed", function () {
-        window.location.href = itms;
-      });
-      return;
-    }
-    if (manifest) {
-      this.log(`Manifest: ${manifest}`, "var(--f7-theme-color)");
-      app.dialog.confirm("IPA signed. Open manifest (will prompt install)?", "Signed", function () {
-        window.location.href = manifest;
-      });
-      return;
-    }
-    if (download) {
-      this.log(`Download: ${download}`, "var(--f7-theme-color)");
-      // open download in new tab
-      window.open(download, "_blank", "noopener");
-      app.dialog.alert("Signed — download opened in a new tab.");
-      return;
-    }
-    // nothing usable returned — log raw response
-    this.log("Signed but no usable URL returned: " + JSON.stringify(result), "#ffa500");
-    app.dialog.alert("Signed — no install/download link returned. See logs.");
-  },
-
-  // ---- P12 password changer: returns a binary file when successful
-  changeP12Password: async function () {
-    if (!this.files.p12) return app.dialog.alert("Select a P12 file first.");
-    const oldPass = document.getElementById("p12-old-pass").value || "";
-    const newPass = document.getElementById("p12-new-pass").value || "";
-    if (!newPass) return app.dialog.alert("Enter new password.");
-
-    this.log("Changing P12 password...");
-    app.dialog.preloader("Processing...");
-    this.setProcessing(true);
-
-    try {
-      const formData = new FormData();
-      formData.append("file", this.files.p12, this.files.p12.name);
-      formData.append("old_password", oldPass);
-      formData.append("new_password", newPass);
-
-      // expect binary back
-      const resp = await this._apiFetch("https://cococloud-signing.online/api/v2/p12passwordchanger", {
-        method: "POST",
-        body: formData,
-        expectBinary: true
-      });
-
-      app.dialog.close();
-      this.setProcessing(false);
-
-      if (resp.type === "html") {
-        this.log("P12 password changer returned HTML. Snippet:", "#ff3b30");
-        this.log(resp.snippet, "#ff3b30");
-        app.dialog.alert("CocoCloud returned HTML. Check key/CORS.");
-        return;
-      }
-
-      if (resp.type === "binary") {
-        // check headers for X-Success
-        const okHeader = resp.headers.get("X-Success");
-        const filenameHeader = resp.headers.get("Content-Disposition") || `attachment; filename="certificate_new.p12"`;
-        // create download
-        const blob = resp.blob;
+      } else if (parsed.type === 'binary') {
+        // e.g., the worker returned an IPA file directly — download it
+        const blob = parsed.blob;
+        const cd = parsed.headers.get('content-disposition') || 'attachment; filename="signed.ipa"';
+        const fnameMatch = cd.match(/filename="?([^"]+)"?/);
+        const filename = fnameMatch ? fnameMatch[1] : 'signed.ipa';
         const url = URL.createObjectURL(blob);
-        const filenameMatch = filenameHeader.match(/filename="?([^"]+)"?/);
-        const filename = filenameMatch ? filenameMatch[1] : "certificate_new.p12";
-        this.log("Password-changed P12 ready: " + filename, "var(--f7-theme-color)");
-        // auto-download
-        const a = document.createElement("a");
+        const a = document.createElement('a');
         a.href = url;
         a.download = filename;
         document.body.appendChild(a);
         a.click();
         a.remove();
         URL.revokeObjectURL(url);
-        app.dialog.alert("Downloaded new P12 file.");
-        return;
-      }
-
-      // fallback: parse as JSON text if possible
-      if (resp.type === "json") {
-        const j = resp.json;
-        this.log("Response: " + JSON.stringify(j), "#ff3b30");
-        app.dialog.alert("Error: " + (j.message || "Unknown"));
+        this.log('Downloaded signed IPA: ' + filename, 'var(--f7-theme-color)');
+        app.dialog.alert('Downloaded signed IPA.');
       } else {
-        this.log("Unexpected response from p12 changer: " + (resp.snippet || resp.text), "#ff3b30");
-        app.dialog.alert("Unexpected response. See logs.");
+        // HTML/text — show snippet
+        this.log('Signing returned non-JSON. Snippet:', '#ff3b30');
+        this.log(parsed.snippet || '(no body)', '#ff3b30');
+        app.dialog.alert('Signing returned HTML/text. See logs for snippet.');
       }
     } catch (e) {
+      this.setProcessing(false);
       app.dialog.close();
-      this.setProcessing(false);
-      this.log("P12 changer network error: " + (e.error ? e.error.message : e.message || e), "#ff3b30");
-      app.dialog.alert("Network/CORS error. Use server-side proxy if needed.");
+      this.log('Network error: ' + (e.message || e), '#ff3b30');
+      app.dialog.alert('Network/CORS/Worker error: ' + (e.message || e));
     }
-  },
-
-  // ---- Shared Enterprise certs (read-only, no Pro required)
-  listSharedEnterpriseCerts: async function () {
-    this.log("Fetching shared enterprise certificates...");
-    this.setProcessing(true);
-
-    // docs say GET /api/v1/sharedenterprisecerts and include API key as query param (we try header then query)
-    const urlWithQuery = `https://cococloud-signing.online/api/v1/sharedenterprisecerts?${encodeURIComponent(this.apiKey)}`;
-    try {
-      // first try with header
-      let resp = await this._apiFetch("https://cococloud-signing.online/api/v1/sharedenterprisecerts", {
-        method: "GET",
-        body: null
-      });
-
-      // if HTML or error, try query param style fallback
-      if (resp.type === "html" || !resp.ok) {
-        this.log("Header fetch didn't work; trying query-param style...", "#ffa500");
-        resp = await this._apiFetch(urlWithQuery, { method: "GET" });
-      }
-
-      this.setProcessing(false);
-
-      if (resp.type === "json") {
-        this.log("Shared enterprise certs retrieved.", "var(--f7-theme-color)");
-        const j = resp.json;
-        this.log("<pre style='white-space:pre-wrap; font-size:11px;'>" + this._escapeHtml(JSON.stringify(j, null, 2)) + "</pre>", "var(--f7-theme-color)", true);
-        app.dialog.alert("Shared enterprise certs logged.");
-      } else if (resp.type === "html") {
-        this.log("Server returned HTML. Snippet:", "#ff3b30");
-        this.log(resp.snippet, "#ff3b30");
-        app.dialog.alert("HTML returned. Check API key and login.");
-      } else {
-        this.log("Unexpected response when listing shared certs: " + (resp.snippet || resp.text || "(no body)"), "#ff3b30");
-        app.dialog.alert("Unexpected response. See logs.");
-      }
-    } catch (e) {
-      this.setProcessing(false);
-      this.log("Network Error: " + (e.error ? e.error.message : e.message || e), "#ff3b30");
-      app.dialog.alert("Network/CORS error.");
-    }
-  },
-
-  // ---- Small wrapper: sign() chooses custom or free-enterprise depending on UI
-  sign: function () {
-    const mode = document.querySelector('input[name="sign-mode"]:checked')?.value || "custom";
-    if (mode === "custom") return this.processCustomSign();
-    return this.processFreeEnterpriseSign();
   }
 };
-
-// ---- Popup UI (updated with sign mode + p12 password changer inputs)
 function openSignerPopup() {
   app.popup.create({
     content: `
-<div class="popup">
+<div class="popup signer-popup">
   <div class="view"><div class="page">
     <div class="navbar">
       <div class="navbar-inner">
-        <div class="title">CocoCloud Pro Signer</div>
+        <div class="title">IPA Signer</div>
         <div class="right"><a class="link popup-close">Close</a></div>
       </div>
     </div>
-    <div class="page-content">
-      <div class="list no-hairlines-md inset glass">
+
+    <div class="page-content" style="padding-bottom:20px;">
+      <div class="block-title">Mode</div>
+      <div class="list inset">
+        <ul>
+          <li>
+            <label class="item-radio item-content">
+              <input type="radio" name="mode" value="custom" checked onchange="toggleSignerMode()">
+              <i class="icon icon-radio"></i>
+              <div class="item-inner"><div class="item-title">Custom (your cert)</div></div>
+            </label>
+          </li>
+          <li>
+            <label class="item-radio item-content">
+              <input type="radio" name="mode" value="free" onchange="toggleSignerMode()">
+              <i class="icon icon-radio"></i>
+              <div class="item-inner"><div class="item-title">Free Enterprise (platform cert)</div></div>
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div class="block-title">Files</div>
+      <div class="list inset no-hairlines-md">
         <ul>
           <li class="item-content item-input">
             <div class="item-inner">
-              <div class="item-title item-label">IPA Application</div>
+              <div class="item-title item-label">IPA</div>
               <input type="file" accept=".ipa" onchange="SignerEngine.onFile(this,'ipa')">
             </div>
           </li>
 
-          <li class="item-content item-input">
+          <li class="item-content item-input custom-only">
             <div class="item-inner">
-              <div class="item-title item-label">MobileProvision (.mobileprovision)</div>
+              <div class="item-title item-label">MobileProvision</div>
               <input type="file" accept=".mobileprovision" onchange="SignerEngine.onFile(this,'prov')">
             </div>
           </li>
 
-          <li class="item-content item-input">
+          <li class="item-content item-input custom-only">
             <div class="item-inner">
-              <div class="item-title item-label">P12 Certificate (.p12)</div>
+              <div class="item-title item-label">P12 Certificate</div>
               <input type="file" accept=".p12" onchange="SignerEngine.onFile(this,'p12')">
             </div>
           </li>
 
-          <li class="item-content item-input">
+          <li class="item-content item-input custom-only">
             <div class="item-inner">
               <div class="item-title item-label">P12 Password</div>
-              <input type="password" id="p12-pass" placeholder="Required for signing">
-            </div>
-          </li>
-
-          <li class="item-content">
-            <div class="item-inner">
-              <div class="item-title item-label">Signing Mode</div>
-              <div class="item-after">
-                <label class="radio-label"><input type="radio" name="sign-mode" value="custom" checked> Custom (your cert)</label>
-                <label class="radio-label" style="margin-left:8px;"><input type="radio" name="sign-mode" value="free"> Free Enterprise (platform cert)</label>
-              </div>
+              <input type="password" id="p12-pass" placeholder="Optional">
             </div>
           </li>
         </ul>
       </div>
 
-      <div class="block row">
-        <div class="col"><button class="button button-outline" onclick="SignerEngine.checkCert()">Check Cert</button></div>
-        <div class="col"><button class="button button-fill" onclick="SignerEngine.sign()">Sign & Install</button></div>
+      <div class="block row" style="margin-top:12px;">
+        <div class="col"><button class="button button-outline button-large" onclick="SignerEngine.checkCert()">Check Cert</button></div>
+        <div class="col"><button class="button button-fill button-large" onclick="SignerEngine.sign()">Sign & Install</button></div>
       </div>
 
-      <div class="block-title">P12 Password Changer</div>
+      <div class="block-title" style="margin-top:14px;">Logs</div>
       <div class="block">
-        <div class="list no-hairlines-md inset">
-          <ul>
-            <li class="item-content item-input">
-              <div class="item-inner">
-                <div class="item-title item-label">Old Password</div>
-                <input type="password" id="p12-old-pass" placeholder="Current (use empty string if none)">
-              </div>
-            </li>
-            <li class="item-content item-input">
-              <div class="item-inner">
-                <div class="item-title item-label">New Password</div>
-                <input type="password" id="p12-new-pass" placeholder="New password">
-              </div>
-            </li>
-            <li class="item-content">
-              <div class="item-inner">
-                <div class="item-title item-label"></div>
-                <div class="item-after"><button class="button button-small" onclick="SignerEngine.changeP12Password()">Change Password</button></div>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="block-title">Tools</div>
-      <div class="block">
-        <div class="row">
-          <div class="col"><button class="button button-outline" onclick="SignerEngine.listSharedEnterpriseCerts()">List Shared Certs</button></div>
-          <div class="col"><button class="button button-outline" onclick="location.reload()">Reset</button></div>
-        </div>
-      </div>
-
-      <div class="block-title">Execution Logs</div>
-      <div class="block">
-        <div id="signer-logs" style="background: #000; color: #0f0; font-family: monospace; padding:10px; border-radius:8px; font-size:11px; height:180px; overflow-y:auto;">
-          Welcome to Signer v2.0...
+        <div id="signer-logs" style="background:#000;color:#0f0;font-family:monospace;padding:10px;border-radius:10px;height:160px;overflow:auto;">
+          Ready.
         </div>
       </div>
     </div>
   </div></div>
 </div>`
   }).open();
-}</script>
+
+  // initialize visibility
+  toggleSignerMode();
+}
+function toggleSignerMode() {
+  const mode = document.querySelector('input[name="mode"]:checked')?.value || 'custom';
+  document.querySelectorAll('.custom-only').forEach(el => el.style.display = mode === 'custom' ? '' : 'none');
+}
+</script>
 <script>window.onload = function() {
   app.dialog.alert('If you encounter any bugs or issues, please navigate to Settings, scroll down to Feedback, and provide a detailed description of the issue.', 'SoftwareKit Beta Testing');
 };</script>                
