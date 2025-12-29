@@ -1030,7 +1030,6 @@ var SignerEngine = {
     return { type:'text', text: text, snippet: snippet, status: response.status, headers: response.headers };
   },
 
-  // Certificate check via worker
   checkCert: async function() {
     if (!this.files.p12 && !this.files.prov) return app.dialog.alert('Upload P12 or Provision first');
     const fd = new FormData();
@@ -1038,7 +1037,7 @@ var SignerEngine = {
     if (this.files.prov) fd.append('file', this.files.prov);
 
     this.setProcessing(true);
-    app.dialog.preloader('Checking certificate...');
+    app.dialog.preloader('Checking certificate status...');
 
     try {
       const res = await fetch(`${this.workerBase}/certchecker`, { method: 'POST', body: fd });
@@ -1049,7 +1048,7 @@ var SignerEngine = {
       if (parsed.type === 'json') {
         const j = parsed.data;
         if (j.success || j.status === 'success') {
-          this.log('Certificate valid', '#4cd964');
+          this.log('The Certificate is valid', '#4cd964');
           this.log(JSON.stringify(j.data || j, null, 2), '#0f0');
           app.dialog.alert(j.message || 'Valid certificate');
         } else {
@@ -1099,7 +1098,7 @@ var SignerEngine = {
       if (parsed.type === 'json') {
         const j = parsed.data;
         if (j.success || j.status === 'success') {
-          this.log('Signed OK', '#4cd964');
+          this.log('Signed', '#4cd964');
           const link = j.itmsServicesUrl || j.manifestUrl || j.downloadUrl || j.download_url || j.manifest_url || j.itms_services_url;
           if (link) {
             this.log('Install link: ' + link, 'var(--f7-theme-color)');
@@ -1114,8 +1113,7 @@ var SignerEngine = {
           this.log('Signing failed: ' + (j.message || JSON.stringify(j)), '#ff3b30');
           app.dialog.alert('Signing failed: ' + (j.message || 'See logs'));
         }
-      } else if (parsed.type === 'binary') {
-        // Worker returned binary IPA — trigger download
+      } else if (parsed.type === 'binary') {       
         const blob = parsed.blob;
         const cd = parsed.headers.get('content-disposition') || 'attachment; filename="signed.ipa"';
         const fnMatch = cd.match(/filename="?([^"]+)"?/);
@@ -1175,7 +1173,7 @@ function openSignerPopup() {
       </div>
 
       <div class="block-title glass">Upload files</div>
-      <div class="list inset separated glass">
+      <div class="list list-strong list-dividers inset glass">
         <ul>
           <li class="item-content item-input">
             <div class="item-inner">
@@ -1207,20 +1205,34 @@ function openSignerPopup() {
         </ul>
       </div>
 
-      <div class="block inset">      
+      <div class="block">      
        <button class="button button-fill button-large button-round" onclick="SignerEngine.sign()">Sign & Install</button>
        <br>
         <button class="button button-outline button-large button-fill button-round color-green" onclick="SignerEngine.checkCert()">Check certificate status</button>
       </div>
-
-      <div class="block-title glass">Logs</div>
-      <div class="block block-strong inset liquid-glass">
-        <span id="signer-logs" style="font-family:monospace;">
+<div class="list separated inset accordion-list glass">
+      <ul>
+        <li class="accordion-item">
+            
+          <a class="item-link item-content">
+               <div class="item-media"><i class="f7-icons">ellipsis_circle_fill</i></div>
+            <div class="item-inner">
+              <div class="item-title">Logs</div>
+            </div>
+          </a>
+          <div class="accordion-item-content">
+            <div class="block" id="signer-logs" style="font-family:monospace;">
+           <span >
           Ready to Sign. 
-        </span>
+        </span>   
+            </div>
+          </div>
+        </li>     
+       </ul>
       </div>
     </div>
-  </div></div>
+  </div>
+ </div>
 </div>`
   }).open();
 
