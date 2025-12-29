@@ -26,6 +26,8 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.25);
     box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.05) inset, 0px 0px 100px 10px rgba(255, 255, 255, 0.05) inset, 0 0.5px 0px rgba(255, 255, 255, 0.525) inset !important;
     transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    color:#fff;
+    
 }
 
 .red-tinted {
@@ -42,15 +44,16 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.25);
     box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.05) inset, 0px 0px 100px 10px rgba(255, 255, 255, 0.05) inset, 0 0.5px 0px rgba(255, 255, 255, 0.525) inset !important;
     transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    color: #fff;
 }
 
-list-strong.glass ul {
-    backdrop-filter: blur(6px) !important;
-    -webkit-backdrop-filter: blur(6px) !important;
-    background: linear-gradient( 145deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+.list-strong.glass ul {
+    backdrop-filter: blur(6px)!important;
+    -webkit-backdrop-filter: blur(6px)!important;
+    background: linear-gradient( 145deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)!important;
     border: 1px solid rgba(255, 255, 255, 0.25);
-    box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.05) inset, 0px 0px 100px 10px rgba(255, 255, 255, 0.05) inset, 0 0.5px 0px rgba(255, 255, 255, 0.525) inset !important;
-    transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    box-shadow: 0px 0px 0px 2px rgba(255, 255, 255, 0.05) inset, 0px 0px 100px 10px rgba(255, 255, 255, 0.05) inset, 0 0.5px 0px rgba(255, 255, 255, 0.525) inset !important;  
+    color: #fff;
 }
 
 
@@ -103,21 +106,21 @@ list-strong.glass ul {
         display: flex;
         align-items: center;
     }
-   .page-content.dark, .page-content .dark, .dark .page-content{
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;     
-        background: url('../assets/bg-dark.jpeg'); 
-         transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);     
-    }
-     .page-content{
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;     
-        background: url('../assets/bg-light.jpeg'); 
-          transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);    
-    }
+.bg-img.dark,
+.bg-img .dark,
+.dark .bg-img {
+  background-image: url('../assets/bg-dark.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
+.bg-img {
+  background-image: url('../assets/bg-light.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
     .popup-img {
         width: 40%;
         margin-top: 15%;
@@ -129,7 +132,7 @@ list-strong.glass ul {
      .more i{
         font-size:34px; 
     }
-   .app-icon{width: 110px; height: 110px; border-radius: 30%; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); object-fit:cover;}
+   .app-icon{width: 110px; height: 110px; border-radius: 29.9%; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid rgba(0,0,0,0.05); object-fit:cover;}
        .accent-color-indicator {
         width: 27px;
         height: 27px;
@@ -148,9 +151,9 @@ list-strong.glass ul {
         display: flex;
     }
 .repo-news-card {
-    border-radius: 20px !important;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
-    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    border-radius: 25px !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
   width:100%;
 }
 
