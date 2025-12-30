@@ -28,7 +28,7 @@
     </ul>
   </div>
   <br>
-  <center>SoftwareKit v1.0</center>
+  <center>SoftwareKit iOS v1.0 Beta</center>
 </div>
         <div class="view view-main">
             <div class="page safe-area-right">              
@@ -221,26 +221,35 @@
                         <div class="swiper swiper-padding guides swiper-initialized swiper-horizontal swiper-ios swiper-backface-hidden">
                             <div class="swiper-wrapper" aria-live="polite">
                                 <div class="swiper-slide guides guides-active" role="group" aria-label="1 / 5">
+                                   
                                     <a class="link popup-open" data-popup="#trustStore">
-                                        <img loading="lazy" src="https://i.imgur.com/UQTwAyS.jpeg">
+                                        <div class="title-container">
+                                                <div class="swiper-title-small">App Marketplace</div></div>
+                                        <img loading="lazy" src="https://i.imgur.com/Pm0kqpp.png">
                                         <div class="backout"></div>
                                     </a>
                                 </div>
                                 <div class="swiper-slide guides" role="group" aria-label="2 / 5">
                                     <a class="link popup-open"  data-popup="#trustCert">
-                                        <img loading="lazy" src="https://i.imgur.com/YQxY1aO.png">
+                                        <img loading="lazy" src="https://i.imgur.com/8Mle0ax.png">
+                                      <div class="title-container">
+                                                <div class="swiper-title-small">Trust certificate</div></div>  
                                         <div class="backout"></div>
                                     </a>
                                 </div>
                                 <div class="swiper-slide guides guides-next" role="group" aria-label="3 / 5">
                                     <a class="link popup-open" data-popup="#verifyintegrity">
-                                        <img loading="lazy" src="https://i.imgur.com/tETxFue.png">
+                                        <img loading="lazy" src="https://i.imgur.com/KmWGX5e.png">
+                                   <div class="title-container">
+                                                <div class="swiper-title-small">Unable to verify/install app</div></div>     
                                         <div class="backout"></div>
                                     </a>
                                 </div>
                                 <div class="swiper-slide guides" role="group" aria-label="4 / 5">
                                     <a class="link popup-open" data-popup="#devmode">
-                                        <img loading="lazy" src="https://i.imgur.com/qLbsliJ.png">
+                                        <img loading="lazy" src="https://i.imgur.com/6U9WWYY.png">
+                                     <div class="title-container">
+                                                <div class="swiper-title-small">Developer Mode Required</div></div>   
                                         <div class="backout"></div>
                                     </a>
                                 </div>
@@ -532,7 +541,7 @@
                                     <div class="block block-strong inset">
                                         <p>Last updated: <span class="badge">Unknown</span></p>
                                         <center>
-                                            <h1>v1.0</h1>
+                                            <h1>SoftwareKit iOS v1.0 Beta</h1>
                                         </center>
                                         No changelog available at the moment, check back later. 
                                     </div>
@@ -578,7 +587,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="item-subtitle small-text">
-                                                            SoftwareKit v1.0
+                                                            SoftwareKit iOS v1.0 Public Beta
                                                         </div>
                                                     </div>
                                                 </div>
@@ -922,15 +931,13 @@
     </div>
  <div class="popup" id="trustStore">
                             <div class="page">
-                                <div class="swipe-nav">
-                                    <div><i class="f7-icons">minus</i></div>
-                                </div>
-                                <div class="page-content bg-img">
-                                    <div class="block-title block-title-large glass">Allow Marketplace from (eg. AltStore)</div>       
-        <div class="block block-strong inset liquid-glass">  
+ <div class="swipe-nav">
+                                <div><i class="f7-icons">minus</i></div>
+                            </div>
+                                <div class="page-content bg-img">                                    
             <center>                       
-            <img loading="lazy" src="https://i.imgur.com/UQTwAyS.jpeg" style="max-width:340px;width:97%;border-radius:20px;"> </center>
-            <br>      
+            <img loading="lazy" src="https://i.imgur.com/UQTwAyS.jpeg" class="guide-img"> </center>
+            <div class="block inset">
           <strong>How to Allow a 3rd Party App Store</strong>
           <ol>
             <li>When prompted, tap <b>OK</b> to allow installation.
@@ -1247,9 +1254,6 @@ function toggleSignerMode() {
 <script>window.onload = function() {
   app.dialog.alert('If you encounter any bugs or issues, please navigate to Settings, scroll down to Feedback, and provide a detailed description of the issue.', 'SoftwareKit Beta Testing');
 };</script>                
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.1/forge.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@plist/binary.parse@1.1.0/dist/index.min.js"></script>
                         <script src="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.js"></script>
                         <script src="js/app.js"></script>                       
 </body>
