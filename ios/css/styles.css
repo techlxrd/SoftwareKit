@@ -192,7 +192,6 @@ body {
 .repo-news-card {
   border-radius: 25px !important;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.05);
   width: 100%;
 }
 .repo-news-card .size-12:first-child {
@@ -266,6 +265,7 @@ body {
   border-radius: 16px;
   margin: 5px;
 }
+.guide-img{width: 100%;margin-top:3%;}
 .list.separated .item-content,
 .list.separated .item-link,
 .list.separated li {
@@ -301,6 +301,13 @@ img { pointer-events: none; }
   font-size: 26px;
   font-weight: 700;
   color: #fff;
+}
+.swiper-title-small {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0 3px #b7b7b7;
 }
 .swiper-padding { padding: 10px; }
 
