@@ -15,23 +15,51 @@
   ],
   "apps": [
     {
-      "name": "Taurine",
-      "bundleIdentifier": "org.coolstar.taurine",
+      "name": "Prism",
+      "bundleIdentifier": "com.brocodev.prismios",
       "marketplaceID": "",
-      "developerName": "Example Developer",
-      "subtitle": "An awesome app.",
-      "localizedDescription": "This is an awesome app only available on AltStore.",
-      "iconURL": "https://i.imgur.com/WXL3mle.png",
-      "tintColor": "#cf3c5a",
+      "developerName": "brocodev",
+      "subtitle": "",
+      "localizedDescription": "This is a STRIPPED DOWN and BAREBONES version of Prism Full. It features bugs and could use some polish. This is moreso a proof-of-concept than a final product. Prism Full will have many more features than this outside of solely icon theming, and will be much more polished.\n\nPrismLite is a lightweight, widget-based icon theming solution for non-exploitable versions of iOS.\nIt doesn’t actually replace app icons, but it gets about as close as you can without exploits.\n\nBy leveraging widgets, private APIs, and a carefully designed UX, PrismLite attempts to achieve a near-native themed homescreen experience.\n\n⚠️This app does NOT work when sideloaded with an enterprise certificate. If sideloaded with a developer certificate, ensure \"App Groups\" are enabled/it works with widgets. If sideloaded with an enterprise certificate, widgets will appear blank.",
+      "iconURL": "https://i.imgur.com/1fc4K72.png",
+      "tintColor": "#ffd4f0",
       "category": "other",
       "screenshots": [],
       "versions": [
         {
-          "downloadURL": "https://github.com/Odyssey-Team/Taurine/releases/download/1.1.7-3/Taurine.1.1.7-3.ipa",
-          "size": 32200000,
-          "version": "1.1.7-3",
+          "downloadURL": "https://github.com/prismios/PrismLite/releases/download/v0.0.3-Rev3/PLite.ipa",
+          "size": 3700000,
+          "version": "1.0",
           "buildVersion": null,
-          "date": "2025-12-26T10:02:00+02:00",
+          "date": "2025-12-30T12:21:00+02:00",
+          "localizedDescription": null,
+          "minOSVersion": null
+        }
+      ],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {}
+      },
+      "patreon": {}
+    },
+    {
+      "name": "Bridge",
+      "bundleIdentifier": "com.jbdotparty.Bridge",
+      "marketplaceID": "",
+      "developerName": "lunginspector",
+      "subtitle": "",
+      "localizedDescription": "An internal system app opener & extractor for jailed iDevices running iOS 16 and later.",
+      "iconURL": "https://i.imgur.com/BqO4iTz.png",
+      "tintColor": "#9144b9",
+      "category": "utilities",
+      "screenshots": [],
+      "versions": [
+        {
+          "downloadURL": "https://github.com/jailbreakdotparty/Bridge/releases/download/v1.2/Bridge_v1.2.ipa",
+          "size": 700000,
+          "version": "1.2",
+          "buildVersion": null,
+          "date": "2025-12-30T12:17:00+02:00",
           "localizedDescription": null,
           "minOSVersion": null
         }
@@ -45,24 +73,85 @@
       "patreon": {}
     },
     {
-      "name": "Opium Tool",
+      "name": "PancakeStore",
+      "bundleIdentifier": "com.jbdotparty.PancakeStore",
+      "marketplaceID": "",
+      "developerName": "lunginspector",
+      "subtitle": "An awesome app.",
+      "localizedDescription": "MuffinStore Jailed, but with a proper UI. iOS 16.4 and later.\n\nWarning ⚠️\nUse this tool at your own risk! You may lose app data, and other damage could occur.",
+      "iconURL": "https://i.imgur.com/0KCkFi7.png",
+      "tintColor": "#fc8434",
+      "category": "other",
+      "screenshots": [],
+      "versions": [
+        {
+          "downloadURL": "https://github.com/jailbreakdotparty/PancakeStore/releases/download/1.0.1/PancakeStore_v1.0.1.ipa",
+          "size": 800000,
+          "version": "1.0.1",
+          "buildVersion": null,
+          "date": "2025-12-30T12:13:00+02:00",
+          "localizedDescription": null,
+          "minOSVersion": "16.4"
+        }
+      ],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {
+          "NSAccentColorName": "AccentColor",
+          "NSFaceIDUsageDescription": "To securely store your Apple ID authentication information, biometric authentication is required."
+        }
+      },
+      "patreon": {}
+    },
+    {
+      "name": "Taurine",
+      "bundleIdentifier": "org.coolstar.taurine",
+      "marketplaceID": "",
+      "developerName": "CoolStar",
+      "subtitle": "Jailbreak",
+      "localizedDescription": "Time to get amped.\n\nSupports iOS 14.0-14.8.1.",
+      "iconURL": "https://i.imgur.com/WXL3mle.png",
+      "tintColor": "#cf3c5a",
+      "category": "other",
+      "screenshots": [],
+      "versions": [
+        {
+          "version": "1.1.7-3",
+          "date": "2025-12-26T10:02:00+02:00",
+          "localizedDescription": null,
+          "downloadURL": "https://github.com/Odyssey-Team/Taurine/releases/download/1.1.7-3/Taurine.1.1.7-3.ipa",
+          "size": 32200000,
+          "buildVersion": null,
+          "minOSVersion": null
+        }
+      ],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {
+          "NSAccentColorName": "AccentColor"
+        }
+      },
+      "patreon": {}
+    },
+    {
+      "name": "TanaraSign",
       "bundleIdentifier": "com.iRayanKhan.Opium-Tool",
       "marketplaceID": "",
-      "developerName": "Example Developer",
+      "developerName": "iRayanKhan",
       "subtitle": "",
-      "localizedDescription": "",
+      "localizedDescription": "TanaraSign is a custom AppStore with on-device signing for iOS, iPadOS, tvOS, macOS, watchOS, and visionOS written in 100% SwiftUI.",
       "iconURL": "https://i.imgur.com/30Mwq1v.png",
       "tintColor": "#c9af29",
       "category": "utilities",
       "screenshots": [],
       "versions": [
         {
-          "downloadURL": "https://github.com/iRayanKhan/TanaraSign/raw/main/TanaraSign.ipa",
-          "size": 2200000,
           "version": "1.00",
-          "buildVersion": null,
           "date": "2025-12-26T10:00:00+02:00",
           "localizedDescription": null,
+          "downloadURL": "https://github.com/iRayanKhan/TanaraSign/raw/main/TanaraSign.ipa",
+          "size": 2200000,
+          "buildVersion": null,
           "minOSVersion": null
         }
       ],
@@ -78,8 +167,8 @@
       "name": "Feather",
       "bundleIdentifier": "thewonderofyou.Feather",
       "marketplaceID": "",
-      "developerName": "Unknown",
-      "subtitle": "An awesome app.",
+      "developerName": "khcrysalis",
+      "subtitle": "",
       "localizedDescription": "Feather is a free on-device iOS application manager/installer, using certificates part of the Apple Developer Program.",
       "iconURL": "https://i.imgur.com/YJqfuVA.png",
       "tintColor": "#7736c8",
@@ -87,19 +176,18 @@
       "screenshots": [],
       "versions": [
         {
-          "version": "2.0",
-          "date": "2025-05-19T05:06:00+03:00",
-          "localizedDescription": null,
-          "downloadURL": "https://github.com/khcrysalis/Feather/releases/download/v2.0/Feather-default.ipa",
-          "size": 10000000,
+          "downloadURL": "https://github.com/khcrysalis/Feather/releases/download/v2.5.0/Feather.ipa",
+          "size": 12700000,
+          "version": "2.5.0",
           "buildVersion": null,
+          "date": "2025-12-30T12:16:00+02:00",
+          "localizedDescription": null,
           "minOSVersion": null
         }
       ],
       "appPermissions": {
         "entitlements": [],
         "privacy": {
-          "NSAccentColorName": "AccentColor",
           "NSHumanReadableCopyright": "Copyright (c) 2024 Samara M"
         }
       },
@@ -831,8 +919,8 @@
     {
       "title": "SoftwareKit is live 🎉",
       "identifier": "news_0df3yswqwr",
-      "caption": "Let's celebrate the release of SoftwareKit! ",
-      "date": "2026-02-18T14:46",
+      "caption": "SoftwareKit v1.0 Public beta was released",
+      "date": "2025-12-30T14:40",
       "tintColor": "#007AFF",
       "imageURL": "https://i.imgur.com/aW6Gpaw.png",
       "notify": false,
