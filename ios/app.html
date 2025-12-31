@@ -705,6 +705,7 @@
                                             
                                         </ul>
                                     </div>
+  <div class="block-title glass">User interface</div>                              
                                     <div class="list separated inset glass">
                                         <ul>
                                             <li class="flex-between accent-li item-content">
@@ -731,7 +732,8 @@
             type="checkbox" />
           <span class="toggle-icon"></span>
         </label>
-                                            </li>                                           <li>
+                                            </li>
+                                             <div class="block-title glass">Info</div>                                                                         <li>
                                                 <a class="item-link item-content popup-open" data-popup="#terms">
                                                     <div class="item-media"><i class="f7-icons">hand_raised_fill</i></div>
                                                     <div class="item-inner">
@@ -751,16 +753,7 @@
                                                     </div>
                                                 </a>
                                             </li>
-                                            <li>
-                                                <a href="https://x.com/softwarekit_app/" class="item-link item-content external">
-                                                    <div class="item-media"><i class="f7-icons">logo_twitter</i></div>
-                                                    <div class="item-inner">
-                                                        <div class="item-title-row">
-                                                            <div class="item-title">Follow</div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
+ <div class="block-title glass">Contact forms & more</div>                                                                          
 <li>
                                                 <a class="item-link item-content popup-open" data-popup="#feedback">
                                                     <div class="item-media"><i class="f7-icons">bubble_left_fill</i></div>
@@ -771,6 +764,16 @@
                                                     </div>
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a class="item-link item-content popup-open" data-popup="#appsubmit">
+                                                    <div class="item-media"><i class="f7-icons">app_badge_fill</i></div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">App Submission</div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>  
 <li>
                                                 <a class="item-link item-content popup-open" data-popup="#devs">
                                                     <div class="item-media"><i class="f7-icons">doc_person_fill</i></div>
@@ -781,6 +784,16 @@
                                                     </div>
                                                 </a>
                                             </li>
+                                            <li>
+                                                <a href="https://x.com/softwarekit_app/" class="item-link item-content external">
+                                                    <div class="item-media"><i class="f7-icons">logo_twitter</i></div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">Follow</div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>                                                                        
 <li>
                                                 <a onclick="shareURL()" class="item-link item-content">
                                                     <div class="item-media"><i class="f7-icons">square_arrow_up</i></div>
@@ -790,7 +803,8 @@
                                                         </div>
                                                     </div>
                                                 </a>
-                                            </li>                                            <li>
+                                            </li>
+                                             <div class="block-title glass">Other</div>                                            <li>
                                                 <a onclick="reset()" class="item-link item-content">
                                                     <div class="item-media"><i class="icon f7-icons if-not-md color-red">trash_fill</i></div>
                                                     <div class="item-inner">
@@ -877,6 +891,91 @@
                                             <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
             <span class="preloader"></span>
       <span>Send report</span>
+          </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="popup app-submission" id="appsubmit">
+                            <div class="page">
+                                <div class="navbar">
+          <div class="navbar-bg"></div>
+          <div class="navbar-inner">
+            <div class="title">App Submission</div>
+            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
+          </div>
+        </div>
+
+                                <div class="page-content bg-img">
+                                    <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="appsubmit-form">
+                                        <input type="text" name="_honey" class="display-none">
+
+                                        <input type="hidden" name="_captcha" value="false">
+                                        <ul>
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">App name</div>
+                                                        <div class="item-input-wrap">
+                                                            <input type="text" name="App Name" placeholder="e.g SoftwareKit" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+<li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">URL</div>
+                                                        <div class="item-input-wrap">
+                                                            <input type="url" placeholder="https://example.com" name="App Name" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">Email</div>
+                                                        <div class="item-input-wrap">
+                                                            <input placeholder="youremail@something.com" type="email" name="Email" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+  <a class="item-link smart-select" data-open-in="popover">
+    <select name="Type" required>
+      <option value="" disabled selected>Select type</option>
+      <option value="Malicious">App Store Application</option>
+      <option value="Outdated">iPA File</option>
+      <option value="Not working">Website</option>      
+    </select>
+    <div class="item-content">
+      <div class="item-inner">
+        <div class="item-title">Type</div>
+      </div>
+    </div>
+  </a>
+</li>
+
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">Additional info</div>
+                                                        <div class="item-input-wrap">
+                                                            <textarea  name="Additional info"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                       <br>
+                                            <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
+            <span class="preloader"></span>
+      <span>Submit app</span>
           </button>
                                         </div>
                                     </form>
