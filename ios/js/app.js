@@ -157,27 +157,29 @@ window.addEventListener('error', function (event) {
     img.src = './assets/default.png';
 }, true);
 document.addEventListener('DOMContentLoaded', () => {
+app.on('tabShow', (tabEl) => {
+  const tabId = `#${tabEl.id}`;
+  if (!tabEl.id) return;
 
-  function updateNavbarTitleFromTab(tabId) {
-    if (!tabId) return;
+  const tabLink = document.querySelector(
+    `.tab-link[href="${tabId}"]`
+  );
+  if (!tabLink) return;
 
-    const tabLink = document.querySelector(
-      `.tab-link[href="${tabId}"]`
-    );
-    if (!tabLink) return;
+  const title = tabLink.dataset.tabTitle;
+  if (!title) return;
 
-    const tabTitle = tabLink.getAttribute('data-tab-title');
-    if (!tabTitle) return;
+  const navbar = document.querySelector(
+    '.navbar.navbar-large'
+  );
+  if (!navbar) return;
 
-    const navbar = document.querySelector('.navbar');
-    if (!navbar) return;
+  const titleEl = navbar.querySelector('.title');
+  const largeTitleEl = navbar.querySelector('.title-large-text');
 
-    const navbarTitle = navbar.querySelector('.title');
-    const navbarLargeTitle = navbar.querySelector('.title-large-text');
-
-    if (navbarTitle) navbarTitle.textContent = tabTitle;
-    if (navbarLargeTitle) navbarLargeTitle.textContent = tabTitle;
-  }
+  if (titleEl) titleEl.textContent = title;
+  if (largeTitleEl) largeTitleEl.textContent = title;
+});
 
   document.querySelectorAll('.tab-link').forEach(tabLink => {
     tabLink.addEventListener('click', function () {
