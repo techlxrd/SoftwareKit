@@ -1592,7 +1592,272 @@ function reset() {
     ]
   }).open();
 }
+var SignerEngine = {
+  workerBase: 'https://cococloud-api.shadvlxrd.workers.dev',
+  files: { ipa: null, p12: null, prov: null },
+  processing: false,
 
+  log: function(msg, color = '#ccc', escapeHtml = true) {
+    const el = document.getElementById('signer-logs');
+    const s = escapeHtml ? this._escapeHtml(String(msg)) : String(msg);
+    if (el) el.innerHTML += `<div style="color:${color}; margin-bottom:4px;">> ${s}</div>`;
+    console.log('[SignerEngine]', msg);
+    if (el) { el.scrollTop = el.scrollHeight; }
+  },
+
+  _escapeHtml: function (unsafe) {
+    return String(unsafe)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  },
+
+  setProcessing: function(state) {
+    this.processing = state;
+    const btns = document.querySelectorAll('.signer-popup .button');
+    btns.forEach(b => b.disabled = state);
+    if (!state) {
+      try { app.dialog.close(); } catch(e) {}
+    }
+  },
+
+  onFile: function(input, type) {
+    if (!input.files || !input.files[0]) return;
+    this.files[type] = input.files[0];
+    this.log(`${type.toUpperCase()} loaded: ${this.files[type].name}`, 'var(--f7-theme-color)');
+  },
+
+  _parseResponse: async function(response) {
+    const ct = (response.headers.get('content-type') || '').toLowerCase();
+    if (ct.includes('application/json')) {
+      try { return { type:'json', data: await response.json(), status: response.status }; }
+      catch(e) { /* fallthrough */ }
+    }
+    if (ct.includes('application/octet-stream') || ct.includes('application/zip') || ct.includes('application/vnd.apple.pkpass') || ct.includes('application/x-')) {
+      const blob = await response.blob();
+      return { type:'binary', blob: blob, headers: response.headers, status: response.status };
+    }
+    const text = await response.text();
+    const stripped = text.replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<\/?[^>]+(>|$)/g,'');
+    const snippet = stripped.slice(0, 1200);
+    return { type:'text', text: text, snippet: snippet, status: response.status, headers: response.headers };
+  },
+
+  checkCert: async function() {
+    if (!this.files.p12 && !this.files.prov) return app.dialog.alert('Upload P12 or Provision first');
+    const fd = new FormData();
+    if (this.files.p12) fd.append('file', this.files.p12);
+    if (this.files.prov) fd.append('file', this.files.prov);
+
+    this.setProcessing(true);
+    app.dialog.preloader('Checking certificate status...');
+
+    try {
+      const res = await fetch(`${this.workerBase}/certchecker`, { method: 'POST', body: fd });
+      const parsed = await this._parseResponse(res);
+      this.setProcessing(false);
+      app.dialog.close();
+
+      if (parsed.type === 'json') {
+        const j = parsed.data;
+        if (j.success || j.status === 'success') {
+          this.log('The Certificate is valid', '#4cd964');
+          this.log(JSON.stringify(j.data || j, null, 2), '#0f0');
+          app.dialog.alert(j.message || 'Valid certificate');
+        } else {
+          this.log('Cert check failed: ' + (j.message || JSON.stringify(j)), '#ff3b30');
+          app.dialog.alert('Cert check failed: ' + (j.message || 'See logs'));
+        }
+      } else {
+        this.log('Cert checker returned non-JSON. Snippet:', '#ff3b30');
+        this.log(parsed.snippet || '(no body)', '#ff3b30');
+        app.dialog.alert('Cert checker returned non-JSON. Check logs for snippet.');
+      }
+    } catch (e) {
+      this.setProcessing(false);
+      app.dialog.close();
+      this.log('Network error: ' + (e.message || e), '#ff3b30');
+      app.dialog.alert('Network/CORS/Worker error: ' + (e.message || e));
+    }
+  },
+
+  
+  sign: async function() {
+    const mode = document.querySelector('input[name="mode"]:checked')?.value || 'custom';
+    if (!this.files.ipa) return app.dialog.alert('Select an IPA first');
+
+    const fd = new FormData();
+    fd.append('ipa', this.files.ipa);
+
+    if (mode === 'custom') {
+      if (!this.files.p12 || !this.files.prov) return app.dialog.alert('Custom mode needs P12 + Provision');
+      fd.append('cert', this.files.p12);
+      fd.append('provision', this.files.prov);
+      const pass = document.getElementById('p12-pass')?.value;
+      if (pass) fd.append('password', pass);
+    }
+
+    
+    this.setProcessing(true);
+    app.dialog.preloader('Signing...');
+
+    try {
+      const endpoint = (mode === 'custom') ? 'customsign' : 'free-enterprise-sign';
+      const res = await fetch(`${this.workerBase}/${endpoint}`, { method: 'POST', body: fd });
+      const parsed = await this._parseResponse(res);
+      this.setProcessing(false);
+      app.dialog.close();
+
+      if (parsed.type === 'json') {
+        const j = parsed.data;
+        if (j.success || j.status === 'success') {
+          this.log('Signed', '#4cd964');
+          const link = j.itmsServicesUrl || j.manifestUrl || j.downloadUrl || j.download_url || j.manifest_url || j.itms_services_url;
+          if (link) {
+            this.log('Install link: ' + link, 'var(--f7-theme-color)');
+          
+            window.location.href = link;
+          } else {
+            this.log('Signed but no install URL returned. See full response:', '#ffa500');
+            this.log(JSON.stringify(j, null, 2), '#ffa500');
+            app.dialog.alert('Signed but no install link returned. Check logs.');
+          }
+        } else {
+          this.log('Signing failed: ' + (j.message || JSON.stringify(j)), '#ff3b30');
+          app.dialog.alert('Signing failed: ' + (j.message || 'See logs'));
+        }
+      } else if (parsed.type === 'binary') {       
+        const blob = parsed.blob;
+        const cd = parsed.headers.get('content-disposition') || 'attachment; filename="signed.ipa"';
+        const fnMatch = cd.match(/filename="?([^"]+)"?/);
+        const filename = fnMatch ? fnMatch[1] : 'signed.ipa';
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        this.log('Downloaded signed IPA: ' + filename, 'var(--f7-theme-color)');
+        app.dialog.alert('Downloaded signed IPA.');
+      } else {
+        this.log('Signing returned non-JSON. Snippet:', '#ff3b30');
+        this.log(parsed.snippet || '(no body)', '#ff3b30');
+        app.dialog.alert('Signing returned non-JSON. See logs for snippet.');
+      }
+    } catch (e) {
+      this.setProcessing(false);
+      app.dialog.close();
+      this.log('Network error: ' + (e.message || e), '#ff3b30');
+      app.dialog.alert('Network/Worker error: ' + (e.message || e));
+    }
+  }
+};
+function openSignerPopup() {
+  app.popup.create({
+    content: `
+<div class="popup signer-popup">
+ <div class="page">
+    <div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner">
+      <div class="title">Signer</div>
+      <div class="right"><a class="link popup-close"><i class="icon-close"></i></a></div>
+    </div></div>
+
+    <div class="page-content bg-img">
+      <div class="block-title glass">Mode</div>
+      <div class="list separated inset glass">
+        <ul>
+          <li>
+            <label class="item-radio item-content">
+              <input type="radio" name="mode" value="custom" checked onchange="toggleSignerMode()">
+              <i class="icon icon-radio"></i>
+              <div class="item-inner"><div class="item-title">Custom certificate</div></div>
+            </label>
+          </li>
+          <li>
+            <label class="item-radio item-content">
+              <input type="radio" name="mode" value="free" onchange="toggleSignerMode()">
+              <i class="icon icon-radio"></i>
+              <div class="item-inner"><div class="item-title">Free Enterprise (platform cert)</div></div>
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div class="block-title glass">Upload files</div>
+      <div class="list list-strong list-dividers inset glass">
+        <ul>
+          <li class="item-content item-input">
+            <div class="item-inner">
+              <div class="item-title item-label">iPA</div>
+              <input type="file" accept=".ipa" onchange="SignerEngine.onFile(this,'ipa')">
+            </div>
+          </li>
+
+          <li class="item-content item-input custom-only">
+            <div class="item-inner">
+              <div class="item-title item-label">MobileProvision</div>
+              <input type="file" accept=".mobileprovision" onchange="SignerEngine.onFile(this,'prov')">
+            </div>
+          </li>
+
+          <li class="item-content item-input custom-only">
+            <div class="item-inner">
+              <div class="item-title item-label">P12 Certificate</div>
+              <input type="file" accept=".p12" onchange="SignerEngine.onFile(this,'p12')">
+            </div>
+          </li>
+
+          <li class="item-content item-input custom-only">
+            <div class="item-inner">
+              <div class="item-title item-label">P12 Password</div>
+              <input type="password" id="p12-pass" placeholder="Optional">
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="block">      
+       <button class="button button-fill button-large button-round" onclick="SignerEngine.sign()">Sign & Install</button>
+       <br>
+        <button class="button button-outline button-large button-fill button-round color-green" onclick="SignerEngine.checkCert()">Check certificate status</button>
+      </div>
+<div class="list separated inset accordion-list glass">
+      <ul>
+        <li class="accordion-item">
+            
+          <a class="item-link item-content">
+               <div class="item-media"><i class="f7-icons">ellipsis_circle_fill</i></div>
+            <div class="item-inner">
+              <div class="item-title">Logs</div>
+            </div>
+          </a>
+          <div class="accordion-item-content">
+            <div class="block" id="signer-logs" style="font-family:monospace;">
+           <span >
+          Ready to Sign. 
+        </span>   
+            </div>
+          </div>
+        </li>     
+       </ul>
+      </div>
+    </div>
+  </div>
+ </div>
+</div>`
+  }).open();
+
+  toggleSignerMode();
+}
+
+function toggleSignerMode() {
+  const mode = document.querySelector('input[name="mode"]:checked')?.value || 'custom';
+  document.querySelectorAll('.custom-only').forEach(el => el.style.display = (mode === 'custom') ? '' : 'none');
+}
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.getRegistration().then(registration => {
     if (!registration) {
