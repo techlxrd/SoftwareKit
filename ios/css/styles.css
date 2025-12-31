@@ -265,6 +265,7 @@ body {
   border-radius: 16px;
   margin: 5px;
 }
+.bold{font-weight: bold!important;}
 .guide-img{width: 100%;}
 .block.glass, .block .glass{color: #fff;}
 .page-content.no-navbar {
