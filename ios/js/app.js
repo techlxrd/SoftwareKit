@@ -650,9 +650,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return `
         <div class="popup popup-app-detail" id="popup-${item.bundleIdentifier}">
             <div class="view">
-                <div class="page">
+                <div class="page bg-img">
                     <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
-                    <div class="page-content bg-img">
+                    <div class="page-content">
                          <div style="margin-top: 40px; padding: 0px;">
           <div class="block" style="margin-top: 27px; margin-bottom: 20px;">
             <div style="display: flex; gap: 15px;">
@@ -811,7 +811,7 @@ function renderNews(repos) {
 }    function openRepoPage(repo) {
         const pageId = `repo-${Date.now()}`;
         const pageHtml = `
-           <div class="page page-with-subnavbar" data-name="repo-detail">
+           <div class="page page-with-subnavbar bg-img" data-name="repo-detail">
                 <div class="navbar">
                     <div class="navbar-bg"></div>
                     <div class="navbar-inner">
@@ -833,7 +833,7 @@ function renderNews(repos) {
                         <div class="right"> <a onclick="navigator.share({url: '${repo.sourceURL}' })" class="link icon-only"><i class="icon f7-icons">square_arrow_up</i></a></div>
                     </div>
                 </div>
-                <div class="page-content repo-page bg-img">                         
+                <div class="page-content repo-page">                         
                     <div class="list media-list separated inset virtual-list virtual-list-${pageId} searchbar-found glass"></div>
                      <div class="list list-strong simple-list searchbar-not-found inset glass">
                 <ul><li>Unfortunately, no items were found.</li></ul>
