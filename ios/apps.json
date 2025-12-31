@@ -1,6 +1,33 @@
 
 [
   {
+    "id": "scarlet",
+    "title": "Scarlet",
+    "category": "3rd Party AppStore",
+    "icon": "https://pbs.twimg.com/profile_images/1367920028813787144/cwvAQV9f_400x400.jpg",
+    "description": "Scarlet delivers the fastest, smoothest experience for installing and managing your favorite apps, with direct and computer-based install options.",
+    "compatible": "Unknown",
+    "get_link": "https://usescarlet.com",
+    "type": "App",
+    "device": "iPhone/iPad/Mac",
+    "screenshots": [
+      "https://i.imgur.com/btUCPVM.png"
+    ]
+  },
+  {
+    "id": "gbox",
+    "title": "GBox",
+    "category": "Sideloading",
+    "icon": "https://gbox.pub/Public/resources/icon256.png",
+    "description": "GBox is a powerful, free resigning tool for iOS—no jailbreak required. Sign and install third-party apps with ease.",
+    "compatible": "14 or later",
+    "get_link": "https://ts.gbox.run/GBox_v4.5.2.ipa",
+    "type": "App",
+    "screenshots": [
+      "https://i.imgur.com/FzFCOTe.png"
+    ]
+  },
+  {
     "id": "radiance",
     "title": "Radiance",
     "category": "Customisation",
