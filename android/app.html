@@ -9,10 +9,11 @@
     <link rel="icon" type="image/jpg" href="https://softwarekit.pages.dev/favicon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.css" crossorigin="anonymous">
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons@5.0.5/css/framework7-icons.css" integrity="sha256-RSzKDnaL5c8/Ksi7QeDBiOtJSr5k3LbqDGqs4NKDl7M=" crossorigin="anonymous">
+     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="css/styles.css">
 </head>
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons@5/css/framework7-icons.min.css">
 <body>
     <div id="app">
           <div class="sidebar">
@@ -20,13 +21,12 @@
     <i class="f7-icons">cube_box_fill</i>  </div>
   <div class="sidebar-list">
     <ul>
-      <li><a href="#tab1" class="item-link tab-link tab-link-active" data-tab-title="Home"><i class="material-icons">home</i> Home</a></li>
-      <li><a href="#tab2" class="item-link tab-link" data-tab-title="Library" ><i class="material-icons">apps</i> Library</a></li>
-      <li><a href="#tab3" class="item-link tab-link" data-tab-title="Settings"><i class="material-icons">settings</i> Sources</a></li>
+      <li><a href="#tab1" class="item-link tab-link tab-link-active" data-tab-title="Home"><i class="material-symbols-outlined">home</i> Home</a></li>
+       <li><a href="#tab4" class="item-link tab-link" data-tab-title="Favorites" ><i class="material-symbols-outlined">favorite</i> Favorites</a></li>
+      <li><a href="#tab2" class="item-link tab-link" data-tab-title="Library" ><i class="material-symbols-outlined">apps</i> Library</a></li>
+      <li><a href="#tab3" class="item-link tab-link" data-tab-title="Settings"><i class="material-symbols-outlined">settings</i> Settings</a></li>
     </ul>
   </div>
-  <br>
-  <center>SoftwareKit v1.0</center>
 </div>
         <div class="view view-main">
             <div data-name="home" class="page">
@@ -48,9 +48,9 @@
                     </div>
                 </div>
                 <div class="toolbar tabbar tabbar-icons toolbar-bottom searchbar-hide-on-enable">
-                    <div class="toolbar-inner"><a href="#tab1" class="tab-link tab-link-active" data-tab-title="Home"><i class="icon material-icons">home</i><span class="tabbar-label">Home</span></a><a href="#tab2" class="tab-link" data-tab-title="Library"><i class="icon material-icons">apps</i><span class="tabbar-label">Library</span></a>
+                    <div class="toolbar-inner"><a href="#tab1" class="tab-link tab-link-active" data-tab-title="Home"><i class="icon material-symbols-outlined">home</i><span class="tabbar-label">Home</span></a><a href="#tab4" class="tab-link" data-tab-title="Favorites"><i class="icon material-symbols-outlined">favorite</i><span class="tabbar-label">Favorites</span></a><a href="#tab2" class="tab-link" data-tab-title="Library"><i class="icon material-symbols-outlined">apps</i><span class="tabbar-label">Library</span></a>
                         <a
-                            href="#tab3" class="tab-link" data-tab-title="Settings"><i class="icon material-icons">settings</i><span class="tabbar-label">Settings</span></a>
+                            href="#tab3" class="tab-link" data-tab-title="Settings"><i class="icon material-symbols-outlined">settings</i><span class="tabbar-label">Settings</span></a>
                     </div>
                 </div>               
                 <div class="tabs">
@@ -101,13 +101,25 @@
                         <div class="block block-title">Newsfeed 📰</div>                
                         <div id="news"></div>
                     </div>
+                                        <div class="page-content tab ptr-content" id="tab4" data-ptr-distance="55">
+                        <div class="ptr-preloader">
+                            <div class="preloader"></div>
+                            <div class="ptr-arrow"></div>
+                        </div>                    
+                        <div class="block block-title" id="favempty" style="text-align:center">Empty</div>
+                    <div class="list separated grid-list media-list inset grid-list sortable sortable-tap-hold"  id="fav">
+                        <ul></ul>
+                    
+                        </div>
+                       
+                    </div>
                     <div class="page-content tab ptr-content" id="tab2" data-ptr-distance="55">
                         <div class="ptr-preloader">
                             <div class="preloader"></div>
                             <div class="ptr-arrow"></div>
                         </div>
                        <div class="fab fab-right-bottom searchbar-hide-on-enable">
-                            <a class="searchbar-enable" data-searchbar=".searchbar"> <i class="material-icons">search</i> </a>
+                            <a class="searchbar-enable" data-searchbar=".searchbar"> <i class="material-symbols-outlined">search</i> </a>
                         </div>
                         <div class="list list-strong simple-list searchbar-not-found inset">
                             <ul>
@@ -115,24 +127,10 @@
                             </ul>
                         </div>
                         <div class="list separated media-list inset searchbar-hide-on-enable">
-                            <ul>
-                                <li>
-                                    <a class="item-link item-content popup-open" data-popup="#favorites">
-                                        <div class="item-media"><i class="icon material-icons">favorite_fill</i></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title">Favorites</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="list separated media-list inset searchbar-hide-on-enable">
                             <ul></ul>
                         </div>
                         <div class="list media-list virtual-list separated inset grid-list">
-                            <ul></ul><br><br></div>
+                            <ul></ul></div>
                     </div>
                     <div class="page-content tab ptr-content" id="tab3" data-ptr-distance="55">
                         <div class="ptr-preloader">
@@ -156,7 +154,7 @@
                                                 </div>
                                             </div>
                                             <div style="font-size:12px" class="item-subtitle">
-SoftwareKit v1.0
+SoftwareKit Android v1.0
                                             </div>
                                         </div>
                                     </div>
@@ -167,9 +165,10 @@ SoftwareKit v1.0
                         
                         <div class="list media-list  separated inset">
                             <ul>
+                                <div class="block-title">User interface</div>
                                 <li class="flex-between accent-li item-content">
                                                 <div class="flex-align">
-                                                    <div class="item-media"><i class="material-icons">palette</i></div>
+                                                    <div class="item-media"><i class="material-symbols-outlined">palette</i></div>
                                                     <div class="item-inner">
                                                         <div class="item-title-row" style="margin-top:3px;">
                                                             <div class="item-title">Accent color</div>
@@ -179,7 +178,7 @@ SoftwareKit v1.0
                                             </li>
                                             <li class="flex-between accent-li item-content">
                                                 <div class="flex-align">
-                                                    <div class="item-media"><i class="material-icons">format_paint</i></div>
+                                                    <div class="item-media"><i class="material-symbols-outlined">format_paint</i></div>
                                                     <div class="item-inner">
                                                         <div class="item-title-row" style="margin-top:3px;">
                                                             <div class="item-title">Vibrant</div>
@@ -196,7 +195,7 @@ SoftwareKit v1.0
                                             </li>
                                             <li class="flex-between accent-li item-content">
                                                 <div class="flex-align">
-                                                    <div class="item-media"><i class="material-icons">filter_b_and_w</i></div>
+                                                    <div class="item-media"><i class="material-symbols-outlined">filter_b_and_w</i></div>
                                                     <div class="item-inner">
                                                         <div class="item-title-row" style="margin-top:3px;">
                                                             <div class="item-title">Monochrome</div>
@@ -211,20 +210,11 @@ SoftwareKit v1.0
           <span class="toggle-icon"></span>
         </label></span>
                                             </li>
+ <div class="block-title">Info</div>
 
                                 <li>
-                                    <a href="https://x.com/TechLxrd07/" class="item-link item-content external">
-                                        <div class="item-media"><i class="material-icons">person_add</i></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title">Follow Us</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
                                         <a class="item-link item-content popup-open" data-popup="#changelog">
-                                            <div class="item-media"><i class="material-icons">rocket_launch</i></div>
+                                            <div class="item-media"><i class="material-symbols-outlined">rocket_launch</i></div>
                                             <div class="item-inner">
                                                 <div class="item-title-row">
                                                     <div class="item-title">What's new</div>
@@ -234,7 +224,7 @@ SoftwareKit v1.0
                                     </li>
                                 <li>
                                     <a class="item-link item-content popup-open" data-popup="#terms">
-                                        <div class="item-media"><i class="material-icons">info</i></div>
+                                        <div class="item-media"><i class="material-symbols-outlined">info</i></div>
                                         <div class="item-inner">
                                             <div class="item-title-row">
                                                 <div class="item-title">Terms of service</div>
@@ -242,9 +232,10 @@ SoftwareKit v1.0
                                         </div>
                                     </a>
                                 </li>
+                                <div class="block-title">Contact forms & more</div> 
                                  <li>
                                     <a class="item-link item-content popup-open" data-popup="#feedback">
-                                        <div class="item-media"><i class="material-icons">feedback</i></div>
+                                        <div class="item-media"><i class="material-symbols-outlined">feedback</i></div>
                                         <div class="item-inner">
                                             <div class="item-title-row">
                                                 <div class="item-title">Send Feedback</div>
@@ -252,9 +243,30 @@ SoftwareKit v1.0
                                         </div>
                                     </a>
                                 </li>
+                                <li>
+                                                <a class="item-link item-content popup-open" data-popup="#appsubmit">
+                                                    <div class="item-media"><i class="material-symbols-outlined">apk_document</i></div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row">
+                                                            <div class="item-title">App Submission</div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li> 
+                                                                            <li>
+                                    <a href="https://x.com/softwarekit_app/" class="item-link item-content external">
+                                        <div class="item-media"><i class="material-symbols-outlined">mobile_chat </i></div>
+                                        <div class="item-inner">
+                                            <div class="item-title-row">
+                                                <div class="item-title">Follow</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li> 
+      <div class="block-title">Other</div>                           
                                <li>
                                                 <a onclick="reset()" class="item-link item-content">
-                                                    <div class="item-media"><i class="material-icons">delete</i></div>
+                                                    <div class="item-media"><i class="material-symbols-outlined">delete</i></div>
                                                     <div class="item-inner">
                                                         <div class="item-title-row">
                                                             <div class="item-title">Reset</div>
@@ -269,26 +281,10 @@ SoftwareKit v1.0
             </div>
         </div>
     </div>
-    <div class="popup" id="favorites">
-        <div class="view">
-            <div class="page">
-                <div class="navbar">
-                    <div class="navbar-bg"></div>
-                    <div class="navbar-inner">
-                        <div class="title">Favorites</div>
-                        <div class="right"><a class="link popup-close">Close</a></div>
-                    </div>
-                </div>
-                <div class="page-content">
-                    <div class="block block-title" id="favempty" style="text-align:center">Empty</div>
-                    <div class="list separated grid-list media-list inset grid-list sortable sortable-tap-hold"  id="fav">
-                        <ul></ul>
-                    </div>
-                </div>
                 <div class="popup" id="terms">
                     <div class="page">
                         <div class="swipe-nav">
-                            <div><i class="material-icons">remove</i></div>
+                            <div><i class="f7-icons">minus</i></div>
                         </div>
                         <div class="page-content">
                             <div class="block-title block-title-large">Terms of Service</div>
@@ -310,7 +306,7 @@ SoftwareKit v1.0
                 <div class="sheet-modal" id="changelog" data-swipe-to-close="true">
                     <div class="sheet-modal-inner">
                         <div class="swipe-nav">
-                            <div><i class="material-icons">remove</i></div>
+                            <div><i class="f7-icons">minus</i></div>
                         </div>
                         <div class="page-content">
                             <div class="block-title block-title-large">What's new?</div>
@@ -327,7 +323,7 @@ SoftwareKit v1.0
                                     <div class="navbar-inner">
                                         <div class="title">Report app</div>
                                         <div class="right">
-                                            <a class="link popup-close">Cancel</a>
+                                            <a class="link popup-close"><i class="icon icon-close"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -343,7 +339,7 @@ SoftwareKit v1.0
                                                     <div class="item-inner">
                                                         <div class="item-title item-label">App name</div>
                                                         <div class="item-input-wrap">
-                                                            <input type="text" name="App Name" id="report-app-name" readonly required />
+                                                            <input type="text" name="App Name" id="report-app-name" readonly required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -405,7 +401,7 @@ SoftwareKit v1.0
                                     <div class="navbar-inner">
                                         <div class="title">Send Feedback</div>
                                         <div class="right">
-                                            <a class="link popup-close">Cancel</a>
+                                            <a class="link popup-close"><i class="icon-close"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -449,7 +445,7 @@ SoftwareKit v1.0
                                                     <div class="item-inner">
                                                         <div class="item-title item-label">Feedback</div>
                                                         <div class="item-input-wrap">
-                                                            <textarea placeholder="e.g., A bug in the Sources tab, missing data on the home page, or a feature request." name="Feedback" required/></textarea>
+                                                            <textarea placeholder="e.g., A bug in the Settings tab, missing data on the home page, or a feature request." name="Android Feedback" required/></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -466,7 +462,92 @@ SoftwareKit v1.0
                             </div>
                         </div>
                         </div>
-                        <script></script>
+                                                <div class="popup app-submission" id="appsubmit">
+                            <div class="page bg-img">
+                                <div class="navbar">
+          <div class="navbar-bg"></div>
+          <div class="navbar-inner">
+            <div class="title">App Submission</div>
+            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
+          </div>
+        </div>
+
+                                <div class="page-content">
+                                    <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="appsubmit-form">
+                                        <input type="text" name="_honey" class="display-none">
+
+                                        <input type="hidden" name="_captcha" value="false">
+                                        <ul>
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">App name</div>
+                                                        <div class="item-input-wrap">
+                                                            <input type="text" name="Android App Name" placeholder="e.g SoftwareKit" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+<li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">URL</div>
+                                                        <div class="item-input-wrap">
+                                                            <input type="url" placeholder="https://example.com" name="App Name" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">Email</div>
+                                                        <div class="item-input-wrap">
+                                                            <input placeholder="youremail@something.com" type="email" name="Email" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+  <a class="item-link smart-select" data-open-in="popover">
+    <select name="Type" required>
+      <option value="" disabled selected>Select type</option>
+      <option value="Application">Application</option>
+     
+      <option value="Website">Website</option>      
+    </select>
+    <div class="item-content">
+      <div class="item-inner">
+        <div class="item-title">Type</div>
+      </div>
+    </div>
+  </a>
+</li>
+
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">Additional info</div>
+                                                        <div class="item-input-wrap">
+                                                            <textarea  name="Additional info"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                       <br>
+                                            <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
+            <span class="preloader"></span>
+      <span>Submit app</span>
+          </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                         <script src="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.js" crossorigin="anonymous"></script>
                         <script type="text/javascript" src="js/app.js"></script>                       
 </body>
