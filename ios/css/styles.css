@@ -265,7 +265,11 @@ body {
   border-radius: 16px;
   margin: 5px;
 }
-.guide-img{width: 100%;margin-top:3%;}
+.guide-img{width: 100%;}
+.block.glass, .block .glass{color: #fff;}
+.page-content.no-navbar {
+  padding-top: 0 !important;
+}
 .list.separated .item-content,
 .list.separated .item-link,
 .list.separated li {
