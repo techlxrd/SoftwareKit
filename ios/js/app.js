@@ -818,7 +818,7 @@ function renderNews(repos) {
                                     return acc;
                                 }, []);
                             },
-                            height: 75,
+                            height: 90,
                             renderItem: function (item) {
                                 return `
                                 <li>
@@ -876,7 +876,9 @@ function renderNews(repos) {
         renderSourcesList(repos);
         renderNews(repos);
     }
-
+app.on('pageInit', () => {
+    refreshData(false);
+});
     document.getElementById('add-source-fab').addEventListener('click', () => {
         app.dialog.prompt('Add a new source by entering the link below. SoftwareKit is designed to work exclusively with <strong>AltStore</strong> format sources.','Add source', async (url) => {
             if (!url) return;                  
