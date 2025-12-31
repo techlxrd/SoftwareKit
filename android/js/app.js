@@ -9,10 +9,10 @@ const app = new Framework7({
   },
   popup: {
     push: false,
-    swipeToClose: true,
+    swipeToClose: 'to-bottom',
   },
   colors: {
-    primary: '#007AFF',
+    primary: '#6750A4',
   },
   popover: {
     verticalPosition: 'bottom',
@@ -30,21 +30,43 @@ const app = new Framework7({
 
 const mainView = app.views.create('.view-main');
 
-const debounce = (func, wait, immediate) => {
-  let timeout;
-  return function() {
-    const context = this, args = arguments;
-    const later = function() {
-      timeout = null;
-      if (!immediate) func.apply(context, args);
-    };
-    const callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(context, args);
-  };
-};
+document.addEventListener('DOMContentLoaded', () => {
+app.on('tabShow', (tabEl) => {
+  const tabId = `#${tabEl.id}`;
+  if (!tabEl.id) return;
 
+  const tabLink = document.querySelector(
+    `.tab-link[href="${tabId}"]`
+  );
+  if (!tabLink) return;
+
+  const title = tabLink.dataset.tabTitle;
+  if (!title) return;
+
+  const navbar = document.querySelector(
+    '.navbar.navbar-large'
+  );
+  if (!navbar) return;
+
+  const titleEl = navbar.querySelector('.title');
+  const largeTitleEl = navbar.querySelector('.title-large-text');
+
+  if (titleEl) titleEl.textContent = title;
+  if (largeTitleEl) largeTitleEl.textContent = title;
+});
+
+  document.querySelectorAll('.tab-link').forEach(tabLink => {
+    tabLink.addEventListener('click', function () {
+      updateNavbarTitleFromTab(this.getAttribute('href'));
+    });
+  });
+  window.goToTab = function (tabId) {
+    app.popup.close();
+    app.tab.show(tabId);
+    updateNavbarTitleFromTab(tabId);
+  };
+
+});
 const failedImages = new Set();
 window.addEventListener('error', function (event) {
   const img = event.target;
@@ -59,7 +81,7 @@ window.addEventListener('error', function (event) {
   img.src = './assets/default.png';
 }, true);
 
-let themeColor = localStorage.getItem("md-primary-color") || "#007AFF";
+let themeColor = localStorage.getItem("md-primary-color") || "#6750A4";
 let mdVibrant = localStorage.getItem("md-vibrant") === "true";
 let mdMonochrome = localStorage.getItem("md-monochrome") === "true";
 
@@ -120,6 +142,45 @@ document.addEventListener("DOMContentLoaded", () => {
   applyMdColorScheme();
   syncToggles();
 });
+(function () {
+  const appSubmitForm = document.getElementById('appsubmit-form');
+  const submitBtn = appSubmitForm.querySelector('button[type="submit"]');
+
+  appSubmitForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    app.dialog.confirm('Are you sure you want to submit this application?', 'Confirm Submission', function () {
+      
+      submitBtn.classList.add('button-loading');
+      submitBtn.disabled = true;
+
+      const formData = new FormData(appSubmitForm);
+      const actionUrl = appSubmitForm.getAttribute('action');
+
+      fetch(actionUrl, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(response => response.json())
+      .then(data => {
+        submitBtn.classList.remove('button-loading');
+        submitBtn.disabled = false;
+        
+        app.dialog.alert('Thanks for the submission! We will review it as soon as possible', 'Success', function () {
+          appSubmitForm.reset(); 
+          app.popup.close('#appsubmit');
+        });
+      })
+      .catch(error => {
+        submitBtn.classList.remove('button-loading');
+        submitBtn.disabled = false;
+        app.dialog.alert('Failed to send report. Please check your connection.', 'Error');
+        console.error('Submission Error:', error);
+      });
+    });
+  });
+})();
 document.addEventListener('click', function (e) {
   const clickedLink = e.target.closest('.sidebar-list .item-link');
   
@@ -213,7 +274,7 @@ function createPopupHtml(item) {
   return `
     <div class="popup" id="${item.id}">
       <div class="page">
-        <div class="swipe-nav"><div><i class="material-icons" style="border-radius:100%;">remove</i></div></div>
+        <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
         <div class="page-content">
           <div style="margin-top: 20px;">
             <div class="list separated media-list no-chevron inset">
@@ -247,19 +308,19 @@ function createPopupHtml(item) {
               <ul>
                 <li>
                   <a onclick='addToFavorites(${JSON.stringify(item).replace(/'/g, "&apos;")})' class="item-link item-content">
-                    <div class="item-media"><i class="icon material-icons">favorite</i></div>
+                    <div class="item-media"><i class="material-symbols-outlined">favorite</i></div>
                     <div class="item-inner"><div class="item-title">Add to Favorites</div></div>
                   </a>
                 </li>
                 <li>
                   <a onclick="navigator.share({ title: '${item.title}', url: '${item.get_link}' })" class="item-link item-content external">
-                    <div class="item-media"><i class="material-icons">share</i></div>
+                    <div class="item-media"><i class="material-symbols-outlined">share</i></div>
                     <div class="item-inner"><div class="item-title">Share</div></div>
                   </a>
                 </li>
                 <li>
                   <a class="item-link item-content" onclick="openReportPopup('${item.title.replace(/'/g, "\\'")}')">
-                    <div class="item-media"><i class="material-icons">report</i></div>
+                    <div class="item-media"><i class="material-symbols-outlined">report</i></div>
                     <div class="item-inner"><div class="item-title">Report</div></div>
                   </a>
                 </li>
@@ -290,7 +351,7 @@ async function loadApps() {
         }
         return results;
       },
-      height: 90
+      height: 94, 
     });
 
     apps.forEach(item => {
@@ -319,7 +380,7 @@ function addToFavorites(item) {
   localStorage.setItem("favOrder", JSON.stringify(favOrder));
 
   app.toast.create({
-    icon: '<i class="material-icons">favorite</i>',
+    icon: '<i class="material-symbols-outlined">favorite</i>',
     text: "Added to Favorites",
     position: "center",
     closeTimeout: 1500,
@@ -396,7 +457,7 @@ function checkConnection() {
     } else if (!notificationShown) {
       notificationShown = true;
       app.notification.create({
-        icon: '<i class="icon material-icons color-red">wifi_off</i>',
+        icon: '<i class="icon material-symbols-outlined color-red">wifi_off</i>',
         title: "No Internet Connection",
         subtitle: "Unable to establish a connection.",
         text: "Check your connection and try again.",
@@ -477,7 +538,7 @@ const handleFormSubmit = (formId, popupId) => {
 };
 
 function reset() {
-  const defaultColor = '#007AFF';
+  const defaultColor = '#6750A4';
   app.dialog.create({
     title: 'Reset',
     verticalButtons: true,
