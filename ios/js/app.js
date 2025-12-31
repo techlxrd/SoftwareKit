@@ -524,6 +524,45 @@ reportForm.addEventListener('submit', function (e) {
     });
   });
 })();
+(function () {
+  const appSubmitForm = document.getElementById('appsubmit-form');
+  const submitBtn = appSubmitForm.querySelector('button[type="submit"]');
+
+  appSubmitForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    app.dialog.confirm('Are you sure you want to submit this application?', 'Confirm Submission', function () {
+      
+      submitBtn.classList.add('button-loading');
+      submitBtn.disabled = true;
+
+      const formData = new FormData(appSubmitForm);
+      const actionUrl = appSubmitForm.getAttribute('action');
+
+      fetch(actionUrl, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(response => response.json())
+      .then(data => {
+        submitBtn.classList.remove('button-loading');
+        submitBtn.disabled = false;
+        
+        app.dialog.alert('Thanks for the submission! We will review it as soon as possible', 'Success', function () {
+          appSubmitForm.reset(); 
+          app.popup.close('#appsubmit');
+        });
+      })
+      .catch(error => {
+        submitBtn.classList.remove('button-loading');
+        submitBtn.disabled = false;
+        app.dialog.alert('Failed to send report. Please check your connection.', 'Error');
+        console.error('Submission Error:', error);
+      });
+    });
+  });
+})();
 document.addEventListener('DOMContentLoaded', () => {
     const STORAGE_KEY = 'altstore_repos_v3';
     const LOCAL_REPO_URL = './altstore.json';
