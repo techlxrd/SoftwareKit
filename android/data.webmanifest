@@ -1,0 +1,19 @@
+{
+  "name": "SoftwareKit",
+  "short_name": "SoftwareKit",
+  "description": "The best third party app store for Android",
+  "icons": [
+    {
+      "src": "https://softwarekit.pages.dev/favicon.png",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }, 
+    {
+      "src": "https://softwarekit.pages.dev/favicon.png",
+      "sizes": "512x512",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": "app.html",
+  "display": "fullscreen"
+}
