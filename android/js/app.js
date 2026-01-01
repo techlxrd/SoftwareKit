@@ -17,9 +17,6 @@ const app = new Framework7({
   popover: {
     verticalPosition: 'bottom',
   },
-  serviceWorker: {
-    path: "./service-worker.js",
-  },
   routes: [
     {
       path: '/index/',
