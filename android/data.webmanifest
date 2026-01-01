@@ -15,5 +15,5 @@
     }
   ],
   "start_url": "app.html",
-  "display": "fullscreen"
+  "display": "standalone"
 }
