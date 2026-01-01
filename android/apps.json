@@ -18,6 +18,16 @@
         "type": "Website",
         "screenshots": []
     },
+    {
+        "id": "fossify",
+        "title": "Fossify",
+        "category": "Other",
+        "icon": "https://www.fossify.org/_astro/Logo.x5e2U6to.png",
+        "description": "Fossify apps are a community-backed, open-source, and ad-free suite of mobile apps. A fork of the @SimpleMobileTools, which is no longer maintained, and we're here to continue the legacy, bringing simple and private tech to everyone.",
+        "get_link": "https://www.fossify.org/apps",
+        "type": "Website",
+        "screenshots": ["https://www.fossify.org/_astro/calendar.Dj304qoj_4ABdP.webp", "https://www.fossify.org/_astro/filemanager.CKBfzHh__21uxHL.webp","https://www.fossify.org/_astro/gallery.Cd-xZi6C_2fgMm1.webp "]
+    },
         {
         "id": "eclipse",
         "title": "Eclipse",
@@ -102,19 +112,7 @@
         "screenshots": [
             "https://i.imgur.com/oQJe7YJ.jpeg"
         ]
-    }, 
-    {
-        "id": "happymod",
-        "title": "HappyMod",
-        "category": "APK Library",
-        "icon": "https://yt3.googleusercontent.com/ytc/AIdro_kNpdVQcm8z7OxM8MGKBHEvg5DvJwh2A5NyU4-RNXwKow=s900-c-k-c0x00ffffff-no-rj",
-        "description": "What is HappyMod? HappyMod is paltform for mod lovers to download, request and test android mods.",
-        "get_link": "https://spdn.poumod.com/HappyMod-Download-3-1-1.apk",
-        "type": "App",
-        "screenshots": [
-            "https://www.happymod.cloud/static/img/shouji1.png"
-        ]
-    }, 
+    },  
     {
         "id": "apkpure",
         "title": "ApkPure",
@@ -143,7 +141,7 @@
         "id": "revanced",
         "title": "ReVanced",
         "category": "Other",
-        "icon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCF_Ah2bNSFnr4S3iUzpuPZxk8eYgSXDHIMw&s",
+        "icon": "https://revanced.app/favicon.ico",
         "description": "Customize your mobile experience through ReVanced by applying patches to your applications.",
         "get_link": "https://github.com/ReVanced/revanced-manager/releases/download/v1.20.1/revanced-manager-v1.20.1.apk",
         "type": "App",
