@@ -129,7 +129,7 @@
 }
 .popup{border-top-left-radius: 30px;border-top-right-radius: 30px;}
 .searchbar {
-    overflow-x: hidden;
+    overflow: hidden;
 }
 .screenshot{display:flex;overflow-x:auto;-webkit-overflow-scrolling:auto}.screenshot div{flex-shrink:0;width:230px;height:auto}.screenshot img{width:200px;border-radius:20px;margin:5px}
 
