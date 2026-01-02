@@ -1,2 +1,29 @@
-[{"id":"easyabroad","title":"EasyAbroad","category":"Other","icon":"https://i.imgur.com/XeyIZH2.png","description":"An amazing app that lets you run Android apps on HarmonyOS NEXT. ","get_link":"https://appgallery.huawei.com/app/detail?id=com.easy.hmos.abroad","screenshots":["https://i.imgur.com/FnAV7f5.jpeg"]},
-{"id":"nextstore","title":"DroiTong","category":"Other","icon":"https://nextmax.cn/static/favicon.ico","description":"NEXT Store is a platform for displaying and sharing applications","get_link":"https://www.droitong.com/","screenshots":["https://i.imgur.com/giRIyHd.png"]},{"id":"nextstore","title":"NEXT Store","category":"Other","icon":"https://www.droitong.com/favicon.ico","description":"NEXT Store is a platform for displaying and sharing applications<p><strong>No screenshots available</strong>","get_link":"https://nextmax.cn/","screenshots":[""]} ]
+[
+    {
+        "id": "easyabroad",
+        "title": "EasyAbroad",
+        "category": "Other",
+        "icon": "https://i.imgur.com/XeyIZH2.png",
+        "description": "An amazing app that lets you run Android apps on HarmonyOS NEXT. ",
+        "get_link": "https://appgallery.huawei.com/app/detail?id=com.easy.hmos.abroad",
+        "screenshots": ["https://i.imgur.com/FnAV7f5.jpeg"]
+    },
+    {
+        "id": "droitong",
+        "title": "DroiTong",
+        "category": "Other",
+        "icon": "https://www.droitong.com/favicon.ico",
+        "description": "Zhuoyitong is a utility software running on the HarmonyOS NEXT system. It gathers a rich collection of third-party applications, providing services such as application download, management, and updates to comprehensively meet diverse user needs. ",
+        "get_link": "https://www.droitong.com/",
+        "screenshots": [""]
+    },
+    {
+        "id": "nextstore",
+        "title": "NEXT Store",
+        "category": "Other",
+        "icon": "https://next.vcck.cn/favicon.ico",
+        "description": "NEXT Store is a platform for displaying and sharing applications",
+        "get_link": "https://next.vcck.cn/",
+        "screenshots": ["https://i.imgur.com/giRIyHd.png"]
+    }
+]

@@ -3,12 +3,13 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
-    <title>AppRealm</title>
+    <title>SoftwareKit</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7@8.3.4/framework7-bundle.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Outland3r2007/harmonyicons@latest/hmicons.css">
-    <link rel="icon" type="image/x-icon" href="https://apprealm.pages.dev/favicon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons@5/css/framework7-icons.min.css">
+    <link rel="icon" type="image/x-icon" href="https://softwarekit.pages.dev/favicon.png">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="manifest" href="data.webmanifest"/>
+    <link rel="manifest" href="data.webmanifest">
   </head>
   <body>
     <div id="app">
@@ -36,9 +37,9 @@
           <i class="hm-icons hm-public-favorites-filled"></i>
           <span class="tabbar-label">Favorites</span>
         </a>
-        <a href="#settingsTab" class="tab-link" data-tab-title="Info">
-          <i class="hm-icons hm-public-worldclock"></i>
-          <span class="tabbar-label">Info</span>
+        <a href="#settingsTab" class="tab-link" data-tab-title="Settings">
+          <i class="hm-icons hm-public-settings-filled"></i>
+          <span class="tabbar-label">Settings</span>
         </a>
       </div>
     </div>
@@ -72,15 +73,15 @@
                                     <div class="swiper-slide featured" role="group" aria-label="2 / 5">
                                         <a class="link popup-open" data-popup="#nextstore">
                                             <div class="title-container">
-                                                <div class="swiper-title">Droitong</div>
+                                                <div class="swiper-title">NEXT Store</div>
                                             </div><img loading="lazy" src="https://i.imgur.com/CTTK6Te.png">
                                             <div class="backout"></div>
                                         </a>
                                     </div>
                                     <div class="swiper-slide featured" role="group" aria-label="3 / 5">
-                                        <a class="link popup-open" data-popup="#soon">
+                                        <a class="link popup-open" data-popup="#droitong">
                                             <div class="title-container">
-                                                <div class="swiper-title">NEXT Store</div>
+                                                <div class="swiper-title">DroiTong</div>
                                             </div><img loading="lazy" src="https://i.imgur.com/9Q6I1fe.jpeg">
                                             <div class="backout"></div>
                                         </a>
@@ -136,7 +137,7 @@
                             <ul>
                                 <li>
                                     <div class="item-content">
-                                        <div class="item-media"><a class="popup-open" data-popup="#icon"><img loading="lazy" id="faviconimg2" src="https://apprealm.pages.dev/favicon.png"></a></div>
+                                        <div class="item-media"><a class="popup-open" data-popup="#icon"><img loading="lazy" id="faviconimg2" src="https://softwarekit.pages.dev/favicon.png"></a></div>
                                         <div class="item-inner">
                                             <div class="item-title-row">
                                                 <div class="item-title" id="greeting">
@@ -163,17 +164,7 @@ window.onload = getGreeting;
                                                 </div>
                                             </div>
                                             <div style="font-size:12px" class="item-subtitle">
-                                                <script>
-                                                    var mydate = new Date,
-                                                        year = mydate.getYear(),
-                                                        day = mydate.getDay(),
-                                                        month = mydate.getMonth(),
-                                                        daym = mydate.getDate();
-                                                    daym < 10 && (daym = "0" + daym);
-                                                    var dayarray = new Array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"),
-                                                        montharray = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-                                                    document.write(dayarray[day] + ", " + montharray[month] + " " + daym)
-                                                </script>
+                                                SoftwareKit v1.0 Beta HarmonyOS
                                             </div>
                                         </div>
                                     </div>
@@ -183,13 +174,22 @@ window.onload = getGreeting;
                                 </div>
                                 <div class="list list-strong list-dividers inset media-list">
                                     <ul>
-                                        
+                                  <li class="flex-between accent-li item-content">
+                                                <div class="flex-align">
+                                                    <div class="item-media"><i class="hm-icons hm-public-themes-filled"></i></div>
+                                                    <div class="item-inner">
+                                                        <div class="item-title-row" style="margin-top:3px;">
+                                                            <div class="item-title">Accent color</div>
+                                                        </div>
+                                                    </div>
+                                                </div> <span class="accent-color-indicator" id="accent-color"></span>
+                                            </li>      
                                 <li>
                                     <a onclick="shareURL()" class="item-link item-content">
                                         <div class="item-media"><i class="hm-icons hm-share-filled"></i></div>
                                         <div class="item-inner">
                                             <div class="item-title-row">
-                                                <div class="item-title">Share AppRealm</div>
+                                                <div class="item-title">Share SoftwareKit</div>
                                             </div>
                                         </div>
                                     </a>
@@ -198,11 +198,11 @@ window.onload = getGreeting;
                               
                            
                                     <li>
-                                        <a href="https://x.com/TechLxrd07/" class="item-link item-content external">
+                                        <a href="https://x.com/softwarekit_app/" class="item-link item-content external">
                                             <div class="item-media"><i class="hm-icons hm-contacts-add-filled"></i></div>
                                             <div class="item-inner">
                                                 <div class="item-title-row">
-                                                    <div class="item-title">Follow Me</div>
+                                                    <div class="item-title">Follow</div>
                                                 </div>
                                             </div>
                                         </a>
@@ -217,6 +217,26 @@ window.onload = getGreeting;
                                                 </div>
                                             </div>
                                         </a>
+                                    </li>                                    
+                                                                       <li>
+                                        <a class="item-link item-content popup-open" data-popup="#feedback">
+                                            <div class="item-media"><i class="hm-icons hm-public-feedback"></i></div>
+                                            <div class="item-inner">
+                                                <div class="item-title-row">
+                                                    <div class="item-title">Send feedback</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                                                       <li>
+                                        <a class="item-link item-content popup-open" data-popup="#appsubmit">
+                                            <div class="item-media"><i class="hm-icons hm-public-appstore-filled"></i></div>
+                                            <div class="item-inner">
+                                                <div class="item-title-row">
+                                                    <div class="item-title">App Submission</div>
+                                                </div>
+                                            </div>
+                                        </a>
                                     </li>
                                     <li>
                                         <a class="item-link item-content popup-open" data-popup="#terms">
@@ -228,26 +248,252 @@ window.onload = getGreeting;
                                             </div>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="https://github.com/TechLxrd/AppRealm" class="item-link item-content external">
-                                            <div class="item-media"><i class="hm-icons hm-folder_filled"></i></div>
+                                                                     <li>
+                                        <a onclick="reset()" class="item-link item-content popup-open">
+                                            <div class="item-media"><i class="hm-icons hm-public-clean-filled"></i></div>
                                             <div class="item-inner">
                                                 <div class="item-title-row">
-                                                    <div class="item-title">Source code</div>
+                                                    <div class="item-title">Reset</div>
                                                 </div>
                                             </div>
                                         </a>
-                                    </li>
-                                </ul>
-                                <center>
-                                    <h4>AppRealm OpenHarmony v1.0</div>
+                                    </li>  
+                                </ul>                              </div>
                     </div>
                 </div>
                 </div>
                 </div>
-                <div class="popup" id="terms"><div class="page"><div class="swipe-nav"><div><i class="hm-icons hm-screenshot-line"></i></div></div><div class="page-content"><div class="block-title block-title-large">Terms of Service</div><div class="block block-strong inset"><p>Welcome to AppRealm – the ultimate all-in-one utility for your iDevices. We highly value your privacy and security, which is why we have meticulously crafted the following terms of service to ensure absolute clarity and transparency:</p><p><strong>1. Privacy First:</strong>Your privacy is our top priority. We assure you that we do not collect any of your personal data. Your information remains strictly yours and is treated with the highest level of respect.</p><p><strong>2. Enhanced User Experience:</strong>To enhance your experience, we use cookies exclusively to save your settings. This enables you to effortlessly customize your AppRealm experience according to your preferences.</p><p><strong>3. Third-party Apps and Data Collection:</strong>It's important to note that certain tweaks or apps available through AppRealm may involve data collection. By utilizing these, you acknowledge and consent to their respective data collection practices. Kindly review their terms and privacy policies for additional details.</p><p><strong>4. User Responsibility:</strong>While we relentlessly strive for excellence, it's essential to clarify that we cannot be held responsible for any damages stemming from the use of Jailbreaking apps or other applications facilitated by AppRealm. You hold the responsibility for your device and its usage.</p><p><strong>5. Open Dialogue:</strong>We wholeheartedly encourage you to reach out with any questions or concerns. Feel free to use the Feedback button situated in the Settings page for assistance. We value your feedback and aim to continuously elevate your AppRealm experience.</p><p><strong>Thank you for choosing AppRealm.</div></div></div></div>
-                <div class="sheet-modal" id="changelog"><div class="sheet-modal-inner"><div class="swipe-nav"><div><i class="hm-icons hm-screenshot-line"></i></div></div><div class="page-content"><div class="block-title block-title-large">What's new?</div><div class="block"><div class="block block-strong inset"><p>Last updated:<span class="badge">Unavailable</span><h2>v1.0 </h2><p>🎉First release</div><br><br></div></div>
-    <script src="https://cdn.jsdelivr.net/npm/framework7@8.3.4/framework7-bundle.min.js"></script>
+                <div class="popup" id="terms"><div class="page"><div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div><div class="page-content"><div class="block-title block-title-large">Terms of Service</div><div class="block block-strong inset"><p>Welcome to SoftwareKit – the ultimate all-in-one utility for your iDevices. We highly value your privacy and security, which is why we have meticulously crafted the following terms of service to ensure absolute clarity and transparency:</p><p><strong>1. Privacy First:</strong>Your privacy is our top priority. We assure you that we do not collect any of your personal data. Your information remains strictly yours and is treated with the highest level of respect.</p><p><strong>2. Enhanced User Experience:</strong>To enhance your experience, we use cookies exclusively to save your settings. This enables you to effortlessly customize your SoftwareKit experience according to your preferences.</p><p><strong>3. Third-party Apps and Data Collection:</strong>It's important to note that certain tweaks or apps available through SoftwareKit may involve data collection. By utilizing these, you acknowledge and consent to their respective data collection practices. Kindly review their terms and privacy policies for additional details.</p><p><strong>4. User Responsibility:</strong>While we relentlessly strive for excellence, it's essential to clarify that we cannot be held responsible for any damages stemming from the use of Jailbreaking apps or other applications facilitated by SoftwareKit. You hold the responsibility for your device and its usage.</p><p><strong>5. Open Dialogue:</strong>We wholeheartedly encourage you to reach out with any questions or concerns. Feel free to use the Feedback button situated in the Settings page for assistance. We value your feedback and aim to continuously elevate your SoftwareKit experience.</p><p><strong>Thank you for choosing SoftwareKit.</div></div></div></div>
+                <div class="popup" id="changelog"><div class="sheet-modal-inner"><div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div><div class="page-content"><div class="block-title block-title-large">What's new?</div><div class="block"><div class="block block-strong inset"><p>Last updated:<span class="badge">Unavailable</span><h2>v1.0 </h2><p>🎉First release</div><br><br></div></div>
+                          <div class="popup popup-report" id="report-app">
+                            <div class="page bg-img">
+                                <div class="navbar no-outline">
+          <div class="navbar-bg"></div>
+          <div class="navbar-inner">
+            <div class="title  ">Report</div>
+            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
+          </div>
+        </div>
+
+                                <div class="page-content">
+                                    <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="report-form">
+                                        <input type="text" name="_honey" class="display-none">
+
+                                        <input type="hidden" name="_captcha" value="false">
+                                        <ul>
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">App name</div>
+                                                        <div class="item-input-wrap">
+                                                            <input type="text" name="HarmonyOS App Name" id="report-app-name" readonly required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">Email</div>
+                                                        <div class="item-input-wrap">
+                                                            <input placeholder="youremail@something.com" type="email" name="Email" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+  <a class="item-link smart-select" data-open-in="popover">
+    <select name="Reason" required>
+      <option value="" disabled selected>Select reason</option>
+      <option value="Malicious">Malicious</option>
+      <option value="Outdated">Outdated</option>
+      <option value="Not working">Not working</option>
+      <option value="Takedown request">Takedown request</option>
+      <option value="Other">Other (Specify)</option>
+    </select>
+    <div class="item-content">
+      <div class="item-inner">
+        <div class="item-title">Reason</div>
+      </div>
+    </div>
+  </a>
+</li>
+
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">Feedback</div>
+                                                        <div class="item-input-wrap">
+                                                            <textarea placeholder="e.g. The download link is broken, the app crashes on startup, or the version is outdated." name="Feedback" required></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                       <br>
+                                            <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
+            <span class="preloader"></span>
+      <span>Send report</span>
+          </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="popup app-submission" id="appsubmit">
+                            <div class="page bg-img">
+                                <div class="navbar no-outline">
+          <div class="navbar-bg"></div>
+          <div class="navbar-inner">
+            <div class="title  ">App Submission</div>
+            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
+          </div>
+        </div>
+
+                                <div class="page-content">
+                                    <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="appsubmit-form">
+                                        <input type="text" name="_honey" class="display-none">
+
+                                        <input type="hidden" name="_captcha" value="false">
+                                        <ul>
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">App name</div>
+                                                        <div class="item-input-wrap">
+                                                            <input type="text" name="HarmonyOS App Name" placeholder="e.g SoftwareKit" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+<li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">URL</div>
+                                                        <div class="item-input-wrap">
+                                                            <input type="url" placeholder="https://example.com" name="App Name" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">Email</div>
+                                                        <div class="item-input-wrap">
+                                                            <input placeholder="youremail@something.com" type="email" name="Email" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+  <a class="item-link smart-select" data-open-in="popover">
+    <select name="Type" required>
+      <option value="" disabled selected>Select type</option>
+      <option value="App Store Application">App Gallery Application</option>
+      <option value="HAP File">HAP File</option>
+      <option value="Website">Website</option>      
+    </select>
+    <div class="item-content">
+      <div class="item-inner">
+        <div class="item-title">Type</div>
+      </div>
+    </div>
+  </a>
+</li>
+
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">Additional info</div>
+                                                        <div class="item-input-wrap">
+                                                            <textarea  name="Additional info"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                       <br>
+                                            <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
+            <span class="preloader"></span>
+      <span>Submit app</span>
+          </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                         <div class="popup popup-report" id="feedback">
+                            <div class="page bg-img">
+                                <div class="navbar no-outline">
+          <div class="navbar-bg"></div>
+          <div class="navbar-inner">
+            <div class="title  ">Send feedback</div>
+            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
+          </div>
+        </div>
+
+                                <div class="page-content">
+                                    <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="feedback-form">
+                                        <input type="text" name="_honey" class="display-none">
+
+                                        <input type="hidden" name="_captcha" value="false">
+                                        <ul>
+                                            
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">Email</div>
+                                                        <div class="item-input-wrap">
+                                                            <input placeholder="youremail@something.com" type="email" name="Email" required />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+  <a class="item-link smart-select" data-open-in="popover">
+    <select name="Feedback type" required>
+      <option value="" disabled selected>Feedback type</option>
+      <option value="Issue/Bug">Issue/Bug</option>
+      <option value="Feature request">Feature request</option>
+      <option value="Other">Other</option>    
+    </select>
+    <div class="item-content">
+      <div class="item-inner">
+        <div class="item-title">Feedback type</div>
+      </div>
+    </div>
+  </a>
+</li>
+
+                                            <li>
+                                                <div class="item-content item-input">
+                                                    <div class="item-inner">
+                                                        <div class="item-title item-label">Feedback</div>
+                                                        <div class="item-input-wrap">
+                                                            <textarea placeholder="e.g. A bug in the Settings tab, missing data on the home page, or a feature request." name="HarmonyOS Feedback" required></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+  <br>                                                                          
+                                            <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
+            <span class="preloader"></span>
+      <span>Send Feedback</span>
+          </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        </div>              
+    <script src="https://cdn.jsdelivr.net/npm/framework7@8/framework7-bundle.min.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
   </body>
 </html>
