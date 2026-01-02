@@ -1,19 +1,17 @@
 var app = new Framework7({
-
-      el: "#app",
-      theme: "ios",
-      name: "AppRealm",
-      id: "com.TechLxrd.AppRealm",
+     el: "#app",
+      theme: "ios",     
+      id: "com.TechLxrd.SoftwareKit",
       popup: {
 
-         push: !0,
-         swipeToClose: !0
+         push: false,
+         swipeToClose: 'to-bottom'
 
       },
       sheet: {
 
-         push: !0,
-         swipeToClose: !0
+         push: false,
+         swipeToClose: true
 
       },
       serviceWorker: {
@@ -21,7 +19,7 @@ var app = new Framework7({
          path: "./service-worker.js"
 
       },
-        routes: [
+        routes: [        
     {
       path: '/index/',
       url: 'index.html',
@@ -29,38 +27,190 @@ var app = new Framework7({
   ],
 });
    mainView = app.views.create(".view-main");
-document.addEventListener("DOMContentLoaded", () => {
+   window.addEventListener('error', function (event) {
+    const img = event.target;
 
-   document.querySelectorAll(".tab-link").forEach(tabLink => {
+    if (!(img instanceof HTMLImageElement)) return;
 
-      tabLink.addEventListener("click", function () {
+    if (img.closest('.screenshots')) return;
 
-         var tabTitle = this.getAttribute("data-tab-title");
+    if (img.dataset.fallbackApplied) return;
 
-         var navbarTitle = document.querySelector(".navbar .title");
+    img.dataset.fallbackApplied = 'true';
+    img.src = './assets/default.png';
+}, true);
+const failedImages = new Set();
 
-         var navbarLargeTitle = document.querySelector(".navbar .title-large-text");
+window.addEventListener('error', function (event) {
+    const img = event.target;
 
-         if (navbarTitle) {
+    if (!(img instanceof HTMLImageElement)) return;
+    if (img.closest('.screenshots')) return;
 
-            navbarTitle.textContent = tabTitle;
+    const src = img.getAttribute('src');
+    if (!src || failedImages.has(src)) return;
 
-         }
+    failedImages.add(src);
+    img.src = './assets/default.png';
+}, true);
+document.addEventListener('DOMContentLoaded', () => {
+app.on('tabShow', (tabEl) => {
+  const tabId = `#${tabEl.id}`;
+  if (!tabEl.id) return;
 
-         if (navbarLargeTitle) {
+  const tabLink = document.querySelector(
+    `.tab-link[href="${tabId}"]`
+  );
+  if (!tabLink) return;
 
-            navbarLargeTitle.textContent = tabTitle;
+  const title = tabLink.dataset.tabTitle;
+  if (!title) return;
 
-         }
+  const navbar = document.querySelector(
+    '.navbar.navbar-large'
+  );
+  if (!navbar) return;
 
-      });
+  const titleEl = navbar.querySelector('.title');
+  const largeTitleEl = navbar.querySelector('.title-large-text');
 
-   });
+  if (titleEl) titleEl.textContent = title;
+  if (largeTitleEl) largeTitleEl.textContent = title;
+});
+
+  document.querySelectorAll('.tab-link').forEach(tabLink => {
+    tabLink.addEventListener('click', function () {
+      updateNavbarTitleFromTab(this.getAttribute('href'));
+    });
+  });
+  window.goToTab = function (tabId) {
+    app.popup.close();
+    app.tab.show(tabId);
+    updateNavbarTitleFromTab(tabId);
+  };
 
 });
 
 
+function openReportPopup(appName) {
+  const input = document.getElementById('report-app-name');
+  input.value = appName;
+  app.popup.open('#report-app');
+}
+const reportForm = document.getElementById('report-form');
+const submitBtn = document.getElementById('submit-btn');
 
+reportForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  app.dialog.confirm('Are you sure you want to send this report?', 'Confirm Submission', function () {
+           submitBtn.classList.add('button-loading');
+    submitBtn.disabled = true; 
+
+    const formData = new FormData(reportForm);
+    const actionUrl = reportForm.getAttribute('action');
+       
+    fetch(actionUrl, {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    })
+    .then(response => response.json())
+    .then(data => {
+      submitBtn.classList.remove('button-loading');
+      submitBtn.disabled = false;
+
+      app.dialog.alert('Thanks for the feedback!', 'Success', function() {
+        reportForm.reset();
+        
+        app.popup.close('#report-app');
+      });
+    })
+    .catch(error => {
+            submitBtn.classList.remove('button-loading');
+      submitBtn.disabled = false;
+      app.dialog.alert('Failed to send report. Please check your connection.', 'Error');
+      console.error('Submission Error:', error);
+    });
+  });
+});
+(function () {
+  const feedbackForm = document.getElementById('feedback-form');
+  const submitBtn = feedbackForm.querySelector('button[type="submit"]');
+
+  feedbackForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    app.dialog.confirm('Are you sure you want to send this feedback?', 'Confirm Submission', function () {
+      
+      submitBtn.classList.add('button-loading');
+      submitBtn.disabled = true;
+
+      const formData = new FormData(feedbackForm);
+      const actionUrl = feedbackForm.getAttribute('action');
+
+      fetch(actionUrl, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(response => response.json())
+      .then(data => {
+        submitBtn.classList.remove('button-loading');
+        submitBtn.disabled = false;
+        
+        app.dialog.alert('Thanks for the feedback!', 'Success', function () {
+          feedbackForm.reset(); 
+          app.popup.close('#feedback');
+        });
+      })
+      .catch(error => {
+        submitBtn.classList.remove('button-loading');
+        submitBtn.disabled = false;
+        app.dialog.alert('Failed to send report. Please check your connection.', 'Error');
+        console.error('Submission Error:', error);
+      });
+    });
+  });
+})();
+(function () {
+  const appSubmitForm = document.getElementById('appsubmit-form');
+  const submitBtn = appSubmitForm.querySelector('button[type="submit"]');
+
+  appSubmitForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    app.dialog.confirm('Are you sure you want to submit this application?', 'Confirm Submission', function () {
+      
+      submitBtn.classList.add('button-loading');
+      submitBtn.disabled = true;
+
+      const formData = new FormData(appSubmitForm);
+      const actionUrl = appSubmitForm.getAttribute('action');
+
+      fetch(actionUrl, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(response => response.json())
+      .then(data => {
+        submitBtn.classList.remove('button-loading');
+        submitBtn.disabled = false;
+        
+        app.dialog.alert('Thanks for the submission! We will review it as soon as possible', 'Success', function () {
+          appSubmitForm.reset(); 
+          app.popup.close('#appsubmit');
+        });
+      })
+      .catch(error => {
+        submitBtn.classList.remove('button-loading');
+        submitBtn.disabled = false;
+        app.dialog.alert('Failed to send report. Please check your connection.', 'Error');
+        console.error('Submission Error:', error);
+      });
+    });
+  });
+})();
 
 
 function toggleDarkMode() {
@@ -333,7 +483,7 @@ function createPopupHtml(item) {
   <div class="page">
     <div class="swipe-nav">
       <div>
-        <i class="hm-icons hm-screenshot-line"></i>
+        <i class="f7-icons">minus</i>
       </div>
     </div>
     <div class="page-content">
@@ -366,32 +516,38 @@ function createPopupHtml(item) {
             </div>
           </center>
         </div>
-          <br>
-          <br>
+                     <div class="list media-list list-strong inset">
+              <ul>
+                <li>
+                  <a onclick='addToFavorites(${JSON.stringify(item).replace(/'/g, "&apos;")})' class="item-link item-content">
+                    <div class="item-media"><i class="hm-icons hm-public-favorites-filled"></i></div>
+                    <div class="item-inner"><div class="item-title">Add to Favorites</div></div>
+                  </a>
+                </li>
+                <li>
+                  <a onclick="navigator.share({ title: '${item.title}', url: '${item.get_link}' })" class="item-link item-content external">
+                    <div class="item-media"><i class="hm-icons hm-share-filled"></i></div>
+                    <div class="item-inner"><div class="item-title">Share</div></div>
+                  </a>
+                </li>
+                <li>
+                  <a class="item-link item-content" onclick="openReportPopup('${item.title.replace(/'/g, "\\'")}')">
+                    <div class="item-media"><i class="hm-icons hm-privacy-statement"></i></div>
+                    <div class="item-inner"><div class="item-title">Report</div></div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <br>
+            <br>
         </div>
       </div>
-      <div class="block block-strong" 
-     style="position: fixed; bottom: 0; left: 0; right: 0; width: 100%; 
-            border: 1px solid rgba(255,255,255,0.1); z-index: 1000; 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 10px; box-sizing: border-box; margin: 0;">
-  <a onclick="addToFavorites({
-                  id: '${item.id}',
-                  image: '${item.icon}',
-                  title: '${item.title}',
-                  subtitle: '${item.category}'
-                })" 
-     style="background: none; color: var(--f7-ios-primary); flex: 0; margin-right: 10px;">
-    <i class="hm-icons hm-public-favorites-filled"></i>
-  </a>
+      <div class="block block-strong install">
+ 
   <a href="${item.get_link}" 
-     class="button button-fill button-raised button-round external" 
-     style="flex-grow: 1; margin: 0 10px; text-align: center;">
+     class="button button-fill button-raised button-round button-large external" 
+     style=" margin: auto;width:75%;">
     INSTALL
-  </a>
-  <a onclick="navigator.share({ title: '${item.title}', url: '${item.get_link}' })" 
-     style="background: none; color: var(--f7-ios-primary); flex: 0; margin-left: 10px;">
-    <i class="hm-icons hm-share-filled"></i>
   </a>
 </div>
 
@@ -473,88 +629,81 @@ async function fetchAndLoadApps() {
 }
 
 
+
 function addToFavorites(item) {
-
-   const favEmptyElement = document.getElementById("favempty");
-
-   if (favEmptyElement) {
-
-      favEmptyElement.style.display = "none";
-
-   }
+  let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
 
-   app.toast.create({
+  if (favorites.some(fav => fav.id === item.id)) {
+    app.dialog.alert("This app is already in your favorites.", 'Error');
+    return;
+  }
 
-      icon: '<i class="hm-icons hm-public-favorites-filled"></i>',
+  favorites.push(item);
+  localStorage.setItem("favorites", JSON.stringify(favorites));
 
-      text: "Added to Favorites",
+  app.toast.create({   
+    text: "Added to Favorites",
+    position: "bottom",
+    closeTimeout: 1500,
+  }).open();
 
-      position: "center",
-
-      closeTimeout: 1500
-
-   }).open();
-
-
-   let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-
-   if (!favorites.some(fav => fav.title === item.title)) {
-
-      favorites.push(item);
-
-      localStorage.setItem("favorites", JSON.stringify(favorites));
-
-      displayFavorites();
-
-   }
-
+  displayFavorites();
 }
 
 
 function displayFavorites() {
+  const favContainer = document.getElementById("fav");
+  if (!favContainer) return;
 
-   const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+  const favList = favContainer.querySelector("ul");
+  if (!favList) return;
 
-   const favList = document.getElementById("fav").querySelector("ul");
+  const favEmptyElement = document.getElementById("favempty");
+  const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
-   favList.innerHTML = "";
+  favList.innerHTML = "";
 
-   favorites.forEach(fav => {
+  if (favorites.length === 0) {
+    if (favEmptyElement) favEmptyElement.style.display = "block";
+    return;
+  }
 
-      const favItemHtml = `
+  if (favEmptyElement) favEmptyElement.style.display = "none";
 
-<li class="swipeout">
-            <div class="swipeout-content">
-                <a class="item-link popup-open" href="#" data-popup="#${fav.id}">
-                    <div class="item-content">
-                        <div class="item-media">
-                            <img loading="lazy" src="${fav.image}">
-                        </div>
-                        <div class="item-inner">
-                            <div class="item-title-row">
-                                <div class="item-title">
-                                    ${fav.title}
-                                </div>
-                            </div>
-                            <div class="item-subtitle">${fav.subtitle}</div>
-                            <div class="item-footer"></div>
-                        </div>
-                    </div>
-                </a>
+  favorites.forEach(fav => {
+    favList.insertAdjacentHTML(
+      "beforeend",
+      `
+      <li class="swipeout">
+        <div class="swipeout-content">
+          <a class="item-link popup-open" data-popup="#${fav.id}">
+            <div class="item-content">
+              <div class="item-media">
+                <img decoding="async" loading="lazy" src="${fav.image}">
+              </div>
+              <div class="item-inner">
+                <div class="item-title-row">
+                  <div class="item-title">
+                    ${fav.title}
+                   </i>
+                  </div>
+                </div>
+                <div class="item-subtitle">${fav.subtitle}</div>
+              </div>
             </div>
-            <div class="swipeout-actions-right">
-                <a href="#" class="swipeout-delete" onclick="removeFromFavorites('${fav.title}')">Remove</a>
-            </div>
-        </li>`;
-
-
-      favList.insertAdjacentHTML("beforeend", favItemHtml);
-
-   });
-
+          </a>
+        </div>
+        <div class="swipeout-actions-right">
+          <a class="swipeout-delete"
+             onclick="removeFromFavorites('${fav.title}')">
+            Unfavorite <i class="hm-icons hm-gallery-shortcut-favorite"></i>
+          </a>
+        </div>
+      </li>`
+    );
+  });
 }
-
 
 function removeFromFavorites(title) {
 
@@ -603,9 +752,11 @@ const debouncedUpdateThemeColor = debounce(updateThemeColor, 250);
 function openColorPicker(initialColor) {
     colorPickerInstance = app.colorPicker.create({
         inputEl: "#accent-color",
-        openIn: "popover",
+        openIn: "popover",      
         closeOnSelect: true,
+        modules: ['palette'],
         value: { hex: initialColor },
+        
         on: {
             change: (picker, value) => {
                 debouncedUpdateThemeColor(value.hex);
@@ -671,11 +822,8 @@ function shareURL() {
 
       navigator.share({
 
-         title: "AppMarkt",
-
-         text: "Elevate your iDevice experience with our advanced store.",
-
-         url: "https://appmarkt.pages.dev/"
+         title: "SoftwareKit",         
+         url: "https://softwarekit.pages.dev/"
 
       });
 
@@ -685,95 +833,49 @@ function shareURL() {
 
 
 function reset() {
-
-   app.actions.create({
-
-      buttons: [
-
-         [
-
-            {
-
-               text: "Reset Accent Color",
-
-               onClick: function () {
-
-                  updateThemeColor("#0404f8");
-
-               }
-
-            },
-
-            {
-
-               text: "Erase All Data and Preferences",
-
-               onClick: function () {
-
-                  app.dialog.confirm(
-
-                     "Please confirm if you want to Erase All Data and Settings. This action cannot be undone.",
-
-                     "Reset",
-
-                     () => {
-
-                        var preloader = app.dialog.preloader("Resetting");
-
-                        preloader.open();
-
-                        setTimeout(() => {
-
-                           document.cookie.split(";").forEach(cookie => {
-
-                              var eqPos = cookie.indexOf("=");
-
-                              var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-
-                              document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-
-                           });
-
-                           localStorage.clear();
-
-                           preloader.close();
-
-                           window.location.href = "app.html";
-
-                        }, 2000);
-
-                     }
-
-                  );
-
-               }
-
+  app.dialog.create({
+    title: 'Reset',
+    verticalButtons: true,
+    buttons: [
+      {
+        text: 'Reset Accent Color',
+        onClick: function () {
+          updateThemeColor("#0404f8");
+          app.toast.create({
+            text: 'Accent color restored!',
+            closeTimeout: 2000,
+          }).open();
+        }
+      },
+      {
+        text: 'Erase all data',
+        onClick: function () {
+          app.dialog.confirm(
+            'This will delete all your settings and data including favorites. This action cannot be undone.',
+            'Confirm reset',
+            () => {
+              app.preloader.show();
+              setTimeout(() => {
+                document.cookie.split(';').forEach(cookie => {
+                  const eqPos = cookie.indexOf('=');
+                  const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                  document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+                });
+                localStorage.clear();
+                app.preloader.hide();
+                window.location.href = 'app.html';
+              }, 1500);
             }
-
-         ],
-
-         [
-
-            {
-
-               text: "Cancel",
-
-               color: "red",
-
-               onClick: function () {}
-
-            }
-
-         ]
-
-      ]
-
-   }).open();
-
-}
-
-
-if ("serviceWorker" in navigator) {
+          );
+        }
+      },
+      {
+       text: 'Cancel',
+       
+      }
+    ]
+  }).open();
+}if ("serviceWorker" in navigator) {
 
    navigator.serviceWorker.getRegistration().then(registration => {
 
