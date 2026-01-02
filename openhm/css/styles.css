@@ -70,6 +70,7 @@
   margin-left: 0;
   margin-right: auto;
 }
+.swiper-pagination-bullet{background-color: gray;}
 .navbar .hm-title-large {
   position: relative;
   overflow: hidden;
