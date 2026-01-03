@@ -18,7 +18,7 @@ const app = new Framework7({
   },
   serviceWorker: {
     path: "./service-worker.js",
-  },
+  },  
 routes: [
     {
       path: '/index/',
@@ -326,7 +326,7 @@ function renderDeviceData(deviceInfo) {
             </div>
         </div>
 
-        <div class="list inset">
+        <div class="list glass inset">
             <ul>
                 <li>
                     <div class="item-content">
