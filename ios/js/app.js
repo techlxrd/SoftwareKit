@@ -1304,7 +1304,7 @@ function openSignerPopup() {
           <li class="item-content item-input custom-only">
             <div class="item-inner">
               <div class="item-title item-label">P12 Password</div>
-              <input type="password" id="p12-pass" placeholder="Optional">
+              <input type="password" id="p12-pass" placeholder="******">
             </div>
           </li>
         </ul>
