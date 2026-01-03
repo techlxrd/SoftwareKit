@@ -40,14 +40,14 @@ body {
 .liquid-glass,
 .list.separated.glass li,
 .list-strong.glass ul, .sidebar-list.glass a{
-  backdrop-filter: blur(6px) !important;
-  -webkit-backdrop-filter: blur(6px) !important;
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px) ;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
   border: 1px solid rgba(255, 255, 255, 0.25);
   box-shadow:
     0px 0px 0px 2px rgba(255, 255, 255, 0.05) inset,
     0px 0px 100px 10px rgba(255, 255, 255, 0.05) inset,
-    0 0.5px 0px rgba(255, 255, 255, 0.525) inset !important;
+    0 0.5px 0px rgba(255, 255, 255, 0.525) inset;
   transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
   color: #fff;
 }
@@ -250,6 +250,7 @@ body {
   border-top-right-radius: 26px !important;
   border-top-left-radius: 26px !important;
 }
+#copyUdidBtn{margin-right:3px;}
 .screenshot {
   display: flex;
   overflow-x: auto;
@@ -281,8 +282,6 @@ body {
   background: var(--f7-list-strong-bg-color);
   transform: translateZ(0);
 }
-.list.separated ul { background: 0 0; }
-.list.separated .item-inner:after { content: none; }
 
 .item-media img {
   width: 58px !important;
