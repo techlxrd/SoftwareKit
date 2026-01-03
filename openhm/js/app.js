@@ -32,7 +32,7 @@ var app = new Framework7({
 
     if (!(img instanceof HTMLImageElement)) return;
 
-    if (img.closest('.screenshots')) return;
+    if (img.closest('.screenshot')) return;
 
     if (img.dataset.fallbackApplied) return;
 
@@ -45,7 +45,7 @@ window.addEventListener('error', function (event) {
     const img = event.target;
 
     if (!(img instanceof HTMLImageElement)) return;
-    if (img.closest('.screenshots')) return;
+    if (img.closest('.screenshot')) return;
 
     const src = img.getAttribute('src');
     if (!src || failedImages.has(src)) return;
@@ -546,7 +546,7 @@ function createPopupHtml(item) {
  
   <a href="${item.get_link}" 
      class="button button-fill button-raised button-round button-large external" 
-     style=" margin: auto;width:75%;">
+     style=" margin: auto;width:95%;">
     INSTALL
   </a>
 </div>
@@ -840,7 +840,7 @@ function reset() {
       {
         text: 'Reset Accent Color',
         onClick: function () {
-          updateThemeColor("#0404f8");
+          updateThemeColor("#0A58F7");
           app.toast.create({
             text: 'Accent color restored!',
             closeTimeout: 2000,
