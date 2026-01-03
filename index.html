@@ -5,7 +5,22 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
     <title>SoftwareKit</title>
-
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="System utilities for iOS, Android, and OpenHarmony. Built for people who actually want control over their devices.">
+    <meta name="author" content="TechLxrd">
+    <link rel="canonical" href="https://softwarekit.pages.dev">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://softwarekit.pages.dev">
+    <meta property="og:title" content="SoftwareKit">
+    <meta property="og:description" content="System utilities for iOS, Android, and OpenHarmony. Built for people who actually want control over their devices.">
+    <meta property="og:image" content="favicon.png">
+    <meta name="twitter:card" content="summary"> <meta name="twitter:url" content="https://softwarekit.pages.dev">
+    <meta name="twitter:title" content="SoftwareKit">
+    <meta name="twitter:description" content="System utilities for iOS, Android, and OpenHarmony. Built for people who actually want control over their devices.">
+    <meta name="twitter:image" content="favicon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons@5.0.5/css/framework7-icons.css" integrity="sha256-RSzKDnaL5c8/Ksi7QeDBiOtJSr5k3LbqDGqs4NKDl7M=" crossorigin="anonymous">
@@ -113,8 +128,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 16px;
-            margin-bottom: 100px;
+            gap: 16px;          
         }
 
         .btn-get {
@@ -457,32 +471,34 @@
 
     <main>
         <section class="hero">
-            <div data-aos="fade-up" style="font-weight: 600; font-size: 18px; margin-bottom: 20px; color: var(--accent);">Coming soon</div>
+            <div data-aos="fade-up" style="font-weight: 600; font-size: 18px; margin-bottom: 20px; color: var(--accent);">Introducing SoftwareKit</div>
             <h1 data-aos="fade-up" data-aos-delay="100">Every device.<br>At its best.</h1>
             <p class="lead" data-aos="fade-up" data-aos-delay="200">
                 System utilities for iOS, Android, and OpenHarmony. Built for people who actually want control over their devices.
             </p>
             <div class="download-grid" data-aos="fade-up" data-aos-delay="300">
-                <a href="#" class="btn-get"><i class="bi bi-apple"></i> iOS 14+</a>
-                <a href="#" class="btn-get alt"><i class="bi bi-android2"></i> Android</a>
-                <a href="#" class="btn-get outline"><i class="bi bi-phone"></i> OpenHarmony</a>
+                <a href="ios/app.html" class="btn-get"><i class="bi bi-apple"></i> iOS 14+</a>
+                <a href="android/app.html" class="btn-get alt"><i class="bi bi-android2"></i> Android</a>
+                <a href="openhm/app.html" class="btn-get outline"><i class="bi bi-phone"></i> HarmonyOS 5+</a>
+                
             </div>
+            <br><a href="https://youtu.be/FSN9uIfI9eM?si=u-K9leH-2CD3SswR" class="techlxrd" data-aos="fade-up" data-aos-delay="300"><i class="bi bi-collection-play-fill"></i> Watch the trailer</a>
         </section>
 
         <section class="showcase">
             <div class="swiper screenshot-swiper">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
-                        <img src="https://i.imgur.com/DkjRDgI.png" alt="iOS">
+                        <img src="https://i.imgur.com/84w9IPL.png" alt="iOS">
                     </div>
                     <div class="swiper-slide">
-                        <img src="https://i.imgur.com/VfM7rOg.png" alt="Android">
+                        <img src="https://i.imgur.com/1ObgWnZ.png" alt="Android">
                     </div>
                     <div class="swiper-slide">
-                        <img src="https://i.imgur.com/ULTc2VA.png" alt="Harmony">
+                        <img src="https://i.imgur.com/2XFFsnt.png" alt="Harmony">
                     </div>
                     <div class="swiper-slide">
-                        <img src="https://i.imgur.com/zvupprI.png" alt="Legacy">
+                        <img src="https://i.imgur.com/kmHughI.png" alt="Legacy">
                     </div>
                 </div>
                 <br><br>
@@ -502,7 +518,7 @@
             <div class="bento-card" data-aos="fade-up">
                 <span class="platform-badge">iOS & AltStore</span>
                 <h3>Sideloading, <br>Perfected.</h3>
-                <p>Integrated AltStore source support. Browse and download IPAs from your favorite sources, with instant loading even at massive scale. </p>
+                <p>Integrated AltStore source support and Signer. Browse and download IPAs from your favorite sources, with instant loading even at massive scale. </p>
                 <br><a class="techlxrd" href="altstore://source?url=https://softwarekit.pages.dev/ios/altstore.json">Add our AltStore source</a>
             </div>
             <div class="bento-card" data-aos="fade-up" data-aos-delay="100">
@@ -517,7 +533,7 @@
             </div>
              <div class="bento-card" data-aos="fade-up" data-aos-delay="100">
                 <h3>Safety first.</h3>
-                <p>All content is manually verified before it’s added. If you spot anything malicious, you can report it at any time.</p>
+                <p>All content is manually verified and tested before it’s added. If you spot anything malicious, you can report it at any time.</p>
             </div>
         </section>
 
@@ -528,8 +544,8 @@
                 </div>
                 <span class="platform-badge" style="background: rgba(255,255,255,0.15); color: #fff; border: 1px solid rgba(0,0,0,0.2); box-shadow: inset 0 1px 0 rgba(255,255,255,0.3); text-shadow: 0 -1px 0 rgba(0,0,0,0.5);">One more thing...</span>
                 <h2>Legacy iOS Support.</h2>
-                <p>We haven’t forgotten the classics. iOS 6 through iOS 9 are fully supported, bringing modern power to the devices that started it all.</p>
-                <a href="#" class="ios6-btn">
+                <p>We haven’t forgotten the classics. iOS 4 through iOS 9 are fully supported, bringing modern power to the devices that started it all.</p>
+                <a href="https://softwarekit-legacy.pages.dev" class="ios6-btn">
             <i class="bi bi-download"></i>SoftwareKit Legacy
         </a>
             </div>
@@ -539,10 +555,10 @@
     <footer>
         <div class="footer-wrap">
             <div style="padding-bottom: 40px; opacity: 0.8;">
-                SoftwareKit is a non-commercial system utility. iOS and iPhone are trademarks of Apple Inc. Android is a trademark of Google LLC. OpenHarmony is a project by the OpenAtom Foundation.
+                SoftwareKit is a non-commercial system utility. iOS and iPhone are trademarks of Apple Inc. Android is a trademark of Google LLC. HarmonyOS is a trademark of Huawei Technologies Co., Ltd.
             </div>
-
-            <center>© 2025 SoftwareKit
+            
+            <center>Terms of Service & Privacy policy available in the app<br>Email: softwarekit_app@outlook.com <br>© 2026 SoftwareKit
         </div>
         </div>
     </footer>
