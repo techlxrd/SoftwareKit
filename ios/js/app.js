@@ -286,7 +286,7 @@ function renderDeviceData(deviceInfo) {
     const sysVer = getIOSVersion();
 
     container.innerHTML = `
-        <div class="list media-list separated inset glass">
+<div class="list media-list list-strong list-dividers inset glass">
             <ul>
                 <li>
                     <div class="item-content">
@@ -302,31 +302,21 @@ function renderDeviceData(deviceInfo) {
                         </div>
                     </div>
                 </li>
-            </ul>
-        </div>
-
-        <div class="card">
-            <div class="card-content card-content-padding">
-                <div class="list list-strong inset glass">
-                    <ul>
-                        <li class="item-content item-input">
+                                        <li class="item-content item-input">
                             <div class="item-inner">
                                 <div class="item-title item-label">UDID</div>
                                 <div class="item-input-wrap">
                                     <input type="text" id="udidInput" readonly value="${udid}">
                                 </div>
                             </div>
+                          <a class="" id="copyUdidBtn">
+                    <i class="f7-icons">doc_on_clipboard_fill</i>
+                </a>   
                         </li>
-                    </ul>
-                </div>
-                <br>
-                <a class="button button-fill button-round" id="copyUdidBtn">
-                    Copy UDID
-                </a>
-            </div>
-        </div>
+            </ul>
+        </div>           
 
-        <div class="list glass inset">
+        <div class="list list-strong glass inset">
             <ul>
                 <li>
                     <div class="item-content">
