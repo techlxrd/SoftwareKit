@@ -1,5 +1,5 @@
 :root{
-    --f7-ios-primary: #0404f8;
+    --f7-ios-primary: #0A58F7;
     --f7-block-inset-border-radius: 25px; 
     --f7-list-inset-border-radius: 18px;
     --f7-searchbar-input-border-radius: 25px;
@@ -109,8 +109,8 @@
 .install{position: fixed; bottom: 0; left: 0; right: 0; width: 100%; 
              z-index: 1000; 
             display: block; justify-content: center; align-items: center; 
-            padding: 10px; box-sizing: border-box; margin: 0;  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+            padding: 10px; box-sizing: border-box; margin: 0;  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);}
 .notification{height:83px;}
 .dark .sheet-modal {
@@ -154,7 +154,7 @@ font-size: 26px;
 
 font-weight: 700;
 
-color: #000;
+color: #fff;
 
 }
 
