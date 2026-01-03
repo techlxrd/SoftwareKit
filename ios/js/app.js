@@ -316,7 +316,7 @@ function renderDeviceData(deviceInfo) {
             </ul>
         </div>           
 
-        <div class="list list-strong glass inset">
+        <div class="list list-strong list-dividers glass inset">
             <ul>
                 <li>
                     <div class="item-content">
