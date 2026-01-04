@@ -1,1224 +1,1389 @@
 <!DOCTYPE html>
 <html lang="en" class="ios ios-translucent-bars ios-translucent-modals device-pixel-ratio-2 device-ios ios dark">
-
-<head>
+  <head>
     <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
     <title>SoftwareKit</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons@5.0.5/css/framework7-icons.css" integrity="sha256-RSzKDnaL5c8/Ksi7QeDBiOtJSr5k3LbqDGqs4NKDl7M=" crossorigin="anonymous">
     <link rel="apple-touch-icon" href="https://softwarekit.pages.dev/favicon.png" id="favicon">
-</head>
-<body>   
+  </head>
+  <body>
     <div id="app">
-        <div class="sidebar bg-img">
-  <div class="sidebar-header">
-    <i class="f7-icons">cube_box_fill</i>
-  </div>
-  <div class="sidebar-list glass">
-    <ul>
-      <li><a href="#homeTab" class="item-link tab-link tab-link-active" data-tab-title="Today"><i class="f7-icons">today_fill</i> Apps</a></li>
-      <li><a href="#globalTab" class="item-link tab-link" data-tab-title="Global" ><i class="f7-icons">globe</i> Global</a></li>
-      <li><a href="#searchTab" class="item-link tab-link" data-tab-title="Library"><i class="f7-icons">square_stack_3d_up_fill</i> Library</a></li>
-      <li><a href="#sourcesTab" class="item-link tab-link" data-tab-title="Sources"><i class="f7-icons">arrow_down_circle_fill</i> Sources</a></li>
-    </ul>
-  </div>
-</div>
-        <div class="view view-main">
-            <div class="page bg-img">              
-                <div class="navbar navbar-large">
-                    <div class="navbar-bg"></div>
-                    <div class="navbar-inner">
-                        <div class="title">Today</div>
-                        <div class="right"><a class="link icon-only popup-open" data-popup="#settings">
-                <i class="icon f7-icons">gear</i>
-            </a></div>
-                        <div class="title-large">
-                            <div class="title-large-text">Today</div>
-                            <form class="searchbar searchbar-init searchbar-expandable" data-search-container=".virtual-list" data-search-item="li" data-search-in=".item-title" data-expand="navbar">
-                                <div class="searchbar-inner">
-                                    <div class="searchbar-input-wrap">
-                                        <input type="search" placeholder="Search">
-                                        <i class="searchbar-icon"></i>
-                                        <span class="input-clear-button"></span>
-                                    </div>
-                                    <span class="searchbar-disable-button">
-            <i class="icon icon-close"></i>
-          </span>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div> 
-                <div class="toolbar tabbar tabbar-icons toolbar-bottom searchbar-hide-on-enable">
-                    <div class="toolbar-inner">
-                        <div class="toolbar-pane">
-                            <a href="#homeTab" class="tab-link tab-link-active" data-tab-title="Today"><i class="icon f7-icons">today_fill</i><span class="tabbar-label">Today</span></a>
-                            <a href="#globalTab" class="tab-link" data-tab-title="Global"><i class="icon f7-icons">globe</i><span class="tabbar-label">Global</span></a>
-                            <a href="#searchTab" class="tab-link" data-tab-title="Library"><i class="icon f7-icons">square_stack_3d_up_fill</i><span class="tabbar-label">Library</span></a>
-                            <a href="#sourcesTab" class="tab-link" data-tab-title="Sources"><i class="icon f7-icons">arrow_down_circle_fill</i><span class="tabbar-label">Sources</span></a>
-                        </div>
-                    </div>
-                </div>
-                <div class="tabs">
-                    <div id="homeTab" class="page-content tab tab-active ptr-content ptr-tab" data-ptr-distance="56">
-                        <div class="ptr-preloader">
-                            <div class="preloader"></div>
-                            <div class="ptr-arrow"></div>
-                        </div>
-                        <div>
-                            <div class="swiper swiper-padding featured swiper-initialized swiper-horizontal swiper-ios swiper-backface-hidden">
-                                <div class="swiper-wrapper" aria-live="polite">
-                                      <div class="swiper-slide featured" role="group">
-                                        <a class="link popup-open" data-popup="#radiance">
-                                            <div class="title-container">
-                                                <div class="swiper-title">Radiance</div>
-                                            </div>
-                                            <img loading="lazy" src="https://i.imgur.com/XMKMZpw.jpeg">
-                                            <div class="backout"></div>
-                                        </a>
-                                    </div>
-                                   
-                                  
-                                    <div class="swiper-slide featured" role="group">
-                                        <a class="link popup-open" data-popup="#flekst0re">
-                                            <div class="title-container">
-                                                <div class="swiper-title">FlekSt0re</div>
-                                            </div>
-                                            <img loading="lazy" src="https://i.imgur.com/hkT9mDh.jpeg">
-                                            <div class="backout"></div>
-                                        </a>
-                                    </div>
-                                    <div class="swiper-slide featured" role="group">
-                                        <a class="link popup-open" data-popup="#altstore">
-                                            <div class="title-container">
-                                                <div class="swiper-title">AltStore</div>
-                                            </div>
-                                            <img loading="lazy" src="https://i.imgur.com/pLYXkQb.jpeg">
-                                            <div class="backout"></div>
-                                        </a>
-                                    </div>
-                                    <div class="swiper-slide featured" role="group">
-                                        <a class="link popup-open" data-popup="#oldos">
-                                            <div class="title-container">
-                                                <div class="swiper-title">OldOS</div>
-                                            </div>
-                                            <img loading="lazy" src="https://i.imgur.com/Jzz41d4.jpeg">
-                                            <div class="backout"></div>
-                                        </a>
-                                    </div>
-                                     <div class="swiper-slide featured" role="group">
-                                        <a class="link popup-open" data-popup="#eclipse">
-                                            <div class="title-container">
-                                                <div class="swiper-title">Eclipse</div>
-                                            </div>
-                                            <img loading="lazy" src="https://i.imgur.com/s42N2P3.png">
-                                            <div class="backout"></div>
-                                        </a>
-                                    </div>
-                                </div>                                                           
-                                   
-                                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-                            </div>
-                        
-                            <div id="news"></div>
-                            <br>                           
-                        </div>
-                    </div>
-                    <div id="globalTab" class="page-content tab ptr-content ptr-tab" data-ptr-distance="56">
-                        <div class="ptr-preloader">
-                            <div class="preloader"></div>
-                            <div class="ptr-arrow"></div>
-                        </div>
-                        <div class="list separated inset glass">
-                            <ul>
-                                <li>
-                                    <a onclick="openSignerPopup()" class="item-link item-content external">
-                                        <div class="item-media"><i class="f7-icons">pencil_outline</i></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title">Signer</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="item-link item-content popup-open" data-popup="#altstore-repo">
-                                        <div class="item-media"><i class="f7-icons">bag_fill</i></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title">AltStore Source</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                                    <a class="item-link item-content popup-open" data-popup="#udid">
-                                                        <div class="item-media"><i class="f7-icons">gear</i></div>
-                                                        <div class="item-inner">
-                                                            <div class="item-title-row">
-                                                                <div class="item-title">Device Info</div>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                <li class="accordion-item">
-                                    <a class="item-link item-content">
-                                        <div class="item-media"><i class="f7-icons">ellipsis_circle_fill</i></div>
-                                        <div class="item-inner">
-                                            <div class="item-title">Other</div>
-                                        </div>
-                                    </a>
-                                    <div class="accordion-item-content">
-                                        <div class="list">
-                                            
-                                            <ul>
-                                                <li>
-                                                    <a href="https://ios.cfw.guide" class="item-link item-content external">
-                                                        <div class="item-media"><i class="f7-icons">lock_open_fill</i></div>
-                                                        <div class="item-inner">
-                                                            <div class="item-title-row">
-                                                                <div class="item-title">Jailbreak guide</div>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="https://www.ios-repo-updates.com/" class="item-link item-content external">
-                                                        <div class="item-media"><i class="f7-icons">cube_box_fill</i></div>
-                                                        <div class="item-inner">
-                                                            <div class="item-title-row">
-                                                                <div class="item-title">Jailbreak repos</div>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                                
-                                                <li>
-                                                    <a href="https://cdn.adtidy.org/public/Dns/adguard-dns.mobileconfig" class="item-link item-content external">
-                                                        <div class="item-media"><i class="f7-icons">rectangle_3_offgrid_fill</i></div>
-                                                        <div class="item-inner">
-                                                            <div class="item-title-row">
-                                                                <div class="item-title">Adblocker</div>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-
-
-                        </div>
-                        <div class="block-title glass">Guides <i class="f7-icons icon-small">book_fill</i></div>
-                        <div class="swiper swiper-padding guides swiper-initialized swiper-horizontal swiper-ios swiper-backface-hidden">
-                            <div class="swiper-wrapper" aria-live="polite">
-                                <div class="swiper-slide guides guides-active" role="group" aria-label="1 / 5">
-                                   
-                                    <a class="link popup-open" data-popup="#trustStore">
-                                        <div class="title-container">
-                                                <div class="swiper-title-small">App Marketplace</div></div>
-                                        <img loading="lazy" src="https://i.imgur.com/b4em9PO.png">
-                                        <div class="backout"></div>
-                                    </a>
-                                </div>
-                                <div class="swiper-slide guides" role="group" aria-label="2 / 5">
-                                    <a class="link popup-open"  data-popup="#trustCert">
-                                        <img loading="lazy" src="https://i.imgur.com/8Mle0ax.png">
-                                      <div class="title-container">
-                                                <div class="swiper-title-small">Trust certificate</div></div>  
-                                        <div class="backout"></div>
-                                    </a>
-                                </div>
-                                <div class="swiper-slide guides guides-next" role="group" aria-label="3 / 5">
-                                    <a class="link popup-open" data-popup="#verifyintegrity">
-                                        <img loading="lazy" src="https://i.imgur.com/KmWGX5e.png">
-                                   <div class="title-container">
-                                                <div class="swiper-title-small">Unable to verify/install app</div></div>     
-                                        <div class="backout"></div>
-                                    </a>
-                                </div>
-                                <div class="swiper-slide guides" role="group" aria-label="4 / 5">
-                                    <a class="link popup-open" data-popup="#devmode">
-                                        <img loading="lazy" src="https://i.imgur.com/6U9WWYY.png">
-                                     <div class="title-container">
-                                                <div class="swiper-title-small">Developer Mode Required</div></div>   
-                                        <div class="backout"></div>
-                                    </a>
-                                </div>
-                            </div>
-                            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-                        </div>
-                        <div class="block-title glass">Favorites<i class="f7-icons icon-small">heart_fill</i></div>
-
-                        <div class="list separated media-list inset sortable sortable-tap-hold glass" id="fav">
-                            <ul></ul>
-                            <div class="block-title centered-empty glass" id="favempty">Nothing to see here <i class="f7-icons icon-small">tray_fill</i></div>
-                        </div>
-                    </div>
-
-                    <div id="searchTab" class="tab page-content ptr-content ptr-tab" data-ptr-distance="56">
-                        <div class="ptr-preloader">
-                            <div class="preloader"></div>
-                            <div class="ptr-arrow"></div>
-                        </div>
-
-                        <div class="fab fab-right-bottom searchbar-hide-on-enable">
-                            <a class="searchbar-enable" data-searchbar=".searchbar"> <i class="icon f7-icons">search</i> </a>
-                        </div>
-
-
-                        <div class="list list-strong simple-list searchbar-not-found inset glass">
-                            <ul>
-                                <li>Unfortunately, no items were found.</li>
-                            </ul>
-                        </div>
-                        <div class="list media-list virtual-list separated inset  mt-negative glass">
-                            <ul></ul>
-                        </div>
-
-                    </div>
-                    <div id="sourcesTab" class="page-content bg-img tab ptr-content ptr-repos" data-ptr-distance="56">
-                        <div class="ptr-preloader">
-                            <div class="preloader"></div>
-                            <div class="ptr-arrow"></div>
-                        </div>
-
-                        <div id="news-section">
-                            <div class="block-title glass">Repository news</div>
-                            <div class="swiper-container margin-bottom repo-news-swiper" id="news-swiper-container">
-                                <div class="swiper-wrapper" id="news-swiper-wrapper"></div>
-                               
-                            </div>
-                        </div>
-                        <div class="block-title glass">Sources</div>
-                        <div class="list media-list separated inset sortable sortable-tap-hold glass">
-                            <ul id="sources-list"></ul>
-                        </div>
-
-                        <div class="fab fab-right-bottom" id="add-source-fab">
-                            <a href="#"> <i class="icon f7-icons">plus</i> </a>
-                        </div>
-                    </div>
-                    <div class="view" id="repository-view"></div>
-                    <div class="popup" id="sourceCompatibility">
-                        <div class="page">
-                            <div class="swipe-nav">
-                                <div><i class="f7-icons">minus</i></div>
-                            </div>
-                            <div class="page-content bg-img">
-                                <div class="block-title block-title-large">Compatible apps</div>
-                                <div class="list separated inset glass">
-                                    <ul>
-                                        <li>
-                                            <a href="https://flekstore.com" class="item-link item-content external">
-                                                <div class="item-media"><img loading="lazy" src="https://flekstore.com/pro_app/icons/apple-touch-icon.png"></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title-row">
-                                                        <div class="item-title">FlekSt0re</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://github.com/khcrysalis/Feather/tree/v2.0" class="item-link item-content external">
-                                                <div class="item-media"><img loading="lazy" src="https://i.imgur.com/YJqfuVA.png"></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title-row">
-                                                        <div class="item-title">Feather</div>
-                                                    </div>
-                                                    <div class="item-subtitle"></div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://s0n1c.ca/altlist/" class="item-link item-content external">
-                                                <div class="item-media"><img loading="lazy" src="https://s0n1c.ca/altlist/icon.png"></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title-row">
-                                                        <div class="item-title">AltList</div>
-                                                    </div>
-                                                    <div class="item-subtitle"></div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://appdb.to" class="item-link item-content external">
-                                                <div class="item-media"><img loading="lazy" src="https://pbs.twimg.com/profile_images/1838260547944394752/UfYijXbB.jpg"></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title-row">
-                                                        <div class="item-title">AppDB</div>
-                                                    </div>
-                                                    <div class="item-subtitle"></div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://gbox.pub" class="item-link item-content external">
-                                                <div class="item-media"><img loading="lazy" src="https://gbox.pub/Public/resources/icon256.png"></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title-row">
-                                                        <div class="item-title">GBox</div>
-                                                    </div>
-                                                    <div class="item-subtitle"></div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://esign.yyyue.xyz" class="item-link item-content external">
-                                                <div class="item-media"><img loading="lazy" src="https://esign.yyyue.xyz/ESignLogo200.png"></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title-row">
-                                                        <div class="item-title">ESign</div>
-                                                    </div>
-                                                    <div class="item-subtitle"></div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://usescarlet.com" class="item-link item-content external">
-                                                <div class="item-media"><img loading="lazy" src="https://usescarlet.com/favicon.png"></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title-row">
-                                                        <div class="item-title">Scarlet</div>
-                                                    </div>
-                                                    <div class="item-subtitle"></div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <br><br>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="popup" id="devs">
-                        <div class="page">
-                            <div class="swipe-nav">
-                                <div><i class="f7-icons">minus</i></div>
-                            </div>
-                            <div class="page-content bg-img">
-                                <div class="block-title glass">Lead developer and owner</div>
-                                <div class="list separated inset glass">
-                                    <ul>
-                                        <li>
-                                            <a href="https://techlxrd.github.io" class="item-link item-content external">
-                                                <div class="item-media"><img loading="lazy" src="https://techlxrd.github.io/assets/favicon.ico"></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title-row">
-                                                        <div class="item-title bold">TechLxrd</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        </ul>
-                                        </div><div class="block-title glass">Contributors & more</div><div class="list media-list separated inset glass"><ul>
-                                        <li>
-                                            <a href="https://github.com/serenityios" class="item-link item-content external">
-                                                <div class="item-media"><img loading="lazy" src="https://serenityios.com/serenity.jpeg"></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title-row">
-                                                        <div class="item-title">Serenity</div>
-                                                    </div>
-                                                    <div class="item-subtitle">Partial UDID code and more</div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://s0n1c.ca/" class="item-link item-content external">
-                                                <div class="item-media"><img loading="lazy" src="https://s0n1c.ca/me.svg"></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title-row">
-                                                        <div class="item-title">S0n1c</div>
-                                                    </div>
-                                                    <div class="item-subtitle">UDID API</div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://cococloud-signing.online/en" class="item-link item-content external">
-                                                <div class="item-media"><img loading="lazy" src="https://cococloud-signing.online/images/favicon.JPG"></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title-row">
-                                                        <div class="item-title">CocoCloud</div>
-                                                    </div>
-                                                    <div class="item-subtitle">Signer API</div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="https://x.com/DexlaZ_29200" class="item-link item-content external">
-                                                <div class="item-media"><img loading="lazy" src="https://pbs.twimg.com/profile_images/1934909610629939200/02cP8Ecn_400x400.jpg"></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title-row">
-                                                        <div class="item-title">@DexlaZ_29200</div>
-                                                    </div>
-                                                    <div class="item-subtitle">GlassUI idea</div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                          <li>
-                                            <a href="https://www.idownloadblog.com/" class="item-link item-content external">
-                                                <div class="item-media"><img loading="lazy" src="https://cdn.webpushr.com/siteassets/CFmApYMzCc.jpg"></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title-row">
-                                                        <div class="item-title">iDownloadBlog</div>
-                                                    </div>
-                                                    <div class="item-subtitle">News provider</div>
-                                                </div>
-                                            </a>
-                                        </li>                                                                            
-                                    </ul>
-                                    <br><br>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="popup" id="hs" data-close-on-escape="false" data-swipe-to-close="false" data-push="false">
-                        <div class="page bg-img">
-                            <div class="page-content">
-                                <div class="block block-strong inset liquid-glass">
-                                    <div class="block-title block-title-large glass">Install SoftwareKit<i class="f7-icons">arrow_down_circle_fill</i></div>
-                                    <p>Add SoftwareKit to your home screen and you're all set!</p>
-                                </div>
-                                <div class="list separated inset glass">
-                                    <ul>
-                                        <li>
-                                            <div class="item-content">
-                                                <div class="item-media"><i class="f7-icons">compass_fill</i></div>
-                                                <div class="item-inner">Access this webpage using Safari</div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="item-content">
-                                                <div class="item-media"><i class="f7-icons">square_arrow_up_fill</i></div>
-                                                <div class="item-inner">Tap the "Share" button</div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="item-content">
-                                                <div class="item-media"><i class="f7-icons">plus_app_fill</i></div>
-                                                <div class="item-inner">and tap "Add to Home Screen"</div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a class="item-link item-content popup-open" data-popup="#terms">
-                                                <div class="item-media"><i class="f7-icons">hand_raised_fill</i></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title-row">
-                                                        <div class="item-title">Terms of Service & Privacy policy</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <br>
-                                    <br>
-                                    <br>
-                                    <a class="button button-large button-fill button-round popup-close red-tinted">Close</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="popup" id="altstore-repo">
-                        <div class="page bg-img">
-                            <div class="swipe-nav">
-                                <div><i class="f7-icons">minus</i></div>
-                            </div>
-                            <div class="page-content">
-                                <center>
-                                    <img class="popup-img" src="assets/altstore.png">
-                                </center>
-                                <div class="list separated inset glass">
-                                    <ul>
-                                        <li>
-                                            <div class="item-content">
-                                                <div class="item-media"><i class="f7-icons">bag_fill</i></div>
-                                                <div class="item-inner">Discover and sideload amazing apps</div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="item-content">
-                                                <div class="item-media"><i class="f7-icons">globe</i></div>
-                                                <div class="item-inner">Compatible with multiple apps</div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="item-content">
-                                                <div class="item-media"><i class="f7-icons">person_alt_circle_fill</i></div>
-                                                <div class="item-inner">Safe apps from amazing developers</div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a class="item-link item-content popup-open" data-popup="#sourceCompatibility">
-                                                <div class="item-media"><i class="f7-icons">app_badge_fill</i></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title-row">
-                                                        <div class="item-title">See other compatible apps</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <br>
-                                    <br>
-                                    <a href="altstore://source?url=https://tweakrain.pages.dev/ios/altstore.json" class="button button-large button-fill button-raised button-round">Add to AltStore</a>
-                                    <p><a onclick="copySource()" class="button button-fill button-raised button-round">Copy to clipboard</a></p>
-                                    <p><a onclick="shareSource()" class="button button-fill button-raised button-round">Share source</a>
-                                </div>
-                                <div class="block-title glass">Looking for something else? </div>
-                                <div class="list separated inset glass">
-                                    <ul>
-                                        <li>
-                                            <a class="popup-close item-content item-link" onclick="goToTab('#sourcesTab')">
-                                                <div class="item-media"><i class="f7-icons">arrow_down_circle_fill</i></div>
-                                                <div class="item-inner">
-                                                    <div class="item-title-row">
-                                                        <div class="item-title">Go to Sources</div>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="popup" id="terms">
-                            <div class="page bg-img">
-                                <div class="swipe-nav">
-                                    <div><i class="f7-icons">minus</i></div>
-                                </div>
-                                <div class="page-content">                                 
-                                    <div class="block block-strong inset liquid-glass">
-                                        <h2>Terms of Service</h2>
-
-<p>Welcome to SoftwareKit. By using this app, you agree to the following terms.</p>
-
-<p><strong>1. App Usage:</strong> SoftwareKit provides utilities and tools for advanced device usage. All content available in the app is manually reviewed before being listed. We reserve the right to remove any utility, app, or source at any time.</p>
-
-<p><strong>2. Third-Party Content:</strong> SoftwareKit may provide access to third-party apps, utilities, or external sources. These are not owned or controlled by us. You are responsible for reviewing and accepting their terms before use.</p>
-
-<p><strong>3. Security and Reporting:</strong> Any utility, app, or source may be removed if reported or found to be malicious, unsafe, or misleading. If you encounter suspicious behavior or issues, use the <strong>Report</strong> button in its page to contact us.</p>
-
-<p><strong>4. User Responsibility:</strong> SoftwareKit is not malicious and does not intentionally provide malicious content. You are solely responsible for what you install or add, including apps installed using the Signer feature and any sources you manually add. We are not responsible for damage, data loss, bans, account issues, or security problems caused by malicious apps, modified packages, or untrusted sources added by the user.</p>
-
-<p><strong>5. Disclaimer:</strong> SoftwareKit is provided “as is” without warranties of any kind. Use of the app is entirely at your own risk.</p>
-
-<p><strong>6. Intellectual Property:</strong> You may not copy, modify, sell, redistribute, rebrand, or create derivative works of SoftwareKit or any part of it without explicit permission.</p>
-
-<p><strong>7. Changes:</strong> These terms may be updated at any time. Continued use of SoftwareKit means you accept the latest version.</p>
-
-<hr>
-
-<h2>Privacy Policy</h2>
-
-<p>SoftwareKit respects your privacy and limits data handling to what is strictly necessary for specific features.</p>
-
-<p><strong>1. Data Collection:</strong> SoftwareKit does not collect, track, sell, or share personal data for analytics, advertising, or profiling purposes.</p>
-
-<p><strong>2. Device Info Feature:</strong> If you use the Device Info feature, certain device-related information, including the UDID and related technical details, is temporarily sent to a Cloudflare Workers endpoint. This data is required solely for the feature to function.</p>
-
-<p><strong>3. Temporary Processing:</strong> The data sent to the Cloudflare Worker is stored temporarily for a maximum of 5 minutes so the app can retrieve it. After this period, the data is automatically deleted and is not retained, logged, or reused.</p>
-
-<p><strong>4. Encryption:</strong> All data transmitted between the app and the Cloudflare Worker is encrypted in transit. No unencrypted device information is exposed.</p>
-
-<p><strong>5. Local Storage:</strong> Once received by the app, device information is stored locally on your device only. This information never leaves your device again unless you explicitly trigger the Device Info feature.</p>
-
-<p><strong>6. Third-Party Services:</strong> Cloudflare Workers are used strictly as a temporary processing layer. They are not used for tracking, analytics, or data mining.</p>
-
-<p><strong>7. Policy Updates:</strong> This Privacy Policy may be updated if app functionality changes. Continued use of SoftwareKit means you accept the latest version.</p>
-
-<p><strong>Questions or concerns?</strong> Use the <a class="popup-open bold" data-popup="#feedback">Feedback</a> option in Settings or send an email to <a class="external bold" href="mailto:softwarekit_app@outlook.com">softwarekit_app@outlook.com</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="popup" id="changelog">
-                            <div class="page">
-                                <div class="swipe-nav">
-                                    <div><i class="f7-icons">minus</i></div>
-                                </div>
-                                <div class="page-content bg-img">
-                                    <div class="block-title block-title-large glass">What's new?</div>
-                                    <div class="block block-strong inset liquid-glass">
-                                        <p>Last updated: <span class="badge">Unknown</span></p>
-                                        <center>
-                                            <h1>v1.0</h1>
-                                        </center>
-                                        No changelog available at the moment, check back later. 
-                                    </div>
-                                    <br><br>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="popup" id="settings">
-                            <div class="page bg-img">
-                                <div class="navbar">
-          <div class="navbar-bg"></div>
-          <div class="navbar-inner">
-            <div class="title">Settings</div>
-            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
-          </div>
+      <div class="sidebar bg-img">
+        <div class="sidebar-header">
+          <i class="f7-icons">cube_box_fill</i>
         </div>
-                                <div class="page-content">                                   
-                                    <div class="list separated media-list inset glass">
-                                        <ul>
-
-                                            <li>
-                                                <div class="item-content">
-                                                    <div class="item-media">
-
-                                                        <img loading="lazy" src="https://softwarekit.pages.dev/favicon.png">
-                                                        </a>
-                                                    </div>
-                                                    <div class="item-inner">
-                                                        <div class="item-title-row">
-                                                            <div class="item-title">
-                                                                <script>
-                                                                    var userAgent = navigator.userAgent,
-                                                                        iosMatch = userAgent.match(/(iPhone|iPad|iPod).*? OS (\d+)_?(\d+)?_?(\d+)?/i),
-                                                                        ipadMatch = userAgent.match(/iPad.*? OS (\d+)_?(\d+)?_?(\d+)?/i),
-                                                                        macosMatch = userAgent.match(/Mac OS X (\d+)[_.](\d+)(?:[_.](\d+))?/i),
-                                                                        iosVersion = iosMatch ? iosMatch.slice(2).filter(Boolean).join(". ") : null,
-                                                                        ipadVersion = ipadMatch ? ipadMatch.slice(1).filter(Boolean).join(". ") : null,
-                                                                        macosVersion = macosMatch ? macosMatch.slice(1).filter(Boolean).join(". ") : null;
-                                                                    iosVersion && document.write("iOS " + iosVersion);
-                                                                    ipadVersion && document.write("iPadOS " + ipadVersion);
-                                                                    macosVersion && document.write("macOS " + macosVersion);
-                                                                </script>
-                                                            </div>
-                                                        </div>
-                                                        <div class="item-subtitle small-text">
-                                                            SoftwareKit iOS v1.0
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            
-                                        </ul>
-                                    </div>
-  <div class="block-title glass">User interface</div>                              
-                                    <div class="list separated inset glass">
-                                        <ul>
-                                            <li class="flex-between accent-li item-content">
-                                                <div class="flex-align">
-                                                    <div class="item-media"><i class="icon f7-icons">paintbrush_fill</i></div>
-                                                    <div class="item-inner">
-                                                        <div class="item-title-row" style="margin-top:3px;">
-                                                            <div class="item-title">Accent color</div>
-                                                        </div>
-                                                    </div>
-                                                </div> <span class="accent-color-indicator" id="accent-color"></span>
-                                            </li>
- <li class="flex-between accent-li item-content">
-                                                <div class="flex-align">
-                                                    <div class="item-media"><i class="f7-icons">eye_fill</i></div>
-                                                    <div class="item-inner">
-                                                        <div class="item-title-row" style="margin-top:3px;">
-                                                            <div class="item-title">GlassUI</div>
-                                                        </div>
-                                                    </div>
-                                                </div>  <label class="toggle toggle-init">
-          <input
-            id="toggle-glassUI"
-            type="checkbox" />
-          <span class="toggle-icon"></span>
-        </label>
-                                            </li>
-                                             <div class="block-title glass">Info</div>                                                                         <li>
-                                                <a class="item-link item-content popup-open" data-popup="#terms">
-                                                    <div class="item-media"><i class="f7-icons">hand_raised_fill</i></div>
-                                                    <div class="item-inner">
-                                                        <div class="item-title-row">
-                                                            <div class="item-title">Terms of Service & Privacy Policy</div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="item-link item-content popup-open" data-popup="#changelog">
-                                                    <div class="item-media"><i class="f7-icons">rocket_fill</i></div>
-                                                    <div class="item-inner">
-                                                        <div class="item-title-row">
-                                                            <div class="item-title">What's new? </div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
- <div class="block-title glass">Contact forms & more</div>                                                                          
-<li>
-                                                <a class="item-link item-content popup-open" data-popup="#feedback">
-                                                    <div class="item-media"><i class="f7-icons">bubble_left_fill</i></div>
-                                                    <div class="item-inner">
-                                                        <div class="item-title-row">
-                                                            <div class="item-title">Send Feedback</div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="item-link item-content popup-open" data-popup="#appsubmit">
-                                                    <div class="item-media"><i class="f7-icons">app_badge_fill</i></div>
-                                                    <div class="item-inner">
-                                                        <div class="item-title-row">
-                                                            <div class="item-title">App Submission</div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>  
-<li>
-                                                <a class="item-link item-content popup-open" data-popup="#devs">
-                                                    <div class="item-media"><i class="f7-icons">doc_person_fill</i></div>
-                                                    <div class="item-inner">
-                                                        <div class="item-title-row">
-                                                            <div class="item-title">Contributors & more</div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="https://x.com/softwarekit_app/" class="item-link item-content external">
-                                                    <div class="item-media"><i class="f7-icons">logo_twitter</i></div>
-                                                    <div class="item-inner">
-                                                        <div class="item-title-row">
-                                                            <div class="item-title">Follow</div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>                                                                        
-<li>
-                                                <a onclick="shareURL()" class="item-link item-content">
-                                                    <div class="item-media"><i class="f7-icons">square_arrow_up</i></div>
-                                                    <div class="item-inner">
-                                                        <div class="item-title-row">
-                                                            <div class="item-title">Share SoftwareKit</div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                             <div class="block-title glass">Other</div>                                            <li>
-                                                <a onclick="reset()" class="item-link item-content">
-                                                    <div class="item-media"><i class="icon f7-icons if-not-md color-red">trash_fill</i></div>
-                                                    <div class="item-inner">
-                                                        <div class="item-title-row">
-                                                            <div class="item-title">Reset</div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="popup popup-report" id="report-app">
-                            <div class="page bg-img">
-                                <div class="navbar">
-          <div class="navbar-bg"></div>
-          <div class="navbar-inner">
-            <div class="title">Report</div>
-            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
-          </div>
-        </div>
-
-                                <div class="page-content">
-                                    <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="report-form">
-                                        <input type="text" name="_honey" class="display-none">
-
-                                        <input type="hidden" name="_captcha" value="false">
-                                        <ul>
-                                            <li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">App name</div>
-                                                        <div class="item-input-wrap">
-                                                            <input type="text" name="iOS App Name" id="report-app-name" readonly required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">Email</div>
-                                                        <div class="item-input-wrap">
-                                                            <input placeholder="youremail@something.com" type="email" name="Email" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li>
-  <a class="item-link smart-select" data-open-in="popover">
-    <select name="Reason" required>
-      <option value="" disabled selected>Select reason</option>
-      <option value="Malicious">Malicious</option>
-      <option value="Outdated">Outdated</option>
-      <option value="Not working">Not working</option>
-      <option value="Takedown request">Takedown request</option>
-      <option value="Other">Other (Specify)</option>
-    </select>
-    <div class="item-content">
-      <div class="item-inner">
-        <div class="item-title">Reason</div>
-      </div>
-    </div>
-  </a>
-</li>
-
-                                            <li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">Feedback</div>
-                                                        <div class="item-input-wrap">
-                                                            <textarea placeholder="e.g. The download link is broken, the app crashes on startup, or the version is outdated." name="Feedback" required></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                       <br>
-                                            <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
-            <span class="preloader"></span>
-      <span>Send report</span>
-          </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                         <div class="popup app-submission" id="appsubmit">
-                            <div class="page bg-img">
-                                <div class="navbar">
-          <div class="navbar-bg"></div>
-          <div class="navbar-inner">
-            <div class="title">App Submission</div>
-            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
-          </div>
-        </div>
-
-                                <div class="page-content">
-                                    <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="appsubmit-form">
-                                        <input type="text" name="_honey" class="display-none">
-
-                                        <input type="hidden" name="_captcha" value="false">
-                                        <ul>
-                                            <li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">App name</div>
-                                                        <div class="item-input-wrap">
-                                                            <input type="text" name="iOS App Name" placeholder="e.g SoftwareKit" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-<li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">URL</div>
-                                                        <div class="item-input-wrap">
-                                                            <input type="url" placeholder="https://example.com" name="App Name" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">Email</div>
-                                                        <div class="item-input-wrap">
-                                                            <input placeholder="youremail@something.com" type="email" name="Email" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li>
-  <a class="item-link smart-select" data-open-in="popover">
-    <select name="Type" required>
-      <option value="" disabled selected>Select type</option>
-      <option value="App Store Application">App Store Application</option>
-      <option value="iPA File">iPA File</option>
-      <option value="Website">Website</option>      
-    </select>
-    <div class="item-content">
-      <div class="item-inner">
-        <div class="item-title">Type</div>
-      </div>
-    </div>
-  </a>
-</li>
-
-                                            <li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">Additional info</div>
-                                                        <div class="item-input-wrap">
-                                                            <textarea  name="Additional info"></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                       <br>
-                                            <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
-            <span class="preloader"></span>
-      <span>Submit app</span>
-          </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                         <div class="popup popup-report" id="feedback">
-                            <div class="page bg-img">
-                                <div class="navbar">
-          <div class="navbar-bg"></div>
-          <div class="navbar-inner">
-            <div class="title">Send feedback</div>
-            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
-          </div>
-        </div>
-
-                                <div class="page-content">
-                                    <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="feedback-form">
-                                        <input type="text" name="_honey" class="display-none">
-
-                                        <input type="hidden" name="_captcha" value="false">
-                                        <ul>
-                                            
-                                            <li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">Email</div>
-                                                        <div class="item-input-wrap">
-                                                            <input placeholder="youremail@something.com" type="email" name="Email" required />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li>
-  <a class="item-link smart-select" data-open-in="popover">
-    <select name="Feedback type" required>
-      <option value="" disabled selected>Feedback type</option>
-      <option value="Issue/Bug">Issue/Bug</option>
-      <option value="Feature request">Feature request</option>
-      <option value="Other">Other</option>    
-    </select>
-    <div class="item-content">
-      <div class="item-inner">
-        <div class="item-title">Feedback type</div>
-      </div>
-    </div>
-  </a>
-</li>
-
-                                            <li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">Feedback</div>
-                                                        <div class="item-input-wrap">
-                                                            <textarea placeholder="e.g. A bug in the Sources tab, missing data on the home page, or a feature request." name="iOS Feedback" required></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-  <br>                                                                          
-                                            <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
-            <span class="preloader"></span>
-      <span>Send Feedback</span>
-          </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-                         <div class="popup" id="trustCert">
-                            <div class="page bg-img">
-                                <div class="navbar">         
-          <div class="navbar-inner">
-            <div class="title"></div>              
-            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
-          </div>
-        </div>
-                                <div class="page-content no-navbar">                                  
-          <center>             
-            <img loading="lazy" src="https://i.imgur.com/8Mle0ax.png" class="guide-img">
-          </center>
-          <div class="block inset glass">
-          <strong>How to Trust an Enterprise Certificate</strong>
-          <ol>
-            <li>Open <b>Settings</b> on your device.</li>
-            <li>Go to <b>General</b> &rarr; <b>VPN & Device Management</b>.</li>
-            <li>Find the relevant <b>Enterprise App</b> profile under "Enterprise App" or "Device Management".</li>
-            <li>Tap the profile, then tap <b>Trust</b> and confirm your choice.</li>
-            <li>After trusting, you can open the app as normal.</li>
-          </ol>
-          <p>Trusting the certificate ensures the app is authenticated and can run on your device securely.</p>
-        </div>
-        <div class="list separated inset glass">
+        <div class="sidebar-list glass">
           <ul>
             <li>
-              <a href="com.apple.Preferences://" class="item-link item-content external">
-                <div class="item-media"><i class="f7-icons">gear</i></div>
-                <div class="item-inner"><div class="item-title-row"><div class="item-title">Open Settings</div></div></div>
-              </a>
+              <a href="#homeTab" class="item-link tab-link tab-link-active" data-tab-title="Today">
+                <i class="f7-icons">today_fill</i> Apps </a>
             </li>
-          </ul>
-        </div>
-        <br><br>
-      </div>
-    </div>
-    <div class="popup" id="verifyintegrity">
-                            <div class="page bg-img">
-                                <div class="navbar">         
-          <div class="navbar-inner">
-            <div class="title"></div>              
-            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
-          </div>
-        </div>
-                                <div class="page-content no-navbar">                                         
-          <center>
-            <img loading="lazy" src="https://i.imgur.com/KmWGX5e.png" class="guide-img">
-          </center>
-          <div class="block inset glass">
-          <strong>How to Fix "Unable to Verify App" or "Integrity Could Not Be Verified"</strong>
-          <ol>
-            <li>This error often means the certificate has been revoked or blacklisted.</li>
-            <li>First, try deleting the app completely and reinstalling it.</li>
-            <li>If the issue persists, <b>backup your data</b> and <b>reset your device to factory settings</b>:</li>
-            <ul>
-              <li>Go to <b>Settings &rarr; General &rarr; Transfer or Reset iPhone &rarr; Erase All Content and Settings</b>.</li>
-            </ul>
-            <li>After reset, restore your backup and try installing again.</li>
-          </ol>
-          <p>Note: Always ensure your data is backed up before performing a factory reset.</p>
-        </div>
-        <div class="list separated inset glass">
-          <ul>
             <li>
-              <a href="com.apple.Preferences://" class="item-link item-content external">
-                <div class="item-media"><i class="f7-icons">gear</i></div>
-                <div class="item-inner"><div class="item-title-row"><div class="item-title">Open Settings</div></div></div>
-              </a>
+              <a href="#globalTab" class="item-link tab-link" data-tab-title="Global">
+                <i class="f7-icons">globe</i> Global </a>
+            </li>
+            <li>
+              <a href="#searchTab" class="item-link tab-link" data-tab-title="Library">
+                <i class="f7-icons">square_stack_3d_up_fill</i> Library </a>
+            </li>
+            <li>
+              <a href="#sourcesTab" class="item-link tab-link" data-tab-title="Sources">
+                <i class="f7-icons">arrow_down_circle_fill</i> Sources </a>
             </li>
           </ul>
         </div>
       </div>
-    </div>
-     <div class="popup" id="devmode">
-      <div class="page bg-img">
-        <div class="navbar">         
-          <div class="navbar-inner">
-            <div class="title"></div>              
-            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
-          </div>
-        </div>
-        <div class="page-content no-navbar">               
-            <center>
-              <img loading="lazy" src="https://i.imgur.com/6U9WWYY.png" class="guide-img">
-            </center>
-            <div class="block glass">
-            <strong>How to Enable Developer Mode</strong>
-            <ol >
-              <li>Open <b>Settings</b> on your device.</li>
-              <li>Go to <b>Privacy & Security</b>.</li>
-              <li>Scroll down and enable <b>Developer Mode</b>.</li>
-            </ol>
-          </div>
-          <div class="list separated inset glass">
-            <ul>
-              <li>
-                <a href="com.apple.Preferences://" class="item-link item-content external">
-                  <div class="item-media"><i class="f7-icons">gear</i></div>
-                  <div class="item-inner"><div class="item-title-row"><div class="item-title">Open Settings</div></div></div>
+      <div class="view view-main">
+        <div class="page bg-img">
+          <div class="navbar navbar-large">
+            <div class="navbar-bg"></div>
+            <div class="navbar-inner">
+              <div class="title">Today</div>
+              <div class="right">
+                <a class="link icon-only popup-open" data-popup="#settings">
+                  <i class="icon f7-icons">gear</i>
                 </a>
-              </li>
-            </ul>
+              </div>
+              <div class="title-large">
+                <div class="title-large-text">Today</div>
+                <form class="searchbar searchbar-init searchbar-expandable" data-search-container=".virtual-list" data-search-item="li" data-search-in=".item-title" data-expand="navbar">
+                  <div class="searchbar-inner">
+                    <div class="searchbar-input-wrap">
+                      <input type="search" placeholder="Search">
+                      <i class="searchbar-icon"></i>
+                      <span class="input-clear-button"></span>
+                    </div>
+                    <span class="searchbar-disable-button">
+                      <i class="icon icon-close"></i>
+                    </span>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-<div class="popup" id="trustStore">
-  <div class="page bg-img">
-    <div class="navbar">         
-      <div class="navbar-inner">
-        <div class="title"></div>              
-        <div class="right">
-          <a class="link popup-close">
-            <i class="icon icon-close"></i> </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="page-content no-navbar">                                    
-      <center>                       
-        <img loading="lazy" src="https://i.imgur.com/b4em9PO.png" class="guide-img"> 
-      </center>        
-      
-      <div class="block glass">
-        <strong>How to Allow a 3rd Party App Store</strong>
-        <ol>
-          <li>When prompted, tap <b>OK</b> to allow installation.</li>
-          <li>Open <b>Settings</b>, go to <b>General &rarr; Device Management</b>, and trust the store profile.</li>
-          <li>Return to the website and tap <b>Install App Marketplace</b>.</li>
-        </ol>
-        <p>You can now use the 3rd party marketplace on your device.</p>
-      </div>
-
-      <div class="list separated inset glass">
-        <ul>
-          <li>
-            <a href="com.apple.Preferences://" class="item-link item-content external">
-              <div class="item-media"><i class="f7-icons">gear</i></div> <div class="item-inner">
-                <div class="item-title-row">
-                  <div class="item-title">Open Settings</div>
+          <div class="toolbar tabbar tabbar-icons toolbar-bottom searchbar-hide-on-enable">
+            <div class="toolbar-inner">
+              <div class="toolbar-pane">
+                <a href="#homeTab" class="tab-link tab-link-active" data-tab-title="Today">
+                  <i class="icon f7-icons">today_fill</i>
+                  <span class="tabbar-label">Today</span>
+                </a>
+                <a href="#globalTab" class="tab-link" data-tab-title="Global">
+                  <i class="icon f7-icons">globe</i>
+                  <span class="tabbar-label">Global</span>
+                </a>
+                <a href="#searchTab" class="tab-link" data-tab-title="Library">
+                  <i class="icon f7-icons">square_stack_3d_up_fill</i>
+                  <span class="tabbar-label">Library</span>
+                </a>
+                <a href="#sourcesTab" class="tab-link" data-tab-title="Sources">
+                  <i class="icon f7-icons">arrow_down_circle_fill</i>
+                  <span class="tabbar-label">Sources</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="tabs">
+            <div id="homeTab" class="page-content tab tab-active ptr-content ptr-tab" data-ptr-distance="56">
+              <div class="ptr-preloader">
+                <div class="preloader"></div>
+                <div class="ptr-arrow"></div>
+              </div>
+              <div>
+                <div class="swiper swiper-padding featured swiper-initialized swiper-horizontal swiper-ios swiper-backface-hidden">
+                  <div class="swiper-wrapper" aria-live="polite">
+                    <div class="swiper-slide featured" role="group">
+                      <a class="link popup-open" data-popup="#radiance">
+                        <div class="title-container">
+                          <div class="swiper-title">Radiance</div>
+                        </div>
+                        <img loading="lazy" src="https://i.imgur.com/XMKMZpw.jpeg">
+                        <div class="backout"></div>
+                      </a>
+                    </div>
+                    <div class="swiper-slide featured" role="group">
+                      <a class="link popup-open" data-popup="#flekst0re">
+                        <div class="title-container">
+                          <div class="swiper-title">FlekSt0re</div>
+                        </div>
+                        <img loading="lazy" src="https://i.imgur.com/hkT9mDh.jpeg">
+                        <div class="backout"></div>
+                      </a>
+                    </div>
+                    <div class="swiper-slide featured" role="group">
+                      <a class="link popup-open" data-popup="#altstore">
+                        <div class="title-container">
+                          <div class="swiper-title">AltStore</div>
+                        </div>
+                        <img loading="lazy" src="https://i.imgur.com/pLYXkQb.jpeg">
+                        <div class="backout"></div>
+                      </a>
+                    </div>
+                    <div class="swiper-slide featured" role="group">
+                      <a class="link popup-open" data-popup="#oldos">
+                        <div class="title-container">
+                          <div class="swiper-title">OldOS</div>
+                        </div>
+                        <img loading="lazy" src="https://i.imgur.com/Jzz41d4.jpeg">
+                        <div class="backout"></div>
+                      </a>
+                    </div>
+                    <div class="swiper-slide featured" role="group">
+                      <a class="link popup-open" data-popup="#eclipse">
+                        <div class="title-container">
+                          <div class="swiper-title">Eclipse</div>
+                        </div>
+                        <img loading="lazy" src="https://i.imgur.com/s42N2P3.png">
+                        <div class="backout"></div>
+                      </a>
+                    </div>
+                  </div>
+                  <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+                </div>
+                <div id="news"></div>
+                <br>
+              </div>
+            </div>
+            <div id="globalTab" class="page-content tab ptr-content ptr-tab" data-ptr-distance="56">
+              <div class="ptr-preloader">
+                <div class="preloader"></div>
+                <div class="ptr-arrow"></div>
+              </div>
+              <div class="list separated inset glass">
+                <ul>
+                  <li>
+                    <a onclick="openSignerPopup()" class="item-link item-content external">
+                      <div class="item-media">
+                        <i class="f7-icons">pencil_outline</i>
+                      </div>
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">Signer</div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="item-link item-content popup-open" data-popup="#altstore-repo">
+                      <div class="item-media">
+                        <i class="f7-icons">bag_fill</i>
+                      </div>
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">AltStore Source</div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="item-link item-content popup-open" data-popup="#udid">
+                      <div class="item-media">
+                        <i class="f7-icons">gear</i>
+                      </div>
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">Device Info</div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="accordion-item">
+                    <a class="item-link item-content">
+                      <div class="item-media">
+                        <i class="f7-icons">ellipsis_circle_fill</i>
+                      </div>
+                      <div class="item-inner">
+                        <div class="item-title">Other</div>
+                      </div>
+                    </a>
+                    <div class="accordion-item-content">
+                      <div class="list list-nested glass">
+                        <ul>
+                          <li>
+                            <a href="https://ios.cfw.guide" class="item-link item-content external">
+                              <div class="item-media">
+                                <i class="f7-icons">lock_open_fill</i>
+                              </div>
+                              <div class="item-inner">
+                                <div class="item-title-row">
+                                  <div class="item-title">Jailbreak guide</div>
+                                </div>
+                              </div>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="https://www.ios-repo-updates.com/" class="item-link item-content external">
+                              <div class="item-media">
+                                <i class="f7-icons">cube_box_fill</i>
+                              </div>
+                              <div class="item-inner">
+                                <div class="item-title-row">
+                                  <div class="item-title">Jailbreak repos</div>
+                                </div>
+                              </div>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="https://cdn.adtidy.org/public/Dns/adguard-dns.mobileconfig" class="item-link item-content external">
+                              <div class="item-media">
+                                <i class="f7-icons">rectangle_3_offgrid_fill</i>
+                              </div>
+                              <div class="item-inner">
+                                <div class="item-title-row">
+                                  <div class="item-title">Adblocker</div>
+                                </div>
+                              </div>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+              </div>
+              <div class="block-title glass">Guides <i class="f7-icons icon-small">book_fill</i>
+              </div>
+              <div class="swiper swiper-padding guides swiper-initialized swiper-horizontal swiper-ios swiper-backface-hidden">
+                <div class="swiper-wrapper" aria-live="polite">
+                  <div class="swiper-slide guides guides-active" role="group" aria-label="1 / 5">
+                    <a class="link popup-open" data-popup="#trustStore">
+                      <div class="title-container">
+                        <div class="swiper-title-small">App Marketplace</div>
+                      </div>
+                      <img loading="lazy" src="https://i.imgur.com/b4em9PO.png">
+                      <div class="backout"></div>
+                    </a>
+                  </div>
+                  <div class="swiper-slide guides" role="group" aria-label="2 / 5">
+                    <a class="link popup-open" data-popup="#trustCert">
+                      <img loading="lazy" src="https://i.imgur.com/8Mle0ax.png">
+                      <div class="title-container">
+                        <div class="swiper-title-small">Trust certificate</div>
+                      </div>
+                      <div class="backout"></div>
+                    </a>
+                  </div>
+                  <div class="swiper-slide guides guides-next" role="group" aria-label="3 / 5">
+                    <a class="link popup-open" data-popup="#verifyintegrity">
+                      <img loading="lazy" src="https://i.imgur.com/KmWGX5e.png">
+                      <div class="title-container">
+                        <div class="swiper-title-small">Unable to verify/install app</div>
+                      </div>
+                      <div class="backout"></div>
+                    </a>
+                  </div>
+                  <div class="swiper-slide guides" role="group" aria-label="4 / 5">
+                    <a class="link popup-open" data-popup="#devmode">
+                      <img loading="lazy" src="https://i.imgur.com/6U9WWYY.png">
+                      <div class="title-container">
+                        <div class="swiper-title-small">Developer Mode Required</div>
+                      </div>
+                      <div class="backout"></div>
+                    </a>
+                  </div>
+                </div>
+                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+              </div>
+              <div class="block-title glass">Favorites <i class="f7-icons icon-small">heart_fill</i>
+              </div>
+              <div class="list separated media-list inset sortable sortable-tap-hold glass" id="fav">
+                <ul></ul>
+                <div class="block-title centered-empty glass" id="favempty">Nothing to see here <i class="f7-icons icon-small">tray_fill</i>
                 </div>
               </div>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
-          <div class="popup" id="udid">
-      
-          <div class="page bg-img">
-                               <div class="navbar">
-          <div class="navbar-bg"></div>
-          <div class="navbar-inner">
-            <div class="title">Device Info</div>
-            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
-          </div>
-        </div>
-                                <div class="page-content">
-              <div class="block" id="udid-info-block">
-                <p>This feature installs a temporary Apple configuration profile to read your device info. After downloading, install the profile in Settings, then return here.</p>
-                <button onclick="postRequest()" class="button button-fill button-large button-round ">Install profile</button>
-                <br>              
+            </div>
+            <div id="searchTab" class="tab page-content ptr-content ptr-tab" data-ptr-distance="56">
+              <div class="ptr-preloader">
+                <div class="preloader"></div>
+                <div class="ptr-arrow"></div>
               </div>
-  <div id="device-container"></div>
+              <div class="fab fab-right-bottom searchbar-hide-on-enable">
+                <a class="searchbar-enable" data-searchbar=".searchbar">
+                  <i class="icon f7-icons">search</i>
+                </a>
+              </div>
+              <div class="list list-strong simple-list searchbar-not-found inset glass">
+                <ul>
+                  <li>Unfortunately, no items were found.</li>
+                </ul>
+              </div>
+              <div class="list media-list virtual-list separated inset  mt-negative glass">
+                <ul></ul>
+              </div>
+            </div>
+            <div id="sourcesTab" class="page-content bg-img tab ptr-content ptr-repos" data-ptr-distance="56">
+              <div class="ptr-preloader">
+                <div class="preloader"></div>
+                <div class="ptr-arrow"></div>
+              </div>
+              <div id="news-section">
+                <div class="block-title glass">Repository news</div>
+                <div class="swiper-container margin-bottom repo-news-swiper" id="news-swiper-container">
+                  <div class="swiper-wrapper" id="news-swiper-wrapper"></div>
+                </div>
+              </div>
+              <div class="block-title glass">Sources</div>
+              <div class="list media-list separated inset sortable sortable-tap-hold glass">
+                <ul id="sources-list"></ul>
+              </div>
+              <div class="fab fab-right-bottom" id="add-source-fab">
+                <a href="#">
+                  <i class="icon f7-icons">plus</i>
+                </a>
+              </div>
+            </div>
+            <div class="view" id="repository-view"></div>
+            <div class="popup" id="sourceCompatibility">
+              <div class="page">
+                <div class="swipe-nav">
+                  <div>
+                    <i class="f7-icons">minus</i>
+                  </div>
+                </div>
+                <div class="page-content bg-img">
+                  <div class="block-title block-title-large">Compatible apps</div>
+                  <div class="list separated inset glass">
+                    <ul>
+                      <li>
+                        <a href="https://flekstore.com" class="item-link item-content external">
+                          <div class="item-media">
+                            <img loading="lazy" src="https://flekstore.com/pro_app/icons/apple-touch-icon.png">
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">FlekSt0re</div>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://github.com/khcrysalis/Feather/tree/v2.0" class="item-link item-content external">
+                          <div class="item-media">
+                            <img loading="lazy" src="https://i.imgur.com/YJqfuVA.png">
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">Feather</div>
+                            </div>
+                            <div class="item-subtitle"></div>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://s0n1c.ca/altlist/" class="item-link item-content external">
+                          <div class="item-media">
+                            <img loading="lazy" src="https://s0n1c.ca/altlist/icon.png">
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">AltList</div>
+                            </div>
+                            <div class="item-subtitle"></div>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://appdb.to" class="item-link item-content external">
+                          <div class="item-media">
+                            <img loading="lazy" src="https://pbs.twimg.com/profile_images/1838260547944394752/UfYijXbB.jpg">
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">AppDB</div>
+                            </div>
+                            <div class="item-subtitle"></div>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://gbox.pub" class="item-link item-content external">
+                          <div class="item-media">
+                            <img loading="lazy" src="https://gbox.pub/Public/resources/icon256.png">
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">GBox</div>
+                            </div>
+                            <div class="item-subtitle"></div>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://esign.yyyue.xyz" class="item-link item-content external">
+                          <div class="item-media">
+                            <img loading="lazy" src="https://esign.yyyue.xyz/ESignLogo200.png">
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">ESign</div>
+                            </div>
+                            <div class="item-subtitle"></div>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://usescarlet.com" class="item-link item-content external">
+                          <div class="item-media">
+                            <img loading="lazy" src="https://usescarlet.com/favicon.png">
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">Scarlet</div>
+                            </div>
+                            <div class="item-subtitle"></div>
+                          </div>
+                        </a>
+                      </li>
+                    </ul>
+                    <br>
+                    <br>
                   </div>
                 </div>
               </div>
-            </div>      
-                            
-                        <script src="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.js"></script>
-                        <script src="js/app.js"></script>                       
-</body>
-
+            </div>
+            <div class="popup" id="devs">
+              <div class="page">
+                <div class="swipe-nav">
+                  <div>
+                    <i class="f7-icons">minus</i>
+                  </div>
+                </div>
+                <div class="page-content bg-img">
+                  <div class="block-title glass">Lead developer and owner</div>
+                  <div class="list separated inset glass">
+                    <ul>
+                      <li>
+                        <a href="https://techlxrd.github.io" class="item-link item-content external">
+                          <div class="item-media">
+                            <img loading="lazy" src="https://techlxrd.github.io/assets/favicon.ico">
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title bold">TechLxrd</div>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="block-title glass">Contributors & more</div>
+                  <div class="list media-list separated inset glass">
+                    <ul>
+                      <li>
+                        <a href="https://github.com/serenityios" class="item-link item-content external">
+                          <div class="item-media">
+                            <img loading="lazy" src="https://serenityios.com/serenity.jpeg">
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">Serenity</div>
+                            </div>
+                            <div class="item-subtitle">Partial UDID code and more</div>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://s0n1c.ca/" class="item-link item-content external">
+                          <div class="item-media">
+                            <img loading="lazy" src="https://s0n1c.ca/me.svg">
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">S0n1c</div>
+                            </div>
+                            <div class="item-subtitle">UDID API</div>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://cococloud-signing.online/en" class="item-link item-content external">
+                          <div class="item-media">
+                            <img loading="lazy" src="https://cococloud-signing.online/images/favicon.JPG">
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">CocoCloud</div>
+                            </div>
+                            <div class="item-subtitle">Signer API</div>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://x.com/DexlaZ_29200" class="item-link item-content external">
+                          <div class="item-media">
+                            <img loading="lazy" src="https://pbs.twimg.com/profile_images/1934909610629939200/02cP8Ecn_400x400.jpg">
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">@DexlaZ_29200</div>
+                            </div>
+                            <div class="item-subtitle">GlassUI idea</div>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://www.idownloadblog.com/" class="item-link item-content external">
+                          <div class="item-media">
+                            <img loading="lazy" src="https://cdn.webpushr.com/siteassets/CFmApYMzCc.jpg">
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">iDownloadBlog</div>
+                            </div>
+                            <div class="item-subtitle">News provider</div>
+                          </div>
+                        </a>
+                      </li>
+                    </ul>
+                    <br>
+                    <br>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="popup" id="hs" data-close-on-escape="false" data-swipe-to-close="false" data-push="false">
+              <div class="page bg-img">
+                <div class="page-content">
+                  <div class="block block-strong inset liquid-glass">
+                    <div class="block-title block-title-large glass">Install SoftwareKit <i class="f7-icons">arrow_down_circle_fill</i>
+                    </div>
+                    <p>Add SoftwareKit to your home screen and you're all set!</p>
+                  </div>
+                  <div class="list separated inset glass">
+                    <ul>
+                      <li>
+                        <div class="item-content">
+                          <div class="item-media">
+                            <i class="f7-icons">compass_fill</i>
+                          </div>
+                          <div class="item-inner">Access this webpage using Safari</div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="item-content">
+                          <div class="item-media">
+                            <i class="f7-icons">square_arrow_up_fill</i>
+                          </div>
+                          <div class="item-inner">Tap the "Share" button</div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="item-content">
+                          <div class="item-media">
+                            <i class="f7-icons">plus_app_fill</i>
+                          </div>
+                          <div class="item-inner">and tap "Add to Home Screen"</div>
+                        </div>
+                      </li>
+                      <li>
+                        <a class="item-link item-content popup-open" data-popup="#terms">
+                          <div class="item-media">
+                            <i class="f7-icons">hand_raised_fill</i>
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">Terms of Service & Privacy policy</div>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                    </ul>
+                    <br>
+                    <br>
+                    <br>
+                    <a class="button button-large button-fill button-round popup-close red-tinted">Close</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="popup" id="altstore-repo">
+              <div class="page bg-img">
+                <div class="swipe-nav">
+                  <div>
+                    <i class="f7-icons">minus</i>
+                  </div>
+                </div>
+                <div class="page-content">
+                  <center>
+                    <img class="popup-img" src="assets/altstore.png">
+                  </center>
+                  <div class="list separated inset glass">
+                    <ul>
+                      <li>
+                        <div class="item-content">
+                          <div class="item-media">
+                            <i class="f7-icons">bag_fill</i>
+                          </div>
+                          <div class="item-inner">Discover and sideload amazing apps</div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="item-content">
+                          <div class="item-media">
+                            <i class="f7-icons">globe</i>
+                          </div>
+                          <div class="item-inner">Compatible with multiple apps</div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="item-content">
+                          <div class="item-media">
+                            <i class="f7-icons">person_alt_circle_fill</i>
+                          </div>
+                          <div class="item-inner">Safe apps from amazing developers</div>
+                        </div>
+                      </li>
+                      <li>
+                        <a class="item-link item-content popup-open" data-popup="#sourceCompatibility">
+                          <div class="item-media">
+                            <i class="f7-icons">app_badge_fill</i>
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">See other compatible apps</div>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                    </ul>
+                    <br>
+                    <br>
+                    <a href="altstore://source?url=https://tweakrain.pages.dev/ios/altstore.json" class="button button-large button-fill button-raised button-round">Add to AltStore</a>
+                    <p>
+                      <a onclick="copySource()" class="button button-fill button-raised button-round">Copy to clipboard</a>
+                    </p>
+                    <p>
+                      <a onclick="shareSource()" class="button button-fill button-raised button-round">Share source</a>
+                  </div>
+                  <div class="block-title glass">Looking for something else? </div>
+                  <div class="list separated inset glass">
+                    <ul>
+                      <li>
+                        <a class="popup-close item-content item-link" onclick="goToTab('#sourcesTab')">
+                          <div class="item-media">
+                            <i class="f7-icons">arrow_down_circle_fill</i>
+                          </div>
+                          <div class="item-inner">
+                            <div class="item-title-row">
+                              <div class="item-title">Go to Sources</div>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="popup" id="terms">
+                <div class="page bg-img">
+                  <div class="swipe-nav">
+                    <div>
+                      <i class="f7-icons">minus</i>
+                    </div>
+                  </div>
+                  <div class="page-content">
+                    <div class="block block-strong inset liquid-glass">
+                      <h2>Terms of Service</h2>
+                      <p>Welcome to SoftwareKit. By using this app, you agree to the following terms.</p>
+                      <p>
+                        <strong>1. App Usage:</strong> SoftwareKit provides utilities and tools for advanced device usage. All content available in the app is manually reviewed before being listed. We reserve the right to remove any utility, app, or source at any time.
+                      </p>
+                      <p>
+                        <strong>2. Third-Party Content:</strong> SoftwareKit may provide access to third-party apps, utilities, or external sources. These are not owned or controlled by us. You are responsible for reviewing and accepting their terms before use.
+                      </p>
+                      <p>
+                        <strong>3. Security and Reporting:</strong> Any utility, app, or source may be removed if reported or found to be malicious, unsafe, or misleading. If you encounter suspicious behavior or issues, use the <strong>Report</strong> button in its page to contact us.
+                      </p>
+                      <p>
+                        <strong>4. User Responsibility:</strong> SoftwareKit is not malicious and does not intentionally provide malicious content. You are solely responsible for what you install or add, including apps installed using the Signer feature and any sources you manually add. We are not responsible for damage, data loss, bans, account issues, or security problems caused by malicious apps, modified packages, or untrusted sources added by the user.
+                      </p>
+                      <p>
+                        <strong>5. Disclaimer:</strong> SoftwareKit is provided “as is” without warranties of any kind. Use of the app is entirely at your own risk.
+                      </p>
+                      <p>
+                        <strong>6. Intellectual Property:</strong> You may not copy, modify, sell, redistribute, rebrand, or create derivative works of SoftwareKit or any part of it without explicit permission.
+                      </p>
+                      <p>
+                        <strong>7. Changes:</strong> These terms may be updated at any time. Continued use of SoftwareKit means you accept the latest version.
+                      </p>
+                      <hr>
+                      <h2>Privacy Policy</h2>
+                      <p>SoftwareKit respects your privacy and limits data handling to what is strictly necessary for specific features.</p>
+                      <p>
+                        <strong>1. Data Collection:</strong> SoftwareKit does not collect, track, sell, or share personal data for analytics, advertising, or profiling purposes.
+                      </p>
+                      <p>
+                        <strong>2. Device Info Feature:</strong> If you use the Device Info feature, certain device-related information, including the UDID and related technical details, is temporarily sent to a Cloudflare Workers endpoint. This data is required solely for the feature to function.
+                      </p>
+                      <p>
+                        <strong>3. Temporary Processing:</strong> The data sent to the Cloudflare Worker is stored temporarily for a maximum of 5 minutes so the app can retrieve it. After this period, the data is automatically deleted and is not retained, logged, or reused.
+                      </p>
+                      <p>
+                        <strong>4. Encryption:</strong> All data transmitted between the app and the Cloudflare Worker is encrypted in transit. No unencrypted device information is exposed.
+                      </p>
+                      <p>
+                        <strong>5. Local Storage:</strong> Once received by the app, device information is stored locally on your device only. This information never leaves your device again unless you explicitly trigger the Device Info feature.
+                      </p>
+                      <p>
+                        <strong>6. Third-Party Services:</strong> Cloudflare Workers are used strictly as a temporary processing layer. They are not used for tracking, analytics, or data mining.
+                      </p>
+                      <p>
+                        <strong>7. Policy Updates:</strong> This Privacy Policy may be updated if app functionality changes. Continued use of SoftwareKit means you accept the latest version.
+                      </p>
+                      <p>
+                        <strong>Questions or concerns?</strong> Use the <a class="popup-open bold" data-popup="#feedback">Feedback</a> option in Settings or send an email to <a class="external bold" href="mailto:softwarekit_app@outlook.com">softwarekit_app@outlook.com</a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="popup" id="changelog">
+                <div class="page">
+                  <div class="swipe-nav">
+                    <div>
+                      <i class="f7-icons">minus</i>
+                    </div>
+                  </div>
+                  <div class="page-content bg-img">
+                    <div class="block-title block-title-large glass">What's new?</div>
+                    <div class="block block-strong inset liquid-glass">
+                      <p>Last updated: <span class="badge">4 January 2026</span>
+                      </p>
+                      <center>
+                        <h1>v1.1</h1>
+                      </center> 🐛 Bug fixes and improvements <br>🎨 Improved accent color picker functionality <br>🧑‍💻 Code optimizations <br>🌏 Improved AltStore Sources support <br>👀 Fixed some visual bugs <br>👁️ Improved readability in some places<br>📦 Sources now auto-refresh on load
+                    </div>
+                    <br>
+                    <br>
+                  </div>
+                </div>
+              </div>
+              <div class="popup" id="settings">
+                <div class="page bg-img">
+                  <div class="navbar">
+                    <div class="navbar-bg"></div>
+                    <div class="navbar-inner">
+                      <div class="title">Settings</div>
+                      <div class="right">
+                        <a class="link popup-close">
+                          <i class="icon icon-close"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="page-content">
+                    <div class="list separated media-list inset glass">
+                      <ul>
+                        <li>
+                          <div class="item-content">
+                            <div class="item-media">
+                              <img loading="lazy" src="https://softwarekit.pages.dev/favicon.png">
+                              </a>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">
+                                  <script>
+                                    var userAgent = navigator.userAgent,
+                                      iosMatch = userAgent.match(/(iPhone|iPad|iPod).*? OS (\d+)_?(\d+)?_?(\d+)?/i),
+                                      ipadMatch = userAgent.match(/iPad.*? OS (\d+)_?(\d+)?_?(\d+)?/i),
+                                      macosMatch = userAgent.match(/Mac OS X (\d+)[_.](\d+)(?:[_.](\d+))?/i),
+                                      iosVersion = iosMatch ? iosMatch.slice(2).filter(Boolean).join(". ") : null,
+                                      ipadVersion = ipadMatch ? ipadMatch.slice(1).filter(Boolean).join(". ") : null,
+                                      macosVersion = macosMatch ? macosMatch.slice(1).filter(Boolean).join(". ") : null;
+                                    iosVersion && document.write("iOS " + iosVersion);
+                                    ipadVersion && document.write("iPadOS " + ipadVersion);
+                                    macosVersion && document.write("macOS " + macosVersion);
+                                  </script>
+                                </div>
+                              </div>
+                              <div class="item-subtitle small-text"> SoftwareKit iOS v1.0 </div>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="block-title glass">User interface</div>
+                    <div class="list separated inset glass">
+                      <ul>
+                        <li class="flex-between accent-li item-content">
+                          <div class="flex-align">
+                            <div class="item-media">
+                              <i class="icon f7-icons">paintbrush_fill</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row" style="margin-top:3px;">
+                                <div class="item-title">Accent color</div>
+                              </div>
+                            </div>
+                          </div>
+                          <span class="accent-color-indicator" id="accent-color"></span>
+                        </li>
+                        <li class="flex-between accent-li item-content">
+                          <div class="flex-align">
+                            <div class="item-media">
+                              <i class="f7-icons">eye_fill</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row" style="margin-top:3px;">
+                                <div class="item-title">GlassUI</div>
+                              </div>
+                            </div>
+                          </div>
+                          <label class="toggle toggle-init">
+                            <input id="toggle-glassUI" type="checkbox" />
+                            <span class="toggle-icon"></span>
+                          </label>
+                        </li>
+                        <div class="block-title glass">Info</div>
+                        <li>
+                          <a class="item-link item-content popup-open" data-popup="#terms">
+                            <div class="item-media">
+                              <i class="f7-icons">hand_raised_fill</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">Terms of Service & Privacy Policy</div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                        <li>
+                          <a class="item-link item-content popup-open" data-popup="#changelog">
+                            <div class="item-media">
+                              <i class="f7-icons">rocket_fill</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">What's new? </div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                        <div class="block-title glass">Contact forms & more</div>
+                        <li>
+                          <a class="item-link item-content popup-open" data-popup="#feedback">
+                            <div class="item-media">
+                              <i class="f7-icons">bubble_left_fill</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">Send Feedback</div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                        <li>
+                          <a class="item-link item-content popup-open" data-popup="#appsubmit">
+                            <div class="item-media">
+                              <i class="f7-icons">app_badge_fill</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">App Submission</div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                        <li>
+                          <a class="item-link item-content popup-open" data-popup="#devs">
+                            <div class="item-media">
+                              <i class="f7-icons">doc_person_fill</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">Contributors & more</div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://x.com/softwarekit_app/" class="item-link item-content external">
+                            <div class="item-media">
+                              <i class="f7-icons">logo_twitter</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">Follow</div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                        <li>
+                          <a href="mailto:softwarekit_app@outlook.com" class="item-link item-content external">
+                            <div class="item-media">
+                              <i class="f7-icons">envelope_fill</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">softwarekit_app@outlook.com</div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                        <li>
+                          <a onclick="shareURL()" class="item-link item-content">
+                            <div class="item-media">
+                              <i class="f7-icons">square_arrow_up</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">Share SoftwareKit</div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                        <div class="block-title glass">Other</div>
+                        <li>
+                          <a onclick="reset()" class="item-link item-content">
+                            <div class="item-media">
+                              <i class="icon f7-icons if-not-md color-red">trash_fill</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">Reset</div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="popup popup-report" id="report-app">
+                <div class="page bg-img">
+                  <div class="navbar">
+                    <div class="navbar-bg"></div>
+                    <div class="navbar-inner">
+                      <div class="title">Report</div>
+                      <div class="right">
+                        <a class="link popup-close">
+                          <i class="icon icon-close"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="page-content">
+                    <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="report-form">
+                      <input type="text" name="_honey" class="display-none">
+                      <input type="hidden" name="_captcha" value="false">
+                      <ul>
+                        <li>
+                          <div class="item-content item-input">
+                            <div class="item-inner">
+                              <div class="item-title item-label">App name</div>
+                              <div class="item-input-wrap">
+                                <input type="text" name="iOS App Name" id="report-app-name" readonly required>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="item-content item-input">
+                            <div class="item-inner">
+                              <div class="item-title item-label">Email</div>
+                              <div class="item-input-wrap">
+                                <input placeholder="youremail@something.com" type="email" name="Email" required>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <a class="item-link smart-select" data-open-in="popover">
+                            <select name="Reason" required>
+                              <option value="" disabled selected>Select reason</option>
+                              <option value="Malicious">Malicious</option>
+                              <option value="Outdated">Outdated</option>
+                              <option value="Not working">Not working</option>
+                              <option value="Takedown request">Takedown request</option>
+                              <option value="Other">Other (Specify)</option>
+                            </select>
+                            <div class="item-content">
+                              <div class="item-inner">
+                                <div class="item-title">Reason</div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                        <li>
+                          <div class="item-content item-input">
+                            <div class="item-inner">
+                              <div class="item-title item-label">Feedback</div>
+                              <div class="item-input-wrap">
+                                <textarea placeholder="e.g. The download link is broken, the app crashes on startup, or the version is outdated." name="Feedback" required></textarea>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                      <br>
+                      <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
+                        <span class="preloader"></span>
+                        <span>Send report</span>
+                      </button>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="popup app-submission" id="appsubmit">
+              <div class="page bg-img">
+                <div class="navbar">
+                  <div class="navbar-bg"></div>
+                  <div class="navbar-inner">
+                    <div class="title">App Submission</div>
+                    <div class="right">
+                      <a class="link popup-close">
+                        <i class="icon icon-close"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="page-content">
+                  <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="appsubmit-form">
+                    <input type="text" name="_honey" class="display-none">
+                    <input type="hidden" name="_captcha" value="false">
+                    <ul>
+                      <li>
+                        <div class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">App name</div>
+                            <div class="item-input-wrap">
+                              <input type="text" name="iOS App Name" placeholder="e.g SoftwareKit" required>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">URL</div>
+                            <div class="item-input-wrap">
+                              <input type="url" placeholder="https://example.com" name="App Name" required>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Email</div>
+                            <div class="item-input-wrap">
+                              <input placeholder="youremail@something.com" type="email" name="Email" required>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <a class="item-link smart-select" data-open-in="popover">
+                          <select name="Type" required>
+                            <option value="" disabled selected>Select type</option>
+                            <option value="App Store Application">App Store Application</option>
+                            <option value="iPA File">iPA File</option>
+                            <option value="Website">Website</option>
+                          </select>
+                          <div class="item-content">
+                            <div class="item-inner">
+                              <div class="item-title">Type</div>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                      <li>
+                        <div class="item-content item-input">
+                          <div class="item-inner">
+                            <div class="item-title item-label">Additional info</div>
+                            <div class="item-input-wrap">
+                              <textarea name="Additional info"></textarea>
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                    <br>
+                    <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
+                      <span class="preloader"></span>
+                      <span>Submit app</span>
+                    </button>
+                </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="popup popup-report" id="feedback">
+            <div class="page bg-img">
+              <div class="navbar">
+                <div class="navbar-bg"></div>
+                <div class="navbar-inner">
+                  <div class="title">Send feedback</div>
+                  <div class="right">
+                    <a class="link popup-close">
+                      <i class="icon icon-close"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="page-content">
+                <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="feedback-form">
+                  <input type="text" name="_honey" class="display-none">
+                  <input type="hidden" name="_captcha" value="false">
+                  <ul>
+                    <li>
+                      <div class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Email</div>
+                          <div class="item-input-wrap">
+                            <input placeholder="youremail@something.com" type="email" name="Email" required />
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <a class="item-link smart-select" data-open-in="popover">
+                        <select name="Feedback type" required>
+                          <option value="" disabled selected>Feedback type</option>
+                          <option value="Issue/Bug">Issue/Bug</option>
+                          <option value="Feature request">Feature request</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        <div class="item-content">
+                          <div class="item-inner">
+                            <div class="item-title">Feedback type</div>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                    <li>
+                      <div class="item-content item-input">
+                        <div class="item-inner">
+                          <div class="item-title item-label">Feedback</div>
+                          <div class="item-input-wrap">
+                            <textarea placeholder="e.g. A bug in the Sources tab, missing data on the home page, or a feature request." name="iOS Feedback" required></textarea>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                  <br>
+                  <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
+                    <span class="preloader"></span>
+                    <span>Send Feedback</span>
+                  </button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="popup" id="trustCert">
+        <div class="page bg-img">
+          <div class="navbar">
+            <div class="navbar-inner">
+              <div class="title"></div>
+              <div class="right">
+                <a class="link popup-close">
+                  <i class="icon icon-close"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="page-content no-navbar">
+            <center>
+              <img loading="lazy" src="https://i.imgur.com/8Mle0ax.png" class="guide-img">
+            </center>
+            <div class="block inset glass">
+              <strong>How to Trust an Enterprise Certificate</strong>
+              <ol>
+                <li>Open <b>Settings</b> on your device. </li>
+                <li>Go to <b>General</b> &rarr; <b>VPN & Device Management</b>. </li>
+                <li>Find the relevant <b>Enterprise App</b> profile under "Enterprise App" or "Device Management". </li>
+                <li>Tap the profile, then tap <b>Trust</b> and confirm your choice. </li>
+                <li>After trusting, you can open the app as normal.</li>
+              </ol>
+              <p>Trusting the certificate ensures the app is authenticated and can run on your device securely.</p>
+            </div>
+            <div class="list separated inset glass">
+              <ul>
+                <li>
+                  <a href="com.apple.Preferences://" class="item-link item-content external">
+                    <div class="item-media">
+                      <i class="f7-icons">gear</i>
+                    </div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Open Settings</div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <br>
+            <br>
+          </div>
+        </div>
+        <div class="popup" id="verifyintegrity">
+          <div class="page bg-img">
+            <div class="navbar">
+              <div class="navbar-inner">
+                <div class="title"></div>
+                <div class="right">
+                  <a class="link popup-close">
+                    <i class="icon icon-close"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="page-content no-navbar">
+              <center>
+                <img loading="lazy" src="https://i.imgur.com/KmWGX5e.png" class="guide-img">
+              </center>
+              <div class="block inset glass">
+                <strong>How to Fix "Unable to Verify App" or "Integrity Could Not Be Verified"</strong>
+                <ol>
+                  <li>This error often means the certificate has been revoked or blacklisted.</li>
+                  <li>First, try deleting the app completely and reinstalling it.</li>
+                  <li>If the issue persists, <b>backup your data</b> and <b>reset your device to factory settings</b>: </li>
+                  <ul>
+                    <li>Go to <b>Settings &rarr; General &rarr; Transfer or Reset iPhone &rarr; Erase All Content and Settings</b>. </li>
+                  </ul>
+                  <li>After reset, restore your backup and try installing again.</li>
+                </ol>
+                <p>Note: Always ensure your data is backed up before performing a factory reset.</p>
+              </div>
+              <div class="list separated inset glass">
+                <ul>
+                  <li>
+                    <a href="com.apple.Preferences://" class="item-link item-content external">
+                      <div class="item-media">
+                        <i class="f7-icons">gear</i>
+                      </div>
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">Open Settings</div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="popup" id="devmode">
+            <div class="page bg-img">
+              <div class="navbar">
+                <div class="navbar-inner">
+                  <div class="title"></div>
+                  <div class="right">
+                    <a class="link popup-close">
+                      <i class="icon icon-close"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="page-content no-navbar">
+                <center>
+                  <img loading="lazy" src="https://i.imgur.com/6U9WWYY.png" class="guide-img">
+                </center>
+                <div class="block glass">
+                  <strong>How to Enable Developer Mode</strong>
+                  <ol>
+                    <li>Open <b>Settings</b> on your device. </li>
+                    <li>Go to <b>Privacy & Security</b>. </li>
+                    <li>Scroll down and enable <b>Developer Mode</b>. </li>
+                  </ol>
+                </div>
+                <div class="list separated inset glass">
+                  <ul>
+                    <li>
+                      <a href="com.apple.Preferences://" class="item-link item-content external">
+                        <div class="item-media">
+                          <i class="f7-icons">gear</i>
+                        </div>
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">Open Settings</div>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="popup" id="trustStore">
+            <div class="page bg-img">
+              <div class="navbar">
+                <div class="navbar-inner">
+                  <div class="title"></div>
+                  <div class="right">
+                    <a class="link popup-close">
+                      <i class="icon icon-close"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="page-content no-navbar">
+                <center>
+                  <img loading="lazy" src="https://i.imgur.com/b4em9PO.png" class="guide-img">
+                </center>
+                <div class="block glass">
+                  <strong>How to Allow a 3rd Party App Store</strong>
+                  <ol>
+                    <li>When prompted, tap <b>OK</b> to allow installation. </li>
+                    <li>Open <b>Settings</b>, go to <b>General &rarr; Device Management</b>, and trust the store profile. </li>
+                    <li>Return to the website and tap <b>Install App Marketplace</b>. </li>
+                  </ol>
+                  <p>You can now use the 3rd party marketplace on your device.</p>
+                </div>
+                <div class="list separated inset glass">
+                  <ul>
+                    <li>
+                      <a href="com.apple.Preferences://" class="item-link item-content external">
+                        <div class="item-media">
+                          <i class="f7-icons">gear</i>
+                        </div>
+                        <div class="item-inner">
+                          <div class="item-title-row">
+                            <div class="item-title">Open Settings</div>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="popup" id="udid">
+            <div class="page bg-img">
+              <div class="navbar">
+                <div class="navbar-bg"></div>
+                <div class="navbar-inner">
+                  <div class="title">Device Info</div>
+                  <div class="right">
+                    <a class="link popup-close">
+                      <i class="icon icon-close"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="page-content">
+                <div class="block" id="udid-info-block">
+                  <p>This feature installs a temporary Apple configuration profile to read your device info. After downloading, install the profile in Settings, then return here.</p>
+                  <button onclick="postRequest()" class="button button-fill button-large button-round ">Install profile</button>
+                  <br>
+                </div>
+                <div id="device-container"></div>
+              </div>
+            </div>
+          </div>
+          <script src="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.js"></script>
+          <script src="js/app.js"></script>
+  </body>
 </html>
