@@ -43,8 +43,11 @@ body {
 .list-strong.glass ul,
 .list-nested.glass li,
 .sidebar-list.glass a {
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+isolation: isolate; 
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   background: linear-gradient(
     145deg,
     rgba(255, 255, 255, 0.15) 0%,
@@ -57,6 +60,10 @@ body {
   transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
   color: #fff;
 }
+.accordion-item-content {
+  transform-style: preserve-3d;
+ }
+
 .block-title.glass,
 .block-title .glass,
 .item-after.glass,
