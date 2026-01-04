@@ -60,10 +60,30 @@ isolation: isolate;
   transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
   color: #fff;
 }
-.accordion-item-content {
-  transform-style: preserve-3d;
- }
 
+.list-nested.glass, 
+.list-nested.glass ul, 
+.list-nested.glass li,
+.list-nested.glass .item-content,
+.list-nested.glass .item-link {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.list-nested.glass li {
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  opacity: 0.99; 
+}
+
+.list-nested.glass .item-title,
+.list-nested.glass .f7-icons {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
 .block-title.glass,
 .block-title .glass,
 .item-after.glass,
