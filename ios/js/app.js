@@ -30,7 +30,7 @@ const mainView = app.views.create(".view-main");
 function updateAppUI(isEnabled) {
   const selectors = '.glass, .liquid-glass, [data-removed-classes]';
   const glassElements = document.querySelectorAll(selectors);
-
+  
   glassElements.forEach(el => {
     if (isEnabled) {
       const savedClasses = el.getAttribute('data-removed-classes');
@@ -43,7 +43,6 @@ function updateAppUI(isEnabled) {
       let removed = [];
       if (el.classList.contains('glass')) removed.push('glass');
       if (el.classList.contains('liquid-glass')) removed.push('liquid-glass');
-
       if (removed.length > 0) {
         el.setAttribute('data-removed-classes', removed.join(' '));
         removed.forEach(cls => el.classList.remove(cls));
@@ -65,48 +64,59 @@ function setGlassUI(isChecked) {
   localStorage.setItem('glassUI_Enabled', isChecked);
   updateAppUI(isChecked);
 }
+
 document.addEventListener('DOMContentLoaded', () => {
   const savedPref = localStorage.getItem('glassUI_Enabled');
   const isEnabled = savedPref === null ? true : savedPref === 'true';
-
+  
   updateAppUI(isEnabled);
 
   const toggleEl = document.getElementById('toggle-glassUI');
   if (toggleEl) {
     toggleEl.checked = isEnabled;
-    
-    setTimeout(() => {        
-        try {
-            const f7Toggle = app.toggle.get(toggleEl.closest('.toggle'));
-            if (f7Toggle) {
-                f7Toggle.on('change', (self) => setGlassUI(self.checked));
-            } else {
-                toggleEl.addEventListener('change', (e) => setGlassUI(e.target.checked));
-            }
-        } catch (err) {
-            toggleEl.addEventListener('change', (e) => setGlassUI(e.target.checked));
+    setTimeout(() => {
+      try {
+        const f7Toggle = app.toggle.get(toggleEl.closest('.toggle'));
+        if (f7Toggle) {
+          f7Toggle.on('change', (self) => setGlassUI(self.checked));
+        } else {
+          toggleEl.addEventListener('change', (e) => setGlassUI(e.target.checked));
         }
+      } catch (err) {
+        toggleEl.addEventListener('change', (e) => setGlassUI(e.target.checked));
+      }
     }, 300);
   }
 
-  const f7Events = ['page:init', 'popup:open', 'sheet:open'];
+  const f7Events = ['page:init', 'page:mounted', 'popup:open', 'sheet:open', 'panel:open', 'tab:show', 'view:init'];
+
   f7Events.forEach(eventType => {
     document.addEventListener(eventType, (e) => {
       const currentPref = localStorage.getItem('glassUI_Enabled');
       const currentlyEnabled = currentPref === null ? true : currentPref === 'true';
 
       if (!currentlyEnabled) {
-        const container = e.target;
-        container.querySelectorAll('.glass, .liquid-glass').forEach(el => {
+        const container = e.target;       
+        const glassItems = container.querySelectorAll('.glass, .liquid-glass');
+        const processGlass = (el) => {
           let removed = [];
           if (el.classList.contains('glass')) removed.push('glass');
           if (el.classList.contains('liquid-glass')) removed.push('liquid-glass');
-          el.setAttribute('data-removed-classes', removed.join(' '));
-          removed.forEach(cls => el.classList.remove(cls));
-        });
-        container.querySelectorAll('.bg-img ').forEach(el => {
+          if (removed.length > 0) {
+            el.setAttribute('data-removed-classes', removed.join(' '));
+            removed.forEach(cls => el.classList.remove(cls));
+          }
+        };
+
+        if (container.matches('.glass, .liquid-glass')) processGlass(container);
+        glassItems.forEach(processGlass);       
+        const bgItems = container.querySelectorAll('.bg-img');
+        const processBg = (el) => {
           el.style.setProperty('background-image', 'none', 'important');
-        });
+        };
+
+        if (container.matches('.bg-img')) processBg(container);
+        bgItems.forEach(processBg);
       }
     });
   });
@@ -309,7 +319,7 @@ function renderDeviceData(deviceInfo) {
                                     <input type="text" id="udidInput" readonly value="${udid}">
                                 </div>
                             </div>
-                          <a class="" id="copyUdidBtn">
+                          <a id="copyUdidBtn">
                     <i class="f7-icons">doc_on_clipboard_fill</i>
                 </a>   
                         </li>
@@ -321,8 +331,8 @@ function renderDeviceData(deviceInfo) {
                 <li>
                     <div class="item-content">
                         <div class="item-inner">
-                            <div class="item-title">Name</div>
-                            <div class="item-after">${modelIdentifier}</div>
+                            <div class="item-title">Model name</div>
+                            <div class="item-after glass">${modelIdentifier}</div>
                         </div>
                     </div>
                 </li>              
@@ -338,7 +348,7 @@ function renderDeviceData(deviceInfo) {
                                     <div class="item-title">
                                         ${formatLabel(key)}
                                     </div>
-                                    <div class="item-after">
+                                    <div class="item-after glass">
                                         ${value}
                                     </div>
                                 </div>
@@ -427,7 +437,7 @@ document.addEventListener("DOMContentLoaded", () => {
         timeout = setTimeout(function () {
           if (themeColor === value.hex) return;
           setCustomColor(value.hex);
-        }, 200);
+        }, 1);
       },
     },
   });
@@ -556,38 +566,53 @@ reportForm.addEventListener('submit', function (e) {
 document.addEventListener('DOMContentLoaded', () => {
     const STORAGE_KEY = 'altstore_repos_v3';
     const LOCAL_REPO_URL = './altstore.json';
+    const PROXY = "https://corsproxy.io/?";
 
     if (!window.repoView) {
         window.repoView = app.views.create('#repository-view', { name: 'repoView' });
     }
 
     function sanitizeRepo(json, url) {
+        const appsList = json.apps || json.packages || (Array.isArray(json) ? json : []);
+        
         return {
-            name: json.name ?? "Untitled Repo",
-            identifier: json.identifier ?? url,
+            name: json.name || "Untitled Repo",
+            identifier: json.identifier || url,
             sourceURL: url,
-            iconURL: json.iconURL ?? "",
-            apps: (json.apps ?? []).map(app => {
-                const latest = (app.versions && app.versions.length > 0) ? app.versions[0] : app;
-                return {
-                    name: app.name ?? "Unknown App",
-                    bundleIdentifier: app.bundleIdentifier ?? Math.random().toString(36).substring(7),
-                    developerName: app.developerName ?? "Unknown",
-                    iconURL: app.iconURL ?? "",
-                    subtitle: app.subtitle ?? "",
-                    localizedDescription: latest.localizedDescription ?? app.localizedDescription ?? app.description ?? "No description available.",
-                    screenshots: app.screenshots ?? app.screenshotURLs ?? [],
-                    downloadURL: latest.downloadURL ?? app.downloadURL ?? "#",
-                    version: latest.version ?? app.version ?? "1.0",
-                    size: latest.size ?? app.size ?? 0
-                };
-            }),
-            news: (json.news ?? []).map(n => ({
-                title: n.title ?? "News",
-                caption: n.caption ?? "",
-                date: n.date ?? new Date().toISOString(),
-                imageURL: n.imageURL ?? "",
-                url: n.url ?? "#"
+            iconURL: json.iconURL || json.icon || "",
+            apps: appsList.map((app) => {
+                try {
+                    const versions = app.versions || [];
+                    const v0 = versions[0] || {};
+                    const appName = app.name || v0.name || "Unknown App";
+                    const appIcon = app.iconURL || app.icon || v0.iconURL || "";
+                    const downloadUrl = app.downloadURL || v0.downloadURL || "#";
+
+                    return {
+                        name: appName,
+                        version: app.version || v0.version || '1.0',
+                        versionDate: app.versionDate || app.date || v0.date || null,
+                        downloadURL: downloadUrl,
+                        size: parseInt(app.size) || v0.size || 0,
+                        iconURL: appIcon,
+                        bundleIdentifier: app.bundleIdentifier || app.bundleID || v0.bundleIdentifier || '',
+                        developerName: app.developerName || app.developer || v0.developerName || '',
+                        localizedDescription: app.localizedDescription || app.subtitle || app.description || v0.localizedDescription || '',
+                        category: app.category || app.type || 'apps',
+                        appPermissions: app.appPermissions || {},
+                        screenshotURLs: Array.isArray(app.screenshotURLs) ? app.screenshotURLs : (Array.isArray(app.screenshots) ? app.screenshots : (Array.isArray(v0.screenshotURLs) ? v0.screenshotURLs : [])),
+                        versions: versions
+                    };
+                } catch (e) {
+                    return null;
+                }
+            }).filter(a => a !== null),
+            news: (json.news || []).map(n => ({
+                title: n.title || "News",
+                caption: n.caption || "",
+                date: n.date || new Date().toISOString(),
+                imageURL: n.imageURL || "",
+                url: n.url || "#"
             })),
             isSystem: url === LOCAL_REPO_URL
         };
@@ -609,14 +634,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function fetchRepo(url) {
+        if (url === LOCAL_REPO_URL) {
+            try {
+                const res = await fetch(url);
+                const json = await res.json();
+                return sanitizeRepo(json, url);
+            } catch { return null; }
+        }
+
+        let jsonData = null;
         try {
             const res = await fetch(url);
-            if (!res.ok) throw new Error();
-            const json = await res.json();
-            return sanitizeRepo(json, url);
-        } catch {
-            return null;
+            if (res.ok) {
+                jsonData = await res.json();
+            }
+        } catch (e) {}
+
+        if (!jsonData) {
+            try {
+                const res = await fetch(`${PROXY}${encodeURIComponent(url)}`);
+                if (res.ok) {
+                    jsonData = await res.json();
+                }
+            } catch (e) {}
         }
+
+        return jsonData ? sanitizeRepo(jsonData, url) : null;
     }
 
     window.openPhotoBrowser = function(screenshotUrls) {
@@ -632,8 +675,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function createPopupHtml(item) {
-        const screenshotsJson = JSON.stringify(item.screenshots).replace(/"/g, "&quot;");
-        const screenshotsHtml = item.screenshots.map(src => 
+        const screenshotsJson = JSON.stringify(item.screenshotURLs).replace(/"/g, "&quot;");
+        const screenshotsHtml = item.screenshotURLs.map(src => 
             `<img loading="lazy" src="${src}" onclick="openPhotoBrowser(['${src}'])">`
         ).join('');
 
@@ -643,21 +686,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="page bg-img">
                     <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
                     <div class="page-content">
-                         <div style="margin-top: 40px; padding: 0px;">
-          <div class="block" style="margin-top: 27px; margin-bottom: 20px;">
-            <div style="display: flex; gap: 15px;">
-                                    <img src="${item.iconURL}" class="app-icon">
-                                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
-                                        <div style="font-size: 22px; font-weight: 700; line-height: 1.2;">${item.name}</div>
-                                        <div style="font-size: 15px;margin-top: 4px;"">${item.developerName}</div>
-                                        <div style="display: flex; gap: 10px; margin-top: auto; align-items: center;">
-                                            <a href="${item.downloadURL}" class="external button button-fill button-round" style="padding: 0 24px; font-weight:bold;">GET</a>
-                                            <a onclick="navigator.share({url: '${item.downloadURL}' })" class="more"><i class="f7-icons">square_arrow_up</i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            ${item.screenshots.length > 0 ? `
+<div style="margin-top: 40px; padding: 0px;">
+  <div class="block" style="margin-top: 27px; margin-bottom: 20px;">
+    <div style="display: flex; gap: 15px; align-items: flex-start; overflow: hidden;">
+
+      <img src="${item.iconURL}" class="app-icon" style="flex-shrink: 0;">
+
+      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
+        
+        <div style="font-size: 22px; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+          ${item.name}
+        </div>
+        <div style="font-size: 15px; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+          ${item.developerName}
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+          <a href="${item.downloadURL}" class="external button button-fill button-round" style="padding: 0 24px; font-weight:bold; flex-shrink: 0;">GET</a>
+          
+          <a onclick="navigator.share({url: '${item.downloadURL}' })" class="more" style="flex-shrink: 0; margin-left: 0 !important;">
+            <i class="f7-icons">square_arrow_up</i>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+                            ${item.screenshotURLs.length > 0 ? `
                             <div class="block-title" style="font-size: 20px; margin-top: 25px;">Preview</div>
                             <div class="screenshot" onclick="openPhotoBrowser(${screenshotsJson})">${screenshotsHtml}</div>` : ''}
                             <div class="block block-strong inset margin-top liquid-glass">
@@ -680,77 +736,66 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 function renderSourcesList(repos) {
-  const listEl = document.getElementById('sources-list');
-  listEl.innerHTML = '';
-  const frag = document.createDocumentFragment();
+    const listEl = document.getElementById('sources-list');
+    listEl.innerHTML = '';
+    const frag = document.createDocumentFragment();
+    repos.forEach(repo => {
+        const li = document.createElement('li');
+        li.id = repo.name;
+        li.className = repo.isSystem ? '' : 'swipeout';
+        const iconSrc = repo.iconURL || './assets/default.png';
 
-  repos.forEach(repo => {
-    const li = document.createElement('li');
-    li.id = repo.name;
-    li.className = repo.isSystem ? '' : 'swipeout';
-
-    const iconSrc = repo.iconURL || './assets/default.png';
-
-    li.innerHTML = `
-      <div class="swipeout-content">
-        <a class="item-link repo-link" href="#" data-url="${repo.sourceURL}">
-          <div class="item-content">
-            <div class="item-media">
-              <img src="${iconSrc}">
+        li.innerHTML = `
+            <div class="swipeout-content">
+                <a class="item-link repo-link" href="#" data-url="${repo.sourceURL}">
+                    <div class="item-content">
+                        <div class="item-media"><img src="${iconSrc}"></div>
+                        <div class="item-inner">
+                            <div class="item-title-row"><div class="item-title">${repo.name}</div></div>
+                            <div class="item-subtitle">${repo.apps.length} Apps</div>
+                        </div>
+                    </div>
+                </a>
             </div>
-            <div class="item-inner">
-              <div class="item-title-row">
-                <div class="item-title">${repo.name}</div>
-              </div>
-              <div class="item-subtitle">${repo.apps.length} Apps</div>
-            </div>
-          </div>
-        </a>
-      </div>
+            ${!repo.isSystem ? `
+            <div class="swipeout-actions-right">
+                <a onclick="navigator.share({ url: '${repo.sourceURL}' })">Share</a>
+                <a class="swipeout-delete" data-url="${repo.sourceURL}">Remove <i class="f7-icons">trash</i></a>
+            </div>` : ''}`;
+        frag.appendChild(li);
+    });
 
-      ${!repo.isSystem ? `
-      <div class="swipeout-actions-right">
-        <a onclick="navigator.share({ url: '${repo.sourceURL}' })">Share</a>
-        <a class="swipeout-delete" data-url="${repo.sourceURL}">
-          Remove <i class="f7-icons">trash</i>
-        </a>
-      </div>
-      ` : ''}
-    `;
-
-    frag.appendChild(li);
-  });
-
-  listEl.appendChild(frag);
+   
+    listEl.appendChild(frag);
 
 
     const savedOrder = JSON.parse(localStorage.getItem('sourcesListOrder') || '[]');
     if (savedOrder.length) {
         savedOrder.forEach(id => {
             const item = document.getElementById(id);
+          
             if (item && item.parentNode === listEl) {
                 listEl.appendChild(item);
             }
         });
     }
 
-    if (!listEl.sortableInitialized) {
+    if (!listEl.dataset.sortableInitialized) {
         listEl.addEventListener('sortable:sort', () => {
             const order = Array.from(listEl.children).map(li => li.id);
             localStorage.setItem('sourcesListOrder', JSON.stringify(order));
         });
-        listEl.sortableInitialized = true; 
+        listEl.dataset.sortableInitialized = "true";
     }
 }
+
 function renderNews(repos) {
     let allNews = [];
-    repos.forEach(r => { 
-        if(r.news) allNews.push(...r.news.map(n => ({...n, source: r.name}))); 
-    });
-    
+    repos.forEach(r => { if (r.news) allNews.push(...r.news.map(n => ({ ...n, source: r.name }))); });
+
     const wrapper = document.getElementById('news-swiper-wrapper');
     const section = document.getElementById('news-section');
-    
+
     if (allNews.length === 0) {
         if (section) section.style.display = 'none';
         return;
@@ -758,35 +803,31 @@ function renderNews(repos) {
 
     if (section) section.style.display = 'block';
     wrapper.innerHTML = '';
-    allNews.sort((a,b) => new Date(b.date) - new Date(a.date));
+    allNews.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const savedPref = localStorage.getItem('glassUI_Enabled');
     const isGlassEnabled = savedPref === null ? true : savedPref === 'true';
 
     allNews.forEach(news => {
-                const slideHtml = `
+        wrapper.insertAdjacentHTML('beforeend', `
             <div class="swiper-slide swiper-slide-news">
                 <div class="card repo-news-card liquid-glass">
                     <div class="card-content card-content-padding">
                         <div class="size-12">${news.source}</div>
                         <div class="text-weight-bold">${news.title}</div>
                         <div class="size-12">${news.caption.substring(0, 80)}...</div>
-                    </div>
-                    <div class="card-footer">
-                        <a href="${news.url}" class="link external">Open link</a>
-                    </div>
+                    </div>                   
                 </div>
-            </div>`;
-        
-        wrapper.insertAdjacentHTML('beforeend', slideHtml);
+            </div>
+        `);
     });
+
     if (!isGlassEnabled) {
         const newCards = wrapper.querySelectorAll('.liquid-glass, .glass');
         newCards.forEach(el => {
             let removed = [];
             if (el.classList.contains('glass')) removed.push('glass');
             if (el.classList.contains('liquid-glass')) removed.push('liquid-glass');
-            
             el.setAttribute('data-removed-classes', removed.join(' '));
             removed.forEach(cls => el.classList.remove(cls));
         });
@@ -798,36 +839,37 @@ function renderNews(repos) {
     } else if (swiperContainer && swiperContainer.swiper) {
         swiperContainer.swiper.update();
     }
-}    function openRepoPage(repo) {
+}
+
+
+    function openRepoPage(repo) {
         const pageId = `repo-${Date.now()}`;
         const pageHtml = `
            <div class="page page-with-subnavbar bg-img" data-name="repo-detail">
                 <div class="navbar">
                     <div class="navbar-bg"></div>
                     <div class="navbar-inner">
-                        <div class="subnavbar"><div class="searchbar-backdrop"></div>
-                    <form class="searchbar">
-                        <div class="searchbar-inner">
-                            <div class="searchbar-input-wrap">
-                                <input type="search" placeholder="Search" />
-                                <i class="searchbar-icon"></i>
-                                <span class="input-clear-button"></span>
-                            </div> 
-                             <span class="searchbar-disable-button">
-            <i class="icon icon-close"></i>
-          </span>                                     
+                        <div class="subnavbar">
+                            <form class="searchbar">
+                                <div class="searchbar-inner">
+                                    <div class="searchbar-input-wrap">
+                                        <input type="search" placeholder="Search" />
+                                        <i class="searchbar-icon"></i>
+                                        <span class="input-clear-button"></span>
+                                    </div> 
+                                    <span class="searchbar-disable-button"><i class="icon icon-close"></i></span>                                     
+                                </div>
+                            </form>
                         </div>
-                    </form></div>
                         <div class="left"><a class="link back"><i class="icon icon-back"></i></a></div>
                         <div class="title">${repo.name}</div>
-                        <div class="right"> <a onclick="navigator.share({url: '${repo.sourceURL}' })" class="link icon-only"><i class="icon f7-icons">square_arrow_up</i></a></div>
+                        <div class="right"><a onclick="navigator.share({url: '${repo.sourceURL}' })" class="link icon-only"><i class="icon f7-icons">square_arrow_up</i></a></div>
                     </div>
                 </div>
                 <div class="page-content repo-page">                         
                     <div class="list media-list separated inset virtual-list virtual-list-${pageId} searchbar-found glass"></div>
-                     <div class="list list-strong simple-list searchbar-not-found inset glass">
-                <ul><li>Unfortunately, no items were found.</li></ul>
-            </div>
+                    <div class="list list-strong simple-list searchbar-not-found inset glass"><ul><li>No items found.</li></ul></div>
+                </div>
             </div>`;
 
         app.views.main.router.navigate({
@@ -840,7 +882,7 @@ function renderNews(repos) {
                         const vl = app.virtualList.create({
                             el: `.virtual-list-${pageId}`,
                             items: repo.apps,
-                            searchAll: function (query, items) {
+                            searchAll: (query, items) => {
                                 const q = query.toLowerCase();
                                 return items.reduce((acc, item, index) => {
                                     if (item.name.toLowerCase().includes(q) || !q) acc.push(index);
@@ -848,36 +890,26 @@ function renderNews(repos) {
                                 }, []);
                             },
                             height: 90,
-                            renderItem: function (item) {
-                                return `
+                            renderItem: (item) => `
                                 <li>
                                     <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
-                                        <div class="item-media"><img src="${item.iconURL}"  loading="lazy"></div>
+                                        <div class="item-media"><img src="${item.iconURL}" loading="lazy"></div>
                                         <div class="item-inner">
                                             <div class="item-title-row"><div class="item-title">${item.name}</div></div>
                                             <div class="item-subtitle">${item.developerName}</div>
                                         </div>
                                     </a>
-                                </li>`;
-                            }
+                                </li>`
                         });
-
                         app.searchbar.create({
                             el: page.el.querySelector('.searchbar'),
                             searchContainer: `.virtual-list-${pageId}`,
                             searchIn: '.item-title',
                             on: { search(sb, query) { vl.search(query); } }
                         });
-
                         page.$el.on('click', '.app-item-trigger', function () {
                             const appItem = repo.apps.find(a => a.bundleIdentifier === this.dataset.id);
-                            if (appItem) {
-                                app.popup.create({
-                                    content: createPopupHtml(appItem),
-                                    swipeToClose: true,
-                                    on: { closed: function (p) { p.destroy(); } }
-                                }).open();
-                            }
+                            if (appItem) app.popup.create({ content: createPopupHtml(appItem), swipeToClose: true, on: { closed: (p) => p.destroy() } }).open();
                         });
                     }
                 }
@@ -885,52 +917,42 @@ function renderNews(repos) {
         });
     }
 
-    async function refreshData(force = false) {
-        let repos = getRepos();
-        if (force) app.dialog.preloader('Refreshing Sources');
+ async function refreshData(force = false) {
+    let repos = getRepos();
 
-        try {
-            if (force || repos.some(r => !r.apps || r.apps.length === 0)) {
-                const waitPromise = force ? new Promise(resolve => setTimeout(resolve, 2000)) : Promise.resolve();
-                const fetchPromise = Promise.all(repos.map(r => fetchRepo(r.sourceURL)));
-                
-                const [_, updates] = await Promise.all([waitPromise, fetchPromise]);
-                repos = updates.map((newRepo, i) => newRepo || repos[i]);
-                saveRepos(repos);
-            }
-        } finally {
-            if (force) app.dialog.close();
-        }
-
-        renderSourcesList(repos);
-        renderNews(repos);
+    if (!repos || repos.length === 0) {
+        repos = getDefaultRepos();
+        saveRepos(repos);
     }
-app.on('pageInit', () => {
-    refreshData(false);
-});
+
+    if (force) app.dialog.preloader('Refreshing Sources');
+
+    try {
+        const updates = await Promise.all(
+            repos.map(r => fetchRepo(r.sourceURL).catch(() => null))
+        );
+
+        repos = updates.map((newRepo, i) => newRepo || repos[i]);
+        saveRepos(repos);
+    } finally {
+        if (force) app.dialog.close();
+    }
+
+    renderSourcesList(repos);
+    renderNews(repos);
+}
+
+
     document.getElementById('add-source-fab').addEventListener('click', () => {
-        app.dialog.prompt('Add a new source by entering the link below. SoftwareKit is designed to work exclusively with <strong>AltStore</strong> format sources.','Add source', async (url) => {
+        app.dialog.prompt('Enter the source link.','Add source', async (url) => {
             if (!url) return;                  
             const repos = getRepos();
-            const existingRepo = repos.find(r => r.sourceURL === url);
-            
-            if (existingRepo) {
-                app.dialog.alert('This source has already been added.', 'Error');
-                return;
-            }           
-
-            app.dialog.preloader('Fetching source data');
+            if (repos.find(r => r.sourceURL === url)) { app.dialog.alert('Already added.'); return; }           
+            app.dialog.preloader('Fetching...');
             const repo = await fetchRepo(url);
             app.dialog.close();
-
-            if (repo) {             
-                repos.push(repo);
-                saveRepos(repos);
-                renderSourcesList(repos);
-                app.toast.create({text: 'Repository Added', closeTimeout: 1100}).open();
-            } else {
-                app.dialog.alert('Invalid URL or JSON');
-            }
+            if (repo) { repos.push(repo); saveRepos(repos); renderSourcesList(repos); }
+            else app.dialog.alert('Could not load the source');
         });
     });
 
@@ -942,7 +964,6 @@ app.on('pageInit', () => {
             app.swipeout.delete(delBtn.closest('li'));
             return;
         }
-
         const link = e.target.closest('.repo-link');
         if (link) {
             const repo = getRepos().find(r => r.sourceURL === link.dataset.url);
@@ -956,8 +977,7 @@ app.on('pageInit', () => {
     });
 
     refreshData(false);
-});
-fetch("https://www.idownloadblog.com/feed/")
+});fetch("https://www.idownloadblog.com/feed/")
   .then(response => response.text())
   .then(data => {
     const items = new window.DOMParser().parseFromString(data, "text/xml").getElementsByTagName("item");
@@ -1398,13 +1418,12 @@ function createPopupHtml(item) {
       <div class="page">
         <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
         <div class="page-content bg-img">
-          <div style="margin-top: 40px; padding: 0px;">
-          
-          <div class="block" style="margin-top: 27px; margin-bottom: 20px;">
-            <div style="display: flex; gap: 15px;">
-              <img src="${item.icon}" class="app-icon">
-              <div style="flex: 1; display: flex; flex-direction: column; justify-content: center;">
-                <div style="font-size: 22px; font-weight: 700; line-height: 1.2;">${item.title}</div>
+          <div style="margin-top: 40px; padding: 0px;">       
+  <div class="block" style="margin-top: 27px; margin-bottom: 20px;">
+    <div style="display: flex; gap: 15px; align-items: flex-start; overflow: hidden;">          
+              <img src="${item.icon}" class="app-icon" style="flex-shrink: 0;">
+             <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
+                <div style="font-size: 22px; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title}</div>
                 <div style="font-size: 15px; margin-top: 4px;">${item.category}</div>
                 
                 <div style="display: flex; gap: 10px; margin-top: auto; align-items: center;">
