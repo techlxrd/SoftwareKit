@@ -10,6 +10,11 @@ const app = new Framework7({
     push: true,
     swipeToClose: true,
   },
+  sheet: {
+    push: true,
+    swipeToClose: true,
+    swipeToStep: true, 
+  },
   colors: {
     primary: '#007AFF'
   }, 
