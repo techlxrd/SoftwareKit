@@ -1,7 +1,9 @@
 :root {
   --f7-searchbar-backdrop-bg-color: transparent;
   --sidebar-width: 260px;
+  --f7-safe-area-bottom: 0px !important;
 }
+
 
 html,
 body {
