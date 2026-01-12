@@ -43,11 +43,19 @@
           <div class="navbar navbar-large">
             <div class="navbar-bg"></div>
             <div class="navbar-inner">
+                <div class="left">
+                                          <a class="link icon-only popup-open" data-popup="#donate">
+                  <i class="icon f7-icons   color-red">heart_fill</i>
+                </a>             
+      
+              </div> 
               <div class="title">Today</div>
-              <div class="right">
+              
+              <div class="right">                                         
                 <a class="link icon-only popup-open" data-popup="#settings">
                   <i class="icon f7-icons">gear</i>
                 </a>
+      
               </div>
               <div class="title-large">
                 <div class="title-large-text">Today</div>
@@ -553,8 +561,23 @@
                           </div>
                         </a>
                       </li>
+                                               <li>
+                          <a class="item-link item-content popup-open" data-popup="#donate">
+                            <div class="item-media color-red">
+                              <i class="f7-icons">heart_fill</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">Support the developer</div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
                     </ul>
-                  
+                    <br>
+                    <br>
+                    <br>
+                    <a class="button button-large button-fill button-round popup-close red-tinted">Close</a>
                   </div>
                 </div>
               </div>
@@ -824,6 +847,18 @@
                           </a>
                         </li>
                         <div class="block-title glass">Contact forms & more</div>
+                         <li>
+                          <a class="item-link item-content popup-open" data-popup="#donate">
+                            <div class="item-media color-red">
+                              <i class="f7-icons color-red">heart_fill</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">Support the developer</div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
                         <li>
                           <a class="item-link item-content popup-open" data-popup="#feedback">
                             <div class="item-media">
@@ -1342,7 +1377,49 @@
                 <div id="device-container"></div>
               </div>
             </div>
+          </div>         
+<div class="popup" id="donate">
+    <div class="page">
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="title">Support the Developer</div>
+          <div class="right">
+            <a class="link popup-close"><i class="icon-close"></i></a>
           </div>
+        </div>
+      </div>
+
+      <div class="page-content">
+        <div class="block text-align-center">
+          <i class="f7-icons" style="font-size:96px;color:#ff3b30;">heart_fill</i>
+
+          <h2 style="margin-top:20px;">Like what I’m building?</h2>
+
+          <p style="font-size:16px;opacity:0.9;max-width:420px;margin:16px auto;">
+            This project exists because I put real time, energy, and brainpower into it.
+            No ads. No paywalls. No corporate nonsense.
+            If it helped you, inspired you, or saved you time, consider supporting me.
+          </p>
+
+          <p style="font-size:14px;opacity:0.7;max-width:420px;margin:16px auto;">
+            Even a small amount genuinely helps.
+          </p>
+
+          <div class="block">
+            <a href="https://buymeacoffee.com/techlxrd07"             
+               class="button button-fill button-large button-round color-red external">
+              Support with a Donation
+            </a>
+          </div>
+
+          <p style="font-size:13px;opacity:0.6;margin-top:12px;">
+            Thanks for having my back.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
           <script src="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.js"></script>
           <script src="js/app.js"></script>
   </body>
