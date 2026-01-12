@@ -385,7 +385,7 @@ img {
 .swiper-padding {
   padding: 10px;
 }
-
+.color-red i{color: red;}
 .fab {
   position: fixed;
 }
