@@ -11,9 +11,8 @@ const app = new Framework7({
     swipeToClose: true,
   },
   sheet: {
-    push: true,
-    swipeToClose: true,
-    swipeToStep: true, 
+    push: false,
+    swipeToClose:false,
   },
   colors: {
     primary: '#007AFF'
@@ -32,16 +31,21 @@ routes: [
   ],
 });
 const mainView = app.views.create(".view-main");
-function updateAppUI(isEnabled) {
+function updateAppUI(isEnabled, container = document) {
+  const isGlobal = container === document;
   const selectors = '.glass, .liquid-glass, [data-removed-classes]';
-  const glassElements = document.querySelectorAll(selectors);
-  
-  glassElements.forEach(el => {
+  const glassElements = container.querySelectorAll(selectors);
+  const targets = Array.from(glassElements);
+
+  if (!isGlobal && container.matches && container.matches(selectors)) {
+    targets.push(container);
+  }
+
+  targets.forEach(el => {
     if (isEnabled) {
       const savedClasses = el.getAttribute('data-removed-classes');
       if (savedClasses) {
-        const classArray = savedClasses.split(' ');
-        classArray.forEach(cls => el.classList.add(cls));
+        savedClasses.split(' ').forEach(cls => el.classList.add(cls));
         el.removeAttribute('data-removed-classes');
       }
     } else {
@@ -55,8 +59,13 @@ function updateAppUI(isEnabled) {
     }
   });
 
-  const contents = document.querySelectorAll('.bg-img');
-  contents.forEach(el => {
+  const bgElements = container.querySelectorAll('.bg-img');
+  const bgTargets = Array.from(bgElements);
+  if (!isGlobal && container.matches && container.matches('.bg-img')) {
+    bgTargets.push(container);
+  }
+
+  bgTargets.forEach(el => {
     if (isEnabled) {
       el.style.removeProperty('background-image');
     } else {
@@ -65,66 +74,69 @@ function updateAppUI(isEnabled) {
   });
 }
 
-function setGlassUI(isChecked) {
-  localStorage.setItem('glassUI_Enabled', isChecked);
-  updateAppUI(isChecked);
-}
+
+const observer = new MutationObserver((mutations) => {
+  const isEnabled = localStorage.getItem('glassUI_Enabled') === 'true';
+  if (isEnabled) return; 
+
+  mutations.forEach(mutation => {
+    mutation.addedNodes.forEach(node => {
+      if (node.nodeType === 1) { 
+        updateAppUI(false, node);
+      }
+    });
+  });
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   const savedPref = localStorage.getItem('glassUI_Enabled');
-  const isEnabled = savedPref === null ? true : savedPref === 'true';
-  
-  updateAppUI(isEnabled);
+  const isEnabled = savedPref === 'true';
 
+    observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
+   updateAppUI(isEnabled, document);
   const toggleEl = document.getElementById('toggle-glassUI');
   if (toggleEl) {
     toggleEl.checked = isEnabled;
     setTimeout(() => {
       try {
         const f7Toggle = app.toggle.get(toggleEl.closest('.toggle'));
-        if (f7Toggle) {
-          f7Toggle.on('change', (self) => setGlassUI(self.checked));
-        } else {
-          toggleEl.addEventListener('change', (e) => setGlassUI(e.target.checked));
-        }
-      } catch (err) {
-        toggleEl.addEventListener('change', (e) => setGlassUI(e.target.checked));
-      }
-    }, 300);
-  }
-
-  const f7Events = ['page:init', 'page:mounted', 'popup:open', 'sheet:open', 'panel:open', 'tab:show', 'view:init'];
-
-  f7Events.forEach(eventType => {
-    document.addEventListener(eventType, (e) => {
-      const currentPref = localStorage.getItem('glassUI_Enabled');
-      const currentlyEnabled = currentPref === null ? true : currentPref === 'true';
-
-      if (!currentlyEnabled) {
-        const container = e.target;       
-        const glassItems = container.querySelectorAll('.glass, .liquid-glass');
-        const processGlass = (el) => {
-          let removed = [];
-          if (el.classList.contains('glass')) removed.push('glass');
-          if (el.classList.contains('liquid-glass')) removed.push('liquid-glass');
-          if (removed.length > 0) {
-            el.setAttribute('data-removed-classes', removed.join(' '));
-            removed.forEach(cls => el.classList.remove(cls));
+        const handleToggleChange = (checked, toggleInstance) => {
+          if (checked) {
+            app.dialog.confirm(
+              'GlassUI provides an amazing visual experience, but it may impact performance and battery. Enable anyway?',
+              'Warning',
+              () => {
+                localStorage.setItem('glassUI_Enabled', 'true');
+                updateAppUI(true, document);
+              },
+              () => {
+                if (toggleInstance) toggleInstance.checked = false;
+                else toggleEl.checked = false;
+              }
+            );
+          } else {
+            localStorage.setItem('glassUI_Enabled', 'false');
+            updateAppUI(false, document);
           }
         };
 
-        if (container.matches('.glass, .liquid-glass')) processGlass(container);
-        glassItems.forEach(processGlass);       
-        const bgItems = container.querySelectorAll('.bg-img');
-        const processBg = (el) => {
-          el.style.setProperty('background-image', 'none', 'important');
-        };
-
-        if (container.matches('.bg-img')) processBg(container);
-        bgItems.forEach(processBg);
+        if (f7Toggle) {
+          f7Toggle.on('change', (self) => handleToggleChange(self.checked, self));
+        } else {
+          toggleEl.addEventListener('change', (e) => handleToggleChange(e.target.checked, null));
+        }
+      } catch (err) {
+        toggleEl.addEventListener('change', (e) => {
+          localStorage.setItem('glassUI_Enabled', e.target.checked);
+          updateAppUI(e.target.checked, document);
+        });
       }
-    });
-  });
+    }, 400);
+  }
 });
 document.addEventListener("DOMContentLoaded", () => {
   new Swiper(".guides", {
@@ -922,9 +934,8 @@ function renderNews(repos) {
         });
     }
 
- async function refreshData(force = false) {
+async function refreshData(force = false) {
     let repos = getRepos();
-
     if (!repos || repos.length === 0) {
         repos = getDefaultRepos();
         saveRepos(repos);
@@ -933,12 +944,20 @@ function renderNews(repos) {
     if (force) app.dialog.preloader('Refreshing Sources');
 
     try {
-        const updates = await Promise.all(
-            repos.map(r => fetchRepo(r.sourceURL).catch(() => null))
-        );
+     
+        const delay = new Promise(resolve => setTimeout(resolve, 2000));
+
+
+        const [updates] = await Promise.all([
+            Promise.all(repos.map(r => fetchRepo(r.sourceURL).catch(() => null))),
+            delay
+        ]);
 
         repos = updates.map((newRepo, i) => newRepo || repos[i]);
         saveRepos(repos);
+
+    } catch (error) {
+        console.error("Failed to refresh:", error);
     } finally {
         if (force) app.dialog.close();
     }
@@ -946,7 +965,6 @@ function renderNews(repos) {
     renderSourcesList(repos);
     renderNews(repos);
 }
-
 
     document.getElementById('add-source-fab').addEventListener('click', () => {
         app.dialog.prompt('Enter the source link.','Add source', async (url) => {
