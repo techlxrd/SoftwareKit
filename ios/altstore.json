@@ -5,12 +5,12 @@
   "iconURL": "https://softwarekit.pages.dev/favicon.png",
   "website": "https://softwarekit.pages.dev",
   "patreonURL": "",
-  "tintColor": "#007AFF",
+  "tintColor": "#9e36ce",
   "featuredApps": [
+    "com.zurac.OldOS",
     "com.atebits.Tweetie2",
     "com.kdt.livecontainer",
     "com.spotify.client",
-    "com.zurac.OldOS",
     "dev.casp.ScreenSaver"
   ],
   "apps": [
@@ -19,7 +19,7 @@
       "bundleIdentifier": "com.brocodev.prismios",
       "marketplaceID": "",
       "developerName": "brocodev",
-      "subtitle": "",
+      "subtitle": "An awesome app.",
       "localizedDescription": "This is a STRIPPED DOWN and BAREBONES version of Prism Full. It features bugs and could use some polish. This is moreso a proof-of-concept than a final product. Prism Full will have many more features than this outside of solely icon theming, and will be much more polished.\n\nPrismLite is a lightweight, widget-based icon theming solution for non-exploitable versions of iOS.\nIt doesn’t actually replace app icons, but it gets about as close as you can without exploits.\n\nBy leveraging widgets, private APIs, and a carefully designed UX, PrismLite attempts to achieve a near-native themed homescreen experience.\n\n⚠️This app does NOT work when sideloaded with an enterprise certificate. If sideloaded with a developer certificate, ensure \"App Groups\" are enabled/it works with widgets. If sideloaded with an enterprise certificate, widgets will appear blank.",
       "iconURL": "https://i.imgur.com/1fc4K72.png",
       "tintColor": "#ffd4f0",
@@ -27,12 +27,12 @@
       "screenshots": [],
       "versions": [
         {
-          "downloadURL": "https://github.com/prismios/PrismLite/releases/download/v0.0.3-Rev3/PLite.ipa",
-          "size": 3700000,
           "version": "1.0",
-          "buildVersion": null,
           "date": "2025-12-30T12:21:00+02:00",
           "localizedDescription": null,
+          "downloadURL": "https://github.com/prismios/PrismLite/releases/download/v0.0.3-Rev3/PLite.ipa",
+          "size": 3700000,
+          "buildVersion": null,
           "minOSVersion": null
         }
       ],
@@ -47,7 +47,7 @@
       "bundleIdentifier": "com.jbdotparty.Bridge",
       "marketplaceID": "",
       "developerName": "lunginspector",
-      "subtitle": "",
+      "subtitle": "An awesome app.",
       "localizedDescription": "An internal system app opener & extractor for jailed iDevices running iOS 16 and later.",
       "iconURL": "https://i.imgur.com/BqO4iTz.png",
       "tintColor": "#9144b9",
@@ -55,12 +55,12 @@
       "screenshots": [],
       "versions": [
         {
-          "downloadURL": "https://github.com/jailbreakdotparty/Bridge/releases/download/v1.2/Bridge_v1.2.ipa",
-          "size": 700000,
           "version": "1.2",
-          "buildVersion": null,
           "date": "2025-12-30T12:17:00+02:00",
           "localizedDescription": null,
+          "downloadURL": "https://github.com/jailbreakdotparty/Bridge/releases/download/v1.2/Bridge_v1.2.ipa",
+          "size": 700000,
+          "buildVersion": null,
           "minOSVersion": null
         }
       ],
@@ -85,12 +85,12 @@
       "screenshots": [],
       "versions": [
         {
-          "downloadURL": "https://github.com/jailbreakdotparty/PancakeStore/releases/download/1.0.1/PancakeStore_v1.0.1.ipa",
-          "size": 800000,
           "version": "1.0.1",
-          "buildVersion": null,
           "date": "2025-12-30T12:13:00+02:00",
           "localizedDescription": null,
+          "downloadURL": "https://github.com/jailbreakdotparty/PancakeStore/releases/download/1.0.1/PancakeStore_v1.0.1.ipa",
+          "size": 800000,
+          "buildVersion": null,
           "minOSVersion": "16.4"
         }
       ],
@@ -138,7 +138,7 @@
       "bundleIdentifier": "com.iRayanKhan.Opium-Tool",
       "marketplaceID": "",
       "developerName": "iRayanKhan",
-      "subtitle": "",
+      "subtitle": "An awesome app.",
       "localizedDescription": "TanaraSign is a custom AppStore with on-device signing for iOS, iPadOS, tvOS, macOS, watchOS, and visionOS written in 100% SwiftUI.",
       "iconURL": "https://i.imgur.com/30Mwq1v.png",
       "tintColor": "#c9af29",
@@ -168,7 +168,7 @@
       "bundleIdentifier": "thewonderofyou.Feather",
       "marketplaceID": "",
       "developerName": "khcrysalis",
-      "subtitle": "",
+      "subtitle": "An awesome app.",
       "localizedDescription": "Feather is a free on-device iOS application manager/installer, using certificates part of the Apple Developer Program.",
       "iconURL": "https://i.imgur.com/YJqfuVA.png",
       "tintColor": "#7736c8",
@@ -176,12 +176,12 @@
       "screenshots": [],
       "versions": [
         {
-          "downloadURL": "https://github.com/khcrysalis/Feather/releases/download/v2.5.0/Feather.ipa",
-          "size": 12700000,
           "version": "2.5.0",
-          "buildVersion": null,
           "date": "2025-12-30T12:16:00+02:00",
           "localizedDescription": null,
+          "downloadURL": "https://github.com/khcrysalis/Feather/releases/download/v2.5.0/Feather.ipa",
+          "size": 12700000,
+          "buildVersion": null,
           "minOSVersion": null
         }
       ],
@@ -913,17 +913,19 @@
         }
       },
       "patreon": {}
-    }
+    },
+    {},
+    {}
   ],
   "news": [
     {
-      "title": "SoftwareKit is live 🎉",
+      "title": "SoftwareKit v2.0",
       "identifier": "news_0df3yswqwr",
-      "caption": "SoftwareKit v1.0 was released",
-      "date": "2025-12-30T14:40",
-      "tintColor": "#007AFF",
-      "imageURL": "https://i.imgur.com/aW6Gpaw.png",
-      "notify": false,
+      "caption": "SoftwareKit v2.0 was released",
+      "date": "2026-03-06T09:00",
+      "tintColor": "#a200ff",
+      "imageURL": "https://i.imgur.com/sA5s6sN.png",
+      "notify": true,
       "url": "https://softwarekit.pages.dev",
       "appID": null
     }

@@ -29,7 +29,7 @@
             </li>
             <li>
               <a href="#searchTab" class="item-link tab-link" data-tab-title="Library">
-                <i class="f7-icons">square_stack_3d_up_fill</i> Library </a>
+                <i class="f7-icons">square_stack_fill</i> Library </a>
             </li>
             <li>
               <a href="#sourcesTab" class="item-link tab-link" data-tab-title="Sources">
@@ -86,7 +86,7 @@
                   <span class="tabbar-label">Global</span>
                 </a>
                 <a href="#searchTab" class="tab-link" data-tab-title="Library">
-                  <i class="icon f7-icons">square_stack_3d_up_fill</i>
+                  <i class="icon f7-icons">square_stack_fill</i>
                   <span class="tabbar-label">Library</span>
                 </a>
                 <a href="#sourcesTab" class="tab-link" data-tab-title="Sources">
@@ -196,6 +196,18 @@
                       <div class="item-inner">
                         <div class="item-title-row">
                           <div class="item-title">Device Info</div>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                                    <li>
+                    <a class="item-link item-content popup-open" data-popup="#trollcheck">
+                      <div class="item-media">
+                        <i class="f7-icons">app_badge_fill</i>
+                      </div>
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">TrollStore Compatibility Check</div>
                         </div>
                       </div>
                     </a>
@@ -733,11 +745,12 @@
                   <div class="page-content bg-img">
                     <div class="block-title block-title-large glass">What's new?</div>
                     <div class="block block-strong inset liquid-glass">
-                      <p>Last updated: <span class="badge">4 January 2026</span>
+                      <p>Last updated: <span class="badge">6 March 2026</span>
                       </p>
                       <center>
-                        <h1>v1.1</h1>
-                      </center> 🐛 Bug fixes and improvements <br>🎨 Improved accent color picker functionality <br>🧑‍💻 Code optimizations <br>🌏 Improved AltStore Sources support <br>👀 Fixed some visual bugs <br>👁️ Improved readability in some places<br>📦 Sources now auto-refresh on load
+                        <h1>v2.0</h1>
+                      </center> 🐛 Bug fixes and improvements <br>📱 New app icon <br>🧑‍💻 Code optimizations <br>🌏 Added TrollStore compatibility checker<br>😁 UI Improvements
+                      <br>🫗 Improved translucency and blur to look more like Liquid Glass<br>🪟 GlassUI is now disabled by default due to some performance issues on older iPhone models
                     </div>
                     <br>
                     <br>
@@ -783,7 +796,7 @@
                                   </script>
                                 </div>
                               </div>
-                              <div class="item-subtitle small-text"> SoftwareKit iOS v1.0 </div>
+                              <div class="item-subtitle small-text"> SoftwareKit iOS v2.0 </div>
                             </div>
                           </div>
                         </li>
@@ -846,32 +859,8 @@
                             </div>
                           </a>
                         </li>
-                        <div class="block-title glass">Contact forms & more</div>
-                         <li>
-                          <a class="item-link item-content popup-open" data-popup="#donate">
-                            <div class="item-media color-red">
-                              <i class="f7-icons color-red">heart_fill</i>
-                            </div>
-                            <div class="item-inner">
-                              <div class="item-title-row">
-                                <div class="item-title">Support the developer</div>
-                              </div>
-                            </div>
-                          </a>
-                        </li>
-                            <li>
-                          <a href="https://techlxrd.gumroad.com/l/swkitiosf7" class="item-link item-content external">
-                            <div class="item-media">
-                              <i class="f7-icons">scribble</i>
-                            </div>
-                            <div class="item-inner">
-                              <div class="item-title-row">
-                                <div class="item-title">Buy source code</div>
-                              </div>
-                            </div>
-                          </a>
-                        </li>
-                     
+                        <div class="block-title glass">Contact forms</div>
+                
                         <li>
                           <a class="item-link item-content popup-open" data-popup="#feedback">
                             <div class="item-media">
@@ -896,6 +885,7 @@
                             </div>
                           </a>
                         </li>
+                        <div class="block-title glass">Other</div>
                         <li>
                           <a class="item-link item-content popup-open" data-popup="#devs">
                             <div class="item-media">
@@ -908,6 +898,42 @@
                             </div>
                           </a>
                         </li>
+                                                 <li>
+                          <a class="item-link item-content popup-open" data-popup="#donate">
+                            <div class="item-media color-red">
+                              <i class="f7-icons color-red">heart_fill</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">Support the developer</div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                            <li>
+                          <a href="https://techlxrd.gumroad.com/l/swkitiosf7" class="item-link item-content external">
+                            <div class="item-media">
+                              <i class="f7-icons">scribble</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">Buy source code</div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+    <li>
+                          <a href="https://softwarekit-legacy.pages.dev" class="item-link item-content external">
+                            <div class="item-media">
+                              <i class="f7-icons">device_phone_portrait</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">SoftwareKit Legacy (iOS 4-9)</div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>  
                         <li>
                           <a href="https://x.com/softwarekit_app/" class="item-link item-content external">
                             <div class="item-media">
@@ -916,6 +942,18 @@
                             <div class="item-inner">
                               <div class="item-title-row">
                                 <div class="item-title">Follow</div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                                                <li>
+                          <a href="https://discord.com/invite/xMF38FamGg" class="item-link item-content external">
+                            <div class="item-media">
+                              <i class="f7-icons">chat_bubble_2_fill</i>
+                            </div>
+                            <div class="item-inner">
+                              <div class="item-title-row">
+                                <div class="item-title">Join Discord Server</div>
                               </div>
                             </div>
                           </a>
@@ -944,7 +982,7 @@
                             </div>
                           </a>
                         </li>
-                        <div class="block-title glass">Other</div>
+                      
                         <li>
                           <a onclick="reset()" class="item-link item-content">
                             <div class="item-media">
@@ -1433,7 +1471,48 @@
     </div>
   </div>
 </div>
+ <div class="popup" id="trollcheck">
+            <div class="page bg-img">
+              <div class="navbar">
+                <div class="navbar-bg"></div>
+                <div class="navbar-inner">
+                  <div class="title">TrollStore Compatibility Check</div>
+                  <div class="right">
+                    <a class="link popup-close">
+                      <i class="icon icon-close"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+                <div class="page-content">
+                     <div class="block inset"><h3>Estimated iOS version: <span id="ios-version"></span></h3></div>
+          <div class="block-title">Choose Device</div>
+          <div class="list list-strong list-dividers inset">
+            <ul>
+              <li>
+                <a id="chooseDevice" class="list-button" onclick="openDevicePicker()">Choose Device</a>
+              </li>
+              <li>
+                <a id="chooseVersion" class="list-button" onclick="openVersionPicker()">Choose iOS Version</a>
+              </li>
+              <li>
+                <a onclick="checkSupport()" type="button" class="list-button">Check compatibility</a>
+              </li>
+            </ul>
+          </div>
+          <div class="block-title">Support Information</div>
+          <div id="supportInfo" class="block block-strong inset">    
+            <p id="trollstore-support" style="color:red;">TrollStore Support: Unknown</p>
+            <a id="cfwButton" style="display:none;" href="https://ios.cfw.guide/installing-trollstore/" target="_blank" class="button button-raised button-fill button-large button-round external">Check the guide</a> 
+          </div> 
+           <div class="list list-strong inset accordion-list"> <ul></ul>
+    </div>    
+      </div>   
+  </div>
+  </div>
+  </div>
           <script src="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.js"></script>
           <script src="js/app.js"></script>
+          <script src="js/trollcheck.js"></script>
   </body>
 </html>
