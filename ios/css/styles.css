@@ -2,6 +2,8 @@
   --f7-searchbar-backdrop-bg-color: transparent;
   --sidebar-width: 260px;
   --f7-safe-area-bottom: 2px !important;
+  --f7-bars-translucent-blur:2
+13px;
 }
 
 
@@ -10,7 +12,6 @@ body {
   scroll-behavior: smooth;
   touch-action: manipulation;
 }
-
 a,
 a:link,
 a:visited {
@@ -90,11 +91,19 @@ isolation: isolate;
   width: 40px;
   height: 40px;
 }
-
+.toolbar-pane, .left, .right, .popover, .dialog{backdrop-filter:blur(3px)!important;--webkit-backdrop-filter: blur(3px)!important;}
+.fab a {
+  background: rgba(var(--f7-theme-color-rgb), 0.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
 .display-none {
   display: none;
 }
-
+ .searchbar-input-wrap, .searchbar-disable-button {
+  backdrop-filter: blur(3px)!important;
+}
+.fab{border-radius: 99px;}
 .install {
   font-size: 15px;
   color: #fff;
@@ -288,8 +297,8 @@ isolation: isolate;
 }
 .swipe-nav {
   background: rgba(255, 255, 255, 0.13);
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   position: absolute;
   justify-content: center;
   z-index: 500;
