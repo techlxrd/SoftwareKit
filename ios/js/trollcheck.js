@@ -117,6 +117,7 @@ function openDevicePicker() {
   }
   pickerDevice = app.picker.create({
     inputEl: '#chooseDevice',
+    openIn: 'popover', 
     cols: [{
       textAlign: 'center',
       values: deviceList.map(device => device.model)
@@ -157,6 +158,7 @@ function openVersionPicker() {
 
   pickerVersion = app.picker.create({
     inputEl: '#chooseVersion',
+    openIn: 'popover', 
     cols: [{
       textAlign: 'center',
       values: compatibleVersions
