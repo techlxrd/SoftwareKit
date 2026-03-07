@@ -48,8 +48,8 @@ body {
 isolation: isolate; 
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   background: linear-gradient(
     145deg,
     rgba(255, 255, 255, 0.15) 0%,
@@ -74,8 +74,8 @@ isolation: isolate;
     rgba(255, 60, 60, 0.9) 0%,
     rgba(200, 0, 0, 0.65) 100%
   );
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
@@ -91,9 +91,9 @@ isolation: isolate;
   width: 40px;
   height: 40px;
 }
-.toolbar-pane, .left, .right, .popover, .dialog{backdrop-filter:blur(3px)!important;--webkit-backdrop-filter: blur(3px)!important;}
+.toolbar-pane, .left, .right, .popover, .dialog{backdrop-filter:blur(2px)!important;--webkit-backdrop-filter: blur(2px)!important;}
 .fab a {
-  background: rgba(var(--f7-theme-color-rgb), 0.55);
+  background: rgba(var(--f7-theme-color-rgb), 0.60);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
 }
