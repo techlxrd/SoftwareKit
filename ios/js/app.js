@@ -250,14 +250,14 @@ function postRequest() {
     const requestId = Math.random().toString(36).substring(2, 15);
     localStorage.setItem('pendingRequestID', requestId);
     app.dialog.preloader('Waiting for registration…');
-    window.location.href = `https://softwarekit-udid.shadvlxrd.workers.dev/get-profile?requestId=${requestId}`;
+    window.location.href = `https://softwarekit-udid.techlxrd.workers.dev/get-profile?requestId=${requestId}`;
     startPolling(requestId);
 }
 
 function startPolling(id) {
     const interval = setInterval(async () => {
         try {
-            const res = await fetch(`https://softwarekit-udid.shadvlxrd.workers.dev/retrieve?requestId=${id}`);
+            const res = await fetch(`https://softwarekit-udid.techlxrd.workers.dev/retrieve?requestId=${id}`);
             const { deviceInfo } = await res.json();
             if (deviceInfo) {
                 clearInterval(interval);
