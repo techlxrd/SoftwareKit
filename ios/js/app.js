@@ -1107,16 +1107,9 @@ document.addEventListener("DOMContentLoaded", () => {
   checkConnection();
 });
 
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.getRegistration().then(registration => {
-    if (!registration) {
-      navigator.serviceWorker.register("service-worker.js").catch(() => {});
-    }
-  });
-}
 
 var SignerEngine = {
-  workerBase: 'https://cococloud-api.shadvlxrd.workers.dev',
+  workerBase: 'https://cococloud-api.techlxrd.workers.dev',
   files: { ipa: null, p12: null, prov: null },
   processing: false,
 
@@ -1156,7 +1149,7 @@ var SignerEngine = {
     const ct = (response.headers.get('content-type') || '').toLowerCase();
     if (ct.includes('application/json')) {
       try { return { type:'json', data: await response.json(), status: response.status }; }
-      catch(e) { /* fallthrough */ }
+      catch(e) { }
     }
     if (ct.includes('application/octet-stream') || ct.includes('application/zip') || ct.includes('application/vnd.apple.pkpass') || ct.includes('application/x-')) {
       const blob = await response.blob();
