@@ -7,10 +7,10 @@
   "patreonURL": "",
   "tintColor": "#9e36ce",
   "featuredApps": [
+    "com.opa334.Dopamine",
     "com.zurac.OldOS",
     "com.atebits.Tweetie2",
     "com.kdt.livecontainer",
-    "com.spotify.client",
     "dev.casp.ScreenSaver"
   ],
   "apps": [
@@ -472,20 +472,20 @@
       "bundleIdentifier": "com.utmapp.UTM",
       "marketplaceID": "",
       "developerName": "Unknown",
-      "subtitle": "An awesome app.",
+      "subtitle": "Run virtual machines on iOS",
       "localizedDescription": "UTM is a full featured system emulator and virtual machine host for iOS and macOS. It is based off of QEMU. In short, it allows you to run Windows, Linux, and more on your Mac, iPhone, and iPad.",
-      "iconURL": "https://i.imgur.com/dXp6G24.png",
+      "iconURL": "https://i.imgur.com/IX1Xp8R.png",
       "tintColor": "#3c7cec",
       "category": "other",
       "screenshots": [],
       "versions": [
         {
-          "version": "4.6.5",
-          "date": "2025-05-18T07:36:00+03:00",
-          "localizedDescription": null,
-          "downloadURL": "https://github.com/utmapp/UTM/releases/download/v4.6.5/UTM.ipa",
-          "size": 126200000,
+          "downloadURL": "https://github.com/utmapp/UTM/releases/download/v4.7.5/UTM.ipa",
+          "size": 130100000,
+          "version": "4.7.5",
           "buildVersion": null,
+          "date": "2026-03-16T16:58:00+02:00",
+          "localizedDescription": null,
           "minOSVersion": null
         }
       ],
@@ -567,7 +567,7 @@
       "name": "PostBox",
       "bundleIdentifier": "com.simplycode.PostBox",
       "marketplaceID": "",
-      "developerName": "Example Developer",
+      "developerName": "Unknown",
       "subtitle": "An awesome app.",
       "localizedDescription": "PostBox brings the latest jailbreak news to your fingertips. Use PostBox to access your favorite packages and repositories while unjailbroken, all without the hassle of constantly searching on the web. With in-app .deb download and extraction, you can install themes using only your phone.",
       "iconURL": "https://i.imgur.com/Yu9CUjp.png",
@@ -914,14 +914,42 @@
       },
       "patreon": {}
     },
-    {},
-    {}
+    {
+      "name": "Sileo Demo",
+      "bundleIdentifier": "org.coolstar.SileoDemo",
+      "marketplaceID": "",
+      "developerName": "Unknown",
+      "subtitle": "Sileo Package Manager Demo",
+      "localizedDescription": "No description available for this application 😜",
+      "iconURL": "https://i.imgur.com/lcFQof8.png",
+      "tintColor": "#2fd9cc",
+      "category": "other",
+      "screenshots": [],
+      "versions": [
+        {
+          "downloadURL": "https://github.com/Sileo/Sileo/releases/download/2.3/sileo_demo_2.3.ipa",
+          "size": 3400000,
+          "version": "2.3.1",
+          "buildVersion": null,
+          "date": "2026-03-16T16:54:00+02:00",
+          "localizedDescription": null,
+          "minOSVersion": "11.0"
+        }
+      ],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {
+          "NSFaceIDUsageDescription": "Sileo uses Face ID to quickly authenticate purchases."
+        }
+      },
+      "patreon": {}
+    }
   ],
   "news": [
     {
-      "title": "SoftwareKit v2.0",
+      "title": "SoftwareKit v3.0",
       "identifier": "news_0df3yswqwr",
-      "caption": "SoftwareKit v2.0 was released",
+      "caption": "SoftwareKit v3.0 was released 🎉",
       "date": "2026-03-06T09:00",
       "tintColor": "#a200ff",
       "imageURL": "https://i.imgur.com/sA5s6sN.png",
