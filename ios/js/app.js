@@ -8,11 +8,11 @@ const app = new Framework7({
   },
   popup: {
     push: true,
-    swipeToClose: true,
+    swipeToClose: 'to-bottom',
   },
   sheet: {
-    push: false,
-    swipeToClose:false,
+    push: true,
+    swipeToClose: 'to-bottom',
   },
   colors: {
     primary: '#007AFF'
@@ -30,131 +30,95 @@ routes: [
     },
   ],
 });
+var $ = Dom7;
 const mainView = app.views.create(".view-main");
-function updateAppUI(isEnabled, container = document) {
-  const isGlobal = container === document;
-  const selectors = '.glass, .liquid-glass, [data-removed-classes]';
-  const glassElements = container.querySelectorAll(selectors);
-  const targets = Array.from(glassElements);
+app.on('init', async () => {
+  const repos = getRepos();
+  if (!repos || !repos.length) return;
 
-  if (!isGlobal && container.matches && container.matches(selectors)) {
-    targets.push(container);
+  const updatedRepos = [];
+
+  for (const repo of repos) {
+    try {
+      const refreshed = await fetchRepo(repo.sourceURL);
+      if (refreshed) updatedRepos.push(refreshed);
+      else updatedRepos.push(repo);
+    } catch (e) {
+      updatedRepos.push(repo);
+    }
   }
 
-  targets.forEach(el => {
-    if (isEnabled) {
-      const savedClasses = el.getAttribute('data-removed-classes');
-      if (savedClasses) {
-        savedClasses.split(' ').forEach(cls => el.classList.add(cls));
-        el.removeAttribute('data-removed-classes');
-      }
-    } else {
-      let removed = [];
-      if (el.classList.contains('glass')) removed.push('glass');
-      if (el.classList.contains('liquid-glass')) removed.push('liquid-glass');
-      if (removed.length > 0) {
-        el.setAttribute('data-removed-classes', removed.join(' '));
-        removed.forEach(cls => el.classList.remove(cls));
-      }
-    }
-  });
+  saveRepos(updatedRepos);
+  renderSourcesList(updatedRepos);
+});
+const searchFab = document.getElementById('search-fab');
+const addSourceFab = document.getElementById('add-source-fab');
 
-  const bgElements = container.querySelectorAll('.bg-img');
-  const bgTargets = Array.from(bgElements);
-  if (!isGlobal && container.matches && container.matches('.bg-img')) {
-    bgTargets.push(container);
-  }
+searchFab.style.visibility = 'hidden';
+addSourceFab.style.visibility = 'hidden';
 
-  bgTargets.forEach(el => {
-    if (isEnabled) {
-      el.style.removeProperty('background-image');
-    } else {
-      el.style.setProperty('background-image', 'none', 'important');
-    }
-  });
-}
+const tabsEl = document.querySelector('.tabs');
 
+tabsEl.addEventListener('tab:show', (e) => {
+  const tabEl = e.target; 
+  const tabId = tabEl.id;
 
-const observer = new MutationObserver((mutations) => {
-  const isEnabled = localStorage.getItem('glassUI_Enabled') === 'true';
-  if (isEnabled) return; 
-
-  mutations.forEach(mutation => {
-    mutation.addedNodes.forEach(node => {
-      if (node.nodeType === 1) { 
-        updateAppUI(false, node);
-      }
-    });
-  });
+  searchFab.style.visibility = (tabId === 'searchTab') ? 'visible' : 'hidden';
+  addSourceFab.style.visibility = (tabId === 'sourcesTab') ? 'visible' : 'hidden';
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  const savedPref = localStorage.getItem('glassUI_Enabled');
-  const isEnabled = savedPref === 'true';
-
-    observer.observe(document.body, {
-    childList: true,
-    subtree: true
-  });
-
-   updateAppUI(isEnabled, document);
-  const toggleEl = document.getElementById('toggle-glassUI');
-  if (toggleEl) {
-    toggleEl.checked = isEnabled;
-    setTimeout(() => {
-      try {
-        const f7Toggle = app.toggle.get(toggleEl.closest('.toggle'));
-        const handleToggleChange = (checked, toggleInstance) => {
-          if (checked) {
-            app.dialog.confirm(
-              'GlassUI provides an amazing visual experience, but it may impact performance and battery. Enable anyway?',
-              'Warning',
-              () => {
-                localStorage.setItem('glassUI_Enabled', 'true');
-                updateAppUI(true, document);
-              },
-              () => {
-                if (toggleInstance) toggleInstance.checked = false;
-                else toggleEl.checked = false;
-              }
-            );
-          } else {
-            localStorage.setItem('glassUI_Enabled', 'false');
-            updateAppUI(false, document);
-          }
-        };
-
-        if (f7Toggle) {
-          f7Toggle.on('change', (self) => handleToggleChange(self.checked, self));
-        } else {
-          toggleEl.addEventListener('change', (e) => handleToggleChange(e.target.checked, null));
-        }
-      } catch (err) {
-        toggleEl.addEventListener('change', (e) => {
-          localStorage.setItem('glassUI_Enabled', e.target.checked);
-          updateAppUI(e.target.checked, document);
-        });
-      }
-    }, 400);
-  }
-});
 document.addEventListener("DOMContentLoaded", () => {
-  new Swiper(".guides", {
-    slidesPerView: "auto",
-    spaceBetween: 10
-  });
+new Swiper(".guides", {
+  effect: "coverflow",
+  grabCursor: true,
+  preventClicks: true, 
+  centeredSlides: false,
+  slidesPerView: "auto",
+  spaceBetween: 26,
+  coverflowEffect: {
+    rotate: 0,
+    stretch: 0,
+    depth: 120,
+    modifier: 1.5,
+    slideShadows: false
+  }
+});
+});
+var swiperFeaturedMac = new Swiper(".featured-macos", {
+  effect: "coverflow",
+  grabCursor: true,
+  centeredSlides: false,
+  preventClicks: true, 
+  slidesPerView: "auto",
+  spaceBetween: 27,
+  coverflowEffect: {
+    rotate: 0,
+    stretch: 0,
+    depth: 120,
+    modifier: 1.5,
+    slideShadows: false
+  },
+  
+  autoplay: {
+    delay: 4000,
+    disableOnInteraction: true
+  }
 });
 document.addEventListener('click', function (e) {
   const clickedLink = e.target.closest('.sidebar-list .item-link');
-  
   if (!clickedLink) return;
 
-  const allLinks = document.querySelectorAll('.sidebar-list .item-link');
+  app.popup.close();
+  app.dialog.close();
+  const currentPage = document.querySelector('.page-current[data-name="repo-detail"]');
   
+  if (currentPage) {  
+    app.views.main.router.back();     
+  }
+  const allLinks = document.querySelectorAll('.sidebar-list .item-link');
   allLinks.forEach(link => {
     link.classList.remove('tab-link-active');
   });
-
   clickedLink.classList.add('tab-link-active');
 });
 window.addEventListener('error', function (event) {
@@ -169,20 +133,7 @@ window.addEventListener('error', function (event) {
     img.dataset.fallbackApplied = 'true';
     img.src = './assets/default.png';
 }, true);
-const failedImages = new Set();
 
-window.addEventListener('error', function (event) {
-    const img = event.target;
-
-    if (!(img instanceof HTMLImageElement)) return;
-    if (img.closest('.screenshots')) return;
-
-    const src = img.getAttribute('src');
-    if (!src || failedImages.has(src)) return;
-
-    failedImages.add(src);
-    img.src = './assets/default.png';
-}, true);
 document.addEventListener('DOMContentLoaded', () => {
 app.on('tabShow', (tabEl) => {
   const tabId = `#${tabEl.id}`;
@@ -208,18 +159,15 @@ app.on('tabShow', (tabEl) => {
   if (largeTitleEl) largeTitleEl.textContent = title;
 });
 
-  document.querySelectorAll('.tab-link').forEach(tabLink => {
-    tabLink.addEventListener('click', function () {
-      updateNavbarTitleFromTab(this.getAttribute('href'));
-    });
-  });
+  
   window.goToTab = function (tabId) {
     app.popup.close();
     app.tab.show(tabId);
-    updateNavbarTitleFromTab(tabId);
+    
   };
 
 });
+  
 
 function toggleDarkMode() {
   document.querySelector("html").classList.toggle("dark");
@@ -250,14 +198,14 @@ function postRequest() {
     const requestId = Math.random().toString(36).substring(2, 15);
     localStorage.setItem('pendingRequestID', requestId);
     app.dialog.preloader('Waiting for registration…');
-    window.location.href = `https://softwarekit-udid.techlxrd.workers.dev/get-profile?requestId=${requestId}`;
+    window.location.href = `https://api.udid.swkit.app/get-profile?requestId=${requestId}`;
     startPolling(requestId);
 }
 
 function startPolling(id) {
     const interval = setInterval(async () => {
         try {
-            const res = await fetch(`https://softwarekit-udid.techlxrd.workers.dev/retrieve?requestId=${id}`);
+            const res = await fetch(`https://api.udid.swkit.app/retrieve?requestId=${id}`);
             const { deviceInfo } = await res.json();
             if (deviceInfo) {
                 clearInterval(interval);
@@ -313,7 +261,7 @@ function renderDeviceData(deviceInfo) {
     const sysVer = getIOSVersion();
 
     container.innerHTML = `
-<div class="list media-list list-strong list-dividers inset glass">
+<div class="list media-list list-strong list-dividers inset">
             <ul>
                 <li>
                     <div class="item-content">
@@ -343,13 +291,13 @@ function renderDeviceData(deviceInfo) {
             </ul>
         </div>           
 
-        <div class="list list-strong list-dividers glass inset">
+        <div class="list list-strong list-dividers   inset">
             <ul>
                 <li>
                     <div class="item-content">
                         <div class="item-inner">
                             <div class="item-title">Model name</div>
-                            <div class="item-after glass">${modelIdentifier}</div>
+                            <div class="item-after  ">${modelIdentifier}</div>
                         </div>
                     </div>
                 </li>              
@@ -365,7 +313,7 @@ function renderDeviceData(deviceInfo) {
                                     <div class="item-title">
                                         ${formatLabel(key)}
                                     </div>
-                                    <div class="item-after glass">
+                                    <div class="item-after  ">
                                         ${value}
                                     </div>
                                 </div>
@@ -591,7 +539,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function sanitizeRepo(json, url) {
         const appsList = json.apps || json.packages || (Array.isArray(json) ? json : []);
-        
+
+        function extractScreenshotURLs(screenshots) {
+            const urls = [];
+            if (!screenshots) return urls;
+
+            if (typeof screenshots === 'string') {
+                urls.push(screenshots);
+                return urls;
+            }
+
+            if (Array.isArray(screenshots)) {
+                screenshots.forEach(item => {
+                    if (typeof item === 'string') {
+                        urls.push(item);
+                    } else if (item && typeof item === 'object') {
+                        if (item.imageURL) urls.push(item.imageURL);
+                        else if (item.url) urls.push(item.url);
+                    }
+                });
+                return urls;
+            }
+
+            if (screenshots && typeof screenshots === 'object') {
+                Object.values(screenshots).forEach(value => {
+                    if (Array.isArray(value)) {
+                        urls.push(...extractScreenshotURLs(value));
+                    } else if (value && typeof value === 'object') {
+                        if (value.imageURL) urls.push(value.imageURL);
+                    }
+                });
+            }
+
+            return urls;
+        }
+
         return {
             name: json.name || "Untitled Repo",
             identifier: json.identifier || url,
@@ -605,6 +587,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const appIcon = app.iconURL || app.icon || v0.iconURL || "";
                     const downloadUrl = app.downloadURL || v0.downloadURL || "#";
 
+                    const screenshotField = app.screenshots || app.screenshotURLs || v0.screenshots || v0.screenshotURLs;
+                    const screenshotURLs = extractScreenshotURLs(screenshotField);
+
                     return {
                         name: appName,
                         version: app.version || v0.version || '1.0',
@@ -617,7 +602,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         localizedDescription: app.localizedDescription || app.subtitle || app.description || v0.localizedDescription || '',
                         category: app.category || app.type || 'apps',
                         appPermissions: app.appPermissions || {},
-                        screenshotURLs: Array.isArray(app.screenshotURLs) ? app.screenshotURLs : (Array.isArray(app.screenshots) ? app.screenshots : (Array.isArray(v0.screenshotURLs) ? v0.screenshotURLs : [])),
+                        screenshotURLs: screenshotURLs,
                         versions: versions
                     };
                 } catch (e) {
@@ -665,7 +650,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.ok) {
                 jsonData = await res.json();
             }
-        } catch (e) {}
+        } catch (e) { }
 
         if (!jsonData) {
             try {
@@ -673,17 +658,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (res.ok) {
                     jsonData = await res.json();
                 }
-            } catch (e) {}
+            } catch (e) { }
         }
 
         return jsonData ? sanitizeRepo(jsonData, url) : null;
     }
 
-    window.openPhotoBrowser = function(screenshotUrls) {
+    window.openPhotoBrowser = function (screenshotUrls) {
         if (typeof screenshotUrls === 'string') screenshotUrls = JSON.parse(screenshotUrls);
         const pb = app.photoBrowser.create({
             photos: screenshotUrls.map(url => ({ url })),
-            type: 'popup',
+            type: 'standalone',
             navbar: true,
             toolbar: true,
             swiper: { zoom: true }
@@ -693,14 +678,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function createPopupHtml(item) {
         const screenshotsJson = JSON.stringify(item.screenshotURLs).replace(/"/g, "&quot;");
-        const screenshotsHtml = item.screenshotURLs.map(src => 
+        const screenshotsHtml = item.screenshotURLs.map(src =>
             `<img loading="lazy" src="${src}" onclick="openPhotoBrowser(['${src}'])">`
         ).join('');
 
         return `
         <div class="popup popup-app-detail" id="popup-${item.bundleIdentifier}">
             <div class="view">
-                <div class="page bg-img">
+                <div class="page">
                     <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
                     <div class="page-content">
 <div style="margin-top: 40px; padding: 0px;">
@@ -719,9 +704,9 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-          <a href="${item.downloadURL}" class="external button button-fill button-round" style="padding: 0 24px; font-weight:bold; flex-shrink: 0;">GET</a>
+          <a href="${item.downloadURL}" class="external button button-fill button-round get">GET</a>
           
-          <a onclick="navigator.share({url: '${item.downloadURL}' })" class="more" style="flex-shrink: 0; margin-left: 0 !important;">
+          <a onclick="navigator.share({url: '${item.downloadURL}' })" class="more">
             <i class="f7-icons">square_arrow_up</i>
           </a>
         </div>
@@ -733,10 +718,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             ${item.screenshotURLs.length > 0 ? `
                             <div class="block-title" style="font-size: 20px; margin-top: 25px;">Preview</div>
                             <div class="screenshot" onclick="openPhotoBrowser(${screenshotsJson})">${screenshotsHtml}</div>` : ''}
-                            <div class="block block-strong inset margin-top liquid-glass">
+                            <div class="block block-strong inset margin-top">
                                 <div style="font-size: 15px; line-height: 1.5;">${item.localizedDescription.replace(/\n/g, '<br>')}</div>
                             </div>
-                            <div class="list simple-list list-strong list-dividers inset glass">
+                            <div class="list simple-list list-strong list-dividers inset  ">
                                 <ul>
                                     <li><span>Version</span><span>${item.version}</span></li>
                                     <li><span>Size</span><span>${(item.size / 1024 / 1024).toFixed(1)} MB</span></li>
@@ -752,117 +737,23 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
     }
 
-function renderSourcesList(repos) {
-    const listEl = document.getElementById('sources-list');
-    listEl.innerHTML = '';
-    const frag = document.createDocumentFragment();
-    repos.forEach(repo => {
-        const li = document.createElement('li');
-        li.id = repo.name;
-        li.className = repo.isSystem ? '' : 'swipeout';
-        const iconSrc = repo.iconURL || './assets/default.png';
-
-        li.innerHTML = `
-            <div class="swipeout-content">
-                <a class="item-link repo-link" href="#" data-url="${repo.sourceURL}">
-                    <div class="item-content">
-                        <div class="item-media"><img src="${iconSrc}"></div>
-                        <div class="item-inner">
-                            <div class="item-title-row"><div class="item-title">${repo.name}</div></div>
-                            <div class="item-subtitle">${repo.apps.length} Apps</div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-            ${!repo.isSystem ? `
-            <div class="swipeout-actions-right">
-                <a onclick="navigator.share({ url: '${repo.sourceURL}' })">Share</a>
-                <a class="swipeout-delete" data-url="${repo.sourceURL}">Remove <i class="f7-icons">trash</i></a>
-            </div>` : ''}`;
-        frag.appendChild(li);
-    });
-
-   
-    listEl.appendChild(frag);
-
-
-    const savedOrder = JSON.parse(localStorage.getItem('sourcesListOrder') || '[]');
-    if (savedOrder.length) {
-        savedOrder.forEach(id => {
-            const item = document.getElementById(id);
-          
-            if (item && item.parentNode === listEl) {
-                listEl.appendChild(item);
+    function getAllApps() {
+        const repos = getRepos();
+        const allApps = [];
+        repos.forEach(repo => {
+            if (repo.apps && Array.isArray(repo.apps)) {
+                allApps.push(...repo.apps);
             }
         });
+        return allApps;
     }
 
-    if (!listEl.dataset.sortableInitialized) {
-        listEl.addEventListener('sortable:sort', () => {
-            const order = Array.from(listEl.children).map(li => li.id);
-            localStorage.setItem('sourcesListOrder', JSON.stringify(order));
-        });
-        listEl.dataset.sortableInitialized = "true";
-    }
-}
+    function createAppListPage(pageId, title, apps, isAllSources = false, sourceURL = null) {
+       
+        const rightContent = !isAllSources ? `<div class="right"><a onclick="navigator.share({url: '${sourceURL}' })" class="link icon-only"><i class="icon f7-icons">square_arrow_up</i></a></div>` : '';
 
-function renderNews(repos) {
-    let allNews = [];
-    repos.forEach(r => { if (r.news) allNews.push(...r.news.map(n => ({ ...n, source: r.name }))); });
-
-    const wrapper = document.getElementById('news-swiper-wrapper');
-    const section = document.getElementById('news-section');
-
-    if (allNews.length === 0) {
-        if (section) section.style.display = 'none';
-        return;
-    }
-
-    if (section) section.style.display = 'block';
-    wrapper.innerHTML = '';
-    allNews.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-    const savedPref = localStorage.getItem('glassUI_Enabled');
-    const isGlassEnabled = savedPref === null ? true : savedPref === 'true';
-
-    allNews.forEach(news => {
-        wrapper.insertAdjacentHTML('beforeend', `
-            <div class="swiper-slide swiper-slide-news">
-                <div class="card repo-news-card liquid-glass">
-                    <div class="card-content card-content-padding">
-                        <div class="size-12">${news.source}</div>
-                        <div class="text-weight-bold">${news.title}</div>
-                        <div class="size-12">${news.caption.substring(0, 80)}...</div>
-                    </div>                   
-                </div>
-            </div>
-        `);
-    });
-
-    if (!isGlassEnabled) {
-        const newCards = wrapper.querySelectorAll('.liquid-glass, .glass');
-        newCards.forEach(el => {
-            let removed = [];
-            if (el.classList.contains('glass')) removed.push('glass');
-            if (el.classList.contains('liquid-glass')) removed.push('liquid-glass');
-            el.setAttribute('data-removed-classes', removed.join(' '));
-            removed.forEach(cls => el.classList.remove(cls));
-        });
-    }
-
-    const swiperContainer = document.getElementById('news-swiper-container');
-    if (swiperContainer && !swiperContainer.swiper) {
-        app.swiper.create('#news-swiper-container', { slidesPerView: 1 });
-    } else if (swiperContainer && swiperContainer.swiper) {
-        swiperContainer.swiper.update();
-    }
-}
-
-
-    function openRepoPage(repo) {
-        const pageId = `repo-${Date.now()}`;
         const pageHtml = `
-           <div class="page page-with-subnavbar bg-img" data-name="repo-detail">
+            <div class="page page-with-subnavbar" data-name="repo-detail" data-url="${sourceURL || ''}" data-id="${pageId}" ${isAllSources ? 'data-all-sources="true"' : ''}>
                 <div class="navbar">
                     <div class="navbar-bg"></div>
                     <div class="navbar-inner">
@@ -879,13 +770,20 @@ function renderNews(repos) {
                             </form>
                         </div>
                         <div class="left"><a class="link back"><i class="icon icon-back"></i></a></div>
-                        <div class="title">${repo.name}</div>
-                        <div class="right"><a onclick="navigator.share({url: '${repo.sourceURL}' })" class="link icon-only"><i class="icon f7-icons">square_arrow_up</i></a></div>
+                        <div class="title">${title}</div>
+                        ${rightContent}
                     </div>
                 </div>
-                <div class="page-content repo-page">                         
-                    <div class="list media-list separated inset virtual-list virtual-list-${pageId} searchbar-found glass"></div>
-                    <div class="list list-strong simple-list searchbar-not-found inset glass"><ul><li>No items found.</li></ul></div>
+                <div class="page-content repo-page ptr-content ptr-repo-detail">
+                    <div class="ptr-preloader">
+                        <div class="preloader"></div>
+                        <div class="ptr-arrow"></div>
+                    </div>                 
+                    <div class="list media-list separated inset virtual-list virtual-list-${pageId} searchbar-found  "></div>
+                    <div class="block text-align-center searchbar-not-found">
+                        <i class="f7-icons" style="font-size:96px;color:#ff3b30;">bin_xmark_fill</i>
+                        <h2 style="margin-top:20px;">Nothing was found</h2><p>Check your spelling or try searching again</p>
+                    </div>
                 </div>
             </div>`;
 
@@ -898,7 +796,7 @@ function renderNews(repos) {
                     pageInit: function (e, page) {
                         const vl = app.virtualList.create({
                             el: `.virtual-list-${pageId}`,
-                            items: repo.apps,
+                            items: apps,
                             searchAll: (query, items) => {
                                 const q = query.toLowerCase();
                                 return items.reduce((acc, item, index) => {
@@ -907,17 +805,34 @@ function renderNews(repos) {
                                 }, []);
                             },
                             height: 90,
-                            renderItem: (item) => `
-                                <li>
-                                    <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
-                                        <div class="item-media"><img src="${item.iconURL}" loading="lazy"></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row"><div class="item-title">${item.name}</div></div>
-                                            <div class="item-subtitle">${item.developerName}</div>
-                                        </div>
-                                    </a>
-                                </li>`
+                            renderItem: (item) => {
+                                if (item && item.skeleton) {
+                                    return `
+                                        <li>
+                                            <div class="item-content skeleton-effect-pulse">
+                                                <div class="item-media">
+                                                    <div class="skeleton-block" style="width:58px;height:58px;border-radius:28%"></div>
+                                                </div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row"><div class="item-title skeleton-text">Loading</div></div>
+                                                    <div class="item-subtitle skeleton-text">Loading</div>
+                                                </div>
+                                            </div>
+                                        </li>`;
+                                }
+                                return `
+                                    <li>
+                                        <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
+                                            <div class="item-media"><img src="${item.iconURL}" loading="lazy"></div>
+                                            <div class="item-inner">
+                                                <div class="item-title-row"><div class="item-title">${item.name}</div></div>
+                                                <div class="item-subtitle">${item.developerName}</div>
+                                            </div>
+                                        </a>
+                                    </li>`;
+                            }
                         });
+                        page.vl = vl;
                         app.searchbar.create({
                             el: page.el.querySelector('.searchbar'),
                             searchContainer: `.virtual-list-${pageId}`,
@@ -925,7 +840,7 @@ function renderNews(repos) {
                             on: { search(sb, query) { vl.search(query); } }
                         });
                         page.$el.on('click', '.app-item-trigger', function () {
-                            const appItem = repo.apps.find(a => a.bundleIdentifier === this.dataset.id);
+                            const appItem = apps.find(a => a.bundleIdentifier === this.dataset.id);
                             if (appItem) app.popup.create({ content: createPopupHtml(appItem), swipeToClose: true, on: { closed: (p) => p.destroy() } }).open();
                         });
                     }
@@ -934,59 +849,454 @@ function renderNews(repos) {
         });
     }
 
-async function refreshData(force = false) {
-    let repos = getRepos();
-    if (!repos || repos.length === 0) {
-        repos = getDefaultRepos();
-        saveRepos(repos);
+    function openRepoPage(repo) {
+        const pageId = `repo-${Date.now()}`;
+        createAppListPage(pageId, repo.name, repo.apps, false, repo.sourceURL);
     }
 
-    if (force) app.dialog.preloader('Refreshing Sources');
-
-    try {
-     
-        const delay = new Promise(resolve => setTimeout(resolve, 2000));
-
-
-        const [updates] = await Promise.all([
-            Promise.all(repos.map(r => fetchRepo(r.sourceURL).catch(() => null))),
-            delay
-        ]);
-
-        repos = updates.map((newRepo, i) => newRepo || repos[i]);
-        saveRepos(repos);
-
-    } catch (error) {
-        console.error("Failed to refresh:", error);
-    } finally {
-        if (force) app.dialog.close();
+    function openAllSourcesPage() {
+        const allApps = getAllApps();
+        const pageId = `all-${Date.now()}`;
+        createAppListPage(pageId, 'All Sources', allApps, true, null);
     }
 
-    renderSourcesList(repos);
-    renderNews(repos);
-}
+    function renderSourcesList(repos) {
+        const listEl = document.getElementById('sources-list');
+        listEl.innerHTML = '';
+        const frag = document.createDocumentFragment();
+
+        const totalApps = getAllApps().length;
+
+        const allSourcesLi = document.createElement('li');
+        allSourcesLi.id = 'all-sources';               
+        allSourcesLi.innerHTML = `
+            <div>
+                <a class="item-link all-sources-link">
+                    <div class="item-content">
+                        <div class="item-media"><i class="f7-icons">archivebox_fill</i></div>
+                        <div class="item-inner">
+                            <div class="item-title-row"><div class="item-title">All Sources</div></div>
+                            <div class="item-subtitle"><span class="badge">${totalApps} Total Apps</span></div>
+                        </div>
+                    </div>
+                </a>
+            </div>`;
+        frag.appendChild(allSourcesLi);
+
+        repos.forEach(repo => {
+            const li = document.createElement('li');
+            li.id = repo.name;
+            li.className = repo.isSystem ? '' : 'swipeout';
+            const iconSrc = repo.iconURL || './assets/default.png';
+
+            li.innerHTML = `
+                <div class="swipeout-content">
+                    <a class="item-link repo-link" href="#" data-url="${repo.sourceURL}">
+                        <div class="item-content">
+                            <div class="item-media"><img src="${iconSrc}"></div>
+                            <div class="item-inner">
+                                <div class="item-title-row"><div class="item-title">${repo.name}</div></div>
+                                <div class="item-subtitle"><span class="badge">${repo.apps.length} Apps</span></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                ${!repo.isSystem ? `
+                <div class="swipeout-actions-right">
+                    <a onclick="navigator.share({ url: '${repo.sourceURL}' })">Share</a>
+                    <a class="delete-source color-red" data-url="${repo.sourceURL}">Remove <i class="f7-icons" style="color:white;">trash</i></a>
+                </div>` : ''}`;
+            frag.appendChild(li);
+        });
+
+        listEl.appendChild(frag);
+
+        if (!listEl.classList.contains('sortable')) {
+            listEl.classList.add('sortable');
+        }
+
+        const savedOrder = JSON.parse(localStorage.getItem('sourcesListOrder') || '[]');
+        if (savedOrder.length) {
+            savedOrder.forEach(id => {
+                const item = document.getElementById(id);
+                if (item && item.parentNode === listEl) {
+                    listEl.appendChild(item);
+                }
+            });
+        }
+
+        if (!listEl.dataset.sortableInitialized) {
+            listEl.addEventListener('sortable:sort', () => {
+                const order = Array.from(listEl.children).map(li => li.id);
+                localStorage.setItem('sourcesListOrder', JSON.stringify(order));
+            });
+            listEl.dataset.sortableInitialized = "true";
+        }
+
+        const allSourcesLink = listEl.querySelector('.all-sources-link');
+        if (allSourcesLink) {
+            allSourcesLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                openAllSourcesPage();
+            });
+        }
+
+        listEl.querySelectorAll('.repo-link').forEach(link => {
+            link.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const url = link.dataset.url;
+                const repo = repos.find(r => r.sourceURL === url);
+                if (repo) openRepoPage(repo);
+            });
+        });
+    }
+
+    function renderNews(repos) {
+        let allNews = [];
+        repos.forEach(r => { if (r.news) allNews.push(...r.news.map(n => ({ ...n, source: r.name }))); });
+
+        const wrapper = document.getElementById('news-swiper-wrapper');
+        const section = document.getElementById('news-section');
+
+        if (allNews.length === 0) {
+            if (section) section.style.display = 'none';
+            return;
+        }
+
+        if (section) section.style.display = 'block';
+        wrapper.innerHTML = '';
+        allNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        
+        allNews.forEach(news => {
+            wrapper.insertAdjacentHTML('beforeend', `
+<div class="swiper-slide swiper-slide-news">
+                <div class="card repo-news-card">
+                    <div class="card-content card-content-padding">
+                        <div class="size-12">${news.source}</div>
+                        <div class="text-weight-bold">${news.title.substring(0,34)}</div>
+                        <div class="size-12">${news.caption.substring(0, 45)}</div>
+                 <a class="news-read-more link" data-caption="${encodeURIComponent(news.caption)}">
+        Read more
+      </a>        
+                    </div>
+              </div>                   
+               
+          
+        `);
+        });
+             
+        const swiperContainer = document.getElementById('news-swiper-container');
+
+        if (swiperContainer && !swiperContainer.swiper) {
+            app.swiper.create('#news-swiper-container', {
+                effect: 'coverflow',
+                centeredSlides: true,
+                slidesPerView: '1',
+                grabCursor: true,
+                coverflowEffect: {
+                    rotate: 0,
+                    stretch: 0,
+                    depth: 120,
+                    modifier: 1.5,
+                    slideShadows: false
+                }
+            });
+        } else if (swiperContainer && swiperContainer.swiper) {
+            swiperContainer.swiper.update();
+        }
+
+        wrapper.querySelectorAll('.news-read-more').forEach(btn => {
+            btn.addEventListener('click', function () {
+
+                const caption = decodeURIComponent(this.dataset.caption);
+
+                const sheet = app.sheet.create({
+                    swipeToClose: true,
+                    backdrop: true, 
+                    push:true, 
+                    content: `              
+                               <div class="sheet-modal news-sheet">
+
+                        <div class="swipe-nav">
+                            <div>
+                                <i class="f7-icons">minus</i>
+                            </div>
+                        </div>
+
+                        <div class="page">
+                            <div class="page-content">
+
+                                <div class="block">
+                                    <p>${caption}</p>
+                               
+                     </div>
+                    </div>
+                   </div>
+
+                `
+                });
+
+                sheet.open();
+
+            });
+        });
+    }
+
+    app.on('ptrRefresh', async (el) => {
+        if (el.classList.contains('ptr-repo-detail')) {
+            const pageEl = el.closest('.page');
+            const isAllSources = pageEl.dataset.allSources === 'true';
+            const repoUrl = pageEl.dataset.url;
+            const pageId = pageEl.dataset.id;
+            const listSelector = `.virtual-list-${pageId}`;
+            const makeSkeletonItems = (n = 6) => new Array(n).fill(null).map(() => ({ skeleton: true }));
+            const skeletonLi = `
+<li>
+  <div class="item-content skeleton-effect-pulse">
+    <div class="item-media">
+      <div class="skeleton-block" style="width:58px;height:58px;border-radius:28%"></div>
+    </div>
+    <div class="item-inner">
+      <div class="item-title-row"><div class="item-title skeleton-text">Loading</div></div>
+      <div class="item-subtitle skeleton-text">Loading</div>
+    </div>
+  </div>
+</li>`;
+            const vl = pageEl.vl || app.virtualList.get(listSelector);
+            if (vl && typeof vl.replaceAllItems === 'function') {
+                vl.replaceAllItems(makeSkeletonItems(6));
+            } else {
+                const listContainer = pageEl.querySelector(listSelector);
+                if (listContainer) listContainer.innerHTML = `<ul>${skeletonLi.repeat(6)}</ul>`;
+            }
+            try {
+                if (isAllSources) {
+                    let allRepos = getRepos();
+                    const updates = await Promise.all(allRepos.map(r => fetchRepo(r.sourceURL).catch(() => null)));
+                    allRepos = updates.map((newRepo, i) => newRepo || allRepos[i]);
+                    saveRepos(allRepos);
+                    const allApps = getAllApps();
+                    if (vl && typeof vl.replaceAllItems === 'function') {
+                        vl.replaceAllItems(allApps);
+                    } else {
+                        const listContainer = pageEl.querySelector(listSelector);
+                        if (listContainer) {
+                            const html = allApps.map(item => `
+                <li>
+                  <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
+                    <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div>
+                    <div class="item-inner">
+                      <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
+                      <div class="item-subtitle">${item.developerName || ''}</div>
+                    </div>
+                  </a>
+                </li>`).join('');
+                            listContainer.innerHTML = `<ul>${html}</ul>`;
+                        }
+                    }
+                    renderSourcesList(allRepos);
+                    renderNews(allRepos);
+                } else {
+                    const [newRepoData] = await Promise.all([
+                        fetchRepo(repoUrl),
+                        new Promise(resolve => setTimeout(resolve, 2000))
+                    ]);
+                    if (newRepoData) {
+                        let allRepos = getRepos();
+                        const index = allRepos.findIndex(r => r.sourceURL === repoUrl);
+                        if (index !== -1) {
+                            allRepos[index] = newRepoData;
+                            saveRepos(allRepos);
+                        }
+                        if (vl && typeof vl.replaceAllItems === 'function') {
+                            vl.replaceAllItems(newRepoData.apps || []);
+                        } else {
+                            const listContainer = pageEl.querySelector(listSelector);
+                            if (listContainer) {
+                                const html = (newRepoData.apps || []).map(item => `
+                    <li>
+                      <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
+                        <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div>
+                        <div class="item-inner">
+                          <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
+                          <div class="item-subtitle">${item.developerName || ''}</div>
+                        </div>
+                      </a>
+                    </li>`).join('');
+                                listContainer.innerHTML = `<ul>${html}</ul>`;
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to refresh:", error);
+                try {
+                    if (isAllSources) {
+                        const allApps = getAllApps();
+                        if (vl && typeof vl.replaceAllItems === 'function') vl.replaceAllItems(allApps);
+                        else {
+                            const listContainer = pageEl.querySelector(listSelector);
+                            if (listContainer) {
+                                const html = allApps.map(item => `
+                    <li>
+                      <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
+                        <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div>
+                        <div class="item-inner">
+                          <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
+                          <div class="item-subtitle">${item.developerName || ''}</div>
+                        </div>
+                      </a>
+                    </li>`).join('');
+                                listContainer.innerHTML = `<ul>${html}</ul>`;
+                            }
+                        }
+                    } else {
+                        const allRepos = getRepos();
+                        const cached = allRepos.find(r => r.sourceURL === repoUrl);
+                        if (cached) {
+                            if (vl && typeof vl.replaceAllItems === 'function') vl.replaceAllItems(cached.apps || []);
+                            else {
+                                const listContainer = pageEl.querySelector(listSelector);
+                                if (listContainer) {
+                                    const html = (cached.apps || []).map(item => `
+                    <li>
+                      <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
+                        <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div>
+                        <div class="item-inner">
+                          <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
+                          <div class="item-subtitle">${item.developerName || ''}</div>
+                        </div>
+                      </a>
+                    </li>`).join('');
+                                    listContainer.innerHTML = `<ul>${html}</ul>`;
+                                }
+                            }
+                        }
+                    }
+                } catch (e) { }
+            } finally {
+                app.ptr.done(el);
+            }
+        }
+    });
+
+    async function refreshData(force = false) {
+        let repos = getRepos();
+        if (!repos || repos.length === 0) {
+            repos = [{ sourceURL: LOCAL_REPO_URL, name: "SoftwareKit", apps: [], isSystem: true }];
+            saveRepos(repos);
+        }
+
+        const listEl = document.getElementById('sources-list');
+        const newsWrapper = document.getElementById('news-swiper-wrapper');
+        const newsSection = document.getElementById('news-section');
+
+        if (listEl) {
+            const repoSkeleton = `
+            <li class="skeleton-effect-pulse">
+                <div class="swipeout-content">
+                    <div class="item-content">
+                        <div class="item-media"><div class="skeleton-block" style="width: 58px; height: 58px; border-radius: 28%;"></div></div>
+                        <div class="item-inner">
+                            <div class="item-title-row"><div class="item-title skeleton-text">Loading Repo</div></div>
+                            <div class="item-subtitle skeleton-text">Loading Apps</div>
+                        </div>
+                    </div>
+                </div>
+            </li>`;
+            listEl.innerHTML = repoSkeleton.repeat(repos.length || 3);
+        }
+
+        if (newsWrapper) {
+            const newsSkeleton = `
+            <div class="swiper-slide swiper-slide-news skeleton-effect-pulse">
+                <div class="card repo-news-card">
+                    <div class="card-content card-content-padding">
+                        <div class="size-12 skeleton-text">Source</div>
+                        <div class="text-weight-bold skeleton-text">Loading news</div>
+                        <div class="size-12 skeleton-text">Loading description caption</div> <a class="news-read-more skeleton-text">
+        Read more
+      </a>        
+                    </div>
+                </div>
+            </div>`;
+            newsWrapper.innerHTML = newsSkeleton.repeat(3);
+
+            if (document.getElementById('news-swiper-container').swiper) {
+                document.getElementById('news-swiper-container').swiper.update();
+            }
+        }
+
+        if (force) app.dialog.preloader('Refreshing Sources');
+
+        try {
+            const delay = new Promise(resolve => setTimeout(resolve, 2000));
+
+            const [updates] = await Promise.all([
+                Promise.all(repos.map(r => fetchRepo(r.sourceURL).catch(() => null))),
+                delay
+            ]);
+
+            repos = updates.map((newRepo, i) => newRepo || repos[i]);
+            saveRepos(repos);
+
+        } catch (error) {
+            console.error("Failed to refresh:", error);
+        } finally {
+            if (force) app.dialog.close();
+        }
+
+        renderSourcesList(repos);
+        renderNews(repos);
+    }
 
     document.getElementById('add-source-fab').addEventListener('click', () => {
-        app.dialog.prompt('Enter the source link.','Add source', async (url) => {
-            if (!url) return;                  
+        app.dialog.prompt('Enter the source link.', 'Add source', async (url) => {
+            if (!url) return;
             const repos = getRepos();
-            if (repos.find(r => r.sourceURL === url)) { app.dialog.alert('Already added.'); return; }           
-            app.dialog.preloader('Fetching...');
-            const repo = await fetchRepo(url);
+            if (repos.find(r => r.sourceURL === url)) {
+                app.dialog.alert('Already added.');
+                return;
+            }
+
+            app.dialog.preloader('Fetching source');
+            const [repo] = await Promise.all([
+                fetchRepo(url),
+                new Promise(resolve => setTimeout(resolve, 2000))
+            ]);
             app.dialog.close();
-            if (repo) { repos.push(repo); saveRepos(repos); renderSourcesList(repos); }
-            else app.dialog.alert('Could not load the source');
+
+            if (repo) {
+                repos.push(repo);
+                saveRepos(repos);
+                await refreshData(true);
+            } else {
+                app.dialog.alert('Could not load the source', 'Error');
+            }
         });
     });
 
     document.getElementById('sources-list').addEventListener('click', (e) => {
-        const delBtn = e.target.closest('.swipeout-delete');
+        const delBtn = e.target.closest('.delete-source');
         if (delBtn) {
             const url = delBtn.dataset.url;
-            saveRepos(getRepos().filter(r => r.sourceURL !== url));
-            app.swipeout.delete(delBtn.closest('li'));
+            const listItem = delBtn.closest('li');
+            app.dialog.confirm(
+                'Are you sure you want to remove this source?',
+                'Remove source',
+                function () {
+                    saveRepos(getRepos().filter(r => r.sourceURL !== url));
+                    app.swipeout.delete(listItem);
+                    refreshData(true);
+                },
+                function () {
+                    app.swipeout.close(listItem);
+                }
+            );
             return;
         }
+
         const link = e.target.closest('.repo-link');
         if (link) {
             const repo = getRepos().find(r => r.sourceURL === link.dataset.url);
@@ -1000,30 +1310,51 @@ async function refreshData(force = false) {
     });
 
     refreshData(false);
-});fetch("https://www.idownloadblog.com/feed/")
-  .then(response => response.text())
-  .then(data => {
+});
+
+async function fetchAndLoadNews() {
+  const newsContainer = document.getElementById("news");
+  if (!newsContainer) return;
+
+  const skeletonHTML = `
+    <div class="card card-raised news-card skeleton-effect-pulse">
+      <div class="card-content">
+        <div class="card-image skeleton-block" style="height: 160px; width: 100%;"></div>
+        <div class="card-header skeleton-text">This is a placeholder title for skeleton</div>
+        <div class="card-footer">
+          <span class="skeleton-text">Action</span>
+          <span class="skeleton-text">Action</span>
+        </div>
+      </div>
+    </div>`;
+  newsContainer.innerHTML = skeletonHTML.repeat(3);
+
+  try {   
+    const [response] = await Promise.all([
+      fetch("https://www.idownloadblog.com/feed/"),
+      new Promise(resolve => setTimeout(resolve, 2000)) 
+    ]);
+
+    if (!response.ok) throw new Error("Feed request failed");
+
+    const data = await response.text();
     const items = new window.DOMParser().parseFromString(data, "text/xml").getElementsByTagName("item");
-    const newsContainer = document.getElementById("news");
-    const savedPref = localStorage.getItem('glassUI_Enabled');
-    const isGlassEnabled = savedPref === null ? true : savedPref === 'true';
+    
+    newsContainer.innerHTML = '';
+
+    
 
     for (let i = 0; i < items.length; i++) {
       const title = items[i].getElementsByTagName("title")[0].textContent;
       const link = items[i].getElementsByTagName("link")[0].textContent;
       const content = items[i].getElementsByTagName("content:encoded")[0].textContent;
-      const imgElement = new window.DOMParser().parseFromString(content, "text/html").querySelector("img");
+      const imgDoc = new window.DOMParser().parseFromString(content, "text/html");
+      const imgElement = imgDoc.querySelector("img");
       const imgSrc = imgElement ? imgElement.getAttribute("src") : "#";
-      
+
       const card = document.createElement("div");
-           
       card.classList.add("card", "card-raised", "news-card");
-      
-      if (isGlassEnabled) {
-        card.classList.add("liquid-glass");
-      } else {        card.setAttribute('data-removed-classes', 'liquid-glass');
-        
-      }
+     
 
       card.innerHTML = `
         <div class="card-content">
@@ -1040,10 +1371,24 @@ async function refreshData(force = false) {
             </a>
           </div>
         </div>`;
-        
+
       newsContainer.appendChild(card);
     }
-  }); 
+  } catch (error) {
+    newsContainer.innerHTML = '<div class="block">Failed to load news.</div>';
+    console.error(error);
+  }
+}
+
+app.on('ptrRefresh', (el) => {
+  if (el.classList.contains('ptr-news')) {
+    fetchAndLoadNews().then(() => {
+      app.ptr.done(el);
+    });
+  }
+});
+
+fetchAndLoadNews(); 
 function checkConnection() {
   let dialogShown = false;
   let dialogInstance = null;
@@ -1079,172 +1424,623 @@ function checkConnection() {
     }
   }, 1000);
 }
-
-function updateIcon(url) {
-  document.querySelectorAll("#favicon").forEach(favicon => favicon.href = url);
-  document.querySelectorAll("#faviconimg").forEach(faviconImg => faviconImg.src = url);
-  localStorage.setItem("customicon", url);
-}
-
-function customicon(e, t) {
-  app.preloader.show();
-  updateIcon(t);
-  setTimeout(() => {
-    app.preloader.hide();
-    window.location.reload();
-  }, 2000);
-}
-
-function loadIcon() {
-  const customIcon = localStorage.getItem("customicon");
-  if (customIcon) updateIcon(customIcon);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".ptr-tab").forEach(element => {
-    element.addEventListener("ptr:refresh", () => window.location.reload());
-  });
-  checkConnection();
-});
-
-
-var SignerEngine = {
-  workerBase: 'https://cococloud-api.techlxrd.workers.dev',
+const SignerEngine = {
+  workerBase: 'https://api.cococloud.swkit.app',
   files: { ipa: null, p12: null, prov: null },
-  processing: false,
+  appInfo: null,
+  currentMode: 'custom',
+  _hasCertResults: false,
 
-  log: function(msg, color = '#ccc', escapeHtml = true) {
+  log: function(msg, color = 'var(--f7-theme-color)', escapeHtml = true) {
     const el = document.getElementById('signer-logs');
-    const s = escapeHtml ? this._escapeHtml(String(msg)) : String(msg);
-    if (el) el.innerHTML += `<div style="color:${color}; margin-bottom:4px;">> ${s}</div>`;
-    console.log('[SignerEngine]', msg);
-    if (el) { el.scrollTop = el.scrollHeight; }
+    if (!el) return;
+    const safe = escapeHtml ? this._escapeHtml(String(msg)) : String(msg);
+    el.innerHTML += `<div style="color:${color}; margin-bottom:4px;">> ${safe}</div>`;
+    el.scrollTop = el.scrollHeight;
   },
 
-  _escapeHtml: function (unsafe) {
+  _escapeHtml: function(unsafe) {
     return String(unsafe)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
   },
 
-  setProcessing: function(state) {
-    this.processing = state;
-    const btns = document.querySelectorAll('.signer-popup .button');
-    btns.forEach(b => b.disabled = state);
-    if (!state) {
-      try { app.dialog.close(); } catch(e) {}
+  _setHtml: function(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = value;
+  },
+
+  _setText: function(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  },
+
+  _alert: function(message, title = 'Error') {
+    try {
+      if (window.app && app.dialog && typeof app.dialog.alert === 'function') {
+        app.dialog.alert(message, title);
+      } else {
+        alert(`${title}: ${message}`);
+      }
+    } catch (e) {}
+  },
+
+  _arrayBufferToBinaryString: function(buffer) {
+    const bytes = new Uint8Array(buffer);
+    const chunkSize = 0x8000;
+    let result = '';
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+      result += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
     }
+    return result;
+  },
+
+  _parseResponse: async function(response) {
+    const text = await response.text();
+    const trimmed = text.trim();
+    const ct = (response.headers.get('content-type') || '').toLowerCase();
+
+    const tryJson = (value) => {
+      try {
+        return JSON.parse(value);
+      } catch (e) {
+        return null;
+      }
+    };
+
+    if (ct.includes('application/json')) {
+      const json = tryJson(trimmed);
+      if (json !== null) {
+        return { type: 'json', data: json, text, status: response.status, headers: response.headers };
+      }
+    }
+
+    if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+      const json = tryJson(trimmed);
+      if (json !== null) {
+        return { type: 'json', data: json, text, status: response.status, headers: response.headers };
+      }
+    }
+
+    return {
+      type: 'text',
+      text,
+      snippet: text.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<\/?[^>]+(>|$)/g, '').slice(0, 1200),
+      status: response.status,
+      headers: response.headers
+    };
+  },
+
+  _normalizeRevocationStatus: function(payload) {
+    if (!payload || typeof payload !== 'object') return 'unknown';
+
+    const pick = (obj, path) =>
+      path.split('.').reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
+
+    const candidates = [
+      pick(payload, 'p12_certificate.certificate_status.status'),
+      pick(payload, 'certificate_status.status'),
+      pick(payload, 'data.p12_certificate.certificate_status.status'),
+      pick(payload, 'data.certificate_status.status'),
+      pick(payload, 'data.status'),
+      pick(payload, 'status'),
+      pick(payload, 'message')
+    ]
+      .filter(v => v !== undefined && v !== null)
+      .map(v => String(v).trim().toLowerCase());
+
+    for (const value of candidates) {
+      if (value.includes('revoked')) return 'revoked';
+    }
+
+    for (const value of candidates) {
+      if (value.includes('signed') || value.includes('valid') || value.includes('good')) return 'good';
+    }
+
+    const text = JSON.stringify(payload).toLowerCase();
+    if (text.includes('"status":"revoked"')) return 'revoked';
+    if (text.includes('"status":"signed"') || text.includes('"status":"valid"')) return 'good';
+
+    return 'unknown';
+  },
+
+  _hideCertUI: function() {
+    const block = document.getElementById('cert-info-list');
+    if (block) block.style.display = 'none';
+  },
+
+  _showCertUI: function() {
+    const block = document.getElementById('cert-info-list');
+    if (block) block.style.display = 'block';
+  },
+
+  _syncCertUIVisibility: function() {
+    const block = document.getElementById('cert-info-list');
+    if (!block) return;
+    block.style.display = (this.currentMode === 'check' && this._hasCertResults) ? 'block' : 'none';
+  },
+
+  _clearCertValues: function() {
+    const ids = [
+      'cert-subject',
+      'cert-status',
+      'cert-expiry',
+      'cert-issuer',
+      'cert-serial',
+      'prov-name',
+      'prov-status',
+      'prov-expiry',
+      'prov-bundle',
+      'revocation-status'
+    ];
+
+    ids.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = '—';
+    });
+  },
+
+  _markCertDataDirty: function() {
+    this._hasCertResults = false;
+    this._hideCertUI();
+  },
+
+  showModeFiles: function(mode) {
+    const allItems = document.querySelectorAll('#upload-list [data-modes]');
+    allItems.forEach(item => {
+      const modes = item.getAttribute('data-modes').split(',');
+      item.style.display = modes.includes(mode) ? '' : 'none';
+    });
+  },
+
+  initModeSegmented: function() {
+    const container = document.getElementById('mode-segmented');
+    if (!container) return;
+    const buttons = container.querySelectorAll('.button');
+
+    const setActive = (mode) => {
+      buttons.forEach(btn => {
+        if (btn.getAttribute('data-mode') === mode) btn.classList.add('button-active');
+        else btn.classList.remove('button-active');
+      });
+
+      this.currentMode = mode;
+      this.showModeFiles(mode);
+
+      const signingBlock = document.getElementById('signing-options-block');
+      const appInfoBlock = document.getElementById('app-info-block');
+      const signBtn = document.getElementById('sign-button');
+      const checkBtn = document.getElementById('check-button');
+
+      if (mode !== 'check') {
+        this._hideCertUI();
+      } else {
+        this._syncCertUIVisibility();
+      }
+
+      if (signingBlock) signingBlock.style.display = (mode === 'check' || !this.files.ipa) ? 'none' : 'block';
+      if (appInfoBlock) appInfoBlock.style.display = (mode === 'check' || !this.files.ipa) ? 'none' : 'block';
+
+      if (mode === 'check') {
+        if (signBtn) signBtn.style.display = 'none';
+        if (checkBtn) checkBtn.style.display = 'block';
+      } else {
+        if (signBtn) signBtn.style.display = 'block';
+        if (checkBtn) checkBtn.style.display = 'none';
+      }
+    };
+
+    buttons.forEach(btn => {
+      btn.onclick = (e) => {
+        e.preventDefault();
+        setActive(btn.getAttribute('data-mode'));
+      };
+    });
+
+    setActive('custom');
   },
 
   onFile: function(input, type) {
     if (!input.files || !input.files[0]) return;
     this.files[type] = input.files[0];
-    this.log(`${type.toUpperCase()} loaded: ${this.files[type].name}`, 'var(--f7-theme-color)');
+    this.log(`${type.toUpperCase()} loaded: ${this.files[type].name}`);
+
+    if (type === 'p12' || type === 'prov') {
+      this._markCertDataDirty();
+      this._clearCertValues();
+      this._syncCertUIVisibility();
+    }
   },
 
-  _parseResponse: async function(response) {
-    const ct = (response.headers.get('content-type') || '').toLowerCase();
-    if (ct.includes('application/json')) {
-      try { return { type:'json', data: await response.json(), status: response.status }; }
-      catch(e) { }
+  onIPASelected: async function(input) {
+    if (!input.files || !input.files[0]) return;
+    const file = input.files[0];
+    this.files.ipa = file;
+    this.log(`IPA selected: ${file.name}`, '#ff9500');
+
+    const appInfoBlock = document.getElementById('app-info-block');
+    const signingBlock = document.getElementById('signing-options-block');
+
+    if (appInfoBlock) appInfoBlock.style.display = 'none';
+    if (signingBlock) signingBlock.style.display = 'none';
+
+    try {
+      if (window.app && app.dialog) app.dialog.preloader('Parsing app... ');
+      const parser = new AppInfoParser(file);
+      const info = await parser.parse();
+      this.appInfo = info;
+      this.log(`Parsed: ${info.CFBundleName || info.name || 'Unknown'}`, '#34c759');
+      this.updateAppInfoUI(info);
+
+      if (appInfoBlock && this.currentMode !== 'check') appInfoBlock.style.display = 'block';
+      if (signingBlock && this.currentMode !== 'check') signingBlock.style.display = 'block';
+
+      if (window.app && app.toggle && typeof app.toggle.init === 'function') app.toggle.init(signingBlock);
+    } catch (err) {
+      const msg = err && err.message ? err.message : 'IPA parsing failed';
+      this.log(`Parsing failed: ${msg}`, '#ff3b30');
+      this._alert(msg, 'IPA Parsing Failed');
+    } finally {
+      if (window.app && app.dialog) app.dialog.close();
     }
-    if (ct.includes('application/octet-stream') || ct.includes('application/zip') || ct.includes('application/vnd.apple.pkpass') || ct.includes('application/x-')) {
-      const blob = await response.blob();
-      return { type:'binary', blob: blob, headers: response.headers, status: response.status };
+  },
+
+  updateAppInfoUI: function(info) {
+    const iconEl = document.getElementById('app-icon');
+    const nameEl = document.getElementById('app-name');
+    const versionEl = document.getElementById('app-version');
+    const bundleEl = document.getElementById('app-bundle');
+
+    if (nameEl) nameEl.innerText = info.CFBundleName || info.name || 'Unknown';
+    if (versionEl) versionEl.innerText = `Version ${info.CFBundleShortVersionString || info.version || '?'}`;
+    if (bundleEl) bundleEl.innerText = info.CFBundleIdentifier || '?';
+
+    if (iconEl) {
+      if (info.icon) {
+        iconEl.src = info.icon;
+        iconEl.style.display = 'block';
+      } else {
+        iconEl.style.display = 'none';
+      }
     }
-    const text = await response.text();
-    const stripped = text.replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<\/?[^>]+(>|$)/g,'');
-    const snippet = stripped.slice(0, 1200);
-    return { type:'text', text: text, snippet: snippet, status: response.status, headers: response.headers };
+  },
+
+  _loadScript: function(src) {
+    return new Promise((resolve, reject) => {
+      const existing = [...document.scripts].find(s => s.src === src);
+      if (existing) {
+        if ((src.includes('forge.min.js') && window.forge) || (src.includes('plist.js') && window.plist)) {
+          resolve();
+          return;
+        }
+        existing.addEventListener('load', () => resolve(), { once: true });
+        existing.addEventListener('error', () => reject(new Error(`Failed to load ${src}`)), { once: true });
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = src;
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error(`Failed to load ${src}`));
+      document.head.appendChild(script);
+    });
+  },
+
+  _readFileAsArrayBuffer: function(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(reader.error || new Error('File read failed'));
+      reader.readAsArrayBuffer(file);
+    });
+  },
+
+  _parseMobileProvisionAccurate: function(data) {
+    const text = new TextDecoder('utf-8').decode(data);
+    const start = text.indexOf('<?xml');
+    const end = text.lastIndexOf('</plist>');
+
+    if (start === -1 || end === -1) {
+      throw new Error('Invalid mobileprovision file');
+    }
+
+    if (typeof window.plist === 'undefined') {
+      throw new Error('plist parser not available');
+    }
+
+    const plistText = text.slice(start, end + 8);
+    const parsed = window.plist.parse(plistText) || {};
+    const entitlements = parsed.Entitlements || {};
+
+    return {
+      name: parsed.Name || parsed.AppIDName || 'Unnamed',
+      bundleId: entitlements['application-identifier']
+        ? entitlements['application-identifier'].split('.').slice(1).join('.')
+        : 'Unknown',
+      teamIdentifier: parsed.TeamIdentifier || [],
+      expirationDate: parsed.ExpirationDate ? new Date(parsed.ExpirationDate) : null,
+      entitlements,
+      uuid: parsed.UUID || '',
+      provisionsAllDevices: !!parsed.ProvisionsAllDevices
+    };
+  },
+
+  _parseP12CertificateAccurate: async function(data, password) {
+    const forgeLib = window.forge || globalThis.forge;
+    if (!forgeLib) throw new Error('Forge not available');
+
+    try {
+      const binary = this._arrayBufferToBinaryString(data);
+      const p12Asn1 = forgeLib.asn1.fromDer(binary);
+      const p12 = forgeLib.pkcs12.pkcs12FromAsn1(p12Asn1, password || '');
+
+      const certBags = p12.getBags({ bagType: forgeLib.pki.oids.certBag });
+      const bagList = certBags[forgeLib.pki.oids.certBag] || [];
+
+      if (!bagList.length) {
+        throw new Error('No certificate found in P12');
+      }
+
+      const cert = bagList[0].cert;
+      if (!cert) {
+        throw new Error('Invalid certificate data in P12');
+      }
+
+      const subject = {};
+      const issuer = {};
+
+      (cert.subject.attributes || []).forEach(attr => {
+        const key = attr.shortName || attr.name || attr.type || '';
+        if (key) subject[key] = attr.value;
+      });
+
+      (cert.issuer.attributes || []).forEach(attr => {
+        const key = attr.shortName || attr.name || attr.type || '';
+        if (key) issuer[key] = attr.value;
+      });
+
+      const notBefore = cert.validity && cert.validity.notBefore ? new Date(cert.validity.notBefore) : null;
+      const notAfter = cert.validity && cert.validity.notAfter ? new Date(cert.validity.notAfter) : null;
+
+      if (!notBefore || !notAfter) {
+        throw new Error('Certificate validity data is missing');
+      }
+
+      return {
+        cert,
+        subject,
+        issuer,
+        validity: {
+          notBefore,
+          notAfter
+        },
+        serialNumber: cert.serialNumber || ''
+      };
+    } catch (err) {
+      const msg = err && err.message ? err.message : 'P12 parsing failed';
+      if (msg.includes('PKCS#12 MAC') || msg.includes('mac could not be verified') || msg.toLowerCase().includes('password')) {
+        throw new Error('Invalid P12 password – please check and try again.');
+      }
+      throw new Error(msg);
+    }
   },
 
   checkCert: async function() {
-    if (!this.files.p12 && !this.files.prov) return app.dialog.alert('Upload P12 or Provision first');
-    const fd = new FormData();
-    if (this.files.p12) fd.append('file', this.files.p12);
-    if (this.files.prov) fd.append('file', this.files.prov);
+    if (this.currentMode !== 'check') {
+      const msg = 'Certificate check is only available in Check mode.';
+      this.log(msg, '#ff3b30');
+      this._alert(msg, 'Mode Error');
+      return;
+    }
 
-    this.setProcessing(true);
-    app.dialog.preloader('Checking certificate status...');
+    const provFile = this.files.prov;
+    const p12File = this.files.p12;
+
+    if (!provFile && !p12File) {
+      const msg = 'Upload at least a P12 or mobileprovision file.';
+      this.log(msg, '#ff3b30');
+      this._alert(msg, 'Missing Files');
+      return;
+    }
+
+    this.log('Starting certificate validation...', '#ff9500');
+    this._hasCertResults = false;
+    this._clearCertValues();
 
     try {
-      const res = await fetch(`${this.workerBase}/certchecker`, { method: 'POST', body: fd });
+      if (!window.forge) {
+        await this._loadScript('https://cdn.jsdelivr.net/npm/node-forge@1.3.1/dist/forge.min.js');
+      }
+
+      if (!window.plist) {
+        await this._loadScript('https://cdn.jsdelivr.net/npm/plist@3.0.5/dist/plist.js');
+      }
+
+      const forgeLib = window.forge || globalThis.forge;
+      if (!forgeLib) throw new Error('Forge failed to load');
+
+      let certData = null;
+      let provInfo = null;
+
+      if (p12File) {
+        const p12Pass = document.getElementById('p12-pass')?.value || '';
+        const p12Data = await this._readFileAsArrayBuffer(p12File);
+        certData = await this._parseP12CertificateAccurate(p12Data, p12Pass);
+      }
+
+      if (provFile) {
+        const provData = await this._readFileAsArrayBuffer(provFile);
+        provInfo = this._parseMobileProvisionAccurate(provData);
+      }
+
+      if (certData) {
+        const { subject, issuer, validity, serialNumber } = certData;
+        const now = new Date();
+        const isValid = validity.notBefore <= now && validity.notAfter >= now;
+
+        this._setText('cert-subject', subject.CN || 'Unknown');
+        this._setHtml('cert-status', isValid ? '<span class="badge color-green">Valid</span>' : '<span class="badge color-red">Expired</span>');
+        this._setText('cert-expiry', validity.notAfter.toLocaleString());
+        this._setText('cert-issuer', issuer.CN || 'Unknown');
+        this._setText('cert-serial', serialNumber || 'Unknown');
+      }
+
+      if (provInfo) {
+        const isProvValid = provInfo.expirationDate && provInfo.expirationDate > new Date();
+
+        this._setText('prov-name', provInfo.name || 'Unnamed');
+        this._setHtml('prov-status', isProvValid ? '<span class="badge color-green">Valid</span>' : '<span class="badge color-red">Expired</span>');
+        this._setText('prov-expiry', provInfo.expirationDate ? provInfo.expirationDate.toLocaleString() : 'Unknown');
+        this._setText('prov-bundle', provInfo.bundleId || 'Unknown');
+      }
+
+      const revEl = document.getElementById('revocation-status');
+      if (revEl) {
+        revEl.innerHTML = '<span class="badge color-orange">Checking</span>';
+      }
+
+      this._hasCertResults = true;
+      this._showCertUI();
+
+      this.log('Checking revocation status...', '#ff9500');
+
+      const fd = new FormData();
+      if (p12File) fd.append('file', p12File);
+      if (provFile) fd.append('file', provFile);
+
+      const res = await fetch(`${this.workerBase}/certchecker`, {
+        method: 'POST',
+        body: fd
+      });
+
       const parsed = await this._parseResponse(res);
-      this.setProcessing(false);
-      app.dialog.close();
 
       if (parsed.type === 'json') {
-        const j = parsed.data;
-        if (j.success || j.status === 'success') {
-          this.log('The Certificate is valid', '#4cd964');
-          this.log(JSON.stringify(j.data || j, null, 2), '#0f0');
-          app.dialog.alert(j.message || 'Valid certificate');
-        } else {
-          this.log('Cert check failed: ' + (j.message || JSON.stringify(j)), '#ff3b30');
-          app.dialog.alert('Cert check failed: ' + (j.message || 'See logs'));
+        const root = parsed.data;
+        const status = this._normalizeRevocationStatus(root);
+
+        if (!root || root.success === false || root.status === 'error' || root.error) {
+          const msg = root?.message || root?.error || 'Server returned an error.';
+          this.log('Error: ' + msg, '#ff3b30');
+          if (revEl) revEl.innerHTML = '<span class="badge color-gray">Error</span>';
+          this._alert(msg, 'Certificate Check Failed');
+          return;
         }
+
+        this.log('Raw response:', '#8e8e93');
+        this.log(JSON.stringify(root, null, 2), '#8e8e93');
+
+        if (revEl) {
+          if (status === 'revoked') {
+            revEl.innerHTML = '<span class="badge color-red">Revoked</span>';
+          } else if (status === 'good') {
+            revEl.innerHTML = '<span class="badge color-green">Signed</span>';
+          } else {
+            revEl.innerHTML = '<span class="badge color-gray">Unknown</span>';
+          }
+        }
+
+        this.log('Certificate check completed.', '#34c759');
       } else {
-        this.log('Cert checker returned non-JSON. Snippet:', '#ff3b30');
-        this.log(parsed.snippet || '(no body)', '#ff3b30');
-        app.dialog.alert('Cert checker returned non-JSON. Check logs for snippet.');
+        const msg = 'Unexpected response from the server.';
+        this.log('Server non-JSON response:', '#ff3b30');
+        this.log(parsed.snippet || '(empty)', '#ff3b30');
+        if (revEl) revEl.innerHTML = '<span class="badge color-gray">Error</span>';
+        this._alert(msg, 'Certificate Check Failed');
       }
-    } catch (e) {
-      this.setProcessing(false);
-      app.dialog.close();
-      this.log('Network error: ' + (e.message || e), '#ff3b30');
-      app.dialog.alert('Network/CORS/Worker error: ' + (e.message || e));
+    } catch (err) {
+      const msg = err && err.message ? err.message : 'Unknown error';
+      this.log('Check failed: ' + msg, '#ff3b30');
+
+      const revEl = document.getElementById('revocation-status');
+      if (revEl) {
+        revEl.innerHTML = '<span class="badge color-gray">Error</span>';
+      }
+
+      this._alert(msg, 'Certificate Check Failed');
+    } finally {
+      if (window.app && app.dialog) app.dialog.close();
+      this._syncCertUIVisibility();
     }
   },
 
-  
   sign: async function() {
-    const mode = document.querySelector('input[name="mode"]:checked')?.value || 'custom';
-    if (!this.files.ipa) return app.dialog.alert('Select an IPA first');
+    const mode = this.currentMode || 'custom';
 
+    if (!this.files.ipa) {
+      const msg = 'Please select an IPA file first.';
+      this.log(msg, '#ff3b30');
+      this._alert(msg, 'Missing IPA');
+      return;
+    }
+
+    if (mode === 'custom' && (!this.files.p12 || !this.files.prov)) {
+      const msg = 'Custom mode needs both P12 and MobileProvision files.';
+      this.log(msg, '#ff3b30');
+      this._alert(msg, 'Missing Files');
+      return;
+    }
+
+    const endpoint = mode === 'free' ? 'free-enterprise-sign' : 'customsign';
     const fd = new FormData();
     fd.append('ipa', this.files.ipa);
 
     if (mode === 'custom') {
-      if (!this.files.p12 || !this.files.prov) return app.dialog.alert('Custom mode needs P12 + Provision');
       fd.append('cert', this.files.p12);
       fd.append('provision', this.files.prov);
-      const pass = document.getElementById('p12-pass')?.value;
+      const pass = document.getElementById('p12-pass')?.value || '';
       if (pass) fd.append('password', pass);
     }
 
-    
-    this.setProcessing(true);
-    app.dialog.preloader('Signing...');
+    this.log(`Starting ${mode} signing...`, '#ff9500');
 
     try {
-      const endpoint = (mode === 'custom') ? 'customsign' : 'free-enterprise-sign';
-      const res = await fetch(`${this.workerBase}/${endpoint}`, { method: 'POST', body: fd });
+      if (window.app && app.dialog) app.dialog.preloader('Signing...');
+
+      const res = await fetch(`${this.workerBase}/${endpoint}`, {
+        method: 'POST',
+        body: fd
+      });
+
       const parsed = await this._parseResponse(res);
-      this.setProcessing(false);
-      app.dialog.close();
 
       if (parsed.type === 'json') {
         const j = parsed.data;
-        if (j.success || j.status === 'success') {
-          this.log('Signed', '#4cd964');
-          const link = j.itmsServicesUrl || j.manifestUrl || j.downloadUrl || j.download_url || j.manifest_url || j.itms_services_url;
+
+        if (j && (j.success || j.status === 'success')) {
+          this.log('Signed successfully', '#34c759');
+
+          const link =
+            j.itmsServicesUrl ||
+            j.manifestUrl ||
+            j.downloadUrl ||
+            j.download_url ||
+            j.manifest_url ||
+            j.itms_services_url ||
+            (j.data && (j.data.itmsServicesUrl || j.data.manifestUrl || j.data.downloadUrl || j.data.download_url));
+
           if (link) {
             this.log('Install link: ' + link, 'var(--f7-theme-color)');
-          
             window.location.href = link;
+          } else if (j.downloadUrl || j.download_url) {
+            const url = j.downloadUrl || j.download_url;
+            this.log('Download link: ' + url, 'var(--f7-theme-color)');
+            window.location.href = url;
           } else {
-            this.log('Signed but no install URL returned. See full response:', '#ffa500');
+            this.log('Signed but no install URL returned.', '#ffa500');
             this.log(JSON.stringify(j, null, 2), '#ffa500');
-            app.dialog.alert('Signed but no install link returned. Check logs.');
+            this._alert('Signed but no install link was returned. Check logs.', 'Signing Completed');
           }
         } else {
-          this.log('Signing failed: ' + (j.message || JSON.stringify(j)), '#ff3b30');
-          app.dialog.alert('Signing failed: ' + (j.message || 'See logs'));
+          const msg = j?.message || JSON.stringify(j);
+          this.log('Signing failed: ' + msg, '#ff3b30');
+          this._alert(msg, 'Signing Failed');
         }
-      } else if (parsed.type === 'binary') {       
+      } else if (parsed.type === 'binary') {
         const blob = parsed.blob;
         const cd = parsed.headers.get('content-disposition') || 'attachment; filename="signed.ipa"';
         const fnMatch = cd.match(/filename="?([^"]+)"?/);
@@ -1258,129 +2054,97 @@ var SignerEngine = {
         a.remove();
         URL.revokeObjectURL(url);
         this.log('Downloaded signed IPA: ' + filename, 'var(--f7-theme-color)');
-        app.dialog.alert('Downloaded signed IPA.');
+        this._alert('Downloaded signed IPA.', 'Signing Completed');
       } else {
-        this.log('Signing returned non-JSON. Snippet:', '#ff3b30');
-        this.log(parsed.snippet || '(no body)', '#ff3b30');
-        app.dialog.alert('Signing returned non-JSON. See logs for snippet.');
+        this.log('Signing returned non-JSON.', '#ff3b30');
+        this.log(parsed.snippet || '(empty)', '#ff3b30');
+        this._alert('Signing returned an unexpected response. Check logs.', 'Signing Failed');
       }
     } catch (e) {
-      this.setProcessing(false);
-      app.dialog.close();
-      this.log('Network error: ' + (e.message || e), '#ff3b30');
-      app.dialog.alert('Network/Worker error: ' + (e.message || e));
+      const msg = e && e.message ? e.message : 'Network/Worker error';
+      this.log('Signing failed: ' + msg, '#ff3b30');
+      this._alert(msg, 'Signing Failed');
+    } finally {
+      if (window.app && app.dialog) app.dialog.close();
     }
   }
 };
+
 function openSignerPopup() {
-  app.popup.create({
-    content: `
-<div class="popup signer-popup">
- <div class="page">
-    <div class="navbar"><div class="navbar-bg"></div><div class="navbar-inner">
-      <div class="title">Signer</div>
-      <div class="right"><a class="link popup-close"><i class="icon-close"></i></a></div>
-    </div></div>
+  if (window.app) app.popup.open('#signer-popup');
+  SignerEngine.initModeSegmented();
 
-    <div class="page-content bg-img">
-      <div class="block-title glass">Mode</div>
-      <div class="list separated inset glass">
-        <ul>
-          <li>
-            <label class="item-radio item-content">
-              <input type="radio" name="mode" value="custom" checked onchange="toggleSignerMode()">
-              <i class="icon icon-radio"></i>
-              <div class="item-inner"><div class="item-title">Custom certificate</div></div>
-            </label>
-          </li>
-          <li>
-            <label class="item-radio item-content">
-              <input type="radio" name="mode" value="free" onchange="toggleSignerMode()">
-              <i class="icon icon-radio"></i>
-              <div class="item-inner"><div class="item-title">Free Enterprise (platform cert)</div></div>
-            </label>
-          </li>
-        </ul>
-      </div>
+  const signBtn = document.getElementById('sign-button');
+  const checkBtn = document.getElementById('check-button');
 
-      <div class="block-title glass">Upload files</div>
-      <div class="list list-strong list-dividers inset glass">
-        <ul>
-          <li class="item-content item-input">
-            <div class="item-inner">
-              <div class="item-title item-label">iPA</div>
-              <input type="file" accept=".ipa" onchange="SignerEngine.onFile(this,'ipa')">
-            </div>
-          </li>
-
-          <li class="item-content item-input custom-only">
-            <div class="item-inner">
-              <div class="item-title item-label">MobileProvision</div>
-              <input type="file" accept=".mobileprovision" onchange="SignerEngine.onFile(this,'prov')">
-            </div>
-          </li>
-
-          <li class="item-content item-input custom-only">
-            <div class="item-inner">
-              <div class="item-title item-label">P12 Certificate</div>
-              <input type="file" accept=".p12" onchange="SignerEngine.onFile(this,'p12')">
-            </div>
-          </li>
-
-          <li class="item-content item-input custom-only">
-            <div class="item-inner">
-              <div class="item-title item-label">P12 Password</div>
-              <input type="password" id="p12-pass" placeholder="******">
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <div class="block">      
-       <button class="button button-fill button-large button-round" onclick="SignerEngine.sign()">Sign & Install</button>
-       <br>
-        <button class="button button-outline button-large button-fill button-round color-green" onclick="SignerEngine.checkCert()">Check certificate status</button>
-      </div>
-<div class="list separated inset accordion-list glass">
-      <ul>
-        <li class="accordion-item">
-            
-          <a class="item-link item-content">
-               <div class="item-media"><i class="f7-icons">ellipsis_circle_fill</i></div>
-            <div class="item-inner">
-              <div class="item-title">Logs</div>
-            </div>
-          </a>
-          <div class="accordion-item-content">
-            <div class="block" id="signer-logs" style="font-family:monospace;">
-           <span >
-          Ready to Sign. 
-        </span>   
-            </div>
-          </div>
-        </li>     
-       </ul>
-      </div>
-    </div>
-  </div>
- </div>
-</div>`
-  }).open();
-
-  toggleSignerMode();
+  if (signBtn) signBtn.onclick = () => SignerEngine.sign();
+  if (checkBtn) checkBtn.onclick = () => SignerEngine.checkCert();
 }
 
 function toggleSignerMode() {
   const mode = document.querySelector('input[name="mode"]:checked')?.value || 'custom';
-  document.querySelectorAll('.custom-only').forEach(el => el.style.display = (mode === 'custom') ? '' : 'none');
+  document.querySelectorAll('.custom-only').forEach(el => {
+    el.style.display = (mode === 'custom') ? '' : 'none';
+  });
 }
 
-if (window.navigator.standalone) {
-  const preloaderDialog = app.dialog.preloader("Reloading data");
-  preloaderDialog.open();
-  setTimeout(() => preloaderDialog.close(), 2000);
+function updateFileLabel(input) {
+  const box = input.parentElement.querySelector('.file-box');
+  if (!box) return;
+
+  if (input.files && input.files[0]) {
+    box.classList.add('loaded');
+    const name = input.files[0].name;
+    const span = box.querySelector('span');
+    span.textContent = name.length > 25 ? name.slice(0, 22) + '...' : name;
+  }
+}
+
+window.SignerEngine = SignerEngine;
+function updateFileLabel(input) {
+  const box = input.parentElement.querySelector('.file-box');
+  if (!box) return;
+
+  if (input.files && input.files[0]) {
+    box.classList.add('loaded');
+    const name = input.files[0].name;
+
+    const span = box.querySelector('span');
+    span.textContent = name.length > 25
+      ? name.slice(0, 22) + '...'
+      : name;
+  }
+}
+const isMac = /Macintosh|MacIntel|MacPPC|Mac68K/.test(window.navigator.userAgent);
+const isiPad = isMac && (navigator.maxTouchPoints > 1);
+
+if (isMac && !isiPad) {
+  const elementsToHide = document.querySelectorAll('.macos-hide');
+  elementsToHide.forEach(el => {
+    el.style.display = 'none';
+  });
+
+  const elementsToShow = document.querySelectorAll('.macos-show');
+  elementsToShow.forEach(el => {
+    el.style.display = 'block';
+  });
+
+  const removeDividers = document.querySelectorAll('.list-dividers');
+  removeDividers.forEach(el => {
+    el.classList.remove('list-dividers');
+  });
+
+  document.querySelectorAll('.install').forEach(el => el.classList.add('display-none'));
 } else {
-  app.popup.open("#hs");
+
+  if (window.navigator.standalone) {
+    const preloaderDialog = app.dialog.preloader("Reloading data");
+    preloaderDialog.open();
+    setTimeout(() => preloaderDialog.close(), 2000);
+    document.querySelectorAll('.install').forEach(el => el.classList.add('display-none'));
+  } else {
+    app.popup.open("#hs");
+  }
 }
 
 function initPhotoBrowser(urls) {
@@ -1398,7 +2162,9 @@ function initPhotoBrowser(urls) {
 }
 
 function generateScreenshotElements(screenshots) {
-  return screenshots.map(src => `<img loading="lazy" src="${src}">`).join('');
+  return screenshots.map((src, index) => {
+    return `<img loading="lazy" src="${src}" class="pb-target" data-index="${index}">`;
+  }).join('');
 }
 
 function openPhotoBrowser(urls) {
@@ -1433,7 +2199,7 @@ function createPopupHtml(item) {
  <div class="popup" id="${item.id}">
       <div class="page">
         <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
-        <div class="page-content bg-img">
+        <div class="page-content">
           <div style="margin-top: 40px; padding: 0px;">       
   <div class="block" style="margin-top: 27px; margin-bottom: 20px;">
     <div style="display: flex; gap: 15px; align-items: flex-start; overflow: hidden;">          
@@ -1443,7 +2209,7 @@ function createPopupHtml(item) {
                 <div style="font-size: 15px; margin-top: 4px;">${item.category}</div>
                 
                 <div style="display: flex; gap: 10px; margin-top: auto; align-items: center;">
-                  <a href="${item.get_link}" class="external button button-fill button-round" style="padding: 0 24px;">GET</a>
+                  <a href="${item.get_link}" class="external button button-fill button-round get">GET</a>
                   <a class="popover-open more" data-popover=".popover-menu">
                     <i class="f7-icons">ellipsis_circle_fill</i>
                   </a>
@@ -1454,27 +2220,29 @@ function createPopupHtml(item) {
                       </div>
                       
              
-          <div class="block-title">Preview</div>
-         <center>
-                <div class="screenshot" onclick="openPhotoBrowser(${JSON.stringify(item.screenshots).replace(/"/g, "&quot;")})">
-                  ${generateScreenshotElements(item.screenshots)}          
-              </center>
+          ${item.screenshots && item.screenshots.length > 0 ? `
+    <div class="block-title">Preview</div>
+    <div class="screenshot" onclick="openPhotoBrowser(${JSON.stringify(item.screenshots).replace(/"/g, "&quot;")})">
+        ${generateScreenshotElements(item.screenshots)}
+    </div>
+` : ''}
+             
             </div>
           
 
-          <div class="block block-strong inset liquid-glass">
+          <div class="block block-strong inset">
              <div style="font-size: 15px; line-height: 1.5;">
               ${item.description}
              </div>
           </div>
 
-          <div class="list simple-list list-strong list-dividers inset glass">
+          <div class="list simple-list list-strong list-dividers inset">
             <ul>
               <li>
                 <span>Category</span>
                 <span>${item.category}</span>
               </li>
-              <li>
+              <li class="macos-hide">
                 <span>Compatibility</span>
                 <span>${item.compatible}</span>
               </li>
@@ -1512,6 +2280,7 @@ function createPopupHtml(item) {
   `;
 }
 
+
 function initVirtualList(containerSelector, items) {
   app.virtualList.create({
     el: containerSelector,
@@ -1535,16 +2304,87 @@ function initVirtualList(containerSelector, items) {
 }
 
 async function fetchAndLoadApps() {
+  const container = document.querySelector(".virtual-list");
+
+  if (container) {
+    const skeletonItem = `
+      <li>
+        <a class="item-link" href="#">   
+          <div class="item-content skeleton-effect-pulse">
+            <div class="item-media">     
+              <div class="skeleton-block" style="width: 58px; height: 58px; border-radius: 29%;"></div>
+            </div>
+            <div class="item-inner">
+              <div class="item-title-row">
+                <div class="item-title skeleton-text">App Title</div>
+              </div>       
+              <div class="item-subtitle skeleton-text">Category</div>
+              <div class="item-footer"></div>
+            </div>
+          </div>
+        </a>
+      </li>`;
+    container.innerHTML = `<ul>${skeletonItem.repeat(10)}</ul>`;
+  }
+
   try {
-    const response = await fetch("apps.json");
+    const isMac = /Macintosh|MacIntel|MacPPC|Mac68K/.test(window.navigator.userAgent) && (navigator.maxTouchPoints <= 1);
+    const jsonFile = isMac ? "json/macos.json" : "json/ios.json";
+    
+    if (isMac) document.documentElement.classList.add('device-mac-desktop');
+
+    const [response] = await Promise.all([
+      fetch(jsonFile),
+      new Promise(resolve => setTimeout(resolve, 2000))
+    ]);
+
+    if (!response.ok) throw new Error(`Failed to load ${jsonFile}`);
+    
     const apps = (await response.json()).sort((a, b) => a.title.localeCompare(b.title));
-    const appsCountElement = document.getElementById("tweaksnumber");
-    if (appsCountElement) appsCountElement.textContent = apps.length;
+    const currentAppIds = apps.map(app => app.title);
+    const seenAppIds = JSON.parse(localStorage.getItem('seen_apps') || '[]');
+    const newApps = currentAppIds.filter(id => !seenAppIds.includes(id));
+
+    
+    const badges = document.querySelectorAll(".tweaksnumber");
+        
+    badges.forEach(badge => {
+      if (newApps.length > 0) {
+        badge.textContent = newApps.length;
+        badge.classList.remove('display-none');
+      } else {
+        badge.classList.add('display-none');
+      }
+    });
+
+    
+    app.off('tabHide'); 
+    app.on('tabHide', (tabEl) => {
+      if (tabEl.querySelector('.virtual-list')) {
+        localStorage.setItem('seen_apps', JSON.stringify(currentAppIds));
+            document.querySelectorAll(".tweaksnumber").forEach(badge => {
+          badge.classList.add('display-none');
+        });
+      }
+    });
+
+    if (container) container.innerHTML = '';
     initVirtualList(".virtual-list", apps);
+
   } catch (error) {
-    console.error("Could not load apps:", error);
+    console.error("Critical Error:", error);
+    if (container) container.innerHTML = '<div class="block">Error loading apps.</div>';
   }
 }
+app.on('ptrRefresh', (el) => {
+  if (el.classList.contains('ptr-apps')) {
+    fetchAndLoadApps().then(() => {      
+      app.ptr.done(el);
+    });
+  }
+});
+
+fetchAndLoadApps();
 
 function addToFavorites(item) {
   let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -1767,14 +2607,26 @@ document.addEventListener("DOMContentLoaded", () => {
 });
  
 var swiperFeatured = new Swiper(".featured", {
+  effect: "coverflow",
+  grabCursor: true,
+  centeredSlides: false,
   slidesPerView: "auto",
-  spaceBetween: 10,
-  pagination: { el: ".swiper-pagination" },
+  preventClicks: true, 
+  spaceBetween: 27,
+  coverflowEffect: {
+    rotate: 0,
+    stretch: 0,
+    depth: 120,
+    modifier: 1.5,
+    slideShadows: false
+  },
+  
   autoplay: {
     delay: 4000,
     disableOnInteraction: true
   }
 });
+
                         
 function shareURL() {
   if (navigator.share) {
@@ -1814,7 +2666,6 @@ function copySource() {
       console.error('Copy failed:', err);
     });
 }
-
 function reset() {
   const defaultColor = '#007AFF';
 
