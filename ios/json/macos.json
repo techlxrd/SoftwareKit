@@ -1,0 +1,201 @@
+[
+  {
+    "id": "raycast",
+    "title": "Raycast",
+    "category": "Productivity",
+    "icon": "https://avatars.githubusercontent.com/u/52919248?s=200&v=4",
+    "description": "Raycast is a fast app launcher and productivity tool for macOS with extensions, clipboard history, window management, and automation.",
+    "compatible": "N/A",
+    "get_link": "https://www.raycast.com",
+    "type": "App",
+    "device": "Mac",
+    "screenshots": [   
+    ]
+  },
+  {
+    "id": "alfred",
+    "title": "Alfred",
+    "category": "Productivity",
+    "icon": "https://www.alfredapp.com/media/logo4@2x.png",
+    "description": "Alfred boosts productivity with hotkeys, keyword searches, workflows, and clipboard history for faster navigation on macOS.",
+    "compatible": "N/A",
+    "get_link": "https://www.alfredapp.com",
+    "type": "App",
+    "device": "Mac",
+    "screenshots": [    
+    ]
+  },
+  {
+    "id": "bartender",
+    "title": "Bartender",
+    "category": "Customization",
+    "icon": "https://www.macbartender.com/Bartender6/img/bartender6icon.png",
+    "description": "Bartender organizes and hides menu bar icons so your macOS menu bar stays clean and uncluttered.",
+    "compatible": "N/A",
+    "get_link": "https://www.macbartender.com",
+    "type": "App",
+    "device": "Mac",
+    "screenshots": [
+      
+    ]
+  },
+  {
+    "id": "ubersicht",
+    "title": "Übersicht",
+    "category": "Customization",
+    "icon": "https://tracesof.net/uebersicht/uebersicht-icon.png",
+    "description": "Übersicht lets you place customizable widgets directly on your macOS desktop using HTML, CSS, and JavaScript.",
+    "compatible": "N/A",
+    "get_link": "https://tracesof.net/uebersicht",
+    "type": "App",
+    "device": "Mac",
+    "screenshots": [
+      "https://tracesof.net/uebersicht/images/Screen.jpg"
+    ]
+  },
+  {
+    "id": "onyx",
+    "title": "OnyX",
+    "category": "System Utility",
+    "icon": "https://www.titanium-software.fr/images/icons/onyx26.png",
+    "description": "OnyX is a powerful macOS maintenance and customization tool for cleaning caches, verifying disks, and tweaking hidden system settings.",
+    "compatible": "N/A",
+    "get_link": "https://www.titanium-software.fr/en/onyx.html",
+    "type": "App",
+    "device": "Mac",
+    "screenshots": [    
+    ]
+  },
+  {
+    "id": "grandperspective",
+    "title": "GrandPerspective",
+    "category": "Storage Utility",
+    "icon": "https://a.fsdn.com/allura/p/grandperspectiv/icon?1705864666?&w=180",
+    "description": "GrandPerspective visualizes disk usage using tree maps so you can easily locate large files and folders.",
+    "compatible": "N/A",
+    "get_link": "https://grandperspectiv.sourceforge.net",
+    "type": "App",
+    "device": "Mac",
+    "screenshots": [    
+    ]
+  },
+  {
+    "id": "appcleaner",
+    "title": "AppCleaner",
+    "category": "System Utility",
+    "icon": "",
+    "description": "AppCleaner removes apps completely by deleting leftover files that macOS normally leaves behind.",
+    "compatible": "N/A",
+    "get_link": "https://freemacsoft.net/appcleaner",
+    "type": "App",
+    "device": "Mac",
+    "screenshots": [    
+    ]
+  },
+  {
+    "id": "cleanshotx",
+    "title": "CleanShot X",
+    "category": "Productivity",
+    "icon": "https://i.imgur.com/Jgtstey.jpeg",
+    "description": "CleanShot X is an advanced screenshot and screen recording tool with annotations, scrolling capture, and cloud sharing.",
+    "compatible": "N/A",
+    "get_link": "https://cleanshot.com",
+    "type": "App",
+    "device": "Mac",
+    "screenshots": [   
+    ]
+  },
+  {
+    "id": "obsidian",
+    "title": "Obsidian",
+    "category": "Notes",
+    "icon": "https://obsidian.md/images/obsidian-logo-gradient.svg",
+    "description": "Obsidian is a powerful knowledge base and note-taking app built around Markdown with graph visualization.",
+    "compatible": "N/A",
+    "get_link": "https://obsidian.md",
+    "type": "App",
+    "device": "Multi-device",
+    "screenshots": [
+      "https://obsidian.md/images/screenshot-1.0-hero-combo.png"
+    ]
+  },
+  {
+    "id": "alttab",
+    "title": "AltTab",
+    "category": "Productivity",
+    "icon": "https://alt-tab-macos.netlify.app/icons/icon-512.png",
+    "description": "AltTab brings a Windows-style Alt+Tab window switcher to macOS with previews and customization.",
+    "compatible": "N/A",
+    "get_link": "https://alt-tab-macos.netlify.app",
+    "type": "App",
+    "device": "Mac",
+    "screenshots": [     
+    ]
+  },
+  {
+    "id": "iina",
+    "title": "IINA",
+    "category": "Media Player",
+    "icon": "https://iina.io/images/apple-touch-icon.png",
+    "description": "IINA is a modern macOS media player built on mpv with gesture controls, dark mode, and native macOS design.",
+    "compatible": "N/A",
+    "get_link": "https://iina.io",
+    "type": "App",
+    "device": "Mac",
+    "screenshots": [
+      "https://iina.io/images/feature-1.png"
+    ]
+  },
+  {
+    "id": "rocket",
+    "title": "Rocket",
+    "category": "Utility",
+    "icon": "https://matthewpalmer.net/rocket/images/icon.png",
+    "description": "Rocket lets you type emojis quickly using Slack-style shortcuts like :fire: or :rocket: on macOS.",
+    "compatible": "N/A",
+    "get_link": "https://matthewpalmer.net/rocket",
+    "type": "App",
+    "device": "Mac",
+    "screenshots": [    
+    ]
+  }, 
+    {
+    "id": "altstore",
+    "title": "AltStore",
+    "category": "Sideloading",
+    "icon": "https://softwarekit.pages.dev/ios/assets/altstore.png",
+    "description": "AltStore is the home for apps that push iOS boundaries—install apps outside the App Store, no jailbreak required.",
+    "compatible": "Unknown",
+    "get_link": "https://altstore.io",
+    "type": "App",
+    "screenshots": [
+      "https://altstore.io/images/Tuesday-23-Jan-2024-165319.png", "https://altstore.io/images/DeltaStorePage.PNG", "https://altstore.io/images/Monday-08-May-2023-162140.PNG"
+    ]
+  }, 
+    {
+    "id": "sideloadly",
+    "title": "Sideloadly",
+    "category": "Sideloading",
+    "icon": "https://sideloadly.io/icon.png",
+    "description": "Sideload your favorite games and apps on iOS, Apple Silicon Macs, and Apple TV without jailbreak.",
+    "compatible": "Unknown",
+    "get_link": "https://sideloadly.io/",
+    "type": "App",
+    "screenshots": [
+      "https://sideloadly.io/screenshots/sideloadlymacos.png", "https://sideloadly.io/screenshots/sideloadlymacosapplesilicon.png"
+    ]
+  },
+    {
+    "id": "imazing",
+    "title": "iMazing",
+    "category": "Device Management",
+    "icon": "https://imazing.com/img/imazing3-logo.svg",
+    "description": "iMazing is the world’s most trusted software to transfer and save your messages, music, files and data from your iPhone or iPad to your Mac or PC.<br>Gain powerful backup, data extraction, media, and file transfer capabilities, and much more with iMazing.",
+    "compatible": "Unknown",
+    "get_link": "https://imazing.com/",
+    "type": "App",
+    "screenshots": [
+      "https://imazing.com/img/home/v3/im3-2-photos-mac.webp"
+    ]
+  }
+]
