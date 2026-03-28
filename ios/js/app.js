@@ -8,7 +8,7 @@ const app = new Framework7({
   },
   popup: {
     push: true,
-    swipeToClose: 'to-bottom',
+    swipeToClose: 'to-bottom',   
   },
   sheet: {
     push: true,
@@ -23,12 +23,7 @@ const app = new Framework7({
   serviceWorker: {
     path: "./service-worker.js",
   },  
-routes: [
-    {
-      path: '/index/',
-      url: 'index.html',
-    },
-  ],
+
 });
 var $ = Dom7;
 const mainView = app.views.create(".view-main");
@@ -725,7 +720,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <ul>
                                     <li><span>Version</span><span>${item.version}</span></li>
                                     <li><span>Size</span><span>${(item.size / 1024 / 1024).toFixed(1)} MB</span></li>
-                                    <li><span>BundleID</span><span>${item.bundleIdentifier}</span></li>
+                                    <li><span>BundleID</span><span class="size-12">${item.bundleIdentifier}</span></li>
                                 </ul>
                             </div>                           
         </div>
@@ -1043,15 +1038,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    app.on('ptrRefresh', async (el) => {
-        if (el.classList.contains('ptr-repo-detail')) {
-            const pageEl = el.closest('.page');
-            const isAllSources = pageEl.dataset.allSources === 'true';
-            const repoUrl = pageEl.dataset.url;
-            const pageId = pageEl.dataset.id;
-            const listSelector = `.virtual-list-${pageId}`;
-            const makeSkeletonItems = (n = 6) => new Array(n).fill(null).map(() => ({ skeleton: true }));
-            const skeletonLi = `
+app.on('ptrRefresh', async (el) => {
+    if (el.classList.contains('ptr-repo-detail')) {
+        const pageEl = el.closest('.page');
+        const isAllSources = pageEl.dataset.allSources === 'true';
+        const repoUrl = pageEl.dataset.url;
+        const pageId = pageEl.dataset.id;
+        const listSelector = `.virtual-list-${pageId}`;
+        const start = Date.now();
+        const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+        const makeSkeletonItems = (n = 6) => new Array(n).fill(null).map(() => ({ skeleton: true }));
+        const skeletonLi = `
 <li>
   <div class="item-content skeleton-effect-pulse">
     <div class="item-media">
@@ -1063,123 +1060,139 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   </div>
 </li>`;
-            const vl = pageEl.vl || app.virtualList.get(listSelector);
-            if (vl && typeof vl.replaceAllItems === 'function') {
-                vl.replaceAllItems(makeSkeletonItems(6));
+
+        const vl = pageEl.vl || app.virtualList.get(listSelector);
+
+        if (vl && typeof vl.replaceAllItems === 'function') {
+            vl.replaceAllItems(makeSkeletonItems(6));
+        } else {
+            const listContainer = pageEl.querySelector(listSelector);
+            if (listContainer) listContainer.innerHTML = `<ul>${skeletonLi.repeat(6)}</ul>`;
+        }
+
+        const ensureMinDelay = async () => {
+            const elapsed = Date.now() - start;
+            const remaining = Math.max(0, 2000 - elapsed);
+            if (remaining > 0) await wait(remaining);
+        };
+
+        try {
+            if (isAllSources) {
+                let allRepos = getRepos();
+                const updates = await Promise.all(allRepos.map(r => fetchRepo(r.sourceURL).catch(() => null)));
+                allRepos = updates.map((newRepo, i) => newRepo || allRepos[i]);
+                saveRepos(allRepos);
+
+                const allApps = getAllApps();
+                await ensureMinDelay();
+
+                if (vl && typeof vl.replaceAllItems === 'function') {
+                    vl.replaceAllItems(allApps);
+                } else {
+                    const listContainer = pageEl.querySelector(listSelector);
+                    if (listContainer) {
+                        const html = allApps.map(item => `
+<li>
+  <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
+    <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div>
+    <div class="item-inner">
+      <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
+      <div class="item-subtitle">${item.developerName || ''}</div>
+    </div>
+  </a>
+</li>`).join('');
+                        listContainer.innerHTML = `<ul>${html}</ul>`;
+                    }
+                }
+
+                renderSourcesList(allRepos);
+                renderNews(allRepos);
             } else {
-                const listContainer = pageEl.querySelector(listSelector);
-                if (listContainer) listContainer.innerHTML = `<ul>${skeletonLi.repeat(6)}</ul>`;
-            }
-            try {
-                if (isAllSources) {
+                const [newRepoData] = await Promise.all([
+                    fetchRepo(repoUrl),
+                    ensureMinDelay()
+                ]);
+
+                if (newRepoData) {
                     let allRepos = getRepos();
-                    const updates = await Promise.all(allRepos.map(r => fetchRepo(r.sourceURL).catch(() => null)));
-                    allRepos = updates.map((newRepo, i) => newRepo || allRepos[i]);
-                    saveRepos(allRepos);
-                    const allApps = getAllApps();
+                    const index = allRepos.findIndex(r => r.sourceURL === repoUrl);
+                    if (index !== -1) {
+                        allRepos[index] = newRepoData;
+                        saveRepos(allRepos);
+                    }
+
                     if (vl && typeof vl.replaceAllItems === 'function') {
-                        vl.replaceAllItems(allApps);
+                        vl.replaceAllItems(newRepoData.apps || []);
                     } else {
                         const listContainer = pageEl.querySelector(listSelector);
                         if (listContainer) {
-                            const html = allApps.map(item => `
-                <li>
-                  <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
-                    <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div>
-                    <div class="item-inner">
-                      <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
-                      <div class="item-subtitle">${item.developerName || ''}</div>
-                    </div>
-                  </a>
-                </li>`).join('');
+                            const html = (newRepoData.apps || []).map(item => `
+<li>
+  <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
+    <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div>
+    <div class="item-inner">
+      <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
+      <div class="item-subtitle">${item.developerName || ''}</div>
+    </div>
+  </a>
+</li>`).join('');
                             listContainer.innerHTML = `<ul>${html}</ul>`;
                         }
                     }
-                    renderSourcesList(allRepos);
-                    renderNews(allRepos);
-                } else {
-                    const [newRepoData] = await Promise.all([
-                        fetchRepo(repoUrl),
-                        new Promise(resolve => setTimeout(resolve, 2000))
-                    ]);
-                    if (newRepoData) {
-                        let allRepos = getRepos();
-                        const index = allRepos.findIndex(r => r.sourceURL === repoUrl);
-                        if (index !== -1) {
-                            allRepos[index] = newRepoData;
-                            saveRepos(allRepos);
+                }
+            }
+        } catch (error) {
+            console.error("Failed to refresh:", error);
+            try {
+                if (isAllSources) {
+                    const allApps = getAllApps();
+
+                    if (vl && typeof vl.replaceAllItems === 'function') vl.replaceAllItems(allApps);
+                    else {
+                        const listContainer = pageEl.querySelector(listSelector);
+                        if (listContainer) {
+                            const html = allApps.map(item => `
+<li>
+  <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
+    <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div>
+    <div class="item-inner">
+      <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
+      <div class="item-subtitle">${item.developerName || ''}</div>
+    </div>
+  </a>
+</li>`).join('');
+                            listContainer.innerHTML = `<ul>${html}</ul>`;
                         }
-                        if (vl && typeof vl.replaceAllItems === 'function') {
-                            vl.replaceAllItems(newRepoData.apps || []);
-                        } else {
+                    }
+                } else {
+                    const allRepos = getRepos();
+                    const cached = allRepos.find(r => r.sourceURL === repoUrl);
+                    if (cached) {
+                        if (vl && typeof vl.replaceAllItems === 'function') vl.replaceAllItems(cached.apps || []);
+                        else {
                             const listContainer = pageEl.querySelector(listSelector);
                             if (listContainer) {
-                                const html = (newRepoData.apps || []).map(item => `
-                    <li>
-                      <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
-                        <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div>
-                        <div class="item-inner">
-                          <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
-                          <div class="item-subtitle">${item.developerName || ''}</div>
-                        </div>
-                      </a>
-                    </li>`).join('');
+                                const html = (cached.apps || []).map(item => `
+<li>
+  <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
+    <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div>
+    <div class="item-inner">
+      <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
+      <div class="item-subtitle">${item.developerName || ''}</div>
+    </div>
+  </a>
+</li>`).join('');
                                 listContainer.innerHTML = `<ul>${html}</ul>`;
                             }
                         }
                     }
                 }
-            } catch (error) {
-                console.error("Failed to refresh:", error);
-                try {
-                    if (isAllSources) {
-                        const allApps = getAllApps();
-                        if (vl && typeof vl.replaceAllItems === 'function') vl.replaceAllItems(allApps);
-                        else {
-                            const listContainer = pageEl.querySelector(listSelector);
-                            if (listContainer) {
-                                const html = allApps.map(item => `
-                    <li>
-                      <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
-                        <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div>
-                        <div class="item-inner">
-                          <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
-                          <div class="item-subtitle">${item.developerName || ''}</div>
-                        </div>
-                      </a>
-                    </li>`).join('');
-                                listContainer.innerHTML = `<ul>${html}</ul>`;
-                            }
-                        }
-                    } else {
-                        const allRepos = getRepos();
-                        const cached = allRepos.find(r => r.sourceURL === repoUrl);
-                        if (cached) {
-                            if (vl && typeof vl.replaceAllItems === 'function') vl.replaceAllItems(cached.apps || []);
-                            else {
-                                const listContainer = pageEl.querySelector(listSelector);
-                                if (listContainer) {
-                                    const html = (cached.apps || []).map(item => `
-                    <li>
-                      <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
-                        <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div>
-                        <div class="item-inner">
-                          <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
-                          <div class="item-subtitle">${item.developerName || ''}</div>
-                        </div>
-                      </a>
-                    </li>`).join('');
-                                    listContainer.innerHTML = `<ul>${html}</ul>`;
-                                }
-                            }
-                        }
-                    }
-                } catch (e) { }
-            } finally {
-                app.ptr.done(el);
-            }
+            } catch (e) {}
+        } finally {
+            app.ptr.done(el);
         }
-    });
+    }
+});
 
     async function refreshData(force = false) {
         let repos = getRepos();
@@ -1318,15 +1331,22 @@ async function fetchAndLoadNews() {
 
   const skeletonHTML = `
     <div class="card card-raised news-card skeleton-effect-pulse">
-      <div class="card-content">
-        <div class="card-image skeleton-block" style="height: 160px; width: 100%;"></div>
-        <div class="card-header skeleton-text">This is a placeholder title for skeleton</div>
-        <div class="card-footer">
-          <span class="skeleton-text">Action</span>
-          <span class="skeleton-text">Action</span>
-        </div>
-      </div>
-    </div>`;
+   <div class="card-content">
+   <div class="card-image skeleton-block" style="height: 220px; width: 100%;"></div>
+    <div class="news-actions">
+      <a class="news-action skeleton-text">
+        <i class="f7-icons">square_arrow_up</i>
+      </a>
+
+      <a class="news-action external skeleton-text">
+        <i class="f7-icons">book_fill</i>
+      </a>
+    </div>
+    <div class="news-overlay">
+      <div class="news-title skeleton-text">Loading news title<br>News</div>
+    </div>
+  </div>
+</div></div> `;
   newsContainer.innerHTML = skeletonHTML.repeat(3);
 
   try {   
@@ -1357,20 +1377,25 @@ async function fetchAndLoadNews() {
      
 
       card.innerHTML = `
-        <div class="card-content">
-          <div class="card-image">
-            <img class="newsimg" src="${imgSrc}" loading="lazy">
-          </div>
-          <div class="card-header">${title}</div>
-          <div class="card-footer">
-            <a onclick="navigator.share({ title: '${title.replace(/'/g, "\\'")}', url: '${link}' })">
-              <i class="f7-icons">square_arrow_up</i>
-            </a>
-            <a href="${link}" class="external">
-              <i class="f7-icons">book_fill</i>
-            </a>
-          </div>
-        </div>`;
+<div class="card-content">
+  <div class="card-image">
+    <img class="newsimg" src="${imgSrc}" loading="lazy">
+
+    <div class="news-actions">
+      <a onclick="navigator.share({ title: '${title.replace(/'/g, "\\'")}', url: '${link}' })" class="news-action">
+        <i class="f7-icons">square_arrow_up</i>
+      </a>
+
+      <a href="${link}" class="news-action external">
+        <i class="f7-icons">book_fill</i>
+      </a>
+    </div>
+
+    <div class="news-overlay">
+      <div class="news-title">${title}</div>
+    </div>
+  </div>
+</div></div>`;
 
       newsContainer.appendChild(card);
     }
@@ -2201,23 +2226,31 @@ function createPopupHtml(item) {
         <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
         <div class="page-content">
           <div style="margin-top: 40px; padding: 0px;">       
-  <div class="block" style="margin-top: 27px; margin-bottom: 20px;">
-    <div style="display: flex; gap: 15px; align-items: flex-start; overflow: hidden;">          
-              <img src="${item.icon}" class="app-icon" style="flex-shrink: 0;">
-             <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
-                <div style="font-size: 22px; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title}</div>
-                <div style="font-size: 15px; margin-top: 4px;">${item.category}</div>
-                
-                <div style="display: flex; gap: 10px; margin-top: auto; align-items: center;">
-                  <a href="${item.get_link}" class="external button button-fill button-round get">GET</a>
-                  <a class="popover-open more" data-popover=".popover-menu">
-                    <i class="f7-icons">ellipsis_circle_fill</i>
-                  </a>
-                  
-                </div>
-              </div>
-            </div>
-                      </div>
+<div class="block" style="margin-top: 27px; margin-bottom: 20px;">
+  <div style="display: flex; gap: 15px; align-items: flex-start; overflow: hidden;">          
+    <img src="${item.icon}" class="app-icon" style="flex-shrink: 0;">
+
+    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
+
+      <div style="font-size: 22px; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+        ${item.title}
+      </div>
+    
+      <div style="font-size: 15px; margin-top: 6px; line-height: 1.3;">
+        ${item.category}
+      </div>
+     
+      <div style="display: flex; margin-top: 12px; align-items: center;">
+        <a href="${item.get_link}" class="external button button-fill button-round get">GET</a>
+
+        <a class="popover-open more" data-popover=".popover-menu">
+          <i class="f7-icons">ellipsis_circle_fill</i>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
                       
              
           ${item.screenshots && item.screenshots.length > 0 ? `
@@ -2633,7 +2666,7 @@ function shareURL() {
     navigator.share({
       title: "SoftwareKit",
       text: "Take your iDevice experience to the next level with our awesome app!",
-      url: "https://softwarekit.pages.dev/"
+      url: "https://swkit.app/"
     });
   }
 }
@@ -2643,13 +2676,13 @@ function shareSource() {
     navigator.share({
       title: "SoftwareKit",
       text: "Official AltStore source provided by SoftwareKit",
-      url: "https://softwarekit.pages.dev/ios/altstore.json"
+      url: "https://swkit.app/ios/altstore.json"
     });
   }
 }
 
 function copySource() {
-  navigator.clipboard.writeText('https://softwarekit.pages.dev/ios/altstore.json')
+  navigator.clipboard.writeText('https://swkit.app/ios/altstore.json')
     .then(() => {
       app.toast.create({
         text: 'Source link copied!',
