@@ -947,14 +947,14 @@
   ],
   "news": [
     {
-      "title": "SoftwareKit v3.0",
+      "title": "SoftwareKit v3.0.1",
       "identifier": "news_0df3yswqwr",
-      "caption": "SoftwareKit v3.0 was released 🎉",
-      "date": "2026-03-06T09:00",
+      "caption": "SoftwareKit v3.0.1 was released 🎉",
+      "date": "2026-03-28T14:00",
       "tintColor": "#a200ff",
       "imageURL": "https://i.imgur.com/sA5s6sN.png",
       "notify": true,
-      "url": "https://softwarekit.pages.dev",
+      "url": "https://swkit.app",
       "appID": null
     }
   ]
