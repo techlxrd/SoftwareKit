@@ -1,7 +1,6 @@
 :root {
   --sidebar-width: 290px;
   --f7-safe-area-bottom: 2px !important;  
-  --f7-preloader-size: 10px;
   --f7-dialog-width: 304px;
 }
 
@@ -35,7 +34,10 @@ body {
   scroll-behavior: smooth;
 
 }
-
+  .preloader-small {
+    width: 10px;
+    height: 10px;
+  } 
 ::-webkit-scrollbar {
   display: none;
 }
