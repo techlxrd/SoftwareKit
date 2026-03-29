@@ -166,6 +166,8 @@ body {
   border: 1px dashed rgba(255,255,255,0.15);
   font-size: 14px;
   transition: all 0.2s ease;
+  margin-bottom: 7px;
+  margin-top: 2px;
 }
 
 .file-box i {
