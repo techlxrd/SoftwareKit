@@ -3,17 +3,97 @@
   "subtitle": "",
   "description": "Official AltStore source provided by SoftwareKit. ",
   "iconURL": "https://softwarekit.pages.dev/favicon.png",
-  "website": "https://softwarekit.pages.dev",
+  "website": "https://swkit.app",
   "patreonURL": "",
   "tintColor": "#9e36ce",
   "featuredApps": [
+    "com.cr4zy.nyxian",
     "com.opa334.Dopamine",
     "com.zurac.OldOS",
-    "com.atebits.Tweetie2",
     "com.kdt.livecontainer",
     "dev.casp.ScreenSaver"
   ],
   "apps": [
+    {
+      "name": "Nyxian",
+      "bundleIdentifier": "com.cr4zy.nyxian",
+      "marketplaceID": "",
+      "developerName": "Unknown",
+      "subtitle": "",
+      "localizedDescription": "IDE to develop native code iOS apps and tools on unjailbroken iOS",
+      "iconURL": "https://i.imgur.com/aFmOkoq.png",
+      "tintColor": "#8c64bc",
+      "category": "developer",
+      "screenshots": [
+        {
+          "imageURL": "https://nyxian.app/img/mockup.png",
+          "width": 2880,
+          "height": 1800
+        }
+      ],
+      "versions": [
+        {
+          "downloadURL": "https://github.com/ProjectNyxian/Nyxian/releases/download/0.8.6/nyxian.ipa",
+          "size": 87500000,
+          "version": "0.8.6",
+          "buildVersion": null,
+          "date": "2026-03-29T14:22:00+03:00",
+          "localizedDescription": null,
+          "minOSVersion": null
+        }
+      ],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {
+          "NSAppleEventsUsageDescription": "The guest app is requesting for this permission.",
+          "NSAppleMusicUsageDescription": "The guest app is requesting for this permission.",
+          "NSBluetoothAlwaysUsageDescription": "The guest app is requesting for this permission.",
+          "NSBluetoothPeripheralUsageDescription": "The guest app is requesting for this permission.",
+          "NSBluetoothWhileInUseUsageDescription": "The guest app is requesting for this permission.",
+          "NSCalendarsUsageDescription": "The guest app is requesting for this permission.",
+          "NSCameraUsageDescription": "The guest app is requesting for this permission.",
+          "NSContactsUsageDescription": "The guest app is requesting for this permission.",
+          "NSDesktopFolderUsageDescription": "The guest app is requesting for this permission.",
+          "NSDocumentsFolderUsageDescription": "The guest app is requesting for this permission.",
+          "NSDownloadsFolderUsageDescription": "The guest app is requesting for this permission.",
+          "NSFaceIDUsageDescription": "The guest app is requesting for this permission.",
+          "NSFallDetectionUsageDescription": "The guest app is requesting for this permission.",
+          "NSFileProviderDomainUsageDescription": "The guest app is requesting for this permission.",
+          "NSFileProviderPresenceUsageDescription": "The guest app is requesting for this permission.",
+          "NSFocusStatusUsageDescription": "The guest app is requesting for this permission.",
+          "NSGKFriendListUsageDescription": "The guest app is requesting for this permission.",
+          "NSHealthClinicalHealthRecordsShareUsageDescription": "The guest app is requesting for this permission.",
+          "NSHealthShareUsageDescription": "The guest app is requesting for this permission.",
+          "NSHealthUpdateUsageDescription": "The guest app is requesting for this permission.",
+          "NSHomeKitUsageDescription": "The guest app is requesting for this permission.",
+          "NSIdentityUsageDescription": "The guest app is requesting for this permission.",
+          "NSLocalNetworkUsageDescription": "The guest app is requesting for this permission.",
+          "NSLocationAlwaysAndWhenInUseUsageDescription": "The guest app is requesting for this permission.",
+          "NSLocationAlwaysUsageDescription": "The guest app is requesting for this permission.",
+          "NSLocationUsageDescription": "The guest app is requesting for this permission.",
+          "NSLocationWhenInUseUsageDescription": "The guest app is requesting for this permission.",
+          "NSMicrophoneUsageDescription": "The guest app is requesting for this permission.",
+          "NSMotionUsageDescription": "The guest app is requesting for this permission.",
+          "NSNearbyInteractionAllowOnceUsageDescription": "The guest app is requesting for this permission.",
+          "NSNearbyInteractionUsageDescription": "The guest app is requesting for this permission.",
+          "NSNetworkVolumesUsageDescription": "The guest app is requesting for this permission.",
+          "NSPhotoLibraryAddUsageDescription": "The guest app is requesting for this permission.",
+          "NSPhotoLibraryUsageDescription": "The guest app is requesting for this permission.",
+          "NSRemindersUsageDescription": "The guest app is requesting for this permission.",
+          "NSRemovableVolumesUsageDescription": "The guest app is requesting for this permission.",
+          "NSSensorKitPrivacyPolicyURL": "The guest app is requesting for this permission.",
+          "NSSensorKitUsageDescription": "The guest app is requesting for this permission.",
+          "NSSiriUsageDescription": "The guest app is requesting for this permission.",
+          "NSSpeechRecognitionUsageDescription": "The guest app is requesting for this permission.",
+          "NSSystemAdministrationUsageDescription": "The guest app is requesting for this permission.",
+          "NSSystemExtensionUsageDescription": "The guest app is requesting for this permission.",
+          "NSUserTrackingUsageDescription": "The guest app is requesting for this permission.",
+          "NSVideoSubscriberAccountUsageDescription": "The guest app is requesting for this permission.",
+          "NSVoIPUsageDescription": "The guest app is requesting for this permission."
+        }
+      },
+      "patreon": {}
+    },
     {
       "name": "Prism",
       "bundleIdentifier": "com.brocodev.prismios",
@@ -189,51 +269,6 @@
         "entitlements": [],
         "privacy": {
           "NSHumanReadableCopyright": "Copyright (c) 2024 Samara M"
-        }
-      },
-      "patreon": {}
-    },
-    {
-      "name": "Eevee Spotify",
-      "bundleIdentifier": "com.spotify.client",
-      "marketplaceID": "",
-      "developerName": "Eevee",
-      "subtitle": "An awesome app.",
-      "localizedDescription": "This is an awesome app only available on AltStore.",
-      "iconURL": "https://i.imgur.com/XuK4XDn.png",
-      "tintColor": "#1cd464",
-      "category": "other",
-      "screenshots": [],
-      "versions": [
-        {
-          "version": "9.0.42",
-          "date": "2025-05-18T08:58:00+03:00",
-          "localizedDescription": null,
-          "downloadURL": "https://github.com/whoeevee/EeveeSpotify/releases/download/swift5.9.7/EeveeSpotify-5.9.7-9.0.42.ipa",
-          "size": 85000000,
-          "buildVersion": null,
-          "minOSVersion": null
-        }
-      ],
-      "appPermissions": {
-        "entitlements": [],
-        "privacy": {
-          "NSBluetoothAlwaysUsageDescription": "This lets you unlock new ways of interacting with other devices compatible with Spotify via Bluetooth.",
-          "NSCameraUsageDescription": "This lets you scan Spotify Codes.",
-          "NSUserTrackingUsageDescription": "Your data will be used to deliver personalized ads or content to you.",
-          "NSHealthUpdateUsageDescription": "Spotify will use HealthKit data to provide personalised audio recommendations for your workouts.",
-          "NSMotionUsageDescription": "We will use this to understand which audio motivates you most.",
-          "NSBluetoothPeripheralUsageDescription": "This lets you unlock new ways of interacting with other devices compatible with Spotify via Bluetooth.",
-          "NSPhotoLibraryAddUsageDescription": "This lets you save images to your Photo Library.",
-          "NSLocalNetworkUsageDescription": "This lets you listen on different devices. Spotify will also get access to local audio files.",
-          "NSHealthShareUsageDescription": "Spotify will use HealthKit data to provide personalised audio recommendations for your workouts.",
-          "NSAppleMusicUsageDescription": "This will let you play your imported music on Spotify.",
-          "NSCalendarsUsageDescription": "This lets Spotify view and add events to your calendar.",
-          "NSMicrophoneUsageDescription": "This lets you control Spotify using your voice.",
-          "NSCalendarsWriteOnlyAccessUsageDescription": "This lets Spotify add events to your calendar.",
-          "NSFaceIDUsageDescription": "This lets you set access restrictions using Face ID.",
-          "NSContactsUsageDescription": "This lets Spotify access calendars you may have shared with your contacts.",
-          "NSPhotoLibraryUsageDescription": "This lets you select images from your Photo Library."
         }
       },
       "patreon": {}
@@ -480,12 +515,12 @@
       "screenshots": [],
       "versions": [
         {
-          "downloadURL": "https://github.com/utmapp/UTM/releases/download/v4.7.5/UTM.ipa",
-          "size": 130100000,
           "version": "4.7.5",
-          "buildVersion": null,
           "date": "2026-03-16T16:58:00+02:00",
           "localizedDescription": null,
+          "downloadURL": "https://github.com/utmapp/UTM/releases/download/v4.7.5/UTM.ipa",
+          "size": 130100000,
+          "buildVersion": null,
           "minOSVersion": null
         }
       ],
@@ -498,39 +533,6 @@
           "NSLocationAlwaysUsageDescription": "UTM requests location data periodically to ensure the system keeps the background process active. Location data will never leave the device.",
           "NSLocationWhenInUseUsageDescription": "UTM requests location data periodically to ensure the system keeps the background process active. Location data will never leave the device.",
           "NSMicrophoneUsageDescription": "Permission is required for any virtual machine to record from the microphone."
-        }
-      },
-      "patreon": {}
-    },
-    {
-      "name": "FL Studio Mobile",
-      "bundleIdentifier": "com.imageline.FLStudioMobileHD",
-      "marketplaceID": "",
-      "developerName": "Image-Line",
-      "subtitle": "An awesome app.",
-      "localizedDescription": "FL Studio Mobile is a digital audio workstation available for Android, iOS and Windows UWP. ",
-      "iconURL": "https://i.imgur.com/AJl2VZi.png",
-      "tintColor": "#ccdc54",
-      "category": "entertainment",
-      "screenshots": [],
-      "versions": [
-        {
-          "version": "4.7.7",
-          "date": "2025-05-18T07:28:00+03:00",
-          "localizedDescription": null,
-          "downloadURL": "https://ipa.cypwn.xyz/serve/get.php?md5=db8c8974feba7a7d79395bcdde74173a",
-          "size": 234400000,
-          "buildVersion": null,
-          "minOSVersion": null
-        }
-      ],
-      "appPermissions": {
-        "entitlements": [],
-        "privacy": {
-          "NSBluetoothAlwaysUsageDescription": "FL Studio Mobile uses Bluetooth to discover Bluetooth MIDI devices.",
-          "NSBluetoothPeripheralUsageDescription": "FL Studio Mobile uses Bluetooth to discover Bluetooth MIDI devices.",
-          "NSLocalNetworkUsageDescription": "FL Studio Mobile uses networking to communicate with Audiobus and other music apps.",
-          "NSMicrophoneUsageDescription": "FL Studio Mobile uses the microphone for recording vocal & instrument tracks."
         }
       },
       "patreon": {}
@@ -927,12 +929,12 @@
       "screenshots": [],
       "versions": [
         {
-          "downloadURL": "https://github.com/Sileo/Sileo/releases/download/2.3/sileo_demo_2.3.ipa",
-          "size": 3400000,
           "version": "2.3.1",
-          "buildVersion": null,
           "date": "2026-03-16T16:54:00+02:00",
           "localizedDescription": null,
+          "downloadURL": "https://github.com/Sileo/Sileo/releases/download/2.3/sileo_demo_2.3.ipa",
+          "size": 3400000,
+          "buildVersion": null,
           "minOSVersion": "11.0"
         }
       ],
