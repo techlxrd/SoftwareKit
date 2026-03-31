@@ -8,6 +8,7 @@
   "tintColor": "#9e36ce",
   "featuredApps": [
     "com.cr4zy.nyxian",
+    "com.stik.stikdebug",
     "com.opa334.Dopamine",
     "com.zurac.OldOS",
     "com.kdt.livecontainer",
@@ -15,11 +16,43 @@
   ],
   "apps": [
     {
+      "name": "StikDebug",
+      "bundleIdentifier": "com.stik.stikdebug",
+      "marketplaceID": "",
+      "developerName": "StephenDev0",
+      "subtitle": "Unlock the power of on-device debugging.",
+      "localizedDescription": "Enable JIT for sideloaded apps, debug processes, and manage your iOS development workflow directly from your device.",
+      "iconURL": "https://i.imgur.com/yPFhrWA.png",
+      "tintColor": "#24ccfc",
+      "category": "other",
+      "screenshots": [],
+      "versions": [
+        {
+          "downloadURL": "https://github.com/StephenDev0/StikDebug/releases/latest",
+          "size": 10900000,
+          "version": "3.1.0",
+          "buildVersion": null,
+          "date": "2026-03-31T05:04:00+03:00",
+          "localizedDescription": null,
+          "minOSVersion": null
+        }
+      ],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {
+          "NSLocalNetworkUsageDescription": "StikDebug needs access to devices on your local network so it can connect to the targets you add to the Device Library.",
+          "NSLocationAlwaysAndWhenInUseUsageDescription": "StikDebug uses location to stay running in the background and maintain your JIT connection.",
+          "NSLocationWhenInUseUsageDescription": "StikDebug uses location to stay running in the background and maintain your JIT connection."
+        }
+      },
+      "patreon": {}
+    },
+    {
       "name": "Nyxian",
       "bundleIdentifier": "com.cr4zy.nyxian",
       "marketplaceID": "",
       "developerName": "Unknown",
-      "subtitle": "",
+      "subtitle": "An awesome app.",
       "localizedDescription": "IDE to develop native code iOS apps and tools on unjailbroken iOS",
       "iconURL": "https://i.imgur.com/aFmOkoq.png",
       "tintColor": "#8c64bc",
@@ -33,12 +66,12 @@
       ],
       "versions": [
         {
-          "downloadURL": "https://github.com/ProjectNyxian/Nyxian/releases/download/0.8.6/nyxian.ipa",
-          "size": 87500000,
           "version": "0.8.6",
-          "buildVersion": null,
           "date": "2026-03-29T14:22:00+03:00",
           "localizedDescription": null,
+          "downloadURL": "https://github.com/ProjectNyxian/Nyxian/releases/download/0.8.6/nyxian.ipa",
+          "size": 87500000,
+          "buildVersion": null,
           "minOSVersion": null
         }
       ],
