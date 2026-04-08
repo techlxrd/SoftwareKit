@@ -8,7 +8,7 @@ const app = new Framework7({
   },
   popup: {
     push: true,
-    swipeToClose: 'to-bottom',   
+    swipeToClose: 'to-bottom',     
   },
   sheet: {
     push: true,
@@ -19,7 +19,8 @@ const app = new Framework7({
   }, 
   popover: {
     verticalPosition: 'bottom', 
-  },
+   },
+   
   serviceWorker: {
     path: "./service-worker.js",
   },  
@@ -27,6 +28,301 @@ const app = new Framework7({
 });
 var $ = Dom7;
 const mainView = app.views.create(".view-main");
+const locks = new Set();
+const foundResizeHandlers = new WeakMap();
+const rootScrollHandlers = new WeakMap();
+const repoDetailSwipeBackStates = new WeakMap();
+
+function inAllowedArea(target) {
+  if (!(target instanceof Element)) return false;
+  return !!target.closest('#searchTab, .searchbar-found, .dialog, .popup, .sheet-modal, .popover');
+}
+
+function isRepoDetailPage(page) {
+  if (!(page instanceof Element)) return false;
+  return page.matches(
+    '#repoDetailPage, #repo-detail, [data-name="repo-detail"], [data-page="repo-detail"], .page-repo-detail'
+  );
+}
+
+function getPageFromArg(arg) {
+  if (arg instanceof Element) return arg;
+  if (arg && arg.el instanceof Element) return arg.el;
+  if (arg && arg.pageEl instanceof Element) return arg.pageEl;
+  if (arg && arg.currentPageEl instanceof Element) return arg.currentPageEl;
+  return null;
+}
+
+function getSearchbarEnabled(searchbar) {
+  if (!searchbar) return false;
+  if (typeof searchbar.enabled === 'boolean') return searchbar.enabled;
+  if (typeof searchbar.active === 'boolean') return searchbar.active;
+  if (searchbar.el instanceof Element) {
+    return searchbar.el.classList.contains('searchbar-enabled') ||
+           searchbar.el.classList.contains('searchbar-active');
+  }
+  return false;
+}
+
+function preventBackgroundScroll(e) {
+  const target = e.target;
+  if (!(target instanceof Element)) return;
+
+  if (inAllowedArea(target)) return;
+
+  if (e.cancelable) e.preventDefault();
+}
+
+function preventDialogScroll(e) {
+  const target = e.target;
+  if (!(target instanceof Element)) return;
+
+  const isDialog = target.closest('.dialog');
+  const isBackdrop = target.classList.contains('dialog-backdrop');
+
+  if (!isDialog && !isBackdrop) return;
+
+  if (e.cancelable) e.preventDefault();
+}
+
+function lockBody() {
+  document.documentElement.classList.add('ui-scroll-locked');
+  document.body.classList.add('ui-scroll-locked');
+
+  document.addEventListener('touchmove', preventBackgroundScroll, { passive: false, capture: true });
+  document.addEventListener('wheel', preventBackgroundScroll, { passive: false, capture: true });
+}
+
+function unlockBody() {
+  document.documentElement.classList.remove('ui-scroll-locked');
+  document.body.classList.remove('ui-scroll-locked');
+
+  document.removeEventListener('touchmove', preventBackgroundScroll, true);
+  document.removeEventListener('wheel', preventBackgroundScroll, true);
+}
+
+function syncRepoDetailSwipeBack(searchbar, enable) {
+  const page = searchbar.el.closest('.page');
+  if (!page || !isRepoDetailPage(page)) return;
+
+  const view = page.view || app.views.current;
+  if (!view) return;
+
+  if (enable) {
+    if (!repoDetailSwipeBackStates.has(view)) {
+      repoDetailSwipeBackStates.set(view, !!(view.params && view.params.iosSwipeBack));
+    }
+
+    if (view.params) view.params.iosSwipeBack = false;
+    if ('allowPageSwipeBack' in view) view.allowPageSwipeBack = false;
+    if (view.el) view.el.classList.add('repo-detail-swipeback-locked');
+  } else {
+    const prev = repoDetailSwipeBackStates.get(view);
+    if (prev != null && view.params) {
+      view.params.iosSwipeBack = prev;
+      repoDetailSwipeBackStates.delete(view);
+    }
+
+    if ('allowPageSwipeBack' in view) view.allowPageSwipeBack = true;
+    if (view.el) view.el.classList.remove('repo-detail-swipeback-locked');
+  }
+}
+
+function blockRepoDetailSwipeBack(...args) {
+  const page = args.map(getPageFromArg).find(Boolean) || document.querySelector('.page-current');
+  if (!page || !isRepoDetailPage(page)) return;
+
+  const sbEl = page.querySelector('.searchbar');
+  const sb = sbEl ? app.searchbar.get(sbEl) : null;
+  if (!getSearchbarEnabled(sb)) return;
+
+  const evt = args.find(arg => arg && typeof arg.preventDefault === 'function');
+  if (evt) evt.preventDefault();
+
+  const data = args.find(arg => arg && typeof arg === 'object' && 'prevent' in arg);
+  if (data) data.prevent = true;
+
+  return false;
+}
+
+function syncSearchbarFound(searchbar, enable) {
+  const page = searchbar.el.closest('.page');
+  if (!page) return;
+
+  const found = page.querySelector('.searchbar-found');
+  if (!found) return;
+
+  const isSearchTab = !!found.closest('#searchTab');
+  const isBottomSearchPage = page.classList.contains('page-with-bottom-search');
+  const isExpandable = searchbar.el.classList.contains('searchbar-expandable');
+
+  if (!isSearchTab && !isBottomSearchPage) {
+    found.style.overflowY = '';
+    found.style.webkitOverflowScrolling = '';
+    found.style.overscrollBehavior = '';
+    found.style.touchAction = '';
+    found.style.minHeight = '';
+    found.style.maxHeight = '';
+    return;
+  }
+
+  found.classList.toggle('ptr-ignore', enable);
+  found.classList.toggle('ptr-watch-scrollable', enable);
+
+  if (enable) {
+    found.style.overflowY = 'auto';
+    found.style.webkitOverflowScrolling = 'touch';
+    found.style.overscrollBehavior = 'contain';
+    found.style.touchAction = 'pan-y';
+    found.style.minHeight = '0';
+
+    if (isExpandable) {
+      const updateHeight = () => {
+        if (!found.isConnected) return;
+
+        const vv = window.visualViewport;
+        const vh = vv ? vv.height : window.innerHeight;
+        const top = found.getBoundingClientRect().top;
+
+        found.style.maxHeight = Math.max(120, vh - top - 12) + 'px';
+      };
+
+      const old = foundResizeHandlers.get(found);
+      if (old) {
+        window.removeEventListener('resize', old);
+        window.visualViewport?.removeEventListener('resize', old);
+        window.visualViewport?.removeEventListener('scroll', old);
+      }
+
+      foundResizeHandlers.set(found, updateHeight);
+      window.addEventListener('resize', updateHeight);
+      window.visualViewport?.addEventListener('resize', updateHeight);
+      window.visualViewport?.addEventListener('scroll', updateHeight);
+
+      requestAnimationFrame(updateHeight);
+      setTimeout(updateHeight, 0);
+    } else {
+      found.style.maxHeight = '';
+    }
+  } else {
+    found.style.overflowY = '';
+    found.style.webkitOverflowScrolling = '';
+    found.style.overscrollBehavior = '';
+    found.style.touchAction = '';
+    found.style.minHeight = '';
+    found.style.maxHeight = '';
+
+    const old = foundResizeHandlers.get(found);
+    if (old) {
+      window.removeEventListener('resize', old);
+      window.visualViewport?.removeEventListener('resize', old);
+      window.visualViewport?.removeEventListener('scroll', old);
+      foundResizeHandlers.delete(found);
+    }
+  }
+}
+
+function syncSearchScrollRoot(searchbar, enable) {
+  const page = searchbar.el.closest('.page');
+  if (!page) return;
+
+  const root = page.querySelector('#searchTab');
+  if (!root) return;
+
+  root.classList.toggle('ptr-ignore', enable);
+  root.classList.toggle('ptr-watch-scrollable', enable);
+
+  if (enable) {
+    root.style.overscrollBehavior = 'contain';
+    root.style.touchAction = 'pan-y';
+    root.style.webkitOverflowScrolling = 'touch';
+
+    if (rootScrollHandlers.has(root)) return;
+
+    let startY = 0;
+
+    const onTouchStart = (e) => {
+      if (!e.touches || !e.touches.length) return;
+      startY = e.touches[0].clientY;
+    };
+
+    const onTouchMove = (e) => {
+      if (!(e.target instanceof Element)) return;
+      if (!root.contains(e.target)) return;
+
+      const touch = e.touches && e.touches[0];
+      if (!touch) return;
+
+      const deltaY = touch.clientY - startY;
+      const atTop = root.scrollTop <= 0;
+      const atBottom = root.scrollTop + root.clientHeight >= root.scrollHeight - 1;
+
+      if ((atTop && deltaY > 0) || (atBottom && deltaY < 0)) {
+        if (e.cancelable) e.preventDefault();
+      }
+    };
+
+    const onWheel = (e) => {
+      if (!(e.target instanceof Element)) return;
+      if (!root.contains(e.target)) return;
+
+      const atTop = root.scrollTop <= 0;
+      const atBottom = root.scrollTop + root.clientHeight >= root.scrollHeight - 1;
+
+      if ((atTop && e.deltaY < 0) || (atBottom && e.deltaY > 0)) {
+        if (e.cancelable) e.preventDefault();
+      }
+    };
+
+    root.addEventListener('touchstart', onTouchStart, { passive: true, capture: true });
+    root.addEventListener('touchmove', onTouchMove, { passive: false, capture: true });
+    root.addEventListener('wheel', onWheel, { passive: false, capture: true });
+
+    rootScrollHandlers.set(root, { onTouchStart, onTouchMove, onWheel });
+  } else {
+    root.style.overscrollBehavior = '';
+    root.style.touchAction = '';
+    root.style.webkitOverflowScrolling = '';
+
+    const handlers = rootScrollHandlers.get(root);
+    if (!handlers) return;
+
+    root.removeEventListener('touchstart', handlers.onTouchStart, true);
+    root.removeEventListener('touchmove', handlers.onTouchMove, true);
+    root.removeEventListener('wheel', handlers.onWheel, true);
+
+    rootScrollHandlers.delete(root);
+  }
+}
+
+document.addEventListener('touchmove', preventDialogScroll, { passive: false, capture: true });
+document.addEventListener('wheel', preventDialogScroll, { passive: false, capture: true });
+app.on('swipeback:beforechange', blockRepoDetailSwipeBack);
+
+app.on('searchbarEnable', (searchbar) => {
+  syncSearchbarFound(searchbar, true);
+  syncSearchScrollRoot(searchbar, true);
+  syncRepoDetailSwipeBack(searchbar, true);
+
+  locks.add('search');
+  if (locks.size === 1) lockBody();
+});
+
+app.on('searchbarSearch', (searchbar) => {
+  syncSearchbarFound(searchbar, true);
+  syncSearchScrollRoot(searchbar, true);
+  syncRepoDetailSwipeBack(searchbar, true);
+});
+
+app.on('searchbarDisable', (searchbar) => {
+  syncSearchbarFound(searchbar, false);
+  syncSearchScrollRoot(searchbar, false);
+  syncRepoDetailSwipeBack(searchbar, false);
+
+  locks.delete('search');
+  if (locks.size === 0) unlockBody();
+});
+
 app.on('init', async () => {
   const repos = getRepos();
   if (!repos || !repos.length) return;
@@ -48,20 +344,38 @@ app.on('init', async () => {
 });
 const searchFab = document.getElementById('search-fab');
 const addSourceFab = document.getElementById('add-source-fab');
+const tabsEl = document.querySelector('.tabs');
+
+let fabTimeout = null;
+
+function disableAllFabs() {
+  searchFab.style.pointerEvents = 'none';
+  addSourceFab.style.pointerEvents = 'none';
+}
+
+function enableCurrentFab(tabId) {
+  const currentFab = (tabId === 'searchTab') ? searchFab : 
+                      (tabId === 'sourcesTab') ? addSourceFab : null;
+  if (currentFab) {
+    currentFab.style.pointerEvents = 'auto';
+  }
+}
 
 searchFab.style.visibility = 'hidden';
 addSourceFab.style.visibility = 'hidden';
 
-const tabsEl = document.querySelector('.tabs');
-
 tabsEl.addEventListener('tab:show', (e) => {
-  const tabEl = e.target; 
-  const tabId = tabEl.id;
-
+  const tabId = e.target.id;
   searchFab.style.visibility = (tabId === 'searchTab') ? 'visible' : 'hidden';
   addSourceFab.style.visibility = (tabId === 'sourcesTab') ? 'visible' : 'hidden';
+  if (fabTimeout) clearTimeout(fabTimeout);  
+  disableAllFabs();
+ 
+  fabTimeout = setTimeout(() => {
+    enableCurrentFab(tabId);
+    fabTimeout = null;
+  }, 750);
 });
-
 document.addEventListener("DOMContentLoaded", () => {
 new Swiper(".guides", {
   effect: "coverflow",
@@ -526,93 +840,254 @@ reportForm.addEventListener('submit', function (e) {
 document.addEventListener('DOMContentLoaded', () => {
     const STORAGE_KEY = 'altstore_repos_v3';
     const LOCAL_REPO_URL = './altstore.json';
-    const PROXY = "https://corsproxy.io/?";
+    const PROXY = 'https://api.allorigins.win/raw?url=';
+    const BACKUP_PROXIES = [
+        'https://api.codetabs.com/v1/proxy?quest=',
+        'https://thingproxy.freeboard.io/fetch/',
+        'https://corsproxy.io/?url='
+    ];
+    const NSFW_PREF_PREFIX = 'source_nsfw_pref:';
+    const NSFW_TERMS = ['porn', 'nsfw', 'climax', 'cl1m4x', 'xxx', '18+', 'ipa.cypwn.xyz', 'adult', 'erotic', 'VidList'];
+    const FETCH_TIMEOUT = 1000;
 
     if (!window.repoView) {
         window.repoView = app.views.create('#repository-view', { name: 'repoView' });
     }
 
-    function sanitizeRepo(json, url) {
-        const appsList = json.apps || json.packages || (Array.isArray(json) ? json : []);
+    function normalizeSourceUrl(raw) {
+        const value = String(raw || '').trim();
+        if (!value) return '';
+        let normalizedUrl = value.replace(/^(https?:\/\/)+/i, '').trim();
+        if (!normalizedUrl) return '';
+        return `https://${normalizedUrl}`;
+    }
 
-        function extractScreenshotURLs(screenshots) {
-            const urls = [];
-            if (!screenshots) return urls;
+    function sourcePrefKey(sourceURL) {
+        return `${NSFW_PREF_PREFIX}${sourceURL}`;
+    }
+    function getSourcePref(sourceURL) {
+        return localStorage.getItem(sourcePrefKey(sourceURL)) || '';
+    }
+    function setSourcePref(sourceURL, pref) {
+        localStorage.setItem(sourcePrefKey(sourceURL), pref);
+    }
+    function removeSourcePref(sourceURL) {
+        localStorage.removeItem(sourcePrefKey(sourceURL));
+    }
 
-            if (typeof screenshots === 'string') {
-                urls.push(screenshots);
-                return urls;
-            }
+    function containsNsfwText(value) {
+        const lowerValue = String(value || '').toLowerCase();
+        return NSFW_TERMS.some(term => lowerValue.includes(term.toLowerCase()));
+    }
 
-            if (Array.isArray(screenshots)) {
-                screenshots.forEach(item => {
-                    if (typeof item === 'string') {
-                        urls.push(item);
-                    } else if (item && typeof item === 'object') {
-                        if (item.imageURL) urls.push(item.imageURL);
-                        else if (item.url) urls.push(item.url);
-                    }
-                });
-                return urls;
-            }
+    function deepContainsNsfw(obj, depth = 0) {
+        if (depth > 10) return false;
+        if (typeof obj === 'string') return containsNsfwText(obj);
+        if (Array.isArray(obj)) return obj.some(item => deepContainsNsfw(item, depth + 1));
+        if (obj && typeof obj === 'object') {
+            return Object.values(obj).some(val => deepContainsNsfw(val, depth + 1));
+        }
+        return false;
+    }
 
-            if (screenshots && typeof screenshots === 'object') {
-                Object.values(screenshots).forEach(value => {
-                    if (Array.isArray(value)) {
-                        urls.push(...extractScreenshotURLs(value));
-                    } else if (value && typeof value === 'object') {
-                        if (value.imageURL) urls.push(value.imageURL);
-                    }
-                });
-            }
+    function deepClone(value) {
+        return typeof structuredClone === 'function'
+            ? structuredClone(value)
+            : JSON.parse(JSON.stringify(value));
+    }
 
+    function extractScreenshotURLs(screenshots) {
+        const urls = [];
+        if (!screenshots) return urls;
+        if (typeof screenshots === 'string') {
+            urls.push(screenshots);
             return urls;
         }
+        if (Array.isArray(screenshots)) {
+            screenshots.forEach(item => {
+                if (typeof item === 'string') {
+                    urls.push(item);
+                } else if (item && typeof item === 'object') {
+                    if (item.imageURL) urls.push(item.imageURL);
+                    else if (item.url) urls.push(item.url);
+                }
+            });
+            return urls;
+        }
+        if (screenshots && typeof screenshots === 'object') {
+            Object.values(screenshots).forEach(value => {
+                if (Array.isArray(value)) {
+                    urls.push(...extractScreenshotURLs(value));
+                } else if (value && typeof value === 'object') {
+                    if (value.imageURL) urls.push(value.imageURL);
+                    else if (value.url) urls.push(value.url);
+                }
+            });
+        }
+        return urls;
+    }
 
-        return {
-            name: json.name || "Untitled Repo",
-            identifier: json.identifier || url,
-            sourceURL: url,
-            iconURL: json.iconURL || json.icon || "",
-            apps: appsList.map((app) => {
-                try {
-                    const versions = app.versions || [];
-                    const v0 = versions[0] || {};
-                    const appName = app.name || v0.name || "Unknown App";
-                    const appIcon = app.iconURL || app.icon || v0.iconURL || "";
-                    const downloadUrl = app.downloadURL || v0.downloadURL || "#";
+    function parseSize(value) {
+        if (value == null) return 0;
+        if (typeof value === 'number' && Number.isFinite(value)) return value;
+        if (typeof value === 'string') {
+            const cleaned = value.replace(/[^\d.]/g, '');
+            const num = parseFloat(cleaned);
+            return Number.isFinite(num) ? num : 0;
+        }
+        return 0;
+    }
 
-                    const screenshotField = app.screenshots || app.screenshotURLs || v0.screenshots || v0.screenshotURLs;
-                    const screenshotURLs = extractScreenshotURLs(screenshotField);
+    function isNsfwApp(app) {
+        if (!app) return false;
+        const fieldsToCheck = [
+            app.name,
+            app.developerName,
+            app.localizedDescription,
+            app.bundleIdentifier,
+            app.category
+        ];
+        return fieldsToCheck.some(field => containsNsfwText(field));
+    }
 
-                    return {
-                        name: appName,
-                        version: app.version || v0.version || '1.0',
-                        versionDate: app.versionDate || app.date || v0.date || null,
-                        downloadURL: downloadUrl,
-                        size: parseInt(app.size) || v0.size || 0,
-                        iconURL: appIcon,
-                        bundleIdentifier: app.bundleIdentifier || app.bundleID || v0.bundleIdentifier || '',
-                        developerName: app.developerName || app.developer || v0.developerName || '',
-                        localizedDescription: app.localizedDescription || app.subtitle || app.description || v0.localizedDescription || '',
-                        category: app.category || app.type || 'apps',
-                        appPermissions: app.appPermissions || {},
-                        screenshotURLs: screenshotURLs,
-                        versions: versions
-                    };
-                } catch (e) {
+    function sanitizeRepo(json, url) {
+        if (!json.identifier) {
+            json.identifier = url;
+        }
+
+        let rawApps = [];
+        if (json.apps && Array.isArray(json.apps)) {
+            rawApps = json.apps;
+        } else if (json.packages && Array.isArray(json.packages)) {
+            rawApps = json.packages;
+        } else if (json.items && Array.isArray(json.items)) {
+            rawApps = json.items;
+        } else if (json.entries && Array.isArray(json.entries)) {
+            rawApps = json.entries;
+        } else if (json.data && Array.isArray(json.data)) {
+            rawApps = json.data;
+        } else if (json.apps_v2 && Array.isArray(json.apps_v2)) {
+            rawApps = json.apps_v2;
+        } else if (json.app && Array.isArray(json.app)) {
+            rawApps = json.app;
+        } else if (json.applications && Array.isArray(json.applications)) {
+            rawApps = json.applications;
+        } else if (Array.isArray(json)) {
+            rawApps = json;
+        } else {
+            rawApps = [];
+        }
+
+        const appsList = rawApps;
+
+        const sanitizedApps = appsList.map((appEntry) => {
+            try {
+                const versions = Array.isArray(appEntry?.versions) ? appEntry.versions : [];
+                const v0 = versions[0] || {};
+
+                const appName = appEntry?.name || appEntry?.title || v0?.name || 'Unknown App';
+                let bundleId = appEntry?.bundleIdentifier || appEntry?.bundleID || appEntry?.id ||
+                               v0?.bundleIdentifier || v0?.id || '';
+                if (!bundleId) {
+                    console.warn('App missing bundleIdentifier, skipping:', appName);
                     return null;
                 }
-            }).filter(a => a !== null),
-            news: (json.news || []).map(n => ({
-                title: n.title || "News",
-                caption: n.caption || "",
-                date: n.date || new Date().toISOString(),
-                imageURL: n.imageURL || "",
-                url: n.url || "#"
-            })),
+
+                const appIcon = appEntry?.iconURL || appEntry?.icon || appEntry?.iconUrl ||
+                                v0?.iconURL || v0?.icon || v0?.iconUrl || '';
+
+                let downloadUrl = appEntry?.downloadURL || appEntry?.downloadUrl || v0?.downloadURL || v0?.downloadUrl || appEntry?.url || v0?.url || '';
+                if (!downloadUrl && versions.length > 0 && versions[0].downloadURL) {
+                    downloadUrl = versions[0].downloadURL;
+                }
+                if (!downloadUrl) {
+                    console.warn('App missing downloadURL, skipping:', appName);
+                    return null;
+                }
+
+                const screenshotField = appEntry?.screenshots ||
+                                        appEntry?.screenshotURLs ||
+                                        appEntry?.screenshotUrls ||
+                                        v0?.screenshots ||
+                                        v0?.screenshotURLs ||
+                                        v0?.screenshotUrls;
+                const screenshotURLs = extractScreenshotURLs(screenshotField);
+
+                return {
+                    name: appName,
+                    version: appEntry?.version || v0?.version || '1.0',
+                    versionDate: appEntry?.versionDate || appEntry?.date || v0?.date || null,
+                    downloadURL: downloadUrl,
+                    size: parseSize(appEntry?.size || v0?.size || 0),
+                    iconURL: appIcon,
+                    bundleIdentifier: bundleId,
+                    developerName: appEntry?.developerName || appEntry?.developer || appEntry?.author ||
+                                   v0?.developerName || v0?.author || '',
+                    localizedDescription: appEntry?.localizedDescription || appEntry?.subtitle ||
+                                          appEntry?.description || appEntry?.summary ||
+                                          v0?.localizedDescription || v0?.subtitle ||
+                                          v0?.description || v0?.summary || '',
+                    category: appEntry?.category || appEntry?.type || 'apps',
+                    appPermissions: appEntry?.appPermissions || {},
+                    screenshotURLs,
+                    versions
+                };
+            } catch (e) {
+                console.error('Error sanitizing app:', e);
+                return null;
+            }
+        }).filter(Boolean);
+
+        const sanitizedNews = Array.isArray(json.news) ? json.news.map(n => ({
+            title: n?.title || 'News',
+            caption: n?.caption || '',
+            date: n?.date || new Date().toISOString(),
+            imageURL: n?.imageURL || '',
+            url: n?.url || '#'
+        })) : [];
+
+        return {
+            name: json.name || 'Untitled Repo',
+            identifier: json.identifier || url,
+            sourceURL: url,
+            iconURL: json.iconURL || json.icon || json.iconUrl || '',
+            apps: sanitizedApps,
+            news: sanitizedNews,
             isSystem: url === LOCAL_REPO_URL
         };
+    }
+
+    function cloneRepo(repo) {
+        return deepClone(repo);
+    }
+
+    function stripNsfwApps(repo) {
+        const copy = cloneRepo(repo);
+        copy.apps = Array.isArray(copy.apps)
+            ? copy.apps.filter(app => !isNsfwApp(app))
+            : [];
+        return copy;
+    }
+
+    function repoLooksNsfw(repo, sourceURL) {
+        const combined = {
+            sourceURL,
+            repoName: repo?.name,
+            identifier: repo?.identifier,
+            apps: repo?.apps,
+            news: repo?.news,
+            rawRepo: repo
+        };
+        return deepContainsNsfw(combined);
+    }
+
+    function applySavedNsfwPreference(repo) {
+        if (!repo || !repo.sourceURL) return repo;
+        const pref = getSourcePref(repo.sourceURL);
+        if (pref === 'without') {
+            return stripNsfwApps(repo);
+        }
+        return repo;
     }
 
     function getRepos() {
@@ -620,49 +1095,94 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = localStorage.getItem(STORAGE_KEY);
             let repos = data ? JSON.parse(data) : [];
             if (!repos.some(r => r.sourceURL === LOCAL_REPO_URL)) {
-                repos.unshift({ sourceURL: LOCAL_REPO_URL, name: "SoftwareKit", apps: [], isSystem: true });
+                repos.unshift({
+                    sourceURL: LOCAL_REPO_URL,
+                    name: 'SoftwareKit',
+                    apps: [],
+                    news: [],
+                    isSystem: true
+                });
             }
+            repos = repos.filter(Boolean).map(applySavedNsfwPreference);
             return repos;
-        } catch { return []; }
+        } catch {
+            return [];
+        }
     }
 
     function saveRepos(repos) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(repos));
     }
 
+    function createFetchWithTimeout(url, timeout) {
+        const controller = new AbortController();
+        const id = setTimeout(() => controller.abort(), timeout);
+        return fetch(url, { signal: controller.signal })
+            .then(response => {
+                clearTimeout(id);
+                return response;
+            })
+            .catch(err => {
+                clearTimeout(id);
+                throw err;
+            });
+    }
+
+    async function tryProxies(url) {
+        const proxies = [
+            `${PROXY}${encodeURIComponent(url)}`,
+            ...BACKUP_PROXIES.map(p => `${p}${encodeURIComponent(url)}`)
+        ];
+
+        for (const proxyUrl of proxies) {
+            try {
+                const res = await createFetchWithTimeout(proxyUrl, FETCH_TIMEOUT);
+                if (res.ok) {
+                    const data = await res.json();
+                    return data;
+                }
+            } catch (e) {
+                console.warn(`Proxy failed: ${proxyUrl}`, e);
+                continue;
+            }
+        }
+        return null;
+    }
+
     async function fetchRepo(url) {
         if (url === LOCAL_REPO_URL) {
             try {
-                const res = await fetch(url);
+                const res = await createFetchWithTimeout(url, FETCH_TIMEOUT);
                 const json = await res.json();
-                return sanitizeRepo(json, url);
-            } catch { return null; }
-        }
-
-        let jsonData = null;
-        try {
-            const res = await fetch(url);
-            if (res.ok) {
-                jsonData = await res.json();
+                const repo = sanitizeRepo(json, url);
+                return applySavedNsfwPreference(repo);
+            } catch (e) {
+                console.error('Local repo fetch failed:', e);
+                return null;
             }
-        } catch (e) { }
-
-        if (!jsonData) {
-            try {
-                const res = await fetch(`${PROXY}${encodeURIComponent(url)}`);
-                if (res.ok) {
-                    jsonData = await res.json();
-                }
-            } catch (e) { }
         }
-
-        return jsonData ? sanitizeRepo(jsonData, url) : null;
+        try {
+            const jsonData = await tryProxies(url);
+            if (!jsonData) return null;
+            const repo = sanitizeRepo(jsonData, url);
+            return applySavedNsfwPreference(repo);
+        } catch (e) {
+            console.error(`Fetch failed for ${url}:`, e);
+            return null;
+        }
     }
 
     window.openPhotoBrowser = function (screenshotUrls) {
-        if (typeof screenshotUrls === 'string') screenshotUrls = JSON.parse(screenshotUrls);
+        if (typeof screenshotUrls === 'string') {
+            try {
+                screenshotUrls = JSON.parse(screenshotUrls);
+            } catch {
+                screenshotUrls = [];
+            }
+        }
+        const list = Array.isArray(screenshotUrls) ? screenshotUrls : [];
         const pb = app.photoBrowser.create({
-            photos: screenshotUrls.map(url => ({ url })),
+            photos: list.map(url => ({ url })),
             type: 'standalone',
             navbar: true,
             toolbar: true,
@@ -672,10 +1192,15 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function createPopupHtml(item) {
-        const screenshotsJson = JSON.stringify(item.screenshotURLs).replace(/"/g, "&quot;");
+        const screenshotsJson = JSON.stringify(item.screenshotURLs).replace(/"/g, '&quot;');
         const screenshotsHtml = item.screenshotURLs.map(src =>
             `<img loading="lazy" src="${src}" onclick="openPhotoBrowser(['${src}'])">`
         ).join('');
+        const safeName = item.name || '';
+        const safeDeveloper = item.developerName || '';
+        const safeDescription = String(item.localizedDescription || '').replace(/\n/g, '<br>');
+        const safeDownload = item.downloadURL || '#';
+        const safeIcon = item.iconURL || '';
 
         return `
         <div class="popup popup-app-detail" id="popup-${item.bundleIdentifier}">
@@ -683,53 +1208,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="page">
                     <div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div>
                     <div class="page-content">
-<div style="margin-top: 40px; padding: 0px;">
-  <div class="block" style="margin-top: 27px; margin-bottom: 20px;">
-    <div style="display: flex; gap: 15px; align-items: flex-start; overflow: hidden;">
-
-      <img src="${item.iconURL}" class="app-icon" style="flex-shrink: 0;">
-
-      <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
-        
-        <div style="font-size: 22px; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-          ${item.name}
-        </div>
-        <div style="font-size: 15px; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-          ${item.developerName}
-        </div>
-
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-          <a href="${item.downloadURL}" class="external button button-fill button-round get">GET</a>
-          
-          <a onclick="navigator.share({url: '${item.downloadURL}' })" class="more">
-            <i class="f7-icons">square_arrow_up</i>
-          </a>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</div>
-                            ${item.screenshotURLs.length > 0 ? `
-                            <div class="block-title" style="font-size: 20px; margin-top: 25px;">Preview</div>
-                            <div class="screenshot" onclick="openPhotoBrowser(${screenshotsJson})">${screenshotsHtml}</div>` : ''}
-                            <div class="block block-strong inset margin-top">
-                                <div style="font-size: 15px; line-height: 1.5;">${item.localizedDescription.replace(/\n/g, '<br>')}</div>
+                        <div style="margin-top: 40px; padding: 0px;">
+                            <div class="block" style="margin-top: 27px; margin-bottom: 20px;">
+                                <div style="display: flex; gap: 15px; align-items: flex-start; overflow: hidden;">
+                                    <img src="${safeIcon}" class="app-icon" style="flex-shrink: 0;">
+                                    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;">
+                                        <div style="font-size: 22px; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            ${safeName}
+                                        </div>
+                                        <div style="font-size: 15px; margin-top: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            ${safeDeveloper}
+                                        </div>
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                            <a href="${safeDownload}" class="external button button-fill button-round get">GET</a>
+                                            <a onclick="navigator.share({url: '${safeDownload}' })" class="more">
+                                                <i class="f7-icons">square_arrow_up</i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="list simple-list list-strong list-dividers inset  ">
-                                <ul>
-                                    <li><span>Version</span><span>${item.version}</span></li>
-                                    <li><span>Size</span><span>${(item.size / 1024 / 1024).toFixed(1)} MB</span></li>
-                                    <li><span>BundleID</span><span class="size-12">${item.bundleIdentifier}</span></li>
-                                </ul>
-                            </div>                           
-        </div>
-      </div>
-    </div>
+                        </div>
+                        ${item.screenshotURLs.length > 0 ? `
+                        <div class="block-title" style="font-size: 20px; margin-top: 25px;">Preview</div>
+                        <div class="screenshot" onclick="openPhotoBrowser(${screenshotsJson})">${screenshotsHtml}</div>` : ''}
+                        <div class="block block-strong inset margin-top">
+                            <div style="font-size: 15px; line-height: 1.5;">${safeDescription}</div>
+                        </div>
+                        <div class="list simple-list list-strong list-dividers inset">
+                            <ul>
+                                <li><span>Version</span><span>${item.version || ''}</span></li>
+                                <li><span>Size</span><span>${item.size ? (item.size / 1024 / 1024).toFixed(1) : '0.0'} MB</span></li>
+                                <li><span>BundleID</span><span class="size-12">${item.bundleIdentifier || ''}</span></li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-            </div>`;
+            </div>
+        </div>`;
     }
 
     function getAllApps() {
@@ -744,27 +1260,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createAppListPage(pageId, title, apps, isAllSources = false, sourceURL = null) {
-       
-        const rightContent = !isAllSources ? `<div class="right"><a onclick="navigator.share({url: '${sourceURL}' })" class="link icon-only"><i class="icon f7-icons">square_arrow_up</i></a></div>` : '';
-
+        const rightContent = !isAllSources
+            ? `<div class="right"><a onclick="navigator.share({url: '${sourceURL}' })" class="link icon-only"><i class="icon f7-icons">square_arrow_up</i></a></div>`
+            : '';
         const pageHtml = `
-            <div class="page page-with-subnavbar" data-name="repo-detail" data-url="${sourceURL || ''}" data-id="${pageId}" ${isAllSources ? 'data-all-sources="true"' : ''}>
+            <div class="page page-with-bottom-search page-with-subnavbar" data-name="repo-detail" data-url="${sourceURL || ''}" data-id="${pageId}" ${isAllSources ? 'data-all-sources="true"' : ''}>
+                <div class="searchbar-backdrop"></div>
+                <div class="searchbar-bottom-wrap">
+                    <form class="searchbar">
+                        <div class="searchbar-inner">
+                            <div class="searchbar-input-wrap">
+                                <input type="search" placeholder="Search">
+                                <i class="searchbar-icon"></i>
+                                <span class="input-clear-button"></span>
+                            </div>
+                            <span class="searchbar-disable-button"><i class="icon icon-close"></i></span>
+                        </div>
+                    </form>
+                </div>
                 <div class="navbar">
                     <div class="navbar-bg"></div>
                     <div class="navbar-inner">
                         <div class="subnavbar">
-                            <form class="searchbar">
+                            <form class="searchbar searchbar-init" data-search-container=".virtual-list-${pageId}" data-search-item="li" data-search-in=".item-title">
                                 <div class="searchbar-inner">
                                     <div class="searchbar-input-wrap">
                                         <input type="search" placeholder="Search" />
                                         <i class="searchbar-icon"></i>
                                         <span class="input-clear-button"></span>
-                                    </div> 
-                                    <span class="searchbar-disable-button"><i class="icon icon-close"></i></span>                                     
+                                    </div>
+                                    <span class="searchbar-disable-button"><i class="icon icon-close"></i></span>
                                 </div>
                             </form>
                         </div>
-                        <div class="left"><a class="link back"><i class="icon icon-back"></i></a></div>
+                        <div class="left searchbar-hide-on-enable"><a class="link back"><i class="icon icon-back"></i></a></div>
                         <div class="title">${title}</div>
                         ${rightContent}
                     </div>
@@ -773,15 +1302,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="ptr-preloader">
                         <div class="preloader"></div>
                         <div class="ptr-arrow"></div>
-                    </div>                 
-                    <div class="list media-list separated inset virtual-list virtual-list-${pageId} searchbar-found  "></div>
-                    <div class="block text-align-center searchbar-not-found">
+                    </div>
+                    <div class="list media-list separated inset virtual-list virtual-list-${pageId} searchbar-found"></div>
+                    <div class="block text-align-center searchbar-not-found ptr-ignore">
                         <i class="f7-icons" style="font-size:96px;color:#ff3b30;">bin_xmark_fill</i>
-                        <h2 style="margin-top:20px;">Nothing was found</h2><p>Check your spelling or try searching again</p>
+                        <h2 style="margin-top:20px;">Nothing was found</h2>
+                        <p>Check your spelling or try searching again</p>
                     </div>
                 </div>
             </div>`;
-
         app.views.main.router.navigate({
             url: `/repo-detail/${pageId}/`,
             route: {
@@ -793,9 +1322,9 @@ document.addEventListener('DOMContentLoaded', () => {
                             el: `.virtual-list-${pageId}`,
                             items: apps,
                             searchAll: (query, items) => {
-                                const q = query.toLowerCase();
+                                const q = (query || '').toLowerCase();
                                 return items.reduce((acc, item, index) => {
-                                    if (item.name.toLowerCase().includes(q) || !q) acc.push(index);
+                                    if (!q || (item.name || '').toLowerCase().includes(q)) acc.push(index);
                                     return acc;
                                 }, []);
                             },
@@ -818,10 +1347,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                 return `
                                     <li>
                                         <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
-                                            <div class="item-media"><img src="${item.iconURL}" loading="lazy"></div>
+                                            <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy"></div>
                                             <div class="item-inner">
-                                                <div class="item-title-row"><div class="item-title">${item.name}</div></div>
-                                                <div class="item-subtitle">${item.developerName}</div>
+                                                <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
+                                                <div class="item-subtitle">${item.developerName || ''}</div>
                                             </div>
                                         </a>
                                     </li>`;
@@ -832,11 +1361,23 @@ document.addEventListener('DOMContentLoaded', () => {
                             el: page.el.querySelector('.searchbar'),
                             searchContainer: `.virtual-list-${pageId}`,
                             searchIn: '.item-title',
-                            on: { search(sb, query) { vl.search(query); } }
+                            on: {
+                                search(sb, query) {
+                                    vl.search(query);
+                                }
+                            }
                         });
                         page.$el.on('click', '.app-item-trigger', function () {
                             const appItem = apps.find(a => a.bundleIdentifier === this.dataset.id);
-                            if (appItem) app.popup.create({ content: createPopupHtml(appItem), swipeToClose: true, on: { closed: (p) => p.destroy() } }).open();
+                            if (appItem) {
+                                app.popup.create({
+                                    content: createPopupHtml(appItem),
+                                    swipeToClose: true,
+                                    on: {
+                                        closed: (p) => p.destroy()
+                                    }
+                                }).open();
+                            }
                         });
                     }
                 }
@@ -857,18 +1398,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderSourcesList(repos) {
         const listEl = document.getElementById('sources-list');
+        if (!listEl) return;
         listEl.innerHTML = '';
         const frag = document.createDocumentFragment();
-
         const totalApps = getAllApps().length;
-
         const allSourcesLi = document.createElement('li');
-        allSourcesLi.id = 'all-sources';               
+        allSourcesLi.id = 'all-sources';
         allSourcesLi.innerHTML = `
             <div>
                 <a class="item-link all-sources-link">
                     <div class="item-content">
-                        <div class="item-media"><i class="f7-icons">archivebox_fill</i></div>
+                        <div class="item-media"><i class="f7-icons">tray_fill</i></div>
                         <div class="item-inner">
                             <div class="item-title-row"><div class="item-title">All Sources</div></div>
                             <div class="item-subtitle"><span class="badge">${totalApps} Total Apps</span></div>
@@ -880,10 +1420,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         repos.forEach(repo => {
             const li = document.createElement('li');
-            li.id = repo.name;
+            li.id = repo.name || repo.sourceURL;
             li.className = repo.isSystem ? '' : 'swipeout';
             const iconSrc = repo.iconURL || './assets/default.png';
-
+            const appsCount = Array.isArray(repo.apps) ? repo.apps.length : 0;
             li.innerHTML = `
                 <div class="swipeout-content">
                     <a class="item-link repo-link" href="#" data-url="${repo.sourceURL}">
@@ -891,7 +1431,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="item-media"><img src="${iconSrc}"></div>
                             <div class="item-inner">
                                 <div class="item-title-row"><div class="item-title">${repo.name}</div></div>
-                                <div class="item-subtitle"><span class="badge">${repo.apps.length} Apps</span></div>
+                                <div class="item-subtitle"><span class="badge">${appsCount} Apps</span></div>
                             </div>
                         </div>
                     </a>
@@ -905,11 +1445,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         listEl.appendChild(frag);
-
         if (!listEl.classList.contains('sortable')) {
             listEl.classList.add('sortable');
         }
-
         const savedOrder = JSON.parse(localStorage.getItem('sourcesListOrder') || '[]');
         if (savedOrder.length) {
             savedOrder.forEach(id => {
@@ -919,15 +1457,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }
-
         if (!listEl.dataset.sortableInitialized) {
             listEl.addEventListener('sortable:sort', () => {
                 const order = Array.from(listEl.children).map(li => li.id);
                 localStorage.setItem('sourcesListOrder', JSON.stringify(order));
             });
-            listEl.dataset.sortableInitialized = "true";
+            listEl.dataset.sortableInitialized = 'true';
         }
-
         const allSourcesLink = listEl.querySelector('.all-sources-link');
         if (allSourcesLink) {
             allSourcesLink.addEventListener('click', (e) => {
@@ -935,7 +1471,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 openAllSourcesPage();
             });
         }
-
         listEl.querySelectorAll('.repo-link').forEach(link => {
             link.addEventListener('click', async (e) => {
                 e.preventDefault();
@@ -948,41 +1483,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderNews(repos) {
         let allNews = [];
-        repos.forEach(r => { if (r.news) allNews.push(...r.news.map(n => ({ ...n, source: r.name }))); });
-
+        repos.forEach(r => {
+            if (r.news) {
+                allNews.push(...r.news.map(n => ({ ...n, source: r.name })));
+            }
+        });
         const wrapper = document.getElementById('news-swiper-wrapper');
         const section = document.getElementById('news-section');
-
+        if (!wrapper || !section) return;
         if (allNews.length === 0) {
-            if (section) section.style.display = 'none';
+            section.style.display = 'none';
             return;
         }
-
-        if (section) section.style.display = 'block';
+        section.style.display = 'block';
         wrapper.innerHTML = '';
         allNews.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        
         allNews.forEach(news => {
             wrapper.insertAdjacentHTML('beforeend', `
-<div class="swiper-slide swiper-slide-news">
-                <div class="card repo-news-card">
-                    <div class="card-content card-content-padding">
-                        <div class="size-12">${news.source}</div>
-                        <div class="text-weight-bold">${news.title.substring(0,34)}</div>
-                        <div class="size-12">${news.caption.substring(0, 45)}</div>
-                 <a class="news-read-more link" data-caption="${encodeURIComponent(news.caption)}">
-        Read more
-      </a>        
+                <div class="swiper-slide swiper-slide-news">
+                    <div class="card repo-news-card">
+                        <div class="card-content card-content-padding">
+                            <div class="size-12">${news.source}</div>
+                            <div class="text-weight-bold">${String(news.title || '').substring(0, 34)}</div>
+                            <a class="news-read-more link" data-caption="${encodeURIComponent(news.caption || '')}">Read more</a>
+                        </div>
                     </div>
-              </div>                   
-               
-          
-        `);
+                </div>
+            `);
         });
-             
         const swiperContainer = document.getElementById('news-swiper-container');
-
         if (swiperContainer && !swiperContainer.swiper) {
             app.swiper.create('#news-swiper-container', {
                 effect: 'coverflow',
@@ -1000,294 +1529,120 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (swiperContainer && swiperContainer.swiper) {
             swiperContainer.swiper.update();
         }
-
         wrapper.querySelectorAll('.news-read-more').forEach(btn => {
             btn.addEventListener('click', function () {
-
-                const caption = decodeURIComponent(this.dataset.caption);
-
+                const caption = decodeURIComponent(this.dataset.caption || '');
                 const sheet = app.sheet.create({
                     swipeToClose: true,
-                    backdrop: true, 
-                    push:true, 
-                    content: `              
-                               <div class="sheet-modal news-sheet">
-
-                        <div class="swipe-nav">
-                            <div>
-                                <i class="f7-icons">minus</i>
+                    backdrop: true,
+                    push: true,
+                    content: `
+                        <div class="sheet-modal news-sheet">
+                            <div class="swipe-nav">
+                                <div><i class="f7-icons">minus</i></div>
+                            </div>
+                            <div class="page">
+                                <div class="page-content">
+                                    <div class="block">
+                                        <p>${caption}</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="page">
-                            <div class="page-content">
-
-                                <div class="block">
-                                    <p>${caption}</p>
-                               
-                     </div>
-                    </div>
-                   </div>
-
-                `
+                    `
                 });
-
                 sheet.open();
-
             });
         });
     }
 
-app.on('ptrRefresh', async (el) => {
-    if (el.classList.contains('ptr-repo-detail')) {
-        const pageEl = el.closest('.page');
-        const isAllSources = pageEl.dataset.allSources === 'true';
-        const repoUrl = pageEl.dataset.url;
-        const pageId = pageEl.dataset.id;
-        const listSelector = `.virtual-list-${pageId}`;
-        const start = Date.now();
-        const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-        const makeSkeletonItems = (n = 6) => new Array(n).fill(null).map(() => ({ skeleton: true }));
-        const skeletonLi = `
-<li>
-  <div class="item-content skeleton-effect-pulse">
-    <div class="item-media">
-      <div class="skeleton-block" style="width:58px;height:58px;border-radius:28%"></div>
-    </div>
-    <div class="item-inner">
-      <div class="item-title-row"><div class="item-title skeleton-text">Loading</div></div>
-      <div class="item-subtitle skeleton-text">Loading</div>
-    </div>
-  </div>
-</li>`;
-
-        const vl = pageEl.vl || app.virtualList.get(listSelector);
-
-        if (vl && typeof vl.replaceAllItems === 'function') {
-            vl.replaceAllItems(makeSkeletonItems(6));
-        } else {
-            const listContainer = pageEl.querySelector(listSelector);
-            if (listContainer) listContainer.innerHTML = `<ul>${skeletonLi.repeat(6)}</ul>`;
-        }
-
-        const ensureMinDelay = async () => {
-            const elapsed = Date.now() - start;
-            const remaining = Math.max(0, 2000 - elapsed);
-            if (remaining > 0) await wait(remaining);
-        };
-
-        try {
-            if (isAllSources) {
-                let allRepos = getRepos();
-                const updates = await Promise.all(allRepos.map(r => fetchRepo(r.sourceURL).catch(() => null)));
-                allRepos = updates.map((newRepo, i) => newRepo || allRepos[i]);
-                saveRepos(allRepos);
-
-                const allApps = getAllApps();
-                await ensureMinDelay();
-
-                if (vl && typeof vl.replaceAllItems === 'function') {
-                    vl.replaceAllItems(allApps);
-                } else {
-                    const listContainer = pageEl.querySelector(listSelector);
-                    if (listContainer) {
-                        const html = allApps.map(item => `
-<li>
-  <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
-    <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div>
-    <div class="item-inner">
-      <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
-      <div class="item-subtitle">${item.developerName || ''}</div>
-    </div>
-  </a>
-</li>`).join('');
-                        listContainer.innerHTML = `<ul>${html}</ul>`;
-                    }
-                }
-
-                renderSourcesList(allRepos);
-                renderNews(allRepos);
-            } else {
-                const [newRepoData] = await Promise.all([
-                    fetchRepo(repoUrl),
-                    ensureMinDelay()
-                ]);
-
-                if (newRepoData) {
-                    let allRepos = getRepos();
-                    const index = allRepos.findIndex(r => r.sourceURL === repoUrl);
-                    if (index !== -1) {
-                        allRepos[index] = newRepoData;
-                        saveRepos(allRepos);
-                    }
-
-                    if (vl && typeof vl.replaceAllItems === 'function') {
-                        vl.replaceAllItems(newRepoData.apps || []);
-                    } else {
-                        const listContainer = pageEl.querySelector(listSelector);
-                        if (listContainer) {
-                            const html = (newRepoData.apps || []).map(item => `
-<li>
-  <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
-    <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div>
-    <div class="item-inner">
-      <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
-      <div class="item-subtitle">${item.developerName || ''}</div>
-    </div>
-  </a>
-</li>`).join('');
-                            listContainer.innerHTML = `<ul>${html}</ul>`;
-                        }
-                    }
-                }
-            }
-        } catch (error) {
-            console.error("Failed to refresh:", error);
-            try {
-                if (isAllSources) {
-                    const allApps = getAllApps();
-
-                    if (vl && typeof vl.replaceAllItems === 'function') vl.replaceAllItems(allApps);
-                    else {
-                        const listContainer = pageEl.querySelector(listSelector);
-                        if (listContainer) {
-                            const html = allApps.map(item => `
-<li>
-  <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
-    <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div>
-    <div class="item-inner">
-      <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
-      <div class="item-subtitle">${item.developerName || ''}</div>
-    </div>
-  </a>
-</li>`).join('');
-                            listContainer.innerHTML = `<ul>${html}</ul>`;
-                        }
-                    }
-                } else {
-                    const allRepos = getRepos();
-                    const cached = allRepos.find(r => r.sourceURL === repoUrl);
-                    if (cached) {
-                        if (vl && typeof vl.replaceAllItems === 'function') vl.replaceAllItems(cached.apps || []);
-                        else {
-                            const listContainer = pageEl.querySelector(listSelector);
-                            if (listContainer) {
-                                const html = (cached.apps || []).map(item => `
-<li>
-  <a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}">
-    <div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div>
-    <div class="item-inner">
-      <div class="item-title-row"><div class="item-title">${item.name || ''}</div></div>
-      <div class="item-subtitle">${item.developerName || ''}</div>
-    </div>
-  </a>
-</li>`).join('');
-                                listContainer.innerHTML = `<ul>${html}</ul>`;
-                            }
-                        }
-                    }
-                }
-            } catch (e) {}
-        } finally {
-            app.ptr.done(el);
-        }
-    }
-});
-
-    async function refreshData(force = false) {
-        let repos = getRepos();
-        if (!repos || repos.length === 0) {
-            repos = [{ sourceURL: LOCAL_REPO_URL, name: "SoftwareKit", apps: [], isSystem: true }];
-            saveRepos(repos);
-        }
-
-        const listEl = document.getElementById('sources-list');
-        const newsWrapper = document.getElementById('news-swiper-wrapper');
-        const newsSection = document.getElementById('news-section');
-
-        if (listEl) {
-            const repoSkeleton = `
-            <li class="skeleton-effect-pulse">
-                <div class="swipeout-content">
-                    <div class="item-content">
-                        <div class="item-media"><div class="skeleton-block" style="width: 58px; height: 58px; border-radius: 28%;"></div></div>
-                        <div class="item-inner">
-                            <div class="item-title-row"><div class="item-title skeleton-text">Loading Repo</div></div>
-                            <div class="item-subtitle skeleton-text">Loading Apps</div>
-                        </div>
-                    </div>
-                </div>
-            </li>`;
-            listEl.innerHTML = repoSkeleton.repeat(repos.length || 3);
-        }
-
-        if (newsWrapper) {
-            const newsSkeleton = `
-            <div class="swiper-slide swiper-slide-news skeleton-effect-pulse">
-                <div class="card repo-news-card">
-                    <div class="card-content card-content-padding">
-                        <div class="size-12 skeleton-text">Source</div>
-                        <div class="text-weight-bold skeleton-text">Loading news</div>
-                        <div class="size-12 skeleton-text">Loading description caption</div> <a class="news-read-more skeleton-text">
-        Read more
-      </a>        
-                    </div>
-                </div>
-            </div>`;
-            newsWrapper.innerHTML = newsSkeleton.repeat(3);
-
-            if (document.getElementById('news-swiper-container').swiper) {
-                document.getElementById('news-swiper-container').swiper.update();
-            }
-        }
-
-        if (force) app.dialog.preloader('Refreshing Sources');
-
-        try {
-            const delay = new Promise(resolve => setTimeout(resolve, 2000));
-
-            const [updates] = await Promise.all([
-                Promise.all(repos.map(r => fetchRepo(r.sourceURL).catch(() => null))),
-                delay
-            ]);
-
-            repos = updates.map((newRepo, i) => newRepo || repos[i]);
-            saveRepos(repos);
-
-        } catch (error) {
-            console.error("Failed to refresh:", error);
-        } finally {
-            if (force) app.dialog.close();
-        }
-
-        renderSourcesList(repos);
-        renderNews(repos);
+    function openNsfwDialog() {
+        return new Promise((resolve) => {
+            const dialog = app.dialog.create({
+                title: 'NSFW warning',
+                text: 'This source may contain NSFW(18+) content. Add it at your own risk.',
+                verticalButtons: true,
+                buttons: [
+                    { text: 'Add anyway', cssClass: 'color-red', onClick: () => resolve('with') },
+                    { text: 'Add without NSFW apps', cssClass:'color-green', onClick: () => resolve('without') },
+                    { text: "Don't add", onClick: () => resolve('cancel') }
+                ]
+            });
+            dialog.open();
+        });
     }
 
-    document.getElementById('add-source-fab').addEventListener('click', () => {
-        app.dialog.prompt('Enter the source link.', 'Add source', async (url) => {
-            if (!url) return;
-            const repos = getRepos();
-            if (repos.find(r => r.sourceURL === url)) {
-                app.dialog.alert('Already added.');
-                return;
-            }
+    async function addSourceFlow(url) {
+        const raw = (url || '').trim();
+        if (!raw) {
+            app.dialog.alert('Please enter a source link.', 'Error');
+            return;
+        }
+        const normalizedUrl = normalizeSourceUrl(raw);
+        if (!normalizedUrl) {
+            app.dialog.alert('Please enter a valid source link.', 'Error');
+            return;
+        }
+        const repos = getRepos();
+        if (repos.find(r => r.sourceURL === normalizedUrl)) {
+            app.dialog.alert('Already added.', 'Error');
+            return;
+        }
 
-            app.dialog.preloader('Fetching source');
-            const [repo] = await Promise.all([
-                fetchRepo(url),
-                new Promise(resolve => setTimeout(resolve, 2000))
+        app.dialog.preloader('Fetching source');
+        const startTime = Date.now();
+        const minDelay = 2000;
+
+        try {
+            const [fetchedRepo] = await Promise.all([
+                fetchRepo(normalizedUrl),
+                new Promise(resolve => {
+                    const remaining = minDelay - (Date.now() - startTime);
+                    setTimeout(resolve, Math.max(0, remaining));
+                })
             ]);
             app.dialog.close();
 
-            if (repo) {
-                repos.push(repo);
-                saveRepos(repos);
-                await refreshData(true);
-            } else {
-                app.dialog.alert('Could not load the source', 'Error');
+            if (!fetchedRepo) {
+                app.dialog.alert('Unable to add source. Please check the URL and ensure it contains valid repository data.', 'Error');
+                return;
             }
-        });
+            let repo = fetchedRepo;
+            repo.sourceURL = normalizedUrl;
+            if (!repo.apps || !Array.isArray(repo.apps)) {
+                repo.apps = [];
+            }
+            if (!repo.news || !Array.isArray(repo.news)) {
+                repo.news = [];
+            }
+            const looksNsfw = repoLooksNsfw(repo, normalizedUrl);
+            if (looksNsfw) {
+                const choice = await openNsfwDialog();
+                if (choice === 'cancel') {
+                    return;
+                }
+                if (choice === 'without') {
+                    setSourcePref(normalizedUrl, 'without');
+                    repo = stripNsfwApps(repo);
+                } else {
+                    removeSourcePref(normalizedUrl);
+                }
+            } else {
+                removeSourcePref(normalizedUrl);
+            }
+            const updatedRepos = getRepos();
+            updatedRepos.push(repo);
+            saveRepos(updatedRepos);
+            await refreshData(true);
+        } catch (error) {
+            console.error('Add source error:', error);
+            app.dialog.close();
+            app.dialog.alert('An error occurred while adding the source. Please try again.', 'Error');
+        }
+    }
+
+    document.getElementById('add-source-fab').addEventListener('click', () => {
+        app.dialog.prompt('Enter the source link.', 'Add source', addSourceFlow);
     });
 
     document.getElementById('sources-list').addEventListener('click', (e) => {
@@ -1309,99 +1664,365 @@ app.on('ptrRefresh', async (el) => {
             );
             return;
         }
-
         const link = e.target.closest('.repo-link');
         if (link) {
-            const repo = getRepos().find(r => r.sourceURL === link.dataset.url);
+            e.preventDefault();
+            const url = link.dataset.url;
+            const repo = getRepos().find(r => r.sourceURL === url);
             if (repo) openRepoPage(repo);
         }
     });
 
-    document.querySelector('.ptr-repos').addEventListener('ptr:refresh', async (e) => {
-        await refreshData(true);
-        app.ptr.done(e.target);
+    app.on('ptrRefresh', async (el) => {
+        if (el.classList.contains('ptr-repos')) {
+            await refreshData(true);
+            app.ptr.done(el);
+            return;
+        }
+        if (!el.classList.contains('ptr-repo-detail')) return;
+        const pageEl = el.closest('.page');
+        const isAllSources = pageEl.dataset.allSources === 'true';
+        const repoUrl = pageEl.dataset.url;
+        const pageId = pageEl.dataset.id;
+        const listSelector = `.virtual-list-${pageId}`;
+        const start = Date.now();
+        const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+        const makeSkeletonItems = (n = 6) => new Array(n).fill(null).map(() => ({ skeleton: true }));
+        const skeletonLi = `<li><div class="item-content skeleton-effect-pulse"><div class="item-media"><div class="skeleton-block" style="width:58px;height:58px;border-radius:28%"></div></div><div class="item-inner"><div class="item-title-row"><div class="item-title skeleton-text">Loading</div></div><div class="item-subtitle skeleton-text">Loading</div></div></div></li>`;
+        const vl = pageEl.vl || app.virtualList.get(listSelector);
+        if (vl && typeof vl.replaceAllItems === 'function') {
+            vl.replaceAllItems(makeSkeletonItems(6));
+        } else {
+            const listContainer = pageEl.querySelector(listSelector);
+            if (listContainer) listContainer.innerHTML = `<ul>${skeletonLi.repeat(6)}</ul>`;
+        }
+        const ensureMinDelay = async () => {
+            const elapsed = Date.now() - start;
+            const remaining = Math.max(0, 2000 - elapsed);
+            if (remaining > 0) await wait(remaining);
+        };
+
+        try {
+            if (isAllSources) {
+                let allRepos = getRepos();
+                const updates = await Promise.all(allRepos.map(r => fetchRepo(r.sourceURL).catch(() => null)));
+                allRepos = updates.map((newRepo, i) => applySavedNsfwPreference(newRepo || allRepos[i])).filter(Boolean);
+                saveRepos(allRepos);
+                const allApps = getAllApps();
+                await ensureMinDelay();
+                if (vl && typeof vl.replaceAllItems === 'function') {
+                    vl.replaceAllItems(allApps);
+                } else {
+                    const listContainer = pageEl.querySelector(listSelector);
+                    if (listContainer) {
+                        const html = allApps.map(item => `<li><a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}"><div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">${item.name || ''}</div></div><div class="item-subtitle">${item.developerName || ''}</div></div></a></li>`).join('');
+                        listContainer.innerHTML = `<ul>${html}</ul>`;
+                    }
+                }
+                renderSourcesList(allRepos);
+                renderNews(allRepos);
+            } else {
+                const [newRepoData] = await Promise.all([fetchRepo(repoUrl), ensureMinDelay()]);
+                if (newRepoData) {
+                    let allRepos = getRepos();
+                    const finalRepo = applySavedNsfwPreference(newRepoData);
+                    const index = allRepos.findIndex(r => r.sourceURL === repoUrl);
+                    if (index !== -1) {
+                        allRepos[index] = finalRepo;
+                        saveRepos(allRepos);
+                    }
+                    if (vl && typeof vl.replaceAllItems === 'function') {
+                        vl.replaceAllItems(finalRepo.apps || []);
+                    } else {
+                        const listContainer = pageEl.querySelector(listSelector);
+                        if (listContainer) {
+                            const html = (finalRepo.apps || []).map(item => `<li><a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}"><div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">${item.name || ''}</div></div><div class="item-subtitle">${item.developerName || ''}</div></div></a></li>`).join('');
+                            listContainer.innerHTML = `<ul>${html}</ul>`;
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Failed to refresh:', error);
+            try {
+                if (isAllSources) {
+                    const allApps = getAllApps();
+                    if (vl && typeof vl.replaceAllItems === 'function') {
+                        vl.replaceAllItems(allApps);
+                    } else {
+                        const listContainer = pageEl.querySelector(listSelector);
+                        if (listContainer) {
+                            const html = allApps.map(item => `<li><a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}"><div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">${item.name || ''}</div></div><div class="item-subtitle">${item.developerName || ''}</div></div></a></li>`).join('');
+                            listContainer.innerHTML = `<ul>${html}</ul>`;
+                        }
+                    }
+                } else {
+                    const allRepos = getRepos();
+                    const cached = allRepos.find(r => r.sourceURL === repoUrl);
+                    if (cached) {
+                        if (vl && typeof vl.replaceAllItems === 'function') {
+                            vl.replaceAllItems(cached.apps || []);
+                        } else {
+                            const listContainer = pageEl.querySelector(listSelector);
+                            if (listContainer) {
+                                const html = (cached.apps || []).map(item => `<li><a class="item-link item-content app-item-trigger" data-id="${item.bundleIdentifier}"><div class="item-media"><img src="${item.iconURL || ''}" loading="lazy" alt="${item.name || ''}"></div><div class="item-inner"><div class="item-title-row"><div class="item-title">${item.name || ''}</div></div><div class="item-subtitle">${item.developerName || ''}</div></div></a></li>`).join('');
+                                listContainer.innerHTML = `<ul>${html}</ul>`;
+                            }
+                        }
+                    }
+                }
+            } catch (e) {}
+        } finally {
+            app.ptr.done(el);
+        }
     });
+
+    async function refreshData(force = false) {
+        let repos = getRepos();
+        if (!repos || repos.length === 0) {
+            repos = [{
+                sourceURL: LOCAL_REPO_URL,
+                name: 'SoftwareKit',
+                apps: [],
+                news: [],
+                isSystem: true
+            }];
+            saveRepos(repos);
+        }
+
+        const listEl = document.getElementById('sources-list');
+        const newsWrapper = document.getElementById('news-swiper-wrapper');
+
+        if (listEl) {
+            const repoSkeleton = `<li class="skeleton-effect-pulse"><div class="swipeout-content"><div class="item-content"><div class="item-media"><div class="skeleton-block" style="width: 58px; height: 58px; border-radius: 28%;"></div></div><div class="item-inner"><div class="item-title-row"><div class="item-title skeleton-text">Loading Repo</div></div><div class="item-subtitle skeleton-text">Loading Apps</div></div></div></div></li>`;
+            listEl.innerHTML = repoSkeleton.repeat(repos.length || 3);
+        }
+
+        if (newsWrapper) {
+            const newsSkeleton = `<div class="swiper-slide swiper-slide-news skeleton-effect-pulse"><div class="card repo-news-card"><div class="card-content card-content-padding"><div class="size-12 skeleton-text">Source</div><div class="text-weight-bold skeleton-text">Loading news</div><a class="news-read-more skeleton-text">Read more</a></div></div></div>`;
+            newsWrapper.innerHTML = newsSkeleton.repeat(3);
+            const newsSwiperContainer = document.getElementById('news-swiper-container');
+            if (newsSwiperContainer && newsSwiperContainer.swiper) {
+                newsSwiperContainer.swiper.update();
+            }
+        }
+
+        if (force) app.dialog.preloader('Refreshing Sources');
+
+        try {
+            const delay = new Promise(resolve => setTimeout(resolve, 2000));
+            const [updates] = await Promise.all([
+                Promise.all(repos.map(r => fetchRepo(r.sourceURL).catch(() => null))),
+                delay
+            ]);
+            repos = updates.map((newRepo, i) => applySavedNsfwPreference(newRepo || repos[i])).filter(Boolean);
+            saveRepos(repos);
+        } catch (error) {
+            console.error('Failed to refresh:', error);
+        } finally {
+            if (force) app.dialog.close();
+        }
+
+        renderSourcesList(repos);
+        renderNews(repos);
+    }
 
     refreshData(false);
 });
+const READ_LATER_KEY = 'idb_read_later';
+const PLACEHOLDER_IMAGE = 'https://placehold.co/600x400/e2e2e2/666?text=No+Image';
+
+function escapeHtml(value = '') {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function getReadLater() {
+  try {
+    const stored = localStorage.getItem(READ_LATER_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
+
+function saveReadLater(items) {
+  localStorage.setItem(READ_LATER_KEY, JSON.stringify(items));
+  renderReadLaterNews();
+}
+
+function shareArticle(title, url) {
+  if (navigator.share) {
+    navigator.share({ title, url }).catch(() => {});
+    return;
+  }
+  if (navigator.clipboard && url) {
+    navigator.clipboard.writeText(url).catch(() => {});
+  }
+}
+
+function addToReadLater(title, link, imgSrc = PLACEHOLDER_IMAGE) {
+  const items = getReadLater();
+  if (items.some(item => item.link === link)) {
+    app.dialog.alert('Already in your Read Later list.', 'Error');
+    return;
+  }
+
+  items.push({
+    title: String(title || ''),
+    link: String(link || ''),
+    imgSrc: String(imgSrc || PLACEHOLDER_IMAGE)
+  });
+
+  saveReadLater(items);
+  app.toast.show({ text: 'Added to Read Later', position: 'center', closeTimeout: 1500 });
+}
+function removeFromReadLater(link, title, cardEl) {
+  app.dialog.confirm(`Remove "${title}" from Read Later?`, 'Confirm', () => {
+    if (cardEl) {
+      playDeleteNewsAnimation(cardEl).then(() => {
+        const items = getReadLater().filter(item => item.link !== link);
+        saveReadLater(items);
+        
+      });
+    } else {
+      const items = getReadLater().filter(item => item.link !== link);
+      saveReadLater(items);
+      app.toast.show({ text: 'Removed', position: 'center', closeTimeout: 1500 });
+    }
+  });
+}
+
+function renderReadLaterNews() {
+  const container = document.getElementById('read-later-news');
+  if (!container) return;
+
+  const items = getReadLater();
+
+  if (!items.length) {
+    container.innerHTML = '                            <div class="block-title centered-empty" id="favempty">No saved articles <i class="f7-icons icon-small">tray_fill</i></div>';
+    return;
+  }
+
+  container.innerHTML = items.map(item => {
+    const title = String(item.title || '');
+    const link = String(item.link || '');
+    const imgSrc = String(item.imgSrc || PLACEHOLDER_IMAGE);
+
+    return `
+      <div class="card card-raised news-card">
+        <div class="card-content">
+          <div class="card-image">
+            <img class="newsimg" src="${escapeHtml(imgSrc)}" loading="lazy" alt="${escapeHtml(title)}">
+            <div class="news-actions">
+              <a class="news-action" href="#" onclick='shareArticle(${JSON.stringify(title)}, ${JSON.stringify(link)}); return false;'>
+                <i class="f7-icons">square_arrow_up</i>
+              </a>
+       <a class="news-action" href="#" onclick='removeFromReadLater(${JSON.stringify(link)}, ${JSON.stringify(title)}, this.closest(".news-card")); return false;'>
+  <i class="f7-icons">trash</i>
+</a>
+              <a class="news-action external" href="${escapeHtml(link)}" target="_blank" rel="noopener">
+                <i class="f7-icons">book_fill</i>
+              </a>
+            </div>
+            <div class="news-overlay">
+              <div class="news-title">${escapeHtml(title)}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function getNodeText(parent, tagName) {
+  const node = parent.getElementsByTagName(tagName)[0];
+  return node ? node.textContent.trim() : '';
+}
 
 async function fetchAndLoadNews() {
-  const newsContainer = document.getElementById("news");
+  const newsContainer = document.getElementById('news');
   if (!newsContainer) return;
 
-  const skeletonHTML = `
+  newsContainer.innerHTML = `
     <div class="card card-raised news-card skeleton-effect-pulse">
-   <div class="card-content">
-   <div class="card-image skeleton-block" style="height: 220px; width: 100%;"></div>
-    <div class="news-actions">
-      <a class="news-action skeleton-text">
-        <i class="f7-icons">square_arrow_up</i>
-      </a>
-
-      <a class="news-action external skeleton-text">
-        <i class="f7-icons">book_fill</i>
-      </a>
+      <div class="card-content">
+        <div class="card-image">
+          <div class="skeleton-block" style="height:220px;width:100%;"></div>
+          <div class="news-actions">
+            <span class="news-action skeleton-text"><i class="f7-icons">square_arrow_up</i></span>
+            <span class="news-action skeleton-text"><i class="f7-icons">clock</i></span>
+            <span class="news-action skeleton-text"><i class="f7-icons">book_fill</i></span>
+          </div>
+          <div class="news-overlay">
+            <div class="news-title skeleton-text">Loading news title</div>           
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="news-overlay">
-      <div class="news-title skeleton-text">Loading news title<br>News</div>
-    </div>
-  </div>
-</div></div> `;
-  newsContainer.innerHTML = skeletonHTML.repeat(3);
+  `.repeat(3);
 
-  try {   
+  try {
     const [response] = await Promise.all([
-      fetch("https://www.idownloadblog.com/feed/"),
-      new Promise(resolve => setTimeout(resolve, 2000)) 
+      fetch('https://www.idownloadblog.com/feed/'),
+      new Promise(resolve => setTimeout(resolve, 2000))
     ]);
 
-    if (!response.ok) throw new Error("Feed request failed");
+    if (!response.ok) {
+      throw new Error('Feed request failed');
+    }
 
     const data = await response.text();
-    const items = new window.DOMParser().parseFromString(data, "text/xml").getElementsByTagName("item");
-    
+    const xml = new window.DOMParser().parseFromString(data, 'text/xml');
+    const items = xml.getElementsByTagName('item');
+
     newsContainer.innerHTML = '';
 
-    
-
     for (let i = 0; i < items.length; i++) {
-      const title = items[i].getElementsByTagName("title")[0].textContent;
-      const link = items[i].getElementsByTagName("link")[0].textContent;
-      const content = items[i].getElementsByTagName("content:encoded")[0].textContent;
-      const imgDoc = new window.DOMParser().parseFromString(content, "text/html");
-      const imgElement = imgDoc.querySelector("img");
-      const imgSrc = imgElement ? imgElement.getAttribute("src") : "#";
+      const item = items[i];
+      const title = getNodeText(item, 'title');
+      const link = getNodeText(item, 'link');
+      const content = getNodeText(item, 'content:encoded') || getNodeText(item, 'description');
 
-      const card = document.createElement("div");
-      card.classList.add("card", "card-raised", "news-card");
-     
+      const imgDoc = new window.DOMParser().parseFromString(content, 'text/html');
+      const imgElement = imgDoc.querySelector('img');
+      const imgSrc = imgElement?.getAttribute('src') || PLACEHOLDER_IMAGE;
+
+      const card = document.createElement('div');
+      card.classList.add('card', 'card-raised', 'news-card');
 
       card.innerHTML = `
-<div class="card-content">
-  <div class="card-image">
-    <img class="newsimg" src="${imgSrc}" loading="lazy">
-
-    <div class="news-actions">
-      <a onclick="navigator.share({ title: '${title.replace(/'/g, "\\'")}', url: '${link}' })" class="news-action">
-        <i class="f7-icons">square_arrow_up</i>
-      </a>
-
-      <a href="${link}" class="news-action external">
-        <i class="f7-icons">book_fill</i>
-      </a>
-    </div>
-
-    <div class="news-overlay">
-      <div class="news-title">${title}</div>
-    </div>
-  </div>
-</div></div>`;
+        <div class="card-content">
+          <div class="card-image">
+            <img class="newsimg" src="${escapeHtml(imgSrc)}" loading="lazy" alt="${escapeHtml(title)}">
+            <div class="news-actions">
+              <a class="news-action" href="#" onclick='shareArticle(${JSON.stringify(title)}, ${JSON.stringify(link)}); return false;'>
+                <i class="f7-icons">square_arrow_up</i>
+              </a>
+              <a class="news-action" href="#" onclick='addToReadLater(${JSON.stringify(title)}, ${JSON.stringify(link)}, ${JSON.stringify(imgSrc)}); return false;'>
+                <i class="f7-icons">clock</i>
+              </a>
+              <a class="news-action external" href="${escapeHtml(link)}" target="_blank" rel="noopener">
+                <i class="f7-icons">book_fill</i>
+              </a>
+            </div>
+            <div class="news-overlay">
+              <div class="news-title">${escapeHtml(title)}</div>
+            </div>
+          </div>
+        </div>
+      `;
 
       newsContainer.appendChild(card);
     }
   } catch (error) {
-    newsContainer.innerHTML = '<div class="block">Failed to load news.</div>';
     console.error(error);
+    newsContainer.innerHTML = '<div class="block">Failed to load news.</div>';
   }
 }
 
@@ -1413,7 +2034,55 @@ app.on('ptrRefresh', (el) => {
   }
 });
 
-fetchAndLoadNews(); 
+fetchAndLoadNews();
+renderReadLaterNews();
+window.addToReadLater = addToReadLater;
+window.removeFromReadLater = removeFromReadLater;
+window.shareArticle = shareArticle; 
+function playDeleteNewsAnimation(cardEl) {
+  if (!cardEl) return Promise.resolve();
+
+  const layer = document.createElement('div');
+  layer.style.cssText = 'position:absolute;inset:0;pointer-events:none;overflow:hidden';
+  cardEl.style.position = 'relative';
+  cardEl.appendChild(layer);
+
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('span');
+    const a = Math.random() * Math.PI * 2;
+    const d = 30 + Math.random() * 110;
+
+    p.style.cssText = `
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:${4 + Math.random() * 5}px;
+      height:${4 + Math.random() * 5}px;
+      margin:-2px 0 0 -2px;
+      border-radius:999px;
+      background:rgba(255,255,255,.95);
+      box-shadow:0 0 10px rgba(255,255,255,.45);
+    `;
+
+    layer.appendChild(p);
+
+    p.animate(
+      [
+        { transform: 'translate(0,0) scale(1)', opacity: 1 },
+        { transform: `translate(${Math.cos(a) * d}px, ${Math.sin(a) * d}px) scale(0)`, opacity: 0 }
+      ],
+      { duration: 650 + Math.random() * 180, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' }
+    );
+  }
+
+  return cardEl.animate(
+    [
+      { opacity: 1, transform: 'scale(1)', filter: 'blur(0)' },
+      { opacity: 0, transform: 'scale(.88) rotate(2deg)', filter: 'blur(10px)' }
+    ],
+    { duration: 720, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' }
+  ).finished.then(() => layer.remove());
+}
 function checkConnection() {
   let dialogShown = false;
   let dialogInstance = null;
@@ -2140,6 +2809,7 @@ function updateFileLabel(input) {
       : name;
   }
 }
+
 const isMac = /Macintosh|MacIntel|MacPPC|Mac68K/.test(window.navigator.userAgent);
 const isiPad = isMac && (navigator.maxTouchPoints > 1);
 
@@ -2165,8 +2835,7 @@ if (isMac && !isiPad) {
   if (window.navigator.standalone) {
     const preloaderDialog = app.dialog.preloader("Reloading data");
     preloaderDialog.open();
-    setTimeout(() => preloaderDialog.close(), 2000);
-    document.querySelectorAll('.install').forEach(el => el.classList.add('display-none'));
+    setTimeout(() => preloaderDialog.close(), 2000);      document.documentElement.classList.add('standalone'); 
   } else {
     app.popup.open("#hs");
   }
@@ -2300,7 +2969,7 @@ function createPopupHtml(item) {
   class="item-link item-content popover-close"
   onclick="openReportPopup('${item.title.replace(/'/g, "\\'")}')"
 >
-  <div class="item-media"><i class="f7-icons">exclamationmark_bubble_fill</i></div>
+  <div class="item-media"><i class="f7-icons">exclamationmark_triangle_fill</i></div>
   <div class="item-inner">
     <div class="item-title">Report</div>
   </div>
@@ -2342,7 +3011,7 @@ async function fetchAndLoadApps() {
   if (container) {
     const skeletonItem = `
       <li>
-        <a class="item-link" href="#">   
+        <a class="item-link">   
           <div class="item-content skeleton-effect-pulse">
             <div class="item-media">     
               <div class="skeleton-block" style="width: 58px; height: 58px; border-radius: 29%;"></div>
@@ -2736,7 +3405,7 @@ function reset() {
         text: 'Erase all data',       
         onClick: function () {
           app.dialog.confirm(
-            'This will delete all your settings and data including added sources and favorites. This action cannot be undone.',
+            'This will delete all your settings and data including added sources, favorites read later . This action cannot be undone.',
             'Confirm reset',
             () => {
               app.preloader.show();
@@ -2761,7 +3430,8 @@ function reset() {
       },
       {
         text: 'Cancel',
-        close: true,       
+        close: true,
+        cssClass: 'color-red',       
       }
     ]
   }).open();
