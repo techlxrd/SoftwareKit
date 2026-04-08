@@ -9,8 +9,7 @@
     "get_link": "https://www.raycast.com",
     "type": "App",
     "device": "Mac",
-    "screenshots": [   
-    ]
+    "screenshots": []
   },
   {
     "id": "alfred",
@@ -22,8 +21,7 @@
     "get_link": "https://www.alfredapp.com",
     "type": "App",
     "device": "Mac",
-    "screenshots": [    
-    ]
+    "screenshots": []
   },
   {
     "id": "bartender",
@@ -35,9 +33,7 @@
     "get_link": "https://www.macbartender.com",
     "type": "App",
     "device": "Mac",
-    "screenshots": [
-      
-    ]
+    "screenshots": []
   },
   {
     "id": "ubersicht",
@@ -63,8 +59,7 @@
     "get_link": "https://www.titanium-software.fr/en/onyx.html",
     "type": "App",
     "device": "Mac",
-    "screenshots": [    
-    ]
+    "screenshots": []
   },
   {
     "id": "grandperspective",
@@ -76,8 +71,7 @@
     "get_link": "https://grandperspectiv.sourceforge.net",
     "type": "App",
     "device": "Mac",
-    "screenshots": [    
-    ]
+    "screenshots": []
   },
   {
     "id": "appcleaner",
@@ -89,8 +83,7 @@
     "get_link": "https://freemacsoft.net/appcleaner",
     "type": "App",
     "device": "Mac",
-    "screenshots": [    
-    ]
+    "screenshots": []
   },
   {
     "id": "cleanshotx",
@@ -102,8 +95,7 @@
     "get_link": "https://cleanshot.com",
     "type": "App",
     "device": "Mac",
-    "screenshots": [   
-    ]
+    "screenshots": []
   },
   {
     "id": "obsidian",
@@ -129,8 +121,7 @@
     "get_link": "https://alt-tab-macos.netlify.app",
     "type": "App",
     "device": "Mac",
-    "screenshots": [     
-    ]
+    "screenshots": []
   },
   {
     "id": "iina",
@@ -156,23 +147,25 @@
     "get_link": "https://matthewpalmer.net/rocket",
     "type": "App",
     "device": "Mac",
-    "screenshots": [    
-    ]
-  }, 
-    {
+    "screenshots": []
+  },
+  {
     "id": "altstore",
     "title": "AltStore",
-    "category": "Sideloading",
+    "category": "iOS Sideloading",
     "icon": "https://softwarekit.pages.dev/ios/assets/altstore.png",
     "description": "AltStore is the home for apps that push iOS boundaries—install apps outside the App Store, no jailbreak required.",
     "compatible": "Unknown",
     "get_link": "https://altstore.io",
     "type": "App",
+    "device": "iOS",
     "screenshots": [
-      "https://altstore.io/images/Tuesday-23-Jan-2024-165319.png", "https://altstore.io/images/DeltaStorePage.PNG", "https://altstore.io/images/Monday-08-May-2023-162140.PNG"
+      "https://altstore.io/images/Tuesday-23-Jan-2024-165319.png",
+      "https://altstore.io/images/DeltaStorePage.PNG",
+      "https://altstore.io/images/Monday-08-May-2023-162140.PNG"
     ]
-  }, 
-    {
+  },
+  {
     "id": "sideloadly",
     "title": "Sideloadly",
     "category": "Sideloading",
@@ -181,21 +174,50 @@
     "compatible": "Unknown",
     "get_link": "https://sideloadly.io/",
     "type": "App",
+    "device": "Multi-device",
     "screenshots": [
-      "https://sideloadly.io/screenshots/sideloadlymacos.png", "https://sideloadly.io/screenshots/sideloadlymacosapplesilicon.png"
+      "https://sideloadly.io/screenshots/sideloadlymacos.png",
+      "https://sideloadly.io/screenshots/sideloadlymacosapplesilicon.png"
     ]
   },
-    {
+  {
     "id": "imazing",
     "title": "iMazing",
     "category": "Device Management",
     "icon": "https://imazing.com/img/imazing3-logo.svg",
-    "description": "iMazing is the world’s most trusted software to transfer and save your messages, music, files and data from your iPhone or iPad to your Mac or PC.<br>Gain powerful backup, data extraction, media, and file transfer capabilities, and much more with iMazing.",
+    "description": "iMazing is the world’s most trusted software to transfer and save your messages, music, files and data from your iPhone or iPad to your Mac or PC. Gain powerful backup, data extraction, media, and file transfer capabilities, and much more with iMazing.",
     "compatible": "Unknown",
     "get_link": "https://imazing.com/",
     "type": "App",
+    "device": "Multi-device",
     "screenshots": [
       "https://imazing.com/img/home/v3/im3-2-photos-mac.webp"
+    ]
+  },
+  {
+    "id": "impactor",
+    "title": "Impactor",
+    "category": "iOS Sideloading",
+    "icon": "https://impactor.khcrysalis.dev/Impactor.png",
+    "description": "Open-source, cross-platform, and feature rich iOS sideloading application. Supporting Windows, Linux, and macOS.",
+    "compatible": "N/A",
+    "get_link": "https://impactor.khcrysalis.dev/",
+    "type": "App",
+    "device": "Multi-device",
+    "screenshots": [
+      "https://impactor.khcrysalis.dev/laptop_2.png"
+    ]
+  }, 
+     {
+    "id": "iloader",
+    "title": "iLoader",
+    "category": "Sideloading",
+    "icon": "https://iloader.app/favicon.svg",
+    "description": "iloader is a free and open-source iOS sideloading companion designed to make installing SideStore and other IPA apps as easy as possible.",
+    "compatible": "N/A",
+    "get_link": "https://iloader.app/",
+    "type": "Website",
+    "screenshots": [
     ]
   }
 ]
