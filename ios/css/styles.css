@@ -24,6 +24,10 @@ a:visited {
   --f7-searchbar-input-height: 48px;
   --f7-searchbar-in-page-content-margin: 0px;
 }
+.ios .tab-link-highlight {
+  transition-duration: 200ms;    
+} 
+
 .color-green{color:#2E7D32;}
 @media only screen and (max-device-width: 480px)
        and (max-device-height: 736px)
@@ -818,5 +822,11 @@ img {
   }
   .subnavbar {
     display: block;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) { 
+  .fab {
+    margin-bottom: 1%;    
   }
 }
