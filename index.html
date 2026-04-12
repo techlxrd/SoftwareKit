@@ -105,7 +105,7 @@
       color: inherit;
       text-decoration: none;
       tap-highlight:none;
-      -webkit-tab-highlight:none;
+      -webkit-tap-highlight:none;
     }
 
     img {
@@ -157,7 +157,9 @@
       overflow: hidden;
       transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
     }
-
+  .checkmark{color:#3E84F6;
+          font-size:16px;
+          }
     @media (prefers-color-scheme: dark) {
       .nav-container {
         background: linear-gradient(180deg, rgba(24,24,27,0.84), rgba(24,24,27,0.62));
@@ -252,7 +254,6 @@
       transform: translateY(-2px);
       opacity: 0.98;
     }
-
     .hero,
     .section,
     .legacy-section,
@@ -1086,7 +1087,7 @@
                 <i class="bi bi-apple"></i> Download for iOS + macOS
               </a>
               <a href="openhm/app.html" class="btn btn-secondary">
-                <i class="bi bi-phone"></i> HarmonyOS 5+ (Beta)
+                <i class="bi bi-phone"></i> HarmonyOS 5+
               </a>
               <a href="#legacy" class="btn btn-tertiary">
                 <i class="bi bi-clock-history"></i> Legacy iOS
@@ -1203,32 +1204,33 @@
         </div>
       </section>
 
-      <section class="section" id="altstore">
-        <div class="section-title" data-aos="fade-up">
-          <h2>AltStore source support.</h2>
-          <p>Add SoftwareKit as an AltStore source and keep the sideloading flow familiar.</p>
-        </div>
+<section class="section" id="altstore">
+  <div class="section-title" data-aos="fade-up">
+    <h2>AltStore source support.</h2>
+  </div>
 
-        <div class="grid">
-          <div class="card full" data-aos="fade-up">
-            <span class="badge"><i class="bi bi-link-45deg"></i> AltStore source</span>
-            <h3>Made for users who already sideload.</h3>
-            <p>
-              Your source makes it easy to add SoftwareKit directly into AltStore without breaking the user’s rhythm.
-            </p>
-            <div class="altstore-url">
-              <a href="#" onclick="navigator.clipboard.writeText('https://swkit.app/ios/altstore.json'); this.innerHTML='Copied! <i class=&quot;bi bi-clipboard-check-fill&quot;></i>'; return false;">
-                https://swkit.app/ios/altstore.json <i class="bi bi-clipboard-fill"></i>
-              </a>
-            </div>
-            <a class="altstore-link" href="altstore://source?url=https://swkit.app/ios/altstore.json">
-              <i class="bi bi-arrow-up-right-circle-fill"></i>
-              Add the SoftwareKit source to AltStore
-            </a>
-          </div>
-        </div>
-      </section>
+  <div class="grid">
+    <div class="card full" data-aos="fade-up">
+      <span class="badge"><i class="bi bi-link-45deg"></i> AltSources</span>
+      <h3>Browse your favorite sources.</h3>
+      <p>
+        SoftwareKit has full AltStore Sources support, so you can browse your favorite sources directly in the app.
+        It loads instantly even at massive scale and includes built-in NSFW(18+) content protection.
+      </p>
 
+      <div class="altstore-url">
+        <a onclick="navigator.clipboard.writeText('https://swkit.app/ios/altstore.json'); this.innerHTML='Copied! <i class=&quot;bi bi-clipboard-check-fill&quot;></i>'; return false;">
+          https://swkit.app/ios/altstore.json <i class="bi bi-clipboard-fill"></i>
+        </a>
+      </div>
+
+      <a class="altstore-link" href="altstore://source?url=https://swkit.app/ios/altstore.json">
+        <i class="bi bi-arrow-up-right-circle-fill"></i>
+        Add the SoftwareKit source to AltStore
+      </a>
+    </div>
+  </div>
+</section>
       <section class="section" id="privacy">
         <div class="section-title" data-aos="fade-up">
           <h2>Privacy is part of the product.</h2>
@@ -1371,7 +1373,7 @@
           </div></a>
           <a href="https://x.com/Techjunkie_Aman"><div class="member-card" data-aos="fade-up" data-aos-delay="80">
             <div class="avatar"><img src="https://pbs.twimg.com/profile_images/1637031339244548096/O-iNPMQ6.jpg" loading="lazy"></div>
-            <strong>TechJunkie Aman</strong>
+            <strong>TechJunkie Aman <i class="f7-icons checkmark">checkmark_seal_fill</i></strong>
             <span>Promotion</span>
           </div></a>
                     <div class="member-card" data-aos="fade-up" data-aos-delay="80">
@@ -1391,13 +1393,14 @@
     <footer class="footer">
       <div class="footer-inner">
         <div class="footer-legal">
-          <a href="legal.html" class="footer-btn"><i class="bi bi-file-earmark-text"></i> Terms of Service & Privacy policy</a>
+          <a href="legal.html" class="footer-btn"><i class="bi bi-shield-lock"></i> Legal</a>
          
         </div>
 
         <p style="max-width:900px;margin:0 auto 12px;">
-          SoftwareKit is a private, non-commercial utility project. Trademarks, platform names, app names, and product names belong to their respective owners.
-        </p>
+  SoftwareKit is a private, non-commercial utility project and is not intended for piracy. 
+  All trademarks, platform names, app names, and product names are the property of their respective owners.
+</p>
         <p>Built with ❤️ by <a href="https://techlxrd.github.io"><strong>TechLxrd</strong></a></p>
         <p class="mini-note">© 2026 SoftwareKit • softwarekit_app@outlook.com</p>
       </div>
