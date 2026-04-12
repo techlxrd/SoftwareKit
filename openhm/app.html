@@ -1,583 +1,666 @@
 <!DOCTYPE html>
 <html lang="en" class="ios ios-translucent-bars ios-translucent-modals device-pixel-ratio-2 device-ios ios">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
-    <title>SoftwareKit</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7@8.3.4/framework7-bundle.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Outland3r2007/harmonyicons@latest/hmicons.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons@5/css/framework7-icons.min.css">
-    <link rel="icon" type="image/x-icon" href="https://softwarekit.pages.dev/favicon.png">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="manifest" href="data.webmanifest">
-  </head>
-  <body>
-    <div id="app">
-      <div class="view view-main">
-        <div data-name="home" class="page">
-<div class="navbar navbar-large-transparent no-outline">
-                    <div class="navbar-bg"></div>
-                    <div class="navbar-inner">
-                        <div class="left"></div>
-                        <div class="title hm-title">Browse</div>
-                        <div class="right"></div>
-                        <div class="title-large">
-                            <div class="title-large-text">Browse</div>
-                        </div>
-                    </div>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>SoftwareKit</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/TechLxrd/harmonyicons@latest/hmicons.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons@5/css/framework7-icons.min.css">
+  <link rel="icon" type="image/x-icon" href="favicon.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="manifest" href="data.webmanifest">
+</head>
+<body>
+  <div id="app">
+              <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="justify-content-center">
+                    <img src="favicon.png" class="app-icon">
                 </div>
-          <div class="toolbar tabbar-icons toolbar-bottom no-outline searchbar-hide-on-enable">
-      <div class="toolbar-inner translucent">
-        <a href="#homeTab" class="tab-link tab-link-active" data-tab-title="Browse">
-          <i class="hm-icons hm-public-appstore-filled"></i>
-          <span class="tabbar-label">Browse</span>
-        </a>
+            </div>
+            <div class="list sidebar-list separated inset">
+                <ul>
+                    <li>
+                        <a href="#homeTab" class="item-link item-content tab-link tab-link-active" data-tab-title="Home">
+                            <div class="item-media"> <i class="hm-icons hm-public-home-filled"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Home</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#browseTab" class="item-link item-content tab-link" data-tab-title="Browse">
+                            <div class="item-media"> <i class="hm-icons hm-public-app-filled"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Browse</div>
+                            </div>
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a href="#favoritesTab" class="item-link item-content tab-link" data-tab-title="Favorites">
+                            <div class="item-media"> <i class="hm-icons hm-public-favorites-filled"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Library
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#readLaterTab" class="item-link item-content tab-link" data-tab-title="Read Later">
+                            <div class="item-media"> <i class="hm-icons hm-public-time-filled"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Read Later</div>
+                            </div>
+                        </a>
+                    </li>
+                                        <li>
+                        <a href="#settingsTab" class="item-link item-content tab-link" data-tab-title="Settings">
+                            <div class="item-media"> <i class="hm-icons hm-public-settings-filled"></i></div>
+                            <div class="item-inner">
+                                <div class="item-title">Settings</div>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    <div class="view view-main">
+      <div class="page" data-name="home">
+                <div class="fab fab-right-bottom searchbar-hide-on-enable liquid-glass" id="search-fab">
+                    <a class="searchbar-enable" data-searchbar=".searchbar"><i class="icon f7-icons">search</i></a>
+                </div>   
+        <div class="navbar">
+          <div class="navbar-bg"></div>
+          <div class="navbar-inner">
+            <div class="left"></div>
+            <div class="title">Home</div>
+            <div class="right"> <a class="link icon-only popup-open" data-popup="#donate"><i class="hm-icons hm-public-favorites-filled" style="color:red;"></i></a></div>
+            <div class="title-large">
+              <div class="title-large-text">Home</div>
+                                          <form class="searchbar searchbar-init searchbar-expandable" data-search-container=".virtual-list" data-search-item="li" data-search-in=".item-title" data-expand="navbar">
+                                <div class="searchbar-inner">
+                                    <div class="searchbar-input-wrap"><input type="search" placeholder="Search"><i class="searchbar-icon"></i><span class="input-clear-button"></span></div>
+                                    <span class="searchbar-disable-button"><i class="icon hm-cancel-filled"></i></span>
+                                </div>
+                            </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="toolbar tabbar tabbar-icons toolbar-bottom searchbar-hide-on-enable">
+          <div class="toolbar-inner">
+            <div class="toolbar-pane liquid-glass">
+              <a href="#homeTab" class="tab-link tab-link-active" data-tab-title="Home">
+                <i class="hm-icons hm-public-home-filled"></i>
+                <span class="tabbar-label">Home</span>
+              </a>
+              <a href="#browseTab" class="tab-link" data-tab-title="Browse">
+                <i class="hm-icons hm-public-app-filled"></i>
+                <span class="tabbar-label">Browse</span>
+              </a>
+              <a href="#favoritesTab" class="tab-link" data-tab-title="Favorites">
+                <i class="hm-icons hm-public-favorites-filled"></i>
+                <span class="tabbar-label">Favorites</span>
+              </a>
+                           <a href="#readLaterTab" class="tab-link" data-tab-title="Read Later">
+                <i class="hm-icons hm-public-time-filled"></i>
+                <span class="tabbar-label">Read Later</span>
+              </a>
+              <a href="#settingsTab" class="tab-link" data-tab-title="Settings">
+                <i class="hm-icons hm-public-settings-filled"></i>
+                <span class="tabbar-label">Settings</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        
+
+        <div class="tabs">
          
-        <a href="#favoritesTab" class="tab-link" data-tab-title="Favorites">
-          <i class="hm-icons hm-public-favorites-filled"></i>
-          <span class="tabbar-label">Favorites</span>
-        </a>
-        <a href="#settingsTab" class="tab-link" data-tab-title="Settings">
-          <i class="hm-icons hm-public-settings-filled"></i>
-          <span class="tabbar-label">Settings</span>
-        </a>
-      </div>
-    </div>
-    <div class="tabs">
-                    <div id="homeTab" class="page-content tab tab-active ptr-content" data-ptr-distance="56" style="">
-                        <div class="ptr-preloader">
-                            <div class="preloader"></div>
-                            <div class="ptr-arrow"></div>
-                        </div>
-                        <form class="searchbar searchbar-init searchbar-inline" data-search-container=".virtual-list" data-search-item="li" data-search-in=".item-title" style="margin:10px;">
-                            <div class="searchbar-inner">
-                                <div class="searchbar-input-wrap"><input type="search" placeholder="Search"><i class="searchbar-icon"></i><span class="input-clear-button"></span></div><span class="searchbar-disable-button color-blue">Cancel</span></div>
-                        </form> 
-                      
-                        <div class="list list-strong simple-list searchbar-not-found inset">
-                            <ul>
-                                <li>Unfortunately, no items were found 😔</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <div class="swiper swiper-padding featured swiper-initialized swiper-horizontal swiper-ios swiper-backface-hidden searchbar-hide-on-enable">
-                                <div class="swiper-wrapper" aria-live="polite">
-                                    <div class="swiper-slide featured" role="group" aria-label="1 / 5">
-                                        <a class="link popup-open" data-popup="#easyabroad">
-                                            <div class="title-container">
-                                                <div class="swiper-title">EasyAbroad</div>
-                                            </div><img loading="lazy" src="https://i.imgur.com/IzK4dav.jpeg">
-                                            <div class="backout"></div>
-                                        </a>
-                                    </div>
-                                    <div class="swiper-slide featured" role="group" aria-label="2 / 5">
-                                        <a class="link popup-open" data-popup="#nextstore">
-                                            <div class="title-container">
-                                                <div class="swiper-title">NEXT Store</div>
-                                            </div><img loading="lazy" src="https://i.imgur.com/CTTK6Te.png">
-                                            <div class="backout"></div>
-                                        </a>
-                                    </div>
-                                    <div class="swiper-slide featured" role="group" aria-label="3 / 5">
-                                        <a class="link popup-open" data-popup="#droitong">
-                                            <div class="title-container">
-                                                <div class="swiper-title">DroiTong</div>
-                                            </div><img loading="lazy" src="https://i.imgur.com/rrXAoAx.jpeg">
-                                            <div class="backout"></div>
-                                        </a>
-                                    </div>
+          <div id="homeTab" class="page-content tab tab-active ptr-content ptr-news" data-ptr-distance="56">
+            <div class="ptr-preloader">
+              <div class="preloader"></div>
+              <div class="ptr-arrow"></div>
+            </div>
+              <div class="swiper swiper-padding featured swiper-initialized swiper-horizontal swiper-ios swiper-backface-hidden searchbar-hide-on-enable">
+                <div class="swiper-wrapper" aria-live="polite">
+                  <div class="swiper-slide featured" role="group">
+                    <a class="link popup-open" data-popup="#remy">
+                      <div class="swiper-title-container">
+                        <div class="swiper-title">Remy</div>
+                      </div>
+                      <img loading="lazy" src="https://i.imgur.com/trrD7Wf.png">
+                      <div class="backout"></div>
+                    </a>
+                  </div>
+                                    <div class="swiper-slide featured" role="group">
+                    <a class="link popup-open" data-popup="#nextstore">
+                      <div class="swiper-title-container">
+                        <div class="swiper-title">NEXT Store</div>
+                      </div>
+                      <img loading="lazy" src="https://i.imgur.com/FwRcfLn.png">
+                      <div class="backout"></div>
+                    </a>
+                  </div>
 
-                                  
-                                </div><br>
-                                <div class="swiper-pagination swiper-pagination-bullets swiper-pagination-horizontal"><span class="swiper-pagination-bullet swiper-pagination-bullet-active" aria-current="true"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet"></span></div>
-                                <span
-                                    class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-                            </div>                     
-                            <div class="block-title searchbar-hide-on-enable">Apps & Tweaks</div>
-                            
-                       <div class="list media-list virtual-list separated inset grid-list"><ul></ul></div>
+                                    <div class="swiper-slide featured" role="group">
+                    <a class="link popup-open" data-popup="#easyabroad">
+                      <div class="swiper-title-container">
+                        <div class="swiper-title">EasyAbroad</div>
+                      </div>
+                      <img loading="lazy" src="https://i.imgur.com/ayIOd7A.png">
+                      <div class="backout"></div>
+                    </a>
+                  </div>
+                  <div class="swiper-slide featured" role="group">
+                    <a class="link popup-open" data-popup="#droitong">
+                      <div class="swiper-title-container">
+                        <div class="swiper-title">DroiTong</div>
+                      </div>
+                      <img loading="lazy" src="https://i.imgur.com/dDNmiOF.png">
+                      <div class="backout"></div>
+                    </a>
+                  </div>
+                </div>              
+                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
+              </div>
+               <div id="news"></div><br>
+            </div>
+          
+
+          <div id="browseTab" class="page-content tab ptr-content ptr-apps" data-ptr-distance="56">
+            <div class="ptr-preloader">
+              <div class="preloader"></div>
+              <div class="ptr-arrow"></div>
+            </div>
+            <div class="list list-strong simple-list searchbar-not-found inset">
+              <ul>
+                <li>Unfortunately, no items were found 😔</li>
+              </ul>
+            </div>
+            <div class="list media-list virtual-list separated inset grid-list">
+              <ul></ul>
+            </div>
+          </div>
+       
+          <div id="favoritesTab" class="page-content tab">          
+            <h2 id="favempty">No favorites</h2>
+            <div class="list media-list separated inset" id="fav">
+              <ul></ul>
+            </div>
+            </div>
+ 
+          
+                    <div id="readLaterTab" class="page-content tab">
+           
+          
+              <div id="read-later-news"></div><br>
+          </div>
+      
+          <div id="settingsTab" class="page-content tab">
+            
+           
+            <div class="list list-strong list-dividers media-list inset">
+              <ul>
+                <li>
+                  <div class="item-content">
+                    <div class="item-media">
+                      <a class="popup-open" data-popup="#icon">
+                        <img loading="lazy" id="faviconimg2" src="favicon.png">
+                      </a>
                     </div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title" id="greeting">
+                          <script>
+                            function getGreeting() {
+                              const today = new Date();
+                              const hour = today.getHours();
+                              let greeting;
+                              if (hour < 12) {
+                                greeting = "Good morning!";
+                              } else if (hour < 18) {
+                                greeting = "Good afternoon!";
+                              } else {
+                                greeting = "Good evening!";
+                              }
+                              document.getElementById("greeting").innerText = greeting;
+                            }
+                            window.onload = getGreeting;
+                          </script>
+                        </div>
+                      </div>
+                      <div class="item-subtitle" style="font-size:12px">
+                        SoftwareKit v1.0 HarmonyOS
+                      </div>
                     </div>
-                    
-                        
-                    <div id="favoritesTab" class="page-content tab ptr-content" data-ptr-distance="56">
-                        <div class="ptr-preloader">
-                            <div class="preloader"></div>
-                            <div class="ptr-arrow"></div>
-                        </div>
-                        
-                        <h2 id="favempty">No favorites</h2>
-                        <div class="list media-list separated inset" id="fav">
-                            <ul></ul>
-                        </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="list list-strong list-dividers inset">
+              <ul>
+                <li class="flex-between accent-li item-content">
+                  <div class="flex-align">
+                    <div class="item-media"><i class="hm-icons hm-public-themes-filled"></i></div>
+                    <div class="item-inner">
+                      <div class="item-title-row" style="margin-top:3px;">
+                        <div class="item-title">Accent color</div>
+                      </div>
                     </div>
-                    
-                    <div id="settingsTab" class="page-content tab ptr-content" data-ptr-distance="56">
-                        <div class="ptr-preloader">
-                            <div class="preloader"></div>
-                        
-                            <div class="ptr-arrow"></div>
-                        </div>
-                        
-                        <div class="list list-strong list-dividers media-list inset">
-                            <ul>
+                  </div>
+                  <span class="accent-color-indicator" id="accent-color"></span>
+                </li>
+                <li>
+                  <a onclick="shareURL()" class="item-link item-content">
+                    <div class="item-media"><i class="hm-icons hm-share-filled"></i></div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Share SoftwareKit</div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://x.com/softwarekit_app/" class="item-link item-content external">
+                    <div class="item-media"><i class="hm-icons hm-contacts-add-filled"></i></div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Follow</div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a href="https://techlxrd.gumroad.com/l/swkithmosf7" class="item-link item-content external">
+                    <div class="item-media"><i class="f7-icons">scribble</i></div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Buy source code</div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a class="item-link item-content popup-open" data-popup="#donate">
+                    <div class="item-media color-red"><i class="f7-icons text-color-red">heart_fill</i></div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Donate</div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a class="item-link item-content popup-open" data-popup="#changelog">
+                    <div class="item-media"><i class="hm-icons hm-public-fast-filled"></i></div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">What's new?</div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a class="item-link item-content popup-open" data-popup="#feedback">
+                    <div class="item-media"><i class="hm-icons hm-public-feedback"></i></div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Send feedback</div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a class="item-link item-content popup-open" data-popup="#appsubmit">
+                    <div class="item-media"><i class="hm-icons hm-public-appstore-filled"></i></div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">App Submission</div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
                                 <li>
-                                    <div class="item-content">
-                                        <div class="item-media"><a class="popup-open" data-popup="#icon"><img loading="lazy" id="faviconimg2" src="https://softwarekit.pages.dev/favicon.png"></a></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title" id="greeting">
-                                                    <script>
-                                                        function getGreeting() {
-  const today = new Date();
-  const hour = today.getHours();
-  let greeting;
-
-  if (hour < 12) {
-    greeting = "Good morning!";
-  } else if (hour < 18) {
-    greeting = "Good afternoon!";
-  } else {
-    greeting = "Good evening!";
-  }
-
-  document.getElementById("greeting").innerText = greeting;
-}
-
-window.onload = getGreeting;
-
-                                                    </script>
-                                                </div>
-                                            </div>
-                                            <div style="font-size:12px" class="item-subtitle">
-                                                SoftwareKit v1.0 HarmonyOS
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                               
-                                </ul>
-                                </div>
-                                <div class="list list-strong list-dividers inset media-list">
-                                    <ul>
-                                  <li class="flex-between accent-li item-content">
-                                                <div class="flex-align">
-                                                    <div class="item-media"><i class="hm-icons hm-public-themes-filled"></i></div>
-                                                    <div class="item-inner">
-                                                        <div class="item-title-row" style="margin-top:3px;">
-                                                            <div class="item-title">Accent color</div>
-                                                        </div>
-                                                    </div>
-                                                </div> <span class="accent-color-indicator" id="accent-color"></span>
-                                            </li>      
-                                <li>
-                                    <a onclick="shareURL()" class="item-link item-content">
-                                        <div class="item-media"><i class="hm-icons hm-share-filled"></i></div>
-                                        <div class="item-inner">
-                                            <div class="item-title-row">
-                                                <div class="item-title">Share SoftwareKit</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                
-                              
-                           
-                                    <li>
-                                        <a href="https://x.com/softwarekit_app/" class="item-link item-content external">
-                                            <div class="item-media"><i class="hm-icons hm-contacts-add-filled"></i></div>
-                                            <div class="item-inner">
-                                                <div class="item-title-row">
-                                                    <div class="item-title">Follow</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                                                <li>
-                          <a href="https://techlxrd.gumroad.com/l/swkithmosf7" class="item-link item-content external">
-                            <div class="item-media">
-                              <i class="f7-icons">scribble</i>
-                            </div>
-                            <div class="item-inner">
-                              <div class="item-title-row">
-                                <div class="item-title">Buy source code</div>
-                              </div>
-                            </div>
-                          </a>
-                        </li>
-                        <li>
-                          <a class="item-link item-content popup-open" data-popup="#donate">
-                            <div class="item-media color-red">
-                              <i class="f7-icons">heart_fill</i>
-                            </div>
-                            <div class="item-inner">
-                              <div class="item-title-row">
-                                <div class="item-title">Support the developer</div>
-                              </div>
-                            </div>
-                          </a>
-                        </li>
-                                    <li>
-                                        <a class="item-link item-content popup-open" data-popup="#changelog">
-                                            <div class="item-media"><i class="hm-icons hm-public-fast-filled"></i></div>
-                                            <div class="item-inner">
-                                                <div class="item-title-row">
-                                                    <div class="item-title">What's new?</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>                                    
-                                                                       <li>
-                                        <a class="item-link item-content popup-open" data-popup="#feedback">
-                                            <div class="item-media"><i class="hm-icons hm-public-feedback"></i></div>
-                                            <div class="item-inner">
-                                                <div class="item-title-row">
-                                                    <div class="item-title">Send feedback</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                                                       <li>
-                                        <a class="item-link item-content popup-open" data-popup="#appsubmit">
-                                            <div class="item-media"><i class="hm-icons hm-public-appstore-filled"></i></div>
-                                            <div class="item-inner">
-                                                <div class="item-title-row">
-                                                    <div class="item-title">App Submission</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="item-link item-content popup-open" data-popup="#terms">
-                                            <div class="item-media"><i class="hm-icons hm-privacy-statement"></i></div>
-                                            <div class="item-inner">
-                                                <div class="item-title-row">
-                                                    <div class="item-title">Terms of Service & Privacy policy</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                                                     <li>
-                                        <a onclick="reset()" class="item-link item-content popup-open">
-                                            <div class="item-media"><i class="hm-icons hm-public-clean-filled"></i></div>
-                                            <div class="item-inner">
-                                                <div class="item-title-row">
-                                                    <div class="item-title">Reset</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>  
-                                </ul>                              </div>
+                  <a href="https://techlord.is-a.dev" class="item-link item-content external">
+                    <div class="item-media"><i class="hm-icons hm-search-things"></i></div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Other projects</div>
+                      </div>
                     </div>
-                </div>
-                </div>
-                </div>
-                <div class="popup" id="terms"><div class="page"><div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div><div class="page-content"><div class="block block-strong inset"><h2>Terms of Service</h2>
+                  </a>
+                </li>
+                <li>
+                  <a class="item-link item-content popup-open" data-popup="#terms">
+                    <div class="item-media"><i class="hm-icons hm-privacy-statement"></i></div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Legal</div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a onclick="reset()" class="item-link item-content popup-open">
+                    <div class="item-media"><i class="hm-icons hm-public-clean-filled"></i></div>
+                    <div class="item-inner">
+                      <div class="item-title-row">
+                        <div class="item-title">Reset</div>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+     </div>
 
-<p>Welcome to SoftwareKit. By using this app, you agree to the following terms.</p>
+    <div class="popup" id="terms">
+      <div class="page">
+        <div class="swipe-nav">
+          <div><i class="f7-icons">minus</i></div>
+        </div>
+        <div class="page-content">
+          <div class="block block-strong inset">
+            <h2>Terms of Service</h2>
+            <p>Welcome to SoftwareKit. By using this app, you agree to the following terms.</p>
+            <p><strong>1. App Usage:</strong> SoftwareKit provides utilities and tools for advanced device usage. All content available in the app is manually reviewed before being listed. We reserve the right to remove any utility, app, or source at any time.</p>
+            <p><strong>2. Third-Party Content:</strong> SoftwareKit may provide access to third-party apps, utilities, or external sources. These are not owned or controlled by us. You are responsible for reviewing and accepting their terms before use.</p>
+            <p><strong>3. Security and Reporting:</strong> Any utility, app, or source may be removed if reported or found to be malicious, unsafe, or misleading. If you encounter suspicious behavior or issues, use the <strong>Report</strong> button in its page to contact us.</p>
+            <p><strong>4. Disclaimer:</strong> SoftwareKit is provided “as is” without warranties of any kind. Use of the app is entirely at your own risk.</p>
+            <p><strong>5. Intellectual Property:</strong> You may not copy, modify, sell, redistribute, rebrand, or create derivative works of SoftwareKit or any part of it without explicit permission.</p>
+            <p><strong>6. Changes:</strong> These terms may be updated at any time. Continued use of SoftwareKit means you accept the latest version.</p>
+            <hr>
+            <h2>Privacy Policy</h2>
+            <p>SoftwareKit respects your privacy.</p>
+            <p><strong>1. No Data Collection:</strong> SoftwareKit does not collect, transmit, store, track, or share any personal or device data. There are no analytics, trackers, advertising services, or background data connections.</p>
+            <p><strong>2. Offline Operation:</strong> All features operate locally on your device. No data is sent to external servers, temporarily or permanently.</p>
+            <p><strong>3. Local Storage Only:</strong> App settings and preferences are stored locally on your device only and never leave it.</p>
+            <p><strong>4. Third-Party Software:</strong> If you choose to install or use third-party apps or utilities through SoftwareKit, their data handling is governed by their own privacy policies. SoftwareKit is not responsible for third-party data practices.</p>
+            <p><strong>5. Policy Updates:</strong> This Privacy Policy may be updated if the app changes. Continued use of SoftwareKit means you accept the latest version.</p>
+            <p><strong>Questions or concerns?</strong> Use the <a class="popup-open bold" data-popup="#feedback">Feedback</a> option in Settings or send an email to <a class="external bold" href="mailto:softwarekit_app@outlook.com">softwarekit_app@outlook.com</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<p><strong>1. App Usage:</strong> SoftwareKit provides utilities and tools for advanced device usage. All content available in the app is manually reviewed before being listed. We reserve the right to remove any utility, app, or source at any time.</p>
+    <div class="popup" id="changelog">
+      <div class="page">
+        <div class="swipe-nav">
+          <div><i class="f7-icons">minus</i></div>
+        </div>
+        <div class="page-content">
+          <div class="block-title block-title-large">What's new?</div>       
+            <div class="block block-strong inset">
+              <p>Last updated: <span class="badge">April 12 2026</span></p>
+              <h1>v2.0</h1>
+ <p>✨ This update introduces a major UI and UX overhaul, bringing the app closer to the latest HarmonyOS design language with refined visuals and a liquid glass aesthetic.</p>
 
-<p><strong>2. Third-Party Content:</strong> SoftwareKit may provide access to third-party apps, utilities, or external sources. These are not owned or controlled by us. You are responsible for reviewing and accepting their terms before use.</p>
+<p>📰 A new <strong>newsfeed</strong> has been added, making it easier to stay up to date with the latest HUAWEI content.</p>
 
-<p><strong>3. Security and Reporting:</strong> Any utility, app, or source may be removed if reported or found to be malicious, unsafe, or misleading. If you encounter suspicious behavior or issues, use the <strong>Report</strong> button in its page to contact us.</p>
+<p>🎨 The interface has been reworked across the app to feel more modern, consistent, and intuitive.</p>
 
-<p><strong>4. Disclaimer:</strong> SoftwareKit is provided “as is” without warranties of any kind. Use of the app is entirely at your own risk.</p>
+<p>⚙️ The underlying framework has been updated, improving compatibility and overall reliability.</p>
 
-<p><strong>5. Intellectual Property:</strong> You may not copy, modify, sell, redistribute, rebrand, or create derivative works of SoftwareKit or any part of it without explicit permission.</p>
+<p>⚡ Code optimizations and bug fixes further enhance performance, stability, and responsiveness.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<p><strong>6. Changes:</strong> These terms may be updated at any time. Continued use of SoftwareKit means you accept the latest version.</p>
-
-<hr>
-<h2>Privacy Policy</h2>
-
-<p>SoftwareKit respects your privacy.</p>
-
-<p><strong>1. No Data Collection:</strong> SoftwareKit does not collect, transmit, store, track, or share any personal or device data. There are no analytics, trackers, advertising services, or background data connections.</p>
-
-<p><strong>2. Offline Operation:</strong> All features operate locally on your device. No data is sent to external servers, temporarily or permanently.</p>
-
-<p><strong>3. Local Storage Only:</strong> App settings and preferences are stored locally on your device only and never leave it.</p>
-
-<p><strong>4. Third-Party Software:</strong> If you choose to install or use third-party apps or utilities through SoftwareKit, their data handling is governed by their own privacy policies. SoftwareKit is not responsible for third-party data practices.</p>
-
-<p><strong>5. Policy Updates:</strong> This Privacy Policy may be updated if the app changes. Continued use of SoftwareKit means you accept the latest version.</p>
-
-<p><strong>Questions or concerns?</strong> Use the <a class="popup-open bold" data-popup="#feedback">Feedback</a> option in Settings or send an email to <a class="external bold" href="mailto:softwarekit_app@outlook.com">softwarekit_app@outlook.com</a></p>
-
-</div></div></div></div>
-                <div class="popup" id="changelog"><div class="sheet-modal-inner"><div class="swipe-nav"><div><i class="f7-icons">minus</i></div></div><div class="page-content"><div class="block-title block-title-large">What's new?</div><div class="block"><div class="block block-strong inset"><p>Last updated:<span class="badge">Unknown</span><h2>v1.0 </h2><p>No changelog available at the moment, check back later. </div><br><br></div></div>
-                          <div class="popup popup-report" id="report-app">
-                            <div class="page bg-img">
-                                <div class="navbar no-outline">
+    <div class="popup popup-report" id="report-app">
+      <div class="page">
+        <div class="navbar">
           <div class="navbar-bg"></div>
           <div class="navbar-inner">
-            <div class="title  ">Report</div>
-            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
+            <div class="title">Report</div>
+            <div class="right"><a class="link popup-close"><i class="icon hm-cancel-filled"></i></a></div>
           </div>
         </div>
-
-                                <div class="page-content">
-                                    <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="report-form">
-                                        <input type="text" name="_honey" class="display-none">
-
-                                        <input type="hidden" name="_captcha" value="false">
-                                        <ul>
-                                            <li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">App name</div>
-                                                        <div class="item-input-wrap">
-                                                            <input type="text" name="HarmonyOS App Name" id="report-app-name" readonly required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">Email</div>
-                                                        <div class="item-input-wrap">
-                                                            <input placeholder="youremail@something.com" type="email" name="Email" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li>
-  <a class="item-link smart-select" data-open-in="popover">
-    <select name="Reason" required>
-      <option value="" disabled selected>Select reason</option>
-      <option value="Malicious">Malicious</option>
-      <option value="Outdated">Outdated</option>
-      <option value="Not working">Not working</option>
-      <option value="Takedown request">Takedown request</option>
-      <option value="Other">Other (Specify)</option>
-    </select>
-    <div class="item-content">
-      <div class="item-inner">
-        <div class="item-title">Reason</div>
+        <div class="page-content">
+          <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="report-form">
+            <input type="text" name="_honey" class="display-none">
+            <input type="hidden" name="_captcha" value="false">
+            <ul>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">App name</div>
+                    <div class="item-input-wrap">
+                      <input type="text" name="HarmonyOS App Name" id="report-app-name" readonly required>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Email</div>
+                    <div class="item-input-wrap">
+                      <input placeholder="youremail@something.com" type="email" name="Email" required>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <a class="item-link smart-select" data-open-in="popover">
+                  <select name="Reason" required>
+                    <option value="" disabled selected>Select reason</option>
+                    <option value="Malicious">Malicious</option>
+                    <option value="Outdated">Outdated</option>
+                    <option value="Not working">Not working</option>
+                    <option value="Takedown request">Takedown request</option>
+                    <option value="Other">Other (Specify)</option>
+                  </select>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Reason</div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Feedback</div>
+                    <div class="item-input-wrap">
+                      <textarea placeholder="e.g. The download link is broken, the app crashes on startup, or the version is outdated." name="Feedback" required></textarea>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <br>
+            <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
+              <span class="preloader"></span>
+              <span>Send report</span>
+            </button>
+          </form>
+        </div>
       </div>
     </div>
-  </a>
-</li>
 
-                                            <li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">Feedback</div>
-                                                        <div class="item-input-wrap">
-                                                            <textarea placeholder="e.g. The download link is broken, the app crashes on startup, or the version is outdated." name="Feedback" required></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                       <br>
-                                            <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
-            <span class="preloader"></span>
-      <span>Send report</span>
-          </button>
-                                        </div>
-                                    </form>
+    <div class="popup app-submission" id="appsubmit">
+      <div class="page">
+                            <div class="navbar">
+                                <div class="navbar-bg"></div>
+                                <div class="navbar-inner">
+                                    <div class="title">App Submission</div>
+                                    <div class="right"><a class="link popup-close"><i class="icon hm-cancel-filled"></i></a></div>
                                 </div>
                             </div>
-                        </div>
-                         <div class="popup app-submission" id="appsubmit">
-                            <div class="page bg-img">
-                                <div class="navbar no-outline">
+        <div class="page-content">
+          <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="appsubmit-form">
+            <input type="text" name="_honey" class="display-none">
+            <input type="hidden" name="_captcha" value="false">
+            <ul>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">App name</div>
+                    <div class="item-input-wrap">
+                      <input type="text" name="HarmonyOS App Name" placeholder="e.g SoftwareKit" required>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">URL</div>
+                    <div class="item-input-wrap">
+                      <input type="url" placeholder="https://example.com" name="App Name" required>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Email</div>
+                    <div class="item-input-wrap">
+                      <input placeholder="youremail@something.com" type="email" name="Email" required>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <a class="item-link smart-select" data-open-in="popover">
+                  <select name="Type" required>
+                    <option value="" disabled selected>Select type</option>
+                    <option value="App Store Application">App Gallery Application</option>
+                    <option value="HAP File">HAP File</option>
+                    <option value="Website">Website</option>
+                  </select>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Type</div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Additional info</div>
+                    <div class="item-input-wrap">
+                      <textarea name="Additional info"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <br>
+            <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
+              <span class="preloader"></span>
+              <span>Submit app</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="popup popup-report" id="feedback">
+      <div class="page">
+        <div class="navbar">
           <div class="navbar-bg"></div>
           <div class="navbar-inner">
-            <div class="title  ">App Submission</div>
-            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
+            <div class="title">Send feedback</div>
+            <div class="right"><a class="link popup-close"><i class="icon hm-cancel-filled"></i></a></div>
           </div>
         </div>
-
-                                <div class="page-content">
-                                    <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="appsubmit-form">
-                                        <input type="text" name="_honey" class="display-none">
-
-                                        <input type="hidden" name="_captcha" value="false">
-                                        <ul>
-                                            <li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">App name</div>
-                                                        <div class="item-input-wrap">
-                                                            <input type="text" name="HarmonyOS App Name" placeholder="e.g SoftwareKit" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-<li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">URL</div>
-                                                        <div class="item-input-wrap">
-                                                            <input type="url" placeholder="https://example.com" name="App Name" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">Email</div>
-                                                        <div class="item-input-wrap">
-                                                            <input placeholder="youremail@something.com" type="email" name="Email" required>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li>
-  <a class="item-link smart-select" data-open-in="popover">
-    <select name="Type" required>
-      <option value="" disabled selected>Select type</option>
-      <option value="App Store Application">App Gallery Application</option>
-      <option value="HAP File">HAP File</option>
-      <option value="Website">Website</option>      
-    </select>
-    <div class="item-content">
-      <div class="item-inner">
-        <div class="item-title">Type</div>
+        <div class="page-content">
+          <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="feedback-form">
+            <input type="text" name="_honey" class="display-none">
+            <input type="hidden" name="_captcha" value="false">
+            <ul>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Email</div>
+                    <div class="item-input-wrap">
+                      <input placeholder="youremail@something.com" type="email" name="Email" required>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li>
+                <a class="item-link smart-select" data-open-in="popover">
+                  <select name="Feedback type" required>
+                    <option value="" disabled selected>Feedback type</option>
+                    <option value="Issue/Bug">Issue/Bug</option>
+                    <option value="Feature request">Feature request</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Feedback type</div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              <li>
+                <div class="item-content item-input">
+                  <div class="item-inner">
+                    <div class="item-title item-label">Feedback</div>
+                    <div class="item-input-wrap">
+                      <textarea placeholder="e.g. A bug in the Settings tab, missing data on the home page, or a feature request." name="HarmonyOS Feedback" required></textarea>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <br>
+            <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
+              <span class="preloader"></span>
+              <span>Send Feedback</span>
+            </button>
+          </form>
+        </div>
       </div>
     </div>
-  </a>
-</li>
-
-                                            <li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">Additional info</div>
-                                                        <div class="item-input-wrap">
-                                                            <textarea  name="Additional info"></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                       <br>
-                                            <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
-            <span class="preloader"></span>
-      <span>Submit app</span>
-          </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                         <div class="popup popup-report" id="feedback">
-                            <div class="page bg-img">
-                                <div class="navbar no-outline">
-          <div class="navbar-bg"></div>
+    <div class="popup" id="donate">
+      <div class="page">
+        <div class="navbar">
           <div class="navbar-inner">
-            <div class="title  ">Send feedback</div>
-            <div class="right"><a class="link popup-close"><i class="icon icon-close"></i></a></div>
+            <div class="title">Support the Developer</div>
+            <div class="right">
+              <a class="link popup-close"><i class="hm-cancel-filled"></i></a>
+            </div>
           </div>
         </div>
-
-                                <div class="page-content">
-                                    <form action="https://formsubmit.co/ajax/b8a70ec94b2630e768afef32c38d87ba" method="POST" class="list separated inset glass" id="feedback-form">
-                                        <input type="text" name="_honey" class="display-none">
-
-                                        <input type="hidden" name="_captcha" value="false">
-                                        <ul>
-                                            
-                                            <li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">Email</div>
-                                                        <div class="item-input-wrap">
-                                                            <input placeholder="youremail@something.com" type="email" name="Email" required />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-
-                                            <li>
-  <a class="item-link smart-select" data-open-in="popover">
-    <select name="Feedback type" required>
-      <option value="" disabled selected>Feedback type</option>
-      <option value="Issue/Bug">Issue/Bug</option>
-      <option value="Feature request">Feature request</option>
-      <option value="Other">Other</option>    
-    </select>
-    <div class="item-content">
-      <div class="item-inner">
-        <div class="item-title">Feedback type</div>
-      </div>
-    </div>
-  </a>
-</li>
-
-                                            <li>
-                                                <div class="item-content item-input">
-                                                    <div class="item-inner">
-                                                        <div class="item-title item-label">Feedback</div>
-                                                        <div class="item-input-wrap">
-                                                            <textarea placeholder="e.g. A bug in the Settings tab, missing data on the home page, or a feature request." name="HarmonyOS Feedback" required></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-  <br>                                                                          
-                                            <button id="submit-btn" type="submit" class="button button-fill button-large button-round button-preloader">
-            <span class="preloader"></span>
-      <span>Send Feedback</span>
-          </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        </div>      
-                        <div class="popup" id="donate">
-    <div class="page">
-      <div class="navbar">
-        <div class="navbar-inner">
-          <div class="title">Support the Developer</div>
-          <div class="right">
-            <a class="link popup-close"><i class="icon-close"></i></a>
+        <div class="page-content">
+          <div class="block text-align-center">
+            <i class="f7-icons" style="font-size:96px; color:#ff3b30;">heart_fill</i>
+            <h2 style="margin-top:20px;">Like what I’m building?</h2>
+            <p style="font-size:16px; opacity:0.9; max-width:420px; margin:16px auto;">
+              This project exists because I put real time, energy, and brainpower into it.
+              No ads. No paywalls. No corporate nonsense.
+              If it helped you, inspired you, or saved you time, consider supporting me.
+            </p>
+            <p style="font-size:14px; opacity:0.7; max-width:420px; margin:16px auto;">
+              Even a small amount genuinely helps.
+            </p>
+            <div class="block">
+              <a href="https://buymeacoffee.com/techlxrd07" class="button button-fill button-large button-round color-red external">
+                Support with a Donation
+              </a>
+            </div>
+            <p style="font-size:13px; opacity:0.6; margin-top:12px;">
+              Thanks for having my back.
+            </p>
           </div>
-        </div>
-      </div>
-
-      <div class="page-content">
-        <div class="block text-align-center">
-          <i class="f7-icons" style="font-size:96px;color:#ff3b30;">heart_fill</i>
-
-          <h2 style="margin-top:20px;">Like what I’m building?</h2>
-
-          <p style="font-size:16px;opacity:0.9;max-width:420px;margin:16px auto;">
-            This project exists because I put real time, energy, and brainpower into it.
-            No ads. No paywalls. No corporate nonsense.
-            If it helped you, inspired you, or saved you time, consider supporting me.
-          </p>
-
-          <p style="font-size:14px;opacity:0.7;max-width:420px;margin:16px auto;">
-            Even a small amount genuinely helps.
-          </p>
-
-          <div class="block">
-            <a href="https://buymeacoffee.com/techlxrd07"             
-               class="button button-fill button-large button-round color-red external">
-              Support with a Donation
-            </a>
-          </div>
-
-          <p style="font-size:13px;opacity:0.6;margin-top:12px;">
-            Thanks for having my back.
-          </p>
         </div>
       </div>
     </div>
-  </div>
-</div>        
-    <script src="https://cdn.jsdelivr.net/npm/framework7@8/framework7-bundle.min.js"></script>
-    <script type="text/javascript" src="js/app.js"></script>
-  </body>
+  </div>          
+  <script src="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
 </html>

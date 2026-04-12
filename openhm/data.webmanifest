@@ -1,17 +1,16 @@
 {
   "name": "SoftwareKit",
   "short_name": "SoftwareKit",
-  "description": "The best third party app store for OpenHarmony",
   "icons": [
     {
-      "src": "https://softwarekit.pages.dev/favicon.png",
+      "src": "favicon.png",
       "sizes": "32x32",
-      "type": "image/x-icon"
-    }, 
+      "type": "image/png"
+    },
     {
-      "src": "https://softwarekit.pages.dev/favicon.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/x-icon"
+      "type": "image/png"
     }
   ],
   "start_url": "app.html",

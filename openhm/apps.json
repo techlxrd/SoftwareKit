@@ -1,29 +1,38 @@
 [
-    {
-        "id": "easyabroad",
-        "title": "EasyAbroad",
-        "category": "Other",
-        "icon": "https://i.imgur.com/XeyIZH2.png",
-        "description": "An amazing app that lets you run Android apps on HarmonyOS NEXT. ",
-        "get_link": "https://appgallery.huawei.com/app/detail?id=com.easy.hmos.abroad",
-        "screenshots": ["https://i.imgur.com/FnAV7f5.jpeg"]
-    },
-    {
-        "id": "droitong",
-        "title": "DroiTong",
-        "category": "Other",
-        "icon": "https://www.droitong.com/favicon.ico",
-        "description": "Zhuoyitong is a utility software running on the HarmonyOS NEXT system. It gathers a rich collection of third-party applications, providing services such as application download, management, and updates to comprehensively meet diverse user needs. ",
-        "get_link": "https://www.droitong.com/",
-        "screenshots": [""]
-    },
-    {
-        "id": "nextstore",
-        "title": "NEXT Store",
-        "category": "Other",
-        "icon": "https://next.vcck.cn/favicon.ico",
-        "description": "NEXT Store is a platform for displaying and sharing applications",
-        "get_link": "https://next.vcck.cn/",
-        "screenshots": ["https://i.imgur.com/giRIyHd.png"]
-    }
+  {
+    "id": "easyabroad",
+    "title": "EasyAbroad",
+    "category": "Other",
+    "icon": "https://i.imgur.com/XeyIZH2.png",
+    "description": "Run your favorite Android apps on HarmonyOS NEXT without the usual hassle. EasyAbroad makes it simple to bridge the gap and access apps that aren’t officially available.",
+    "get_link": "https://appgallery.huawei.com/app/detail?id=com.easy.hmos.abroad",
+    "screenshots": ["https://i.imgur.com/FnAV7f5.jpeg"]
+  },
+  {
+    "id": "droitong",
+    "title": "DroiTong",
+    "category": "Other",
+    "icon": "https://www.droitong.com/favicon.ico",
+    "description": "A practical all-in-one app hub for HarmonyOS NEXT. Discover, download, and manage a wide range of third-party apps in one place, with updates handled for you.",
+    "get_link": "https://www.droitong.com/",
+    "screenshots": []
+  },
+  {
+    "id": "nextstore",
+    "title": "NEXT Store",
+    "category": "Other",
+    "icon": "https://next.vcck.cn/favicon.ico",
+    "description": "A simple platform to explore and share HarmonyOS NEXT apps. Great for discovering new projects and seeing what others are building.",
+    "get_link": "https://next.vcck.cn/",
+    "screenshots": ["https://i.imgur.com/giRIyHd.png"]
+  },
+  {
+    "id": "remy",
+    "title": "Remy",
+    "category": "Other",
+    "icon": "https://i.imgur.com/FVPuFIw.jpeg",
+    "description": "Capture moments in 3D instead of flat photos or videos. Remy lets you record real spaces and revisit them later, moving around and experiencing them as if you were there again.",
+    "get_link": "https://appgallery.huawei.com/app/detail?id=C6917574362946467225",
+    "screenshots": []
+  }
 ]
