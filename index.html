@@ -54,7 +54,6 @@
       --nav-height: 52px;
       --content-w: 1220px;
     }
-
     @media (prefers-color-scheme: dark) {
       :root {
         color-scheme: dark;
@@ -1207,7 +1206,7 @@
     AOS.init({
       duration: 900,
       easing: 'ease-out-cubic',
-      once: false,
+      once: true,
       offset: 80
     });
 
@@ -1218,14 +1217,7 @@
       spaceBetween: 24,
       effect: 'coverflow',
       grabCursor: true,
-      watchSlidesProgress: true,
-      coverflowEffect: {
-        rotate: 22,
-        stretch: 0,
-        depth: 140,
-        modifier: 1,
-        slideShadows: false
-      },
+      watchSlidesProgress: true,     
       pagination: {
         el: '.swiper-pagination',
         clickable: true
