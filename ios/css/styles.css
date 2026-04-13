@@ -5,7 +5,6 @@
   --f7-toolbar-inner-padding-left: 18px;
   --f7-toolbar-inner-padding-right: 18px;
 }
-
 a,
 a:link,
 a:visited {
@@ -276,16 +275,6 @@ body.ui-scroll-locked {
 
 .size-96 {
   font-size: 96px !important;
-}
-
-.donate {
-  animation: beat .25s infinite alternate;
-}
-
-@keyframes beat {
-  to {
-    transform: scale(1.4);
-  }
 }
 
 .file-upload input {
