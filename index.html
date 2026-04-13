@@ -1,24 +1,35 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>SoftwareKit</title>
-  <meta name="description" content="SoftwareKit is a privacy-first iOS and macOS utility app for IPA signing, certificate checks, device info, Apple news, AltStore source support, and more.">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>SoftwareKit – IPA Signing, iOS Sideloading Tools & Device Utilities</title>
+  <meta name="description" content="SoftwareKit is a privacy-first iOS and macOS utility app for IPA signing, certificate checks, device info, Apple news, and AltStore support.">
   <meta name="author" content="TechLxrd">
-  <link rel="canonical" href="https://swkit.app">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="theme-color" content="#000000">
+  <link rel="canonical" href="https://swkit.app/">
 
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://swkit.app">
-  <meta property="og:title" content="SoftwareKit">
-  <meta property="og:description" content="IPA signing, certificate checking, device info, Apple news, AltStore source support, and more.">
-  <meta property="og:image" content="favicon.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://swkit.app">
-  <meta name="twitter:title" content="SoftwareKit">
-  <meta name="twitter:description" content="IPA signing, certificate checking, device info, Apple news, AltStore source support, and more.">
-  <meta name="twitter:image" content="favicon.png">
+  <meta property="og:url" content="https://swkit.app/">
+  <meta property="og:site_name" content="SoftwareKit">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="SoftwareKit – IPA Signer, iOS Sideloading & AltStore Alternative">
+  <meta property="og:description" content="Privacy-first iOS and macOS utility app for IPA signing, certificate checks, device info, Apple news, and AltStore support.">
+  <meta property="og:image" content="https://softwarekit.pages.dev/ios/assets/linkpreview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
 
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://swkit.app/">
+  <meta name="twitter:title" content="SoftwareKit – IPA Signer, iOS Sideloading & AltStore Alternative">
+  <meta name="twitter:description" content="Privacy-first iOS and macOS utility app for IPA signing, certificate checks, device info, Apple news, and AltStore support.">
+  <meta name="twitter:image" content="https://softwarekit.pages.dev/ios/assets/linkpreview.png">
+  <meta name="twitter:site" content="@softwarekit_app">
+  <meta name="twitter:creator" content="@techlxrd">
+
+  <link rel="icon" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons@5.0.5/css/framework7-icons.css">
@@ -31,12 +42,12 @@
       --accent: #0a84ff;
       --accent-2: #5e5ce6;
       --bg: #f5f5f7;
-      --bg-elevated: rgba(255,255,255,0.78);
+      --bg-elevated: rgba(255, 255, 255, 0.78);
       --text: #0b0b0f;
-      --subtext: rgba(60,60,67,0.78);
-      --line: rgba(0,0,0,0.08);
-      --shadow: 0 20px 70px rgba(0,0,0,0.08);
-      --shadow-strong: 0 28px 90px rgba(0,0,0,0.12);
+      --subtext: rgba(60, 60, 67, 0.78);
+      --line: rgba(0, 0, 0, 0.08);
+      --shadow: 0 20px 70px rgba(0, 0, 0, 0.08);
+      --shadow-strong: 0 28px 90px rgba(0, 0, 0, 0.12);
       --radius-xl: 36px;
       --radius-lg: 22px;
       --radius-md: 14px;
@@ -48,12 +59,12 @@
       :root {
         color-scheme: dark;
         --bg: #000000;
-        --bg-elevated: rgba(24,24,27,0.76);
+        --bg-elevated: rgba(24, 24, 27, 0.76);
         --text: #f5f5f7;
-        --subtext: rgba(235,235,245,0.74);
-        --line: rgba(255,255,255,0.10);
-        --shadow: 0 22px 72px rgba(0,0,0,0.42);
-        --shadow-strong: 0 32px 100px rgba(0,0,0,0.52);
+        --subtext: rgba(235, 235, 245, 0.74);
+        --line: rgba(255, 255, 255, 0.10);
+        --shadow: 0 22px 72px rgba(0, 0, 0, 0.42);
+        --shadow-strong: 0 32px 100px rgba(0, 0, 0, 0.52);
       }
     }
 
@@ -63,18 +74,9 @@
         --radius-lg: 18px;
         --radius-md: 12px;
       }
-
-      .nav-container {
-        border-radius: 22px;
-      }
-
-      .legacy-panel {
-        border-radius: 28px;
-      }
-
-      .retro-device {
-        border-radius: 28px;
-      }
+      .nav-container { border-radius: 22px; }
+      .legacy-panel { border-radius: 28px; }
+      .retro-device { border-radius: 28px; }
     }
 
     * {
@@ -93,10 +95,9 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
       color: var(--text);
-      background:
-        radial-gradient(circle at 14% 0%, rgba(10,132,255,0.12), transparent 26%),
-        radial-gradient(circle at 88% 6%, rgba(94,92,230,0.10), transparent 24%),
-        linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
+      background: radial-gradient(circle at 14% 0%, rgba(10, 132, 255, 0.12), transparent 26%),
+                  radial-gradient(circle at 88% 6%, rgba(94, 92, 230, 0.10), transparent 24%),
+                  linear-gradient(180deg, var(--bg) 0%, var(--bg) 100%);
       overflow-x: hidden;
       line-height: 1.45;
     }
@@ -104,8 +105,7 @@
     a {
       color: inherit;
       text-decoration: none;
-      tap-highlight:none;
-      -webkit-tap-highlight:none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     img {
@@ -149,27 +149,24 @@
       gap: 18px;
       padding: 0 16px;
       border-radius: 999px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.62), rgba(255,255,255,0.44));
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.62), rgba(255, 255, 255, 0.44));
       border: 1px solid var(--line);
       backdrop-filter: saturate(180%) blur(24px);
       -webkit-backdrop-filter: saturate(180%) blur(24px);
       box-shadow: var(--shadow);
-      overflow: hidden;
-      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     }
-  .checkmark{color:#3E84F6;
-          font-size:16px;
-          }
+
     @media (prefers-color-scheme: dark) {
       .nav-container {
-        background: linear-gradient(180deg, rgba(24,24,27,0.84), rgba(24,24,27,0.62));
+        background: linear-gradient(180deg, rgba(24, 24, 27, 0.84), rgba(24, 24, 27, 0.62));
       }
     }
 
     .nav-container:hover {
       transform: translateY(-1px);
       box-shadow: var(--shadow-strong);
-      border-color: rgba(10,132,255,0.18);
+      border-color: rgba(10, 132, 255, 0.18);
     }
 
     .brand {
@@ -189,9 +186,9 @@
       border-radius: 11px;
       display: grid;
       place-items: center;
-      background: linear-gradient(180deg, rgba(10,132,255,0.20), rgba(94,92,230,0.14));
+      background: linear-gradient(180deg, rgba(10, 132, 255, 0.20), rgba(94, 92, 230, 0.14));
       border: 1px solid var(--line);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.14);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
     }
 
     .nav-links {
@@ -199,7 +196,6 @@
       align-items: center;
       justify-content: center;
       gap: 22px;
-      min-width: 0;
       color: var(--subtext);
       font-size: 13px;
       font-weight: 600;
@@ -209,7 +205,7 @@
     .nav-links a {
       position: relative;
       white-space: nowrap;
-      transition: color .2s ease, transform .2s ease;
+      transition: color 0.2s ease, transform 0.2s ease;
     }
 
     .nav-links a::after {
@@ -223,7 +219,7 @@
       background: var(--accent);
       transform: scaleX(0);
       transform-origin: center;
-      transition: transform .2s ease;
+      transition: transform 0.2s ease;
     }
 
     .nav-links a:hover {
@@ -231,9 +227,7 @@
       transform: translateY(-1px);
     }
 
-    .nav-links a:hover::after {
-      transform: scaleX(1);
-    }
+    .nav-links a:hover::after { transform: scaleX(1); }
 
     .nav-cta {
       display: inline-flex;
@@ -245,37 +239,28 @@
       font-weight: 800;
       color: #fff;
       background: linear-gradient(180deg, #0a84ff, #007aff);
-      box-shadow: 0 12px 26px rgba(10,132,255,0.20);
+      box-shadow: 0 12px 26px rgba(10, 132, 255, 0.20);
       flex: 0 0 auto;
-      transition: transform .2s ease, opacity .2s ease;
+      transition: transform 0.2s ease, opacity 0.2s ease;
     }
 
     .nav-cta:hover {
       transform: translateY(-2px);
       opacity: 0.98;
     }
-    .hero,
-    .section,
-    .legacy-section,
-    .footer-inner {
+
+    .hero, .section, .legacy-section, .footer-inner {
       width: min(var(--content-w), calc(100% - 48px));
       margin-left: auto;
       margin-right: auto;
     }
 
-    .hero,
-    .section {
-      padding-bottom: 92px;
-    }
-
-    .hero {
-      padding-top: 170px;
-    }
+    .hero, .section { padding-bottom: 92px; }
+    .hero { padding-top: 170px; }
 
     .hero-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 0;
       justify-items: center;
       align-items: center;
     }
@@ -295,8 +280,8 @@
       font-weight: 800;
       letter-spacing: 0.03em;
       color: var(--accent);
-      background: rgba(10,132,255,0.10);
-      border: 1px solid rgba(10,132,255,0.14);
+      background: rgba(10, 132, 255, 0.10);
+      border: 1px solid rgba(10, 132, 255, 0.14);
       margin-bottom: 22px;
     }
 
@@ -305,7 +290,7 @@
       line-height: 0.94;
       letter-spacing: -0.08em;
       margin-bottom: 20px;
-      background: linear-gradient(180deg, var(--text) 0%, rgba(120,120,128,0.88) 100%);
+      background: linear-gradient(180deg, var(--text) 0%, rgba(120, 120, 128, 0.88) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       max-width: 900px;
@@ -340,21 +325,14 @@
       font-size: 15px;
       font-weight: 800;
       border: 1px solid transparent;
-      transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease, background .2s ease;
-      box-shadow: 0 12px 26px rgba(0,0,0,0.10);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.10);
       will-change: transform;
       white-space: nowrap;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .btn-primary {
-      background: linear-gradient(180deg, #0a84ff, #007aff);
-      color: #fff;
-    }
-
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: linear-gradient(180deg, #0a84ff, #007aff); color: #fff; }
     .btn-secondary {
       background: var(--bg-elevated);
       color: var(--text);
@@ -362,12 +340,7 @@
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
     }
-
-    .btn-tertiary {
-      background: transparent;
-      color: var(--text);
-      border-color: var(--line);
-    }
+    .btn-tertiary { background: transparent; color: var(--text); border-color: var(--line); }
 
     .trail-link {
       display: inline-flex;
@@ -376,13 +349,10 @@
       margin-top: 14px;
       color: var(--subtext);
       font-size: 14px;
-      transition: color .2s ease, transform .2s ease;
+      transition: color 0.2s ease, transform 0.2s ease;
     }
 
-    .trail-link:hover {
-      color: var(--text);
-      transform: translateX(2px);
-    }
+    .trail-link:hover { color: var(--text); transform: translateX(2px); }
 
     .section-title {
       text-align: center;
@@ -417,24 +387,18 @@
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       box-shadow: var(--shadow);
-      overflow: hidden;
       position: relative;
-      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
     }
 
     .card:hover {
       transform: translateY(-4px);
       box-shadow: var(--shadow-strong);
-      border-color: rgba(10,132,255,0.16);
+      border-color: rgba(10, 132, 255, 0.16);
     }
 
-    .card.full {
-      grid-column: span 12;
-    }
-
-    .card.small {
-      grid-column: span 4;
-    }
+    .card.full { grid-column: span 12; }
+    .card.small { grid-column: span 4; }
 
     .card h3 {
       font-size: 28px;
@@ -456,9 +420,9 @@
       font-size: 12px;
       font-weight: 800;
       letter-spacing: 0.03em;
-      background: rgba(10,132,255,0.10);
+      background: rgba(10, 132, 255, 0.10);
       color: var(--accent);
-      border: 1px solid rgba(10,132,255,0.14);
+      border: 1px solid rgba(10, 132, 255, 0.14);
       margin-bottom: 14px;
     }
 
@@ -507,11 +471,11 @@
     }
 
     .glass-banner {
-      background: linear-gradient(145deg, rgba(10,132,255,0.12), rgba(94,92,230,0.08)), var(--bg-elevated);
+      background: linear-gradient(145deg, rgba(10, 132, 255, 0.12), rgba(94, 92, 230, 0.08)), var(--bg-elevated);
     }
 
     .privacy-card {
-      background: linear-gradient(180deg, rgba(0,0,0,0.03), transparent), var(--bg-elevated);
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.03), transparent), var(--bg-elevated);
     }
 
     .support-box {
@@ -522,19 +486,9 @@
       flex-wrap: wrap;
     }
 
-    .support-copy {
-      max-width: 760px;
-    }
-
-    .support-copy p {
-      margin-top: 8px;
-    }
-
-    .support-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+    .support-copy { max-width: 760px; }
+    .support-copy p { margin-top: 8px; }
+    .support-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
     .altstore-link {
       display: inline-flex;
@@ -543,19 +497,17 @@
       margin-top: 10px;
       color: var(--accent);
       font-weight: 800;
-      transition: transform .2s ease, opacity .2s ease;
+      transition: transform 0.2s ease, opacity 0.2s ease;
     }
 
-    .altstore-link:hover {
-      transform: translateX(2px);
-    }
+    .altstore-link:hover { transform: translateX(2px); }
 
     .altstore-url {
       margin-top: 10px;
       padding: 12px 14px;
       border-radius: 16px;
       border: 1px solid var(--line);
-      background: rgba(127,127,127,0.06);
+      background: rgba(127, 127, 127, 0.06);
       font-size: 13px;
       color: var(--subtext);
       word-break: break-all;
@@ -568,9 +520,7 @@
       cursor: pointer;
     }
 
-    .screenshot-shell {
-      padding: 28px 0 8px;
-    }
+    .screenshot-shell { padding: 28px 0 8px; }
 
     .screenshot-swiper {
       width: 100%;
@@ -580,7 +530,6 @@
 
     .screenshot-swiper .swiper-slide {
       width: auto;
-      background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -588,27 +537,19 @@
 
     .shot {
       width: min(290px, 72vw);
-      border-radius: 0;
       display: block;
       background: transparent;
-      box-shadow: none;
-      border: none;
-      filter: none;
     }
 
-    .legacy-section {
-      margin-bottom: 92px;
-    }
+    .legacy-section { margin-bottom: 92px; }
 
     .legacy-panel {
       position: relative;
       overflow: hidden;
       border-radius: 44px;
-      border: 1px solid rgba(255,255,255,0.10);
-      box-shadow: 0 30px 80px rgba(0,0,0,0.24);
-      background:
-        linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.50)),
-        url("https://i.imgur.com/dmVMy5S.jpeg");
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.24);
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.50)), url("https://i.imgur.com/dmVMy5S.jpeg");
       background-size: cover;
       background-position: center;
       padding: 88px 28px;
@@ -619,9 +560,8 @@
       content: "";
       position: absolute;
       inset: 0;
-      background:
-        radial-gradient(circle at top, rgba(255,255,255,0.12), transparent 42%),
-        linear-gradient(180deg, transparent, rgba(0,0,0,0.20));
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.12), transparent 42%),
+                  linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.20));
       pointer-events: none;
     }
 
@@ -629,14 +569,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background:
-        repeating-linear-gradient(
-          to bottom,
-          rgba(255,255,255,0.045) 0px,
-          rgba(255,255,255,0.045) 1px,
-          transparent 1px,
-          transparent 4px
-        );
+      background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.045) 0px, rgba(255, 255, 255, 0.045) 1px, transparent 1px, transparent 4px);
       opacity: 0.25;
       mix-blend-mode: soft-light;
       pointer-events: none;
@@ -670,11 +603,9 @@
       aspect-ratio: 0.62;
       border-radius: 44px;
       padding: 14px;
-      background: linear-gradient(180deg, rgba(245,245,247,0.82), rgba(210,210,214,0.55));
-      border: 1px solid rgba(255,255,255,0.26);
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.65),
-        0 24px 50px rgba(0,0,0,0.35);
+      background: linear-gradient(180deg, rgba(245, 245, 247, 0.82), rgba(210, 210, 214, 0.55));
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 24px 50px rgba(0, 0, 0, 0.35);
       position: relative;
       transform: rotate(-8deg);
     }
@@ -684,16 +615,15 @@
       position: absolute;
       inset: 18px;
       border-radius: 30px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.28));
-      border: 1px solid rgba(0,0,0,0.10);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.28));
+      border: 1px solid rgba(0, 0, 0, 0.10);
     }
 
     .retro-screen {
       position: absolute;
       inset: 34px;
       border-radius: 24px;
-      background: linear-gradient(180deg, rgba(60,88,140,0.96), rgba(38,51,88,0.98));
-      overflow: hidden;
+      background: linear-gradient(180deg, rgba(60, 88, 140, 0.96), rgba(38, 51, 88, 0.98));
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -704,15 +634,8 @@
       content: "";
       position: absolute;
       inset: 0;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.10), transparent 26%),
-        repeating-linear-gradient(
-          to bottom,
-          rgba(255,255,255,0.03) 0px,
-          rgba(255,255,255,0.03) 2px,
-          transparent 2px,
-          transparent 5px
-        );
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.10), transparent 26%),
+                  repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 0px, rgba(255, 255, 255, 0.03) 2px, transparent 2px, transparent 5px);
       opacity: 0.6;
       pointer-events: none;
     }
@@ -721,7 +644,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      color: rgba(255,255,255,0.92);
+      color: rgba(255, 255, 255, 0.92);
       font-size: 12px;
       font-weight: 700;
       position: relative;
@@ -745,29 +668,18 @@
       border-radius: 24px;
       display: grid;
       place-items: center;
-      background: linear-gradient(180deg, rgba(255,255,255,0.90), rgba(235,235,235,0.70));
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.90), rgba(235, 235, 235, 0.70));
       color: #3a4d7a;
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.8),
-        0 10px 20px rgba(0,0,0,0.18);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 10px 20px rgba(0, 0, 0, 0.18);
     }
 
-    .retro-center strong {
-      font-size: 20px;
-      letter-spacing: -0.04em;
-    }
-
-    .retro-center span {
-      color: rgba(255,255,255,0.84);
-      font-size: 13px;
-      max-width: 220px;
-      line-height: 1.45;
-    }
+    .retro-center strong { font-size: 20px; letter-spacing: -0.04em; }
+    .retro-center span { color: rgba(255, 255, 255, 0.84); font-size: 13px; max-width: 220px; line-height: 1.45; }
 
     .legacy-copy .badge {
-      background: rgba(255,255,255,0.14);
+      background: rgba(255, 255, 255, 0.14);
       color: #fff;
-      border-color: rgba(255,255,255,0.15);
+      border-color: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
     }
@@ -781,7 +693,7 @@
     }
 
     .legacy-copy p {
-      color: rgba(255,255,255,0.88);
+      color: rgba(255, 255, 255, 0.88);
       font-size: 18px;
       max-width: 650px;
       margin-bottom: 24px;
@@ -797,8 +709,8 @@
     .legacy-chip {
       padding: 10px 14px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.14);
       color: #fff;
       font-size: 13px;
       font-weight: 700;
@@ -817,15 +729,12 @@
       color: #fff;
       background: linear-gradient(to bottom, #8ab4f8 0%, #4c87e6 50%, #3369c6 51%, #2a5db5 100%);
       border: 1px solid #1c3f7f;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.52), 0 10px 22px rgba(0,0,0,0.34);
-      text-shadow: 0 -1px 1px rgba(0,0,0,0.6);
-      transition: transform .2s ease, filter .2s ease;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.52), 0 10px 22px rgba(0, 0, 0, 0.34);
+      text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.6);
+      transition: transform 0.2s ease, filter 0.2s ease;
     }
 
-    .ios6-btn:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
-    }
+    .ios6-btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
 
     .members {
       display: grid;
@@ -849,10 +758,12 @@
       height: 72px;
       border-radius: 100%;
       margin: 0 auto 14px;
-      background: linear-gradient(135deg, rgba(10,132,255,0.95), rgba(94,92,230,0.95));
-      box-shadow: 0 14px 28px rgba(10,132,255,0.22);
+      background: linear-gradient(135deg, rgba(10, 132, 255, 0.95), rgba(94, 92, 230, 0.95));
+      box-shadow: 0 14px 28px rgba(10, 132, 255, 0.22);
     }
-   .avatar img{border-radius:999px;}
+
+    .avatar img { border-radius: 999px; }
+
     .member-card strong {
       display: block;
       font-size: 18px;
@@ -860,10 +771,7 @@
       margin-bottom: 6px;
     }
 
-    .member-card span {
-      color: var(--subtext);
-      font-size: 14px;
-    }
+    .member-card span { color: var(--subtext); font-size: 14px; }
 
     .footer {
       padding: 40px 0 62px;
@@ -893,148 +801,47 @@
       font-weight: 800;
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-      transition: transform .2s ease, box-shadow .2s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .footer-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 26px rgba(0,0,0,0.10);
-    }
+    .footer-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 26px rgba(0, 0, 0, 0.10); }
+    .mini-note { font-size: 13px; opacity: 0.9; margin-top: 12px; }
+    .checkmark { color: #3E84F6; font-size: 16px; }
 
-    .mini-note {
-      font-size: 13px;
-      opacity: 0.9;
-      margin-top: 12px;
-    }
-
-    .thin {
-      font-weight: 500;
-    }
-
+   
     @media (max-width: 1120px) {
-      .hero-copy {
-        text-align: center;
-      }
-
-      .hero-actions {
-        justify-content: center;
-      }
-
-      .section-title {
-        text-align: center;
-      }
-
-      .card,
-      .card.small {
-        grid-column: span 12;
-      }
-
-      .feature-list {
-        grid-template-columns: 1fr;
-      }
-
-      .legacy-panel {
-        padding: 74px 18px;
-      }
-
-      .legacy-art {
-        min-height: 280px;
-      }
-
-      .legacy-hero {
-        grid-template-columns: 1fr;
-        text-align: center;
-      }
-
-      .legacy-copy p {
-        margin-left: auto;
-        margin-right: auto;
-      }
-
-      .legacy-chips {
-        justify-content: center;
-      }
-
-      .members {
-        grid-template-columns: 1fr;
-      }
+      .hero-copy, .section-title { text-align: center; }
+      .hero-actions { justify-content: center; }
+      .card, .card.small { grid-column: span 12; }
+      .feature-list { grid-template-columns: 1fr; }
+      .legacy-panel { padding: 74px 18px; }
+      .legacy-art { min-height: 280px; }
+      .legacy-hero { grid-template-columns: 1fr; text-align: center; }
+      .legacy-copy p { margin-left: auto; margin-right: auto; }
+      .legacy-chips { justify-content: center; }
+      .members { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 900px) {
-      .nav-links {
-        display: none;
-      }
+      .nav-links { display: none; }
     }
 
     @media (max-width: 560px) {
-      nav {
-        top: 10px;
-        width: calc(100% - 16px);
-      }
-
-      .nav-container {
-        border-radius: 24px;
-        padding: 0 12px;
-      }
-
-      .brand span {
-        display: none;
-      }
-
-      .btn,
-      .footer-btn {
-        width: 100%;
-      }
-
-      .hero {
-        padding-top: 142px;
-        padding-bottom: 68px;
-      }
-
-      .hero,
-      .section,
-      .legacy-section {
-        width: calc(100% - 32px);
-      }
-
-      .section {
-        padding-bottom: 74px;
-      }
-
-      .card {
-        padding: 22px;
-        border-radius: 22px;
-      }
-
-      .card h3 {
-        font-size: 24px;
-      }
-
-      .card p {
-        font-size: 16px;
-      }
-
-      .grid {
-        gap: 14px;
-      }
-
-      .support-actions {
-        width: 100%;
-      }
-
-      .ios6-btn {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .source-cta {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .footer-legal {
-        gap: 10px;
-      }
+      nav { top: 10px; width: calc(100% - 16px); }
+      .nav-container { border-radius: 24px; padding: 0 12px; }
+      .brand span { display: none; }
+      .btn, .footer-btn { width: 100%; }
+      .hero { padding-top: 142px; padding-bottom: 68px; }
+      .hero, .section, .legacy-section { width: calc(100% - 32px); }
+      .section { padding-bottom: 74px; }
+      .card { padding: 22px; border-radius: 22px; }
+      .card h3 { font-size: 24px; }
+      .card p { font-size: 16px; }
+      .grid { gap: 14px; }
+      .support-actions { width: 100%; }
+      .ios6-btn { width: 100%; justify-content: center; }
+      .source-cta { width: 100%; justify-content: center; }
+      .footer-legal { gap: 10px; }
     }
   </style>
 </head>
@@ -1111,9 +918,9 @@
         <div class="screenshot-shell" data-aos="fade-up">
           <div class="swiper screenshot-swiper">
             <div class="swiper-wrapper">
-              <div class="swiper-slide"><img class="shot" src="https://i.imgur.com/4zLzR8Q.png" alt="SoftwareKit iOS screenshot"></div>
-              <div class="swiper-slide"><img class="shot" src="https://i.imgur.com/2XFFsnt.png" alt="SoftwareKit macOS screenshot"></div>
-              <div class="swiper-slide"><img class="shot" src="https://i.imgur.com/kmHughI.png" alt="SoftwareKit HarmonyOS screenshot"></div>
+              <div class="swiper-slide"><img class="shot" src="https://i.imgur.com/4zLzR8Q.png" alt="SoftwareKit iOS screenshot" loading="lazy"></div>
+              <div class="swiper-slide"><img class="shot" src="https://i.imgur.com/2XFFsnt.png" alt="SoftwareKit HarmonyOS screenshot" loading="lazy"></div>
+              <div class="swiper-slide"><img class="shot" src="https://i.imgur.com/kmHughI.png" alt="SoftwareKit Legacy screenshot" loading="lazy"></div>
             </div>
             <div class="swiper-pagination"></div>
           </div>
@@ -1175,7 +982,6 @@
                   <span>Built to feel native on the device, not like a generic wrapper.</span>
                 </div>
               </div>
-
               <div class="feature-item">
                 <i class="bi bi-laptop"></i>
                 <div>
@@ -1183,7 +989,6 @@
                   <span>The desktop version keeps the same identity while adapting to a larger screen.</span>
                 </div>
               </div>
-
               <div class="feature-item">
                 <i class="bi bi-speedometer2"></i>
                 <div>
@@ -1191,7 +996,6 @@
                   <span>Fast loading, smooth transitions, and a lightweight structure that stays responsive.</span>
                 </div>
               </div>
-
               <div class="feature-item">
                 <i class="bi bi-eye-slash"></i>
                 <div>
@@ -1204,33 +1008,34 @@
         </div>
       </section>
 
-<section class="section" id="altstore">
-  <div class="section-title" data-aos="fade-up">
-    <h2>AltStore source support.</h2>
-  </div>
+      <section class="section" id="altstore">
+        <div class="section-title" data-aos="fade-up">
+          <h2>AltStore source support.</h2>
+        </div>
 
-  <div class="grid">
-    <div class="card full" data-aos="fade-up">
-      <span class="badge"><i class="bi bi-link-45deg"></i> AltSources</span>
-      <h3>Browse your favorite sources.</h3>
-      <p>
-        SoftwareKit has full AltStore Sources support, so you can browse your favorite sources directly in the app.
-        It loads instantly even at massive scale and includes built-in NSFW(18+) content protection.
-      </p>
+        <div class="grid">
+          <div class="card full" data-aos="fade-up">
+            <span class="badge"><i class="bi bi-link-45deg"></i> AltSources</span>
+            <h3>Browse your favorite sources.</h3>
+            <p>
+              SoftwareKit has full AltStore Sources support, so you can browse your favorite sources directly in the app.
+              It loads instantly even at massive scale and includes built-in NSFW(18+) content protection.
+            </p>
 
-      <div class="altstore-url">
-        <a onclick="navigator.clipboard.writeText('https://swkit.app/ios/altstore.json'); this.innerHTML='Copied! <i class=&quot;bi bi-clipboard-check-fill&quot;></i>'; return false;">
-          https://swkit.app/ios/altstore.json <i class="bi bi-clipboard-fill"></i>
-        </a>
-      </div>
+            <div class="altstore-url">
+              <a onclick="navigator.clipboard.writeText('https://swkit.app/ios/altstore.json'); this.innerHTML='Copied! <i class=&quot;bi bi-clipboard-check-fill&quot;></i>'; return false;">
+                https://swkit.app/ios/altstore.json <i class="bi bi-clipboard-fill"></i>
+              </a>
+            </div>
 
-      <a class="altstore-link" href="altstore://source?url=https://swkit.app/ios/altstore.json">
-        <i class="bi bi-arrow-up-right-circle-fill"></i>
-        Add the SoftwareKit source to AltStore
-      </a>
-    </div>
-  </div>
-</section>
+            <a class="altstore-link" href="altstore://source?url=https://swkit.app/ios/altstore.json">
+              <i class="bi bi-arrow-up-right-circle-fill"></i>
+              Add the SoftwareKit source to AltStore
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section class="section" id="privacy">
         <div class="section-title" data-aos="fade-up">
           <h2>Privacy is part of the product.</h2>
@@ -1259,7 +1064,7 @@
               <div class="retro-device">
                 <div class="retro-screen">
                   <div class="retro-top">
-                    <span>iOS 4+</span>
+                    <span>iOS 5+</span>
                     <span>Legacy</span>
                   </div>
                   <div class="retro-center">
@@ -1270,7 +1075,7 @@
                     <span>Made for the old days, but still useful right now.</span>
                   </div>
                   <div class="retro-top">
-                    <span>4.0</span>
+                    <span>5.0</span>
                     <span>9.3.6</span>
                   </div>
                 </div>
@@ -1281,20 +1086,9 @@
               <span class="badge">One more thing...</span>
               <h2>Legacy iOS support.</h2>
               <p>
-                The classics still matter. SoftwareKit Legacy keeps support alive for iOS 4 through iOS 9,
-                with a design that feels right at home on older devices.
+                The classics still matter. SoftwareKit Legacy keeps support alive for iOS 5 through iOS 9, with a design that feels right at home on older devices.
               </p>
-
-              <div class="legacy-chips">
-                <div class="legacy-chip">iOS 4</div>
-                <div class="legacy-chip">iOS 5</div>
-                <div class="legacy-chip">iOS 6</div>
-                <div class="legacy-chip">iOS 7</div>
-                <div class="legacy-chip">iOS 8</div>
-                <div class="legacy-chip">iOS 9</div>
-              </div>
-
-              <a href="https://softwarekit-legacy.pages.dev" class="ios6-btn">
+              <a href="https://legacy.swkit.app" class="ios6-btn">
                 <i class="bi bi-download"></i> Open SoftwareKit Legacy
               </a>
             </div>
@@ -1367,22 +1161,22 @@
 
         <div class="members">
           <a href="https://techlxrd.github.io"><div class="member-card" data-aos="fade-up">
-            <div class="avatar"><img src="https://techlord.is-a.dev/assets/favicon.ico" loading="lazy"></div>
+            <div class="avatar"><img src="https://techlord.is-a.dev/assets/favicon.ico" loading="lazy" alt="TechLxrd"></div>
             <strong>TechLxrd</strong>
             <span>Lead developer & founder</span>
           </div></a>
           <a href="https://x.com/Techjunkie_Aman"><div class="member-card" data-aos="fade-up" data-aos-delay="80">
-            <div class="avatar"><img src="https://pbs.twimg.com/profile_images/1637031339244548096/O-iNPMQ6.jpg" loading="lazy"></div>
+            <div class="avatar"><img src="https://pbs.twimg.com/profile_images/1637031339244548096/O-iNPMQ6.jpg" loading="lazy" alt="TechJunkie Aman"></div>
             <strong>TechJunkie Aman <i class="f7-icons checkmark">checkmark_seal_fill</i></strong>
             <span>Promotion</span>
           </div></a>
-                    <div class="member-card" data-aos="fade-up" data-aos-delay="80">
+          <div class="member-card" data-aos="fade-up" data-aos-delay="80">
             <div class="avatar"></div>
             <strong>Ceramic Stone</strong>
             <span>Domain, Ideas, Testing, Bug reports, etc</span>
           </div>
           <a href="https://www.idownloadblog.com/"><div class="member-card" data-aos="fade-up" data-aos-delay="160">
-            <div class="avatar"><img src="https://pbs.twimg.com/profile_images/1452686779270586370/WKufzntB.jpg" loading="lazy"></div>
+            <div class="avatar"><img src="https://pbs.twimg.com/profile_images/1452686779270586370/WKufzntB.jpg" loading="lazy" alt="iDownloadBlog"></div>
             <strong>iDownloadBlog</strong>
             <span>Newsfeed provider</span>
           </div></a>
@@ -1394,13 +1188,12 @@
       <div class="footer-inner">
         <div class="footer-legal">
           <a href="legal.html" class="footer-btn"><i class="bi bi-shield-lock"></i> Legal</a>
-         
         </div>
 
         <p style="max-width:900px;margin:0 auto 12px;">
-  SoftwareKit is a private, non-commercial utility project and is not intended for piracy. 
-  All trademarks, platform names, app names, and product names are the property of their respective owners.
-</p>
+          SoftwareKit is a private, non-commercial utility project and is not intended for piracy. 
+          All trademarks, platform names, app names, and product names are the property of their respective owners.
+        </p>
         <p>Built with ❤️ by <a href="https://techlxrd.github.io"><strong>TechLxrd</strong></a></p>
         <p class="mini-note">© 2026 SoftwareKit • softwarekit_app@outlook.com</p>
       </div>
@@ -1438,6 +1231,21 @@
         clickable: true
       }
     });
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "SoftwareKit",
+    "url": "https://swkit.app/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": ["iOS", "macOS", "HarmonyOS"],
+    "description": "A privacy-first iOS and macOS utility app for IPA signing, certificate checks, device info, Apple news, and AltStore support.",
+    "author": {
+      "@type": "Person",
+      "name": "TechLxrd"
+    }
+  }
   </script>
 </body>
 </html>
