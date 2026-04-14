@@ -847,7 +847,17 @@ document.addEventListener('DOMContentLoaded', () => {
         'https://corsproxy.io/?url='
     ];
     const NSFW_PREF_PREFIX = 'source_nsfw_pref:';
-    const NSFW_TERMS = ['porn', 'nsfw', 'climax', 'cl1m4x', 'xxx', '18+', 'ipa.cypwn.xyz', 'adult', 'erotic', 'VidList'];
+    const NSFW_TERMS_REGEX = [
+        /\b(porn|nsfw|xxx|18\+)\b/i,
+        /\b(climax|cl1m4x)\b/i,
+        /\b(adult|erotic)\b/i,
+        /\bVidList\b/i
+    ];
+    const SKIP_KEYS = new Set([
+        'bundleIdentifier', 'identifier', 'sourceURL', 'downloadURL',
+        'iconURL', 'screenshotURLs', 'appPermissions', 'versions',
+        'versionDate', 'size', 'date', 'url'
+    ]);
     const FETCH_TIMEOUT = 1000;
 
     if (!window.repoView) {
@@ -876,16 +886,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function containsNsfwText(value) {
-        const lowerValue = String(value || '').toLowerCase();
-        return NSFW_TERMS.some(term => lowerValue.includes(term.toLowerCase()));
+        const str = String(value || '');
+        return NSFW_TERMS_REGEX.some(regex => regex.test(str));
     }
 
     function deepContainsNsfw(obj, depth = 0) {
         if (depth > 10) return false;
         if (typeof obj === 'string') return containsNsfwText(obj);
-        if (Array.isArray(obj)) return obj.some(item => deepContainsNsfw(item, depth + 1));
+        if (Array.isArray(obj)) {
+            return obj.some(item => deepContainsNsfw(item, depth + 1));
+        }
         if (obj && typeof obj === 'object') {
-            return Object.values(obj).some(val => deepContainsNsfw(val, depth + 1));
+            for (const [key, val] of Object.entries(obj)) {
+                if (SKIP_KEYS.has(key)) continue;
+                if (deepContainsNsfw(val, depth + 1)) return true;
+            }
+            return false;
         }
         return false;
     }
@@ -940,14 +956,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function isNsfwApp(app) {
         if (!app) return false;
-        const fieldsToCheck = [
+        const userVisibleFields = [
             app.name,
             app.developerName,
             app.localizedDescription,
-            app.bundleIdentifier,
             app.category
         ];
-        return fieldsToCheck.some(field => containsNsfwText(field));
+        return userVisibleFields.some(field => containsNsfwText(field));
     }
 
     function sanitizeRepo(json, url) {
@@ -989,7 +1004,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 let bundleId = appEntry?.bundleIdentifier || appEntry?.bundleID || appEntry?.id ||
                                v0?.bundleIdentifier || v0?.id || '';
                 if (!bundleId) {
-                    console.warn('App missing bundleIdentifier, skipping:', appName);
                     return null;
                 }
 
@@ -1001,7 +1015,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     downloadUrl = versions[0].downloadURL;
                 }
                 if (!downloadUrl) {
-                    console.warn('App missing downloadURL, skipping:', appName);
                     return null;
                 }
 
@@ -1033,7 +1046,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     versions
                 };
             } catch (e) {
-                console.error('Error sanitizing app:', e);
                 return null;
             }
         }).filter(Boolean);
@@ -1071,12 +1083,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function repoLooksNsfw(repo, sourceURL) {
         const combined = {
-            sourceURL,
             repoName: repo?.name,
-            identifier: repo?.identifier,
             apps: repo?.apps,
-            news: repo?.news,
-            rawRepo: repo
+            news: repo?.news
         };
         return deepContainsNsfw(combined);
     }
@@ -1089,6 +1098,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return repo;
     }
+    
 
     function getRepos() {
         try {
@@ -1905,7 +1915,7 @@ function renderReadLaterNews() {
   const items = getReadLater();
 
   if (!items.length) {
-    container.innerHTML = '                            <div class="block-title centered-empty" id="favempty">No saved articles <i class="f7-icons icon-small">tray_fill</i></div>';
+    container.innerHTML = '                             <h2 id="favempty">No favorites</h2><i class="f7-icons icon-small">tray_fill</i></div>';
     return;
   }
 
@@ -2822,11 +2832,6 @@ if (isMac && !isiPad) {
   const elementsToShow = document.querySelectorAll('.macos-show');
   elementsToShow.forEach(el => {
     el.style.display = 'block';
-  });
-
-  const removeDividers = document.querySelectorAll('.list-dividers');
-  removeDividers.forEach(el => {
-    el.classList.remove('list-dividers');
   });
 
   document.querySelectorAll('.install').forEach(el => el.classList.add('display-none'));
