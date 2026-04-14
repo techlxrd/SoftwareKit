@@ -10,7 +10,7 @@ SoftwareKit is a modern web-based platform designed to provide utilities and too
 
 - Lightweight and fast web experience
 - Clean UI focused on usability
-- Tools and utilities for Apple ecosystem users
+- Tools and utilities for Apple and HUAWEI ecosystem users
 - Continuously evolving platform with frequent updates
 - Designed with performance and simplicity in mind
 
