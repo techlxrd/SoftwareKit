@@ -27,6 +27,15 @@
     "screenshots": ["https://i.imgur.com/giRIyHd.png"]
   },
   {
+    "id": "autoinstaller",
+    "title": "Auto Installer",
+    "category": "Sideloading",
+    "icon": "",
+    "description": "HarmonyOS Next Hap installer",
+    "get_link": "https://github.com/likuai2010/auto-installer",
+    "screenshots": []
+  }, 
+    {
     "id": "remy",
     "title": "Remy",
     "category": "Other",
@@ -34,5 +43,6 @@
     "description": "Capture moments in 3D instead of flat photos or videos. Remy lets you record real spaces and revisit them later, moving around and experiencing them as if you were there again.",
     "get_link": "https://appgallery.huawei.com/app/detail?id=C6917574362946467225",
     "screenshots": []
-  }
+  } 
+  
 ]
