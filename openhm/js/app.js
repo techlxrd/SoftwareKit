@@ -399,7 +399,7 @@ window.addEventListener('error', function (event) {
   if (img.dataset.fallbackApplied) return;
 
   img.dataset.fallbackApplied = 'true';
-  img.src = './assets/default.png';
+  img.src = '../ios/assets/default.png';
 }, true);
 
 document.addEventListener('DOMContentLoaded', () => {
