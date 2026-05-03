@@ -8,6 +8,8 @@
   --f7-dialog-text-align: center;
   --f7-dialog-title-font-size: 23px;
   --f7-dialog-border-radius: 36px;
+  color-scheme: light dark;
+}
 }
 
 .ios {
