@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div id="app">
+    <div id="app">      
         <div class="sidebar">
             <div class="sidebar-header">
                 <div class="justify-content-center">
@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="view view-main">
-            <div class="page ">
+            <div class="page">
                 <div class="fab fab-right-bottom searchbar-hide-on-enable" id="search-fab">
                     <a class="searchbar-enable" data-searchbar=".searchbar"><i class="icon f7-icons">search</i></a>
                 </div>
@@ -88,8 +88,8 @@
                             </form>                          
                         </div>
                     </div>
-                </div>
-                <div class="toolbar tabbar tabbar-icons toolbar-bottom searchbar-hide-on-enable">
+                </div>              
+                <div class="toolbar tabbar tabbar-icons toolbar-bottom searchbar-hide-on-enable">                                         
                     <div class="toolbar-inner">
                         <div class="toolbar-pane">
                             <a href="#homeTab" class="tab-link tab-link-active" data-tab-title="Today"><i class="icon f7-icons">today</i><span class="tabbar-label">Today</span></a>
@@ -99,7 +99,7 @@
                             <a href="#sourcesTab" class="tab-link" data-tab-title="Sources"><i class="icon f7-icons">arrow_down_doc_fill</i><span class="tabbar-label">Sources</span></a>
                         </div>
                     </div>
-                </div>
+                </div>                             
                 <div class="tabs">
                     <div id="homeTab" class="page-content tab tab-active ptr-content ptr-news" data-ptr-distance="56">
                         <div class="ptr-preloader">
@@ -442,16 +442,7 @@
                 <div class="item-subtitle">News provider</div>
               </div>
             </a>
-          </li>
-          <div class="block-title">Other</div>          <li>
-            <a href="https://youtube.com/@techjunkieamanofficial" class="item-link item-content external">
-              <div class="item-media"><img loading="lazy" src="https://pbs.twimg.com/profile_images/1637031339244548096/O-iNPMQ6.jpg"></div>
-              <div class="item-inner">
-                <div class="item-title-row"><div class="item-title">Techjunkie Aman <i class="f7-icons text-color-blue size-14">checkmark_seal_fill</i></div></div>
-                <div class="item-subtitle">Promotion</div>
-              </div>
-            </a>
-          </li>
+          </li>       
         </ul>
       </div>
     </div>
@@ -613,10 +604,12 @@
                             <div class="swipe-nav">
                                 <div><i class="f7-icons">minus</i></div>
                             </div>
-                            <div class="page-content ">
-                                <div class="block-title block-title-large ">What's new?</div>
-                                <div class="block block-strong inset ">
-                                    <p>Last updated: <span class="badge">8 April 2026</span></p>
+                            <div class="page-content">
+                                <div class="block-title block-title-large">What's new?</div>
+                                <div class="block block-strong inset">
+                                    <p>Last updated: <span class="badge">18 May 2026</span></p>
+<h1>3.1.1</h1>
+<p>⚡ This update comes with code optimizations, multiple bug fixes and improvements.</p>                                  
 <h1>v3.1</h1>
 <p>✨ This update brings a more refined and polished experience across the app, with many UI improvements and updated icons for a cleaner, more consistent look.</p>
 
@@ -823,6 +816,16 @@ macosVersion && document.write("macOS " + macosVersion);                        
                                                 </div>
                                             </a>
                                         </li>
+                                         <li>
+                                            <a href="https://github.com/techlxrd/SoftwareKit" class="item-link item-content external">
+                                                <div class="item-media"><i class="f7-icons">logo_github</i></div>
+                                                <div class="item-inner">
+                                                    <div class="item-title-row">
+                                                        <div class="item-title">GitHub</div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>                                       
                                         <li>
                                             <a onclick="shareURL()" class="item-link item-content">
                                                 <div class="item-media"><i class="f7-icons">square_arrow_up</i></div>
@@ -838,7 +841,7 @@ macosVersion && document.write("macOS " + macosVersion);                        
                                                 <div class="item-media"><i class="f7-icons">scribble</i></div>
                                                 <div class="item-inner">
                                                     <div class="item-title-row">
-                                                        <div class="item-title">Buy source code</div>
+                                                        <div class="item-title">Buy our template (€20)</div>
                                                     </div>
                                                 </div>
                                             </a>
@@ -1990,6 +1993,34 @@ macosVersion && document.write("macOS " + macosVersion);                        
    <script src="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.js"></script>
     <script src="js/app.js"></script>
      <script src="js/app-info-parser.js"></script>
+ <script type="module">
+    import { LiquidGlass } from 'https://cdn.jsdelivr.net/npm/@ybouane/liquidglass/dist/index.js';
+
+
+    // Wait for Framework7 to render, then initialize LiquidGlass
+    setTimeout(async () => {
+      try {
+        const instance = await LiquidGlass.init({
+          root: document.querySelector('#toolbar-glass-root'),
+          glassElements: document.querySelectorAll('.glass-toolbar'),
+          defaults: {
+            blurAmount: 0.3,
+            refraction: 0.7,
+            cornerRadius: 16,
+          }
+        });
+
+        console.log('LiquidGlass initialized successfully');
+
+        // Optional: handle orientation changes
+        window.addEventListener('orientationchange', () => {
+          instance.markChanged();
+        });
+      } catch (error) {
+        console.error('LiquidGlass init failed:', error);
+      }
+    }, 500);
+  </script>   
 </body>
 
 </html>
