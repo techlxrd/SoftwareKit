@@ -664,7 +664,7 @@
                                                 <div class="item-media"><img loading="lazy" src="https://swkit.app/favicon.png"></div>
                                                 <div class="item-inner">
                                                     <div class="item-title-row">
-                                                        <div class="item-title">SoftwareKit v3.1</div>
+                                                        <div class="item-title">SoftwareKit v3.1.1</div>
                                                     </div>
                                                     <div class="item-subtitle small-text">
                                                         <script>
@@ -1992,35 +1992,7 @@ macosVersion && document.write("macOS " + macosVersion);                        
 </div>
    <script src="https://cdn.jsdelivr.net/npm/framework7@9/framework7-bundle.min.js"></script>
     <script src="js/app.js"></script>
-     <script src="js/app-info-parser.js"></script>
- <script type="module">
-    import { LiquidGlass } from 'https://cdn.jsdelivr.net/npm/@ybouane/liquidglass/dist/index.js';
-
-
-    // Wait for Framework7 to render, then initialize LiquidGlass
-    setTimeout(async () => {
-      try {
-        const instance = await LiquidGlass.init({
-          root: document.querySelector('#toolbar-glass-root'),
-          glassElements: document.querySelectorAll('.glass-toolbar'),
-          defaults: {
-            blurAmount: 0.3,
-            refraction: 0.7,
-            cornerRadius: 16,
-          }
-        });
-
-        console.log('LiquidGlass initialized successfully');
-
-        // Optional: handle orientation changes
-        window.addEventListener('orientationchange', () => {
-          instance.markChanged();
-        });
-      } catch (error) {
-        console.error('LiquidGlass init failed:', error);
-      }
-    }, 500);
-  </script>   
+     <script src="js/app-info-parser.js"></script> 
 </body>
 
 </html>
