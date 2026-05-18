@@ -1,53 +1,58 @@
-# SoftwareKit (swkit.app)
+# SoftwareKit
 
-SoftwareKit is a modern web-based platform designed to provide utilities and tools for iOS, macOS and HarmonyOS users. It focuses on clean design, fast performance, and a simple user experience for managing and exploring apps and services.
+SoftwareKit is a modern web platform built for people who use iOS, macOS, and HarmonyOS. The project focuses on creating useful tools and utilities with a clean interface, fast performance, and a smooth overall experience.
+
+Whether you're exploring apps, managing services, or just looking for lightweight tools that work well, SoftwareKit aims to keep things simple, responsive, and easy to use.
 
 🌐 Website: https://swkit.app
 
 ---
 
-## Features
+# Features
 
-- Lightweight and fast web experience
-- Clean UI focused on usability
-- Tools and utilities for Apple and HUAWEI ecosystem users
-- Continuously evolving platform with frequent updates
-- Designed with performance and simplicity in mind
-
----
-
-## Project Structure
-
-This repository contains the source code for the SoftwareKit website and related components.
+- Fast and lightweight experience
+- Clean and modern interface
+- Utilities for Apple and HUAWEI ecosystem users
+- Regular updates and improvements
+- Built with simplicity and performance in mind
 
 ---
 
-## License
+# Project Structure
 
-This project is licensed under the  
-**GNU General Public License v2.0 (GPL-2.0)**
+This repository contains the source code and components that power the SoftwareKit platform.
 
-You are free to:
+---
+
+# License
+
+This project is licensed under the
+GNU General Public License v2.0 (GPL-2.0)
+
+You are allowed to:
+
 - Use the code
-- Modify the code
-- Distribute the code
+- Modify the project
+- Share and distribute it
 
-Under the condition that:
-- Any modified or derivative versions must also be released under **GPL-2.0**
-- Source code must remain available when distributing the software
+## Conditions:
 
-Full license text:  
+- Modified or derivative versions must also use the GPL-2.0 license
+- Source code must remain publicly available when distributed
+
+Full license text:
 https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
 
 ---
 
-## Notes
+# Notes
 
-SoftwareKit may include references to third-party apps or services. These are not owned or controlled by this project unless explicitly stated.
+SoftwareKit may reference third-party applications, brands, or services. Unless clearly stated otherwise, those services are not owned, affiliated with, or managed by this project.
 
 ---
 
-## Contact
+# Contact
 
-For questions, feedback, or collaboration:
+Questions, ideas, or collaboration requests are always welcome.
+
 - Website: https://techlord.is-a.dev
