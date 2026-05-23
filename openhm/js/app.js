@@ -30,10 +30,7 @@ var $ = Dom7;
 const mainView = app.views.create(".view-main");
 function isSafariOrAppleDevice() {
     const ua = navigator.userAgent;
-   
     const isIOS = /iPhone|iPad|iPod/.test(ua) && !window.MSStream;
-    
-    
     const isSafariBrowser = /Safari/.test(ua) && !/Chrome|CriOS|Edg/.test(ua);
     return isIOS || isSafariBrowser;
 }
@@ -42,34 +39,21 @@ function isSafariOrAppleDevice() {
     const TARGET_CLASS_SELECTOR = '.liquid-glass';
 
     if (isSafariOrAppleDevice()) {
-        console.log("Liquid Glass: Apple/Safari device detected. Injecting CSS blur fallback styles.");
-
         const elements = document.querySelectorAll(TARGET_CLASS_SELECTOR);
-
         elements.forEach(el => {
-           
-            
             const blurStyles = `
-                background: rgba(255, 255, 255, 0.13) !important;
-                backdrop-filter: blur(3px) saturate(180%)!important;
-                -webkit-backdrop-filter: blur(3px) saturate(180%)!important;
-                border: 1px solid rgba(255, 255, 255, 0.25)!important;                               
-                filter: none !important; 
+                background: rgba(255, 255, 255, 0.15) !important;
+                backdrop-filter: blur(20px) saturate(200%) contrast(1.1) !important;
+                -webkit-backdrop-filter: blur(20px) saturate(200%) contrast(1.1) !important;
+                border: 1px solid rgba(255, 255, 255, 0.3)!important;
+                filter: none !important;
             `;
-            
-            
             el.style.cssText += blurStyles.trim();
         });
-
-       
         return;
     }
 
-   
-
     const SVG_FILTER_ID = 'liquid-filter';
-
-    
     if (document.getElementById(SVG_FILTER_ID)) return;
 
     const svgNS = "http://www.w3.org/2000/svg";
@@ -83,18 +67,26 @@ function isSafariOrAppleDevice() {
     svg.style.overflow = "hidden";
 
     svg.innerHTML = `
-      <filter id="${SVG_FILTER_ID}" x="-50%" y="-50%" width="200%" height="200%"
-              filterUnits="objectBoundingBox"
-              primitiveUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB">
+      <defs>
+        <filter id="${SVG_FILTER_ID}" x="-50%" y="-50%" width="200%" height="200%"
+                filterUnits="objectBoundingBox"
+                primitiveUnits="userSpaceOnUse"
+                color-interpolation-filters="sRGB">
 
-        <feTurbulence type="turbulence" baseFrequency="0.01 0.02" numOctaves="2" seed="2" result="turbulence" stitchTiles="noStitch" />
+          <feTurbulence type="fractalNoise" baseFrequency="0.02 0.03" numOctaves="3" seed="1" result="noise" stitchTiles="stitch" />
 
-        <feGaussianBlur stdDeviation="2" in="SourceGraphic" result="blur" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" xChannelSelector="R" yChannelSelector="G" result="displaced" />
 
-        <feDisplacementMap in="blur" in2="turbulence" scale="20" xChannelSelector="R" yChannelSelector="G" result="final" />
+          <feGaussianBlur in="displaced" stdDeviation="1.5" result="blurred" />
+
+          <feColorMatrix in="blurred" type="saturate" values="1.4" result="saturated" />
+
+          <feComponentTransfer in="saturated">
+            <feFuncA type="discrete" tableValues="0 0.7 0.85 1 1" />
+          </feComponentTransfer>
 
         </filter>
+      </defs>
     `;
 
     document.body.appendChild(svg);
