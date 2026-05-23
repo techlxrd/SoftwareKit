@@ -137,7 +137,7 @@
 }
 
 .visibility-hidden{visibility:hidden;}
-.liquid-glass, .popover, .right, .toolbar-pane, .left, .right, .swiper-title-container{backdrop-filter: url(#liquid-filter) blur(2px)!important; -webkit-backdrop-filter: url(#liquid-filter) blur(2px)!important; background: rgba(255, 255, 255, 0.01)!important;}
+.liquid-glass, .popover, .right, .toolbar-pane, .left, .right, .swiper-title-container{backdrop-filter: url(#liquid-filter) blur(1px)!important; -webkit-backdrop-filter: url(#liquid-filter) blur(1px)!important; background: rgba(255, 255, 255, 0.01)!important;box-shadow: none;}
 .toolbar::before,
 .toolbar::after{
   backdrop-filter: none !important;
