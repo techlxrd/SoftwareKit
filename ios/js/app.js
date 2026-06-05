@@ -24,58 +24,9 @@ const app = new Framework7({
   serviceWorker: {
     path: "./service-worker.js",
   },
-  /* --- LIQUIDGLASS INTEGRATION --- */
-  on: {
-    init: function () {
-      const appRoot = document.querySelector('#app');
-      const glassElements = appRoot.querySelectorAll(':scope > .panel, :scope > .popover');
-
-      // Helper function to wait for the bridge
-      const tryInitGlass = async () => {
-        if (window.LiquidGlass) {
-          if (glassElements.length > 0) {
-            await window.LiquidGlass.init({
-              root: appRoot,
-              glassElements: Array.from(glassElements)
-            });
-          }
-        } else {
-          // Library isn't here yet, wait 50ms and try again
-          setTimeout(tryInitGlass, 50);
-        }
-      };
-
-      tryInitGlass();
-    },
-
-    pageInit: function (page) {
-      const pageRoot = page.el;
-      const toolbars = pageRoot.querySelectorAll(':scope > .toolbar, :scope > .navbar');
-
-      // Helper function for pages
-      const tryInitPageGlass = async () => {
-        if (window.LiquidGlass) {
-          if (toolbars.length > 0) {
-            page.lgInstance = await window.LiquidGlass.init({
-              root: pageRoot,
-              glassElements: Array.from(toolbars)
-            });
-          }
-        } else {
-          setTimeout(tryInitPageGlass, 50);
-        }
-      };
-
-      tryInitPageGlass();
-    },
-
-    pageBeforeRemove: function (page) {
-      if (page.lgInstance && typeof page.lgInstance.destroy === 'function') {
-        page.lgInstance.destroy();
-      }
-    }
-  } 
+  ],
 });
+
 var $ = Dom7;
 const mainView = app.views.create(".view-main");
 
