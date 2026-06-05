@@ -23,8 +23,7 @@ const app = new Framework7({
   },
   serviceWorker: {
     path: "./service-worker.js",
-  },
-  ],
+  }, 
 });
 
 var $ = Dom7;
