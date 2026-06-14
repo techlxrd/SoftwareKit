@@ -28,72 +28,57 @@ const app = new Framework7({
 
 var $ = Dom7;
 const mainView = app.views.create(".view-main");
+
 function isSafariOrAppleDevice() {
-    const ua = navigator.userAgent;
-    const isIOS = /iPhone|iPad|iPod/.test(ua) && !window.MSStream;
-    const isSafariBrowser = /Safari/.test(ua) && !/Chrome|CriOS|Edg/.test(ua);
-    return isIOS || isSafariBrowser;
+  const ua = navigator.userAgent;
+  const isIOS = /iPhone|iPad|iPod/.test(ua) && !window.MSStream;
+  const isSafariBrowser = /Safari/.test(ua) && !/Chrome|CriOS|Edg/.test(ua);
+  return isIOS || isSafariBrowser;
 }
 
 (function initLiquidGlass() {
-    const TARGET_CLASS_SELECTOR = '.liquid-glass';
-
-    if (isSafariOrAppleDevice()) {
-        const elements = document.querySelectorAll(TARGET_CLASS_SELECTOR);
-        elements.forEach(el => {
-            const blurStyles = `
-                background: rgba(255, 255, 255, 0.15) !important;
-                backdrop-filter: blur(20px) saturate(200%) contrast(1.1) !important;
-                -webkit-backdrop-filter: blur(20px) saturate(200%) contrast(1.1) !important;
-                border: 1px solid rgba(255, 255, 255, 0.3)!important;
-                filter: none !important;
-            `;
-            el.style.cssText += blurStyles.trim();
-        });
-        return;
+  const TARGET_CLASS_SELECTOR = '.liquid-glass';
+  if (isSafariOrAppleDevice()) {
+    const elements = document.querySelectorAll(TARGET_CLASS_SELECTOR);
+    for (const el of elements) {
+      el.style.cssText += `
+        background: rgba(255, 255, 255, 0.15) !important;
+        backdrop-filter: blur(20px) saturate(200%) contrast(1.1) !important;
+        -webkit-backdrop-filter: blur(20px) saturate(200%) contrast(1.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        filter: none !important;
+      `.trim();
     }
+    return;
+  }
 
-    const SVG_FILTER_ID = 'liquid-filter';
-    if (document.getElementById(SVG_FILTER_ID)) return;
+  const SVG_FILTER_ID = 'liquid-filter';
+  if (document.getElementById(SVG_FILTER_ID)) return;
 
-    const svgNS = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(svgNS, "svg");
-
-    svg.style.position = "absolute";
-    svg.style.top = "-10000px";
-    svg.style.left = "-10000px";
-    svg.style.width = "1px";
-    svg.style.height = "1px";
-    svg.style.overflow = "hidden";
-
-    svg.innerHTML = `
-      <defs>
-        <filter id="${SVG_FILTER_ID}" x="-50%" y="-50%" width="200%" height="200%"
-                filterUnits="objectBoundingBox"
-                primitiveUnits="userSpaceOnUse"
-                color-interpolation-filters="sRGB">
-
-          <feTurbulence type="fractalNoise" baseFrequency="0.02 0.03" numOctaves="3" seed="1" result="noise" stitchTiles="stitch" />
-
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" xChannelSelector="R" yChannelSelector="G" result="displaced" />
-
-          <feGaussianBlur in="displaced" stdDeviation="1.5" result="blurred" />
-
-          <feColorMatrix in="blurred" type="saturate" values="1.4" result="saturated" />
-
-          <feComponentTransfer in="saturated">
-            <feFuncA type="discrete" tableValues="0 0.7 0.85 1 1" />
-          </feComponentTransfer>
-
-        </filter>
-      </defs>
-    `;
-
-    document.body.appendChild(svg);
-
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.style.cssText = "position:absolute; top:-10000px; left:-10000px; width:1px; height:1px; overflow:hidden;";
+  svg.innerHTML = `
+    <defs>
+      <filter id="${SVG_FILTER_ID}" x="-50%" y="-50%" width="200%" height="200%"
+              filterUnits="objectBoundingBox"
+              primitiveUnits="userSpaceOnUse"
+              color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02 0.03" numOctaves="3" seed="1" result="noise" stitchTiles="stitch" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="12" xChannelSelector="R" yChannelSelector="G" result="displaced" />
+        <feGaussianBlur in="displaced" stdDeviation="1.5" result="blurred" />
+        <feColorMatrix in="blurred" type="saturate" values="1.4" result="saturated" />
+        <feComponentTransfer in="saturated">
+          <feFuncA type="discrete" tableValues="0 0.7 0.85 1 1" />
+        </feComponentTransfer>
+      </filter>
+    </defs>
+  `;
+  document.body.appendChild(svg);
 })();
+
 const locks = new Set();
-const foundResizeHandlers = new WeakMap();
+const foundResizeObservers = new WeakMap();
 const rootScrollHandlers = new WeakMap();
 
 function inAllowedArea(target) {
@@ -115,28 +100,22 @@ function getSearchbarEnabled(searchbar) {
 function preventBackgroundScroll(e) {
   const target = e.target;
   if (!(target instanceof Element)) return;
-
   if (inAllowedArea(target)) return;
-
   if (e.cancelable) e.preventDefault();
 }
 
 function preventDialogScroll(e) {
   const target = e.target;
   if (!(target instanceof Element)) return;
-
   const isDialog = target.closest('.dialog');
   const isBackdrop = target.classList.contains('dialog-backdrop');
-
   if (!isDialog && !isBackdrop) return;
-
   if (e.cancelable) e.preventDefault();
 }
 
 function lockBody() {
   document.documentElement.classList.add('ui-scroll-locked');
   document.body.classList.add('ui-scroll-locked');
-
   document.addEventListener('touchmove', preventBackgroundScroll, { passive: false, capture: true });
   document.addEventListener('wheel', preventBackgroundScroll, { passive: false, capture: true });
 }
@@ -144,7 +123,6 @@ function lockBody() {
 function unlockBody() {
   document.documentElement.classList.remove('ui-scroll-locked');
   document.body.classList.remove('ui-scroll-locked');
-
   document.removeEventListener('touchmove', preventBackgroundScroll, true);
   document.removeEventListener('wheel', preventBackgroundScroll, true);
 }
@@ -152,21 +130,14 @@ function unlockBody() {
 function syncSearchbarFound(searchbar, enable) {
   const page = searchbar.el.closest('.page');
   if (!page) return;
-
   const found = page.querySelector('.searchbar-found');
   if (!found) return;
-
   const isSearchTab = !!found.closest('#browseTab');
   const isBottomSearchPage = page.classList.contains('page-with-bottom-search');
   const isExpandable = searchbar.el.classList.contains('searchbar-expandable');
 
   if (!isSearchTab && !isBottomSearchPage) {
-    found.style.overflowY = '';
-    found.style.webkitOverflowScrolling = '';
-    found.style.overscrollBehavior = '';
-    found.style.touchAction = '';
-    found.style.minHeight = '';
-    found.style.maxHeight = '';
+    found.style.cssText = '';
     return;
   }
 
@@ -183,45 +154,28 @@ function syncSearchbarFound(searchbar, enable) {
     if (isExpandable) {
       const updateHeight = () => {
         if (!found.isConnected) return;
-
         const vv = window.visualViewport;
         const vh = vv ? vv.height : window.innerHeight;
         const top = found.getBoundingClientRect().top;
-
         found.style.maxHeight = Math.max(120, vh - top - 12) + 'px';
       };
 
-      const old = foundResizeHandlers.get(found);
-      if (old) {
-        window.removeEventListener('resize', old);
-        window.visualViewport?.removeEventListener('resize', old);
-        window.visualViewport?.removeEventListener('scroll', old);
+      if (foundResizeObservers.has(found)) {
+        foundResizeObservers.get(found).disconnect();
       }
-
-      foundResizeHandlers.set(found, updateHeight);
-      window.addEventListener('resize', updateHeight);
-      window.visualViewport?.addEventListener('resize', updateHeight);
-      window.visualViewport?.addEventListener('scroll', updateHeight);
-
+      const observer = new ResizeObserver(() => requestAnimationFrame(updateHeight));
+      observer.observe(found);
+      foundResizeObservers.set(found, observer);
       requestAnimationFrame(updateHeight);
-      setTimeout(updateHeight, 0);
     } else {
       found.style.maxHeight = '';
     }
   } else {
-    found.style.overflowY = '';
-    found.style.webkitOverflowScrolling = '';
-    found.style.overscrollBehavior = '';
-    found.style.touchAction = '';
-    found.style.minHeight = '';
-    found.style.maxHeight = '';
-
-    const old = foundResizeHandlers.get(found);
-    if (old) {
-      window.removeEventListener('resize', old);
-      window.visualViewport?.removeEventListener('resize', old);
-      window.visualViewport?.removeEventListener('scroll', old);
-      foundResizeHandlers.delete(found);
+    found.style.cssText = '';
+    const observer = foundResizeObservers.get(found);
+    if (observer) {
+      observer.disconnect();
+      foundResizeObservers.delete(found);
     }
   }
 }
@@ -229,7 +183,6 @@ function syncSearchbarFound(searchbar, enable) {
 function syncSearchScrollRoot(searchbar, enable) {
   const page = searchbar.el.closest('.page');
   if (!page) return;
-
   const root = page.querySelector('#browseTab');
   if (!root) return;
 
@@ -253,14 +206,11 @@ function syncSearchScrollRoot(searchbar, enable) {
     const onTouchMove = (e) => {
       if (!(e.target instanceof Element)) return;
       if (!root.contains(e.target)) return;
-
       const touch = e.touches && e.touches[0];
       if (!touch) return;
-
       const deltaY = touch.clientY - startY;
       const atTop = root.scrollTop <= 0;
       const atBottom = root.scrollTop + root.clientHeight >= root.scrollHeight - 1;
-
       if ((atTop && deltaY > 0) || (atBottom && deltaY < 0)) {
         if (e.cancelable) e.preventDefault();
       }
@@ -269,10 +219,8 @@ function syncSearchScrollRoot(searchbar, enable) {
     const onWheel = (e) => {
       if (!(e.target instanceof Element)) return;
       if (!root.contains(e.target)) return;
-
       const atTop = root.scrollTop <= 0;
       const atBottom = root.scrollTop + root.clientHeight >= root.scrollHeight - 1;
-
       if ((atTop && e.deltaY < 0) || (atBottom && e.deltaY > 0)) {
         if (e.cancelable) e.preventDefault();
       }
@@ -290,11 +238,9 @@ function syncSearchScrollRoot(searchbar, enable) {
 
     const handlers = rootScrollHandlers.get(root);
     if (!handlers) return;
-
     root.removeEventListener('touchstart', handlers.onTouchStart, true);
     root.removeEventListener('touchmove', handlers.onTouchMove, true);
     root.removeEventListener('wheel', handlers.onWheel, true);
-
     rootScrollHandlers.delete(root);
   }
 }
@@ -305,7 +251,6 @@ document.addEventListener('wheel', preventDialogScroll, { passive: false, captur
 app.on('searchbarEnable', (searchbar) => {
   syncSearchbarFound(searchbar, true);
   syncSearchScrollRoot(searchbar, true);
-
   locks.add('search');
   if (locks.size === 1) lockBody();
 });
@@ -318,14 +263,12 @@ app.on('searchbarSearch', (searchbar) => {
 app.on('searchbarDisable', (searchbar) => {
   syncSearchbarFound(searchbar, false);
   syncSearchScrollRoot(searchbar, false);
-
   locks.delete('search');
   if (locks.size === 0) unlockBody();
 });
 
 const searchFab = document.getElementById('search-fab');
 const tabsEl = document.querySelector('.tabs');
-
 let fabTimeout = null;
 
 function disableAllFabs() {
@@ -333,29 +276,20 @@ function disableAllFabs() {
 }
 
 function enableCurrentFab(tabId) {
-  const currentFab = (tabId === 'browseTab') ? searchFab : null;
-
-  if (currentFab) {
-    currentFab.style.pointerEvents = 'auto';
+  if (tabId === 'browseTab' && searchFab) {
+    searchFab.style.pointerEvents = 'auto';
   }
 }
 
-if (searchFab) {
-  searchFab.style.visibility = 'hidden';
-}
+if (searchFab) searchFab.style.visibility = 'hidden';
 
 if (tabsEl) {
   tabsEl.addEventListener('tab:show', (e) => {
     const tabId = e.target?.id || e.detail?.tab?.id;
-
     if (!tabId || !searchFab) return;
-
     searchFab.style.visibility = (tabId === 'browseTab') ? 'visible' : 'hidden';
-
     if (fabTimeout) clearTimeout(fabTimeout);
-
     disableAllFabs();
-
     fabTimeout = setTimeout(() => {
       enableCurrentFab(tabId);
       fabTimeout = null;
@@ -366,55 +300,38 @@ if (tabsEl) {
 document.addEventListener('click', function (e) {
   const clickedLink = e.target.closest('.sidebar-list .item-link');
   if (!clickedLink) return;
-
   app.popup.close();
   app.dialog.close();
   const currentPage = document.querySelector('.page-current[data-name="repo-detail"]');
-
-  if (currentPage) {
-    app.views.main.router.back();
-  }
+  if (currentPage) app.views.main.router.back();
   const allLinks = document.querySelectorAll('.sidebar-list .item-link');
-  allLinks.forEach(link => {
+  for (const link of allLinks) {
     link.classList.remove('tab-link-active');
-  });
+  }
   clickedLink.classList.add('tab-link-active');
 });
 
 window.addEventListener('error', function (event) {
   const img = event.target;
-
   if (!(img instanceof HTMLImageElement)) return;
-
-  if (img.closest('.screenshots')) return;
-
+  if (img.closest('.screenshots') || img.closest('.screenshot')) return;
   if (img.dataset.fallbackApplied) return;
-
   img.dataset.fallbackApplied = 'true';
-  img.src = '../ios/assets/default.png';
+  img.src = './assets/default.png';
 }, true);
 
 document.addEventListener('DOMContentLoaded', () => {
   app.on('tabShow', (tabEl) => {
     const tabId = `#${tabEl.id}`;
     if (!tabEl.id) return;
-
-    const tabLink = document.querySelector(
-      `.tab-link[href="${tabId}"]`
-    );
+    const tabLink = document.querySelector(`.tab-link[href="${tabId}"]`);
     if (!tabLink) return;
-
     const title = tabLink.dataset.tabTitle;
     if (!title) return;
-
-    const navbar = document.querySelector(
-      '.navbar.navbar-large'
-    );
+    const navbar = document.querySelector('.navbar.navbar-large');
     if (!navbar) return;
-
     const titleEl = navbar.querySelector('.title');
     const largeTitleEl = navbar.querySelector('.title-large-text');
-
     if (titleEl) titleEl.textContent = title;
     if (largeTitleEl) largeTitleEl.textContent = title;
   });
@@ -451,7 +368,7 @@ function getReadLater() {
 
 function saveReadLater(items) {
   localStorage.setItem(READ_LATER_KEY, JSON.stringify(items));
-  renderReadLaterNews();
+  requestIdleCallback(renderReadLaterNews);
 }
 
 function shareArticle(title, url) {
@@ -498,38 +415,42 @@ function renderReadLaterNews() {
   const container = document.getElementById('read-later-news');
   if (!container) return;
   const items = getReadLater();
+  container.textContent = '';
   if (!items.length) {
-    container.innerHTML = ' <h2 class="empty-read-later">No saved articles </h2>';
+    container.insertAdjacentHTML('beforeend', '<h2 class="empty-read-later">No saved articles</h2>');
     return;
   }
-  container.innerHTML = items.map(item => {
+  const frag = document.createDocumentFragment();
+  for (const item of items) {
     const title = String(item.title || '');
     const link = String(item.link || '');
     const imgSrc = String(item.imgSrc || PLACEHOLDER_IMAGE);
-    return `
-      <div class="card card-raised news-card">
-        <div class="card-content">
-          <div class="card-image">
-            <img class="newsimg" src="${escapeHtml(imgSrc)}" loading="lazy" alt="${escapeHtml(title)}" onerror="this.src='${PLACEHOLDER_IMAGE}'">
-            <div class="news-actions">
-              <a class="news-action" href="#" onclick='shareArticle(${JSON.stringify(title)}, ${JSON.stringify(link)}); return false;'>
-                <i class="hm-icons hm-share-filled"></i>
-              </a>
-              <a class="news-action" href="#" onclick='removeFromReadLater(${JSON.stringify(link)}, ${JSON.stringify(title)}, this.closest(".news-card")); return false;'>
-                <i class="hm-icons hm-public-clean-filled"></i>
-              </a>
-              <a class="news-action external" href="${escapeHtml(link)}" target="_blank" rel="noopener">
-                <i class="hm-icons hm-public-file-filled"></i>
-              </a>
-            </div>
-            <div class="news-overlay">
-              <div class="news-title">${escapeHtml(title)}</div>
-            </div>
+    const div = document.createElement('div');
+    div.className = 'card card-raised news-card';
+    div.innerHTML = `
+      <div class="card-content">
+        <div class="card-image">
+          <img class="newsimg" src="${escapeHtml(imgSrc)}" loading="lazy" alt="${escapeHtml(title)}" onerror="this.src='${PLACEHOLDER_IMAGE}'">
+          <div class="news-actions">
+            <a class="news-action" href="#" onclick='shareArticle(${JSON.stringify(title)}, ${JSON.stringify(link)}); return false;'>
+              <i class="hm-icons hm-share-filled"></i>
+            </a>
+            <a class="news-action" href="#" onclick='removeFromReadLater(${JSON.stringify(link)}, ${JSON.stringify(title)}, this.closest(".news-card")); return false;'>
+              <i class="hm-icons hm-public-clean-filled"></i>
+            </a>
+            <a class="news-action external" href="${escapeHtml(link)}" target="_blank" rel="noopener">
+              <i class="hm-icons hm-public-file-filled"></i>
+            </a>
+          </div>
+          <div class="news-overlay">
+            <div class="news-title">${escapeHtml(title)}</div>
           </div>
         </div>
       </div>
     `;
-  }).join('');
+    frag.appendChild(div);
+  }
+  container.appendChild(frag);
 }
 
 function getNodeText(parent, tagName) {
@@ -627,20 +548,19 @@ async function fetchAndLoadNews() {
 
   try {
     await new Promise(resolve => setTimeout(resolve, 2000));
-
     const data = await fetchFeedText();
     const xml = new window.DOMParser().parseFromString(data, 'text/xml');
     const items = xml.getElementsByTagName('item');
     if (!items.length) throw new Error();
 
-    newsContainer.innerHTML = '';
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i];
+    newsContainer.textContent = '';
+    const frag = document.createDocumentFragment();
+    for (const item of items) {
       const title = getNodeText(item, 'title');
       const link = getNodeText(item, 'link');
       const imgSrc = extractImageFromItem(item);
       const card = document.createElement('div');
-      card.classList.add('card', 'card-raised', 'news-card');
+      card.className = 'card card-raised news-card';
       card.innerHTML = `
         <div class="card-content">
           <div class="card-image">
@@ -662,10 +582,12 @@ async function fetchAndLoadNews() {
           </div>
         </div>
       `;
-      newsContainer.appendChild(card);
+      frag.appendChild(card);
     }
+    newsContainer.appendChild(frag);
   } catch (error) {
-    newsContainer.innerHTML = '<div class="block">Unable to load news. Pull down to retry.</div>';
+    newsContainer.textContent = '';
+    newsContainer.insertAdjacentHTML('beforeend', '<div class="block">Unable to load news. Pull down to retry.</div>');
   }
 }
 
@@ -678,7 +600,6 @@ app.on('ptrRefresh', (el) => {
 
 fetchAndLoadNews();
 renderReadLaterNews();
-
 window.addToReadLater = addToReadLater;
 window.removeFromReadLater = removeFromReadLater;
 window.shareArticle = shareArticle;
@@ -689,116 +610,121 @@ function playDeleteNewsAnimation(cardEl) {
   layer.style.cssText = 'position:absolute;inset:0;pointer-events:none;overflow:hidden';
   cardEl.style.position = 'relative';
   cardEl.appendChild(layer);
-
   for (let i = 0; i < 18; i++) {
     const p = document.createElement('span');
     const a = Math.random() * Math.PI * 2;
     const d = 30 + Math.random() * 110;
     p.style.cssText = `position:absolute;left:50%;top:50%;width:${4 + Math.random() * 5}px;height:${4 + Math.random() * 5}px;margin:-2px 0 0 -2px;border-radius:999px;background:rgba(255,255,255,.95);box-shadow:0 0 10px rgba(255,255,255,.45);`;
     layer.appendChild(p);
-    p.animate([{ transform: 'translate(0,0) scale(1)', opacity: 1 }, { transform: `translate(${Math.cos(a) * d}px, ${Math.sin(a) * d}px) scale(0)`, opacity: 0 }], { duration: 650 + Math.random() * 180, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' });
+    p.animate([
+      { transform: 'translate(0,0) scale(1)', opacity: 1 },
+      { transform: `translate(${Math.cos(a) * d}px, ${Math.sin(a) * d}px) scale(0)`, opacity: 0 }
+    ], { duration: 650 + Math.random() * 180, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' });
   }
-
-  return cardEl.animate([{ opacity: 1, transform: 'scale(1)', filter: 'blur(0)' }, { opacity: 0, transform: 'scale(.88) rotate(2deg)', filter: 'blur(10px)' }], { duration: 720, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' }).finished.then(() => layer.remove());
+  return cardEl.animate([
+    { opacity: 1, transform: 'scale(1)', filter: 'blur(0)' },
+    { opacity: 0, transform: 'scale(.88) rotate(2deg)', filter: 'blur(10px)' }
+  ], { duration: 720, easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'forwards' }).finished.then(() => layer.remove());
 }
 
-window.addEventListener('error', function (event) {
-  const img = event.target;
-
-  if (!(img instanceof HTMLImageElement)) return;
-
-  if (img.closest('.screenshot')) return;
-
-  if (img.dataset.fallbackApplied) return;
-
-  img.dataset.fallbackApplied = 'true';
-  img.src = './assets/default.png';
-}, true);
-
-const failedImages = new Set();
-
-window.addEventListener('error', function (event) {
-  const img = event.target;
-
-  if (!(img instanceof HTMLImageElement)) return;
-  if (img.closest('.screenshot')) return;
-
-  const src = img.getAttribute('src');
-  if (!src || failedImages.has(src)) return;
-
-  failedImages.add(src);
-  img.src = './assets/default.png';
-}, true);
-
-document.addEventListener('DOMContentLoaded', () => {
-  app.on('tabShow', (tabEl) => {
-    const tabId = `#${tabEl.id}`;
-    if (!tabEl.id) return;
-
-    const tabLink = document.querySelector(
-      `.tab-link[href="${tabId}"]`
-    );
-    if (!tabLink) return;
-
-    const title = tabLink.dataset.tabTitle;
-    if (!title) return;
-
-    const navbar = document.querySelector(
-      '.navbar.navbar-large'
-    );
-    if (!navbar) return;
-
-    const titleEl = navbar.querySelector('.title');
-    const largeTitleEl = navbar.querySelector('.title-large-text');
-
-    if (titleEl) titleEl.textContent = title;
-    if (largeTitleEl) largeTitleEl.textContent = title;
-  });
-
-  document.querySelectorAll('.tab-link').forEach(tabLink => {
-    tabLink.addEventListener('click', function () {
-      // Function updateNavbarTitleFromTab was not defined; keeping original click behavior intact.
-    });
-  });
-
-  window.goToTab = function (tabId) {
-    app.popup.close();
-    app.tab.show(tabId);
-    // Original called updateNavbarTitleFromTab(tabId) which doesn't exist, so removed to prevent error.
+function checkConnection() {
+  let dialogInstance = null;
+  const showDialog = () => {
+    if (!dialogInstance) {
+      dialogInstance = app.dialog.create({
+        title: 'No Internet Connection',
+        text: `
+          <div style="display:flex;align-items:center;">
+            <i class="icon f7-icons color-red" style="font-size:32px;margin-right:12px;">wifi_slash</i>
+            <div>
+              <div style="font-weight:bold;">Some features will not be available.</div>
+              <div style="margin-top:4px;">Please check your internet connection and try again.</div>
+            </div>
+          </div>
+        `,
+        buttons: [{ text: 'Dismiss', close: true }],
+        closeByBackdropClick: false,
+        closeByOutsideClick: false,
+        destroyOnClose: true,
+        on: {
+          closed: () => { dialogInstance = null; }
+        }
+      });
+      dialogInstance.open();
+    }
   };
-});
+  const hideDialog = () => {
+    if (dialogInstance) {
+      dialogInstance.close();
+      dialogInstance = null;
+    }
+  };
+  window.addEventListener('online', hideDialog);
+  window.addEventListener('offline', showDialog);
+  if (!navigator.onLine) showDialog();
+}
+
+checkConnection();
 
 function openReportPopup(appName) {
-  const input = document.getElementById('report-app-name');
-  input.value = appName;
+  document.getElementById('report-app-name').value = appName;
   app.popup.open('#report-app');
 }
 
 const reportForm = document.getElementById('report-form');
-const submitBtn = document.getElementById('submit-btn');
-
 reportForm.addEventListener('submit', function (e) {
   e.preventDefault();
+  const submitBtn = document.getElementById('submit-btn');
   app.dialog.confirm('Are you sure you want to send this report?', 'Confirm Submission', function () {
     submitBtn.classList.add('button-loading');
     submitBtn.disabled = true;
-
     const formData = new FormData(reportForm);
     const actionUrl = reportForm.getAttribute('action');
-
     fetch(actionUrl, {
       method: 'POST',
       body: formData,
       headers: { 'Accept': 'application/json' }
     })
+    .then(response => response.json())
+    .then(data => {
+      submitBtn.classList.remove('button-loading');
+      submitBtn.disabled = false;
+      app.dialog.alert('Thanks for the feedback!', 'Success', function () {
+        reportForm.reset();
+        app.popup.close('#report-app');
+      });
+    })
+    .catch(error => {
+      submitBtn.classList.remove('button-loading');
+      submitBtn.disabled = false;
+      app.dialog.alert('Failed to send report. Please check your connection.', 'Error');
+      console.error('Submission Error:', error);
+    });
+  });
+});
+
+(function () {
+  const feedbackForm = document.getElementById('feedback-form');
+  const submitBtn = feedbackForm.querySelector('button[type="submit"]');
+  feedbackForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    app.dialog.confirm('Are you sure you want to send this feedback?', 'Confirm Submission', function () {
+      submitBtn.classList.add('button-loading');
+      submitBtn.disabled = true;
+      const formData = new FormData(feedbackForm);
+      const actionUrl = feedbackForm.getAttribute('action');
+      fetch(actionUrl, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      })
       .then(response => response.json())
       .then(data => {
         submitBtn.classList.remove('button-loading');
         submitBtn.disabled = false;
-
         app.dialog.alert('Thanks for the feedback!', 'Success', function () {
-          reportForm.reset();
-          app.popup.close('#report-app');
+          feedbackForm.reset();
+          app.popup.close('#feedback');
         });
       })
       .catch(error => {
@@ -807,44 +733,6 @@ reportForm.addEventListener('submit', function (e) {
         app.dialog.alert('Failed to send report. Please check your connection.', 'Error');
         console.error('Submission Error:', error);
       });
-  });
-});
-
-(function () {
-  const feedbackForm = document.getElementById('feedback-form');
-  const submitBtn = feedbackForm.querySelector('button[type="submit"]');
-
-  feedbackForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    app.dialog.confirm('Are you sure you want to send this feedback?', 'Confirm Submission', function () {
-      submitBtn.classList.add('button-loading');
-      submitBtn.disabled = true;
-
-      const formData = new FormData(feedbackForm);
-      const actionUrl = feedbackForm.getAttribute('action');
-
-      fetch(actionUrl, {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      })
-        .then(response => response.json())
-        .then(data => {
-          submitBtn.classList.remove('button-loading');
-          submitBtn.disabled = false;
-
-          app.dialog.alert('Thanks for the feedback!', 'Success', function () {
-            feedbackForm.reset();
-            app.popup.close('#feedback');
-          });
-        })
-        .catch(error => {
-          submitBtn.classList.remove('button-loading');
-          submitBtn.disabled = false;
-          app.dialog.alert('Failed to send report. Please check your connection.', 'Error');
-          console.error('Submission Error:', error);
-        });
     });
   });
 })();
@@ -852,38 +740,33 @@ reportForm.addEventListener('submit', function (e) {
 (function () {
   const appSubmitForm = document.getElementById('appsubmit-form');
   const submitBtn = appSubmitForm.querySelector('button[type="submit"]');
-
   appSubmitForm.addEventListener('submit', function (e) {
     e.preventDefault();
-
     app.dialog.confirm('Are you sure you want to submit this application?', 'Confirm Submission', function () {
       submitBtn.classList.add('button-loading');
       submitBtn.disabled = true;
-
       const formData = new FormData(appSubmitForm);
       const actionUrl = appSubmitForm.getAttribute('action');
-
       fetch(actionUrl, {
         method: 'POST',
         body: formData,
         headers: { 'Accept': 'application/json' }
       })
-        .then(response => response.json())
-        .then(data => {
-          submitBtn.classList.remove('button-loading');
-          submitBtn.disabled = false;
-
-          app.dialog.alert('Thanks for the submission! We will review it as soon as possible', 'Success', function () {
-            appSubmitForm.reset();
-            app.popup.close('#appsubmit');
-          });
-        })
-        .catch(error => {
-          submitBtn.classList.remove('button-loading');
-          submitBtn.disabled = false;
-          app.dialog.alert('Failed to send report. Please check your connection.', 'Error');
-          console.error('Submission Error:', error);
+      .then(response => response.json())
+      .then(data => {
+        submitBtn.classList.remove('button-loading');
+        submitBtn.disabled = false;
+        app.dialog.alert('Thanks for the submission! We will review it as soon as possible', 'Success', function () {
+          appSubmitForm.reset();
+          app.popup.close('#appsubmit');
         });
+      })
+      .catch(error => {
+        submitBtn.classList.remove('button-loading');
+        submitBtn.disabled = false;
+        app.dialog.alert('Failed to send report. Please check your connection.', 'Error');
+        console.error('Submission Error:', error);
+      });
     });
   });
 })();
@@ -895,65 +778,19 @@ function toggleDarkMode() {
 function applyDarkModeSetting() {
   const htmlElement = document.querySelector("html");
   const darkModeQuery = window.matchMedia("(prefers-color-scheme: dark)");
-
   const applyDarkMode = (e) => {
-    if (e.matches) {
-      htmlElement.classList.add("dark");
-    } else {
-      htmlElement.classList.remove("dark");
-    }
+    htmlElement.classList.toggle("dark", e.matches);
   };
-
-  darkModeQuery.addListener(applyDarkMode);
+  darkModeQuery.addEventListener('change', applyDarkMode);
   applyDarkMode(darkModeQuery);
 }
 
 applyDarkModeSetting();
 
-let notificationShown = false;
-
-function checkConnection() {
-  setInterval(() => {
-    if (navigator.onLine) {
-      if (notificationShown) {
-        notificationShown = false;
-      }
-    } else if (!notificationShown) {
-      notificationShown = true;
-      app.notification.create({
-        icon: '<i class="icon f7-icons color-red">wifi_slash</i>',
-        title: "No Internet Connection",
-        titleRightText: "now",
-        subtitle: "Unable to connect to the server.",
-        text: "Check your internet connection and try again."
-      }).open();
-    }
-  }, 1000);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".ptr-apps").forEach(element => {
-    element.addEventListener("ptr:refresh", () => {
-      fetchAndLoadApps();
-    });
-  });
-  checkConnection();
-});
-
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.getRegistration().then(registration => {
-    if (!registration) {
-      navigator.serviceWorker.register("service-worker.js").then(() => {}).catch(() => {});
-    }
-  });
-}
-
 if (window.navigator.standalone) {
   const preloaderDialog = app.dialog.preloader("Reloading data");
   preloaderDialog.open();
-  setTimeout(() => {
-    preloaderDialog.close();
-  }, 2000);
+  setTimeout(() => preloaderDialog.close(), 2000);
 } else {
   app.popup.open("#hs");
 }
@@ -973,9 +810,7 @@ function initPhotoBrowser(urls) {
 }
 
 function generateScreenshotElements(screenshots) {
-  return screenshots.map((src, index) => {
-    return `<img loading="lazy" src="${src}" class="pb-target" data-index="${index}">`;
-  }).join('');
+  return screenshots.map((src, index) => `<img loading="lazy" src="${src}" class="pb-target" data-index="${index}">`).join('');
 }
 
 function openPhotoBrowser(urls) {
@@ -992,9 +827,7 @@ function createItemHtml(item) {
           </div>
           <div class="item-inner">
             <div class="item-title-row">
-              <div class="item-title">
-                ${item.title}
-              </div>
+              <div class="item-title">${item.title}</div>
             </div>
             <div class="item-subtitle">${item.category}</div>
             <div class="item-footer"></div>
@@ -1006,6 +839,7 @@ function createItemHtml(item) {
 }
 
 function createPopupHtml(item) {
+  const screenshotsJson = JSON.stringify(item.screenshots).replace(/"/g, '&quot;');
   return `
  <div class="popup" id="${item.id}">
       <div class="page">
@@ -1015,64 +849,34 @@ function createPopupHtml(item) {
 <div class="block" style="margin-top: 27px; margin-bottom: 20px;">
   <div style="display: flex; gap: 15px; align-items: flex-start; overflow: hidden;">
     <img src="${item.icon}" class="app-icon" style="flex-shrink: 0;">
-
     <div style="flex: 1; min-width: 0; display: flex; flex-direction: column;">
-
-      <div style="font-size: 22px; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-        ${item.title}
-      </div>
-
-      <div style="font-size: 15px; margin-top: 6px; line-height: 1.3;">
-        ${item.category}
-      </div>
-
+      <div style="font-size: 22px; font-weight: 700; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.title}</div>
+      <div style="font-size: 15px; margin-top: 6px; line-height: 1.3;">${item.category}</div>
       <div style="display: flex; margin-top: 12px; align-items: center;">
         <a href="${item.get_link}" class="external button button-fill button-round get">GET</a>
-
         <a class="popover-open more" data-popover=".popover-menu">
           <i class="f7-icons">ellipsis_circle_fill</i>
         </a>
       </div>
-
     </div>
   </div>
 </div>
-
           ${item.screenshots && item.screenshots.length > 0 ? `
     <div class="block-title">Preview</div>
-    <div class="screenshot" onclick="openPhotoBrowser(${JSON.stringify(item.screenshots).replace(/"/g, "&quot;")})">
+    <div class="screenshot" onclick="openPhotoBrowser(${screenshotsJson})">
         ${generateScreenshotElements(item.screenshots)}
-    </div>
-` : ''}
-
+    </div>` : ''}
             </div>
-
           <div class="block block-strong inset">
-             <div style="font-size: 15px; line-height: 1.5;">
-              ${item.description}
-             </div>
+             <div style="font-size: 15px; line-height: 1.5;">${item.description}</div>
           </div>
-
            <div class="popover popover-menu">
     <div class="popover-inner">
       <div class="list list-dividers" style="text-align: left!important;">
         <ul>
-
-         <li><a onclick="navigator.share({ title: '${item.title}', url: '${item.get_link}' })" class="item-link item-content external popover-close"><div class="item-media"><i class="hm-share-filled"></i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Share</div></div></div></a></li><li><a onclick="addToFavorites({
-                  id: '${item.id}',
-                  icon: '${item.badge}',
-                  image: '${item.icon}',
-                  title: '${item.title}',
-                  subtitle: '${item.category}',
-                })"  class="item-link item-content external popover-close"><div class="item-media"><i class="hm-public-favorites-filled"></i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Favorite</div></div></div></a></li><li><a
-  class="item-link item-content popover-close"
-  onclick="openReportPopup('${item.title.replace(/'/g, "\\'")}')"
->
-  <div class="item-media"><i class="hm-fail-filled"></i></div>
-  <div class="item-inner">
-    <div class="item-title">Report</div>
-  </div>
-</a> </li>
+         <li><a onclick="navigator.share({ title: '${item.title}', url: '${item.get_link}' })" class="item-link item-content external popover-close"><div class="item-media"><i class="hm-share-filled"></i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Share</div></div></div></a></li>
+         <li><a onclick="addToFavorites({ id: '${item.id}', icon: '${item.badge}', image: '${item.icon}', title: '${item.title}', subtitle: '${item.category}' })" class="item-link item-content external popover-close"><div class="item-media"><i class="hm-public-favorites-filled"></i></div><div class="item-inner"><div class="item-title-row"><div class="item-title">Favorite</div></div></div></a></li>
+         <li><a class="item-link item-content popover-close" onclick="openReportPopup('${item.title.replace(/'/g, "\\'")}')"><div class="item-media"><i class="hm-fail-filled"></i></div><div class="item-inner"><div class="item-title">Report</div></div></a></li>
         </ul>
       </div>
       </div>
@@ -1087,24 +891,22 @@ function initVirtualList(containerSelector, items) {
     renderItem: (item, index) => createItemHtml(item),
     searchAll: (query, items) => {
       const results = [];
+      const q = query.toLowerCase().trim();
+      if (!q) return items.map((_, i) => i);
       for (let i = 0; i < items.length; i++) {
-        if (items[i].title.toLowerCase().includes(query.toLowerCase()) || query.trim() === "") {
-          results.push(i);
-        }
+        if (items[i].title.toLowerCase().includes(q)) results.push(i);
       }
       return results;
     },
     height: 90,
   });
   items.forEach(item => {
-    const popupHtml = createPopupHtml(item);
-    document.body.insertAdjacentHTML("beforeend", popupHtml);
+    document.body.insertAdjacentHTML("beforeend", createPopupHtml(item));
   });
 }
 
 async function fetchAndLoadApps() {
   const container = document.querySelector(".virtual-list");
-
   if (container) {
     const skeletonItem = `
       <li>
@@ -1125,44 +927,34 @@ async function fetchAndLoadApps() {
       </li>`;
     container.innerHTML = `<ul>${skeletonItem.repeat(10)}</ul>`;
   }
-
   try {
     const [response] = await Promise.all([
       fetch("apps.json"),
       new Promise(resolve => setTimeout(resolve, 2000))
     ]);
-
     if (!response.ok) throw new Error(`Failed to load apps.json`);
-
     const apps = (await response.json()).sort((a, b) => a.title.localeCompare(b.title));
     const currentAppIds = apps.map(app => app.title);
     const seenAppIds = JSON.parse(localStorage.getItem('seen_apps') || '[]');
     const newApps = currentAppIds.filter(id => !seenAppIds.includes(id));
-
     const badges = document.querySelectorAll(".tweaksnumber");
-
-    badges.forEach(badge => {
+    for (const badge of badges) {
       if (newApps.length > 0) {
         badge.textContent = newApps.length;
         badge.classList.remove('display-none');
       } else {
         badge.classList.add('display-none');
       }
-    });
-
+    }
     app.off('tabHide');
     app.on('tabHide', (tabEl) => {
       if (tabEl.querySelector('.virtual-list')) {
         localStorage.setItem('seen_apps', JSON.stringify(currentAppIds));
-        document.querySelectorAll(".tweaksnumber").forEach(badge => {
-          badge.classList.add('display-none');
-        });
+        document.querySelectorAll(".tweaksnumber").forEach(badge => badge.classList.add('display-none'));
       }
     });
-
-    if (container) container.innerHTML = '';
+    if (container) container.textContent = '';
     initVirtualList(".virtual-list", apps);
-
   } catch (error) {
     console.error("Critical Error:", error);
     if (container) container.innerHTML = '<div class="block">Error loading apps.</div>';
@@ -1171,9 +963,7 @@ async function fetchAndLoadApps() {
 
 app.on('ptrRefresh', (el) => {
   if (el.classList.contains('ptr-apps')) {
-    fetchAndLoadApps().then(() => {
-      app.ptr.done(el);
-    });
+    fetchAndLoadApps().then(() => app.ptr.done(el));
   }
 });
 
@@ -1182,65 +972,48 @@ fetchAndLoadApps();
 function addToFavorites(item) {
   let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   let favOrder = JSON.parse(localStorage.getItem("favOrder")) || [];
-
   if (favorites.some(fav => fav.id === item.id)) {
     app.dialog.alert("This app is already in your favorites.", "Error");
     return;
   }
-
   favorites.push(item);
   favOrder.push(item.id);
-
   localStorage.setItem("favorites", JSON.stringify(favorites));
   localStorage.setItem("favOrder", JSON.stringify(favOrder));
-
   app.toast.create({
     icon: '<i class="f7-icons">heart_fill</i>',
     text: "Added to Favorites",
     position: "center",
     closeTimeout: 1500,
   }).open();
-
   displayFavorites();
 }
 
 function displayFavorites() {
   const favContainer = document.getElementById("fav");
   if (!favContainer) return;
-
   const favList = favContainer.querySelector("ul");
   if (!favList) return;
-
   const favEmptyElement = document.getElementById("favempty");
-
   const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   const savedOrder = JSON.parse(localStorage.getItem("favOrder")) || [];
-
-  favList.innerHTML = "";
-
+  favList.textContent = '';
   if (favorites.length === 0) {
     if (favEmptyElement) favEmptyElement.style.display = "block";
     return;
   }
-
   if (favEmptyElement) favEmptyElement.style.display = "none";
-
   const favMap = new Map(favorites.map(f => [f.id, f]));
   const orderedFavorites = [];
-
   savedOrder.forEach(id => {
     if (favMap.has(id)) {
       orderedFavorites.push(favMap.get(id));
       favMap.delete(id);
     }
   });
-
   orderedFavorites.push(...favMap.values());
-
-  orderedFavorites.forEach(fav => {
-    favList.insertAdjacentHTML(
-      "beforeend",
-      `
+  for (const fav of orderedFavorites) {
+    favList.insertAdjacentHTML("beforeend", `
       <li class="swipeout" id="fav-${fav.id}">
         <div class="swipeout-content">
           <a class="item-link popup-open" data-popup="#${fav.id}">
@@ -1250,10 +1023,7 @@ function displayFavorites() {
               </div>
               <div class="item-inner">
                 <div class="item-title-row">
-                  <div class="item-title">
-                    ${fav.title}
-                    <i style="font-size:17px;" class="f7-icons">${fav.icon}</i>
-                  </div>
+                  <div class="item-title">${fav.title}<i style="font-size:17px;" class="f7-icons">${fav.icon}</i></div>
                 </div>
                 <div class="item-subtitle">${fav.subtitle}</div>
               </div>
@@ -1261,23 +1031,15 @@ function displayFavorites() {
           </a>
         </div>
         <div class="swipeout-actions-right">
-          <a class="swipeout-delete"
-             onclick="removeFromFavorites('${fav.title}')">
-            Unfavorite <i class="f7-icons">heart_slash_fill</i>
-          </a>
+          <a class="swipeout-delete" onclick="removeFromFavorites('${fav.title}')">Unfavorite <i class="f7-icons">heart_slash_fill</i></a>
         </div>
-      </li>`
-    );
-  });
-
+      </li>`);
+  }
   if (!favList.favSortableInitialized) {
     favList.addEventListener("sortable:sort", () => {
-      const order = Array.from(favList.children).map(li =>
-        li.id.replace("fav-", "")
-      );
+      const order = [...favList.children].map(li => li.id.replace("fav-", ""));
       localStorage.setItem("favOrder", JSON.stringify(order));
     });
-
     favList.favSortableInitialized = true;
   }
 }
@@ -1285,18 +1047,13 @@ function displayFavorites() {
 function removeFromFavorites(title) {
   let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
   let favOrder = JSON.parse(localStorage.getItem("favOrder")) || [];
-
   const removed = favorites.find(f => f.title === title);
   if (!removed) return;
-
   favorites = favorites.filter(f => f.title !== title);
   favOrder = favOrder.filter(id => id !== removed.id);
-
   localStorage.setItem("favorites", JSON.stringify(favorites));
   localStorage.setItem("favOrder", JSON.stringify(favOrder));
-
   displayFavorites();
-
   if (favorites.length === 0) {
     const favEmptyElement = document.getElementById("favempty");
     if (favEmptyElement) favEmptyElement.style.display = "";
@@ -1313,31 +1070,23 @@ let colorPicker;
 
 const setCustomColor = (newColor) => {
   themeColor = newColor;
-
   app.setColorTheme(newColor);
-
   const indicator = document.getElementById('accent-color');
-  if (indicator) {
-    indicator.style.backgroundColor = newColor;
-  }
-
+  if (indicator) indicator.style.backgroundColor = newColor;
   localStorage.setItem("ios-primary-color", newColor);
 };
 
 document.addEventListener("DOMContentLoaded", () => {
   setCustomColor(themeColor);
-
   let timeout;
   colorPicker = app.colorPicker.create({
     targetEl: '#accent-color',
     popupPush: true,
-    value: {
-      hex: themeColor,
-    },
+    value: { hex: themeColor },
     on: {
       change(cp, value) {
         clearTimeout(timeout);
-        timeout = setTimeout(function () {
+        timeout = setTimeout(() => {
           if (themeColor === value.hex) return;
           setCustomColor(value.hex);
         }, 1);
@@ -1363,6 +1112,11 @@ var swiperFeatured = new Swiper(".featured", {
   autoplay: {
     delay: 4000,
     disableOnInteraction: true
+  },
+  on: {
+    init: function () {
+      this.wrapperEl.style.willChange = 'transform';
+    }
   }
 });
 
@@ -1377,7 +1131,6 @@ function shareURL() {
 
 function reset() {
   const defaultColor = '#0a58f7';
-
   app.dialog.create({
     title: 'Reset',
     verticalButtons: true,
@@ -1387,31 +1140,20 @@ function reset() {
         onClick: function () {
           app.setColorTheme(defaultColor);
           localStorage.setItem("ios-primary-color", defaultColor);
-
           const indicator = document.getElementById('accent-color');
-          if (indicator) {
-            indicator.style.backgroundColor = defaultColor;
-          }
-
-          if (colorPicker) {
-            colorPicker.setValue({ hex: defaultColor });
-          }
-
-          app.toast.create({
-            text: 'Accent color restored!',
-            closeTimeout: 2000,
-          }).open();
+          if (indicator) indicator.style.backgroundColor = defaultColor;
+          if (colorPicker) colorPicker.setValue({ hex: defaultColor });
+          app.toast.create({ text: 'Accent color restored!', closeTimeout: 2000 }).open();
         }
       },
       {
         text: 'Erase all data',
         onClick: function () {
           app.dialog.confirm(
-            'This will delete all your settings and data including added sources, favorites read later . This action cannot be undone.',
+            'This will delete all your settings and data including added sources, favorites read later. This action cannot be undone.',
             'Confirm reset',
             () => {
               app.preloader.show();
-
               setTimeout(() => {
                 document.cookie.split(';').forEach(cookie => {
                   const eqPos = cookie.indexOf('=');
@@ -1419,9 +1161,7 @@ function reset() {
                   document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
                 });
                 localStorage.clear();
-
                 app.preloader.hide();
-
                 window.location.href = 'app.html';
               }, 1500);
             }
