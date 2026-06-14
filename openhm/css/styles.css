@@ -10,15 +10,13 @@
   --f7-dialog-border-radius: 36px;
   color-scheme: light dark;
 }
-}
 
 .ios {
-  --f7-touch-highlight-bg-color: rgba(255, 255, 255, 1);
+  --f7-touch-highlight-bg-color: rgba(255,255,255,1);
 }
-
 .ios .dark,
 .ios.dark {
-  --f7-touch-highlight-bg-color: rgba(255, 255, 255, 0.8);
+  --f7-touch-highlight-bg-color: rgba(255,255,255,0.8);
 }
 
 .ios .tab-link-highlight {
@@ -30,34 +28,33 @@
   color: var(--f7-ios-primary);
 }
 
+/* News cards – light & dark */
 .news-card {
   border: none !important;
   border-radius: 26px !important;
   overflow: hidden;
   background: #fff;
 }
-
 .news-card .card-content {
   padding: 0;
   border-radius: 26px;
   overflow: hidden;
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 26px rgba(0,0,0,0.08);
+  contain: layout style;
 }
-
 .news-card .card-image {
   position: relative;
   width: 100%;
   height: 220px;
   overflow: hidden;
+  contain: paint;
 }
-
 .news-card .newsimg {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
-
 .news-card .news-actions {
   position: absolute;
   top: 10px;
@@ -66,7 +63,6 @@
   gap: 8px;
   z-index: 3;
 }
-
 .news-card .news-action {
   width: 42px;
   height: 42px;
@@ -74,17 +70,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.46);
+  background: rgba(255,255,255,0.46);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
   color: #000;
 }
-
 .news-card .news-action i {
   font-size: 18px;
 }
-
 .news-card .news-overlay {
   position: absolute;
   left: 10px;
@@ -93,12 +87,11 @@
   z-index: 2;
   padding: 10px 12px;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.46);
+  background: rgba(255,255,255,0.46);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
 }
-
 .news-card .news-title {
   color: #000;
   font-size: 16px;
@@ -112,43 +105,53 @@
 
 .dark .news-card .card-content {
   background: #1c1c1e;
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 26px rgba(0,0,0,0.5);
 }
-
 .dark .news-card .news-overlay {
-  background: rgba(30, 30, 32, 0.46);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(30,30,32,0.46);
+  border: 1px solid rgba(255,255,255,0.08);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
-
 .dark .news-card .news-title {
   color: #fff;
 }
-
 .dark .news-card .news-action {
-  background: rgba(40, 40, 42, 0.46);
+  background: rgba(40,40,42,0.46);
   color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
-.left {
-  visibility: hidden;
+/* Glass effect group */
+.liquid-glass,
+.popover,
+.toolbar-pane,
+.left,
+.right,
+.swiper-title-container {
+  backdrop-filter: url(#liquid-filter) blur(1px) !important;
+  -webkit-backdrop-filter: url(#liquid-filter) blur(1px) !important;
+  background: rgba(255,255,255,0.01) !important;
+  box-shadow: none;
+  will-change: backdrop-filter;
 }
 
-.visibility-hidden{visibility:hidden;}
-.liquid-glass, .popover, .right, .toolbar-pane, .left, .right, .swiper-title-container{backdrop-filter: url(#liquid-filter) blur(1px)!important; -webkit-backdrop-filter: url(#liquid-filter) blur(1px)!important; background: rgba(255, 255, 255, 0.01)!important;box-shadow: none;}
 .toolbar::before,
-.toolbar::after{
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
+.toolbar::after,
 .navbar::before,
 .navbar::after,
 .navbar-bg::before {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
+
+.left {
+  visibility: hidden;
+}
+.visibility-hidden {
+  visibility: hidden;
+}
+
 .navbar .hm-title,
 .navbar .hm-title-large {
   position: relative;
@@ -164,7 +167,6 @@
   margin-left: 0;
   margin-right: auto;
 }
-
 .navbar .hm-title-large {
   font-size: 20px;
 }
@@ -178,19 +180,16 @@
   background: var(--f7-list-strong-bg-color);
   transition: background-color 1s;
   transform: translateZ(0);
+  border-radius: var(--f7-list-inset-border-radius) !important;
 }
-
 .list.separated ul {
   background: 0 0;
 }
-
 .list.separated .item-inner:after {
   content: none;
 }
-
 .list.separated .item-content,
-.list.separated .item-link,
-.list.separated li {
+.list.separated .item-link {
   border-radius: var(--f7-list-inset-border-radius) !important;
 }
 
@@ -205,7 +204,6 @@
   padding-left: 16px;
   padding-right: 15px;
 }
-
 .flex-align {
   display: flex;
   align-items: center;
@@ -216,7 +214,7 @@
   height: 27px;
   border-radius: 50%;
   background-color: var(--f7-ios-primary);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255,255,255,0.18);
 }
 
 .fab {
@@ -226,8 +224,8 @@
   border-radius: 99px;
   margin-bottom: 20%;
   position: fixed;
+  will-change: opacity, visibility;
 }
-
 .fab[style*="visibility: visible"] {
   opacity: 1;
 }
@@ -245,7 +243,6 @@ body.ui-scroll-locked {
   touch-action: pan-y;
   -webkit-overflow-scrolling: touch;
 }
-
 #browseTab .searchbar-found {
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch;
@@ -269,15 +266,15 @@ body.ui-scroll-locked {
   width: 110px;
   height: 110px;
   border-radius: 29.9%;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0,0,0,0.05);
   object-fit: cover;
 }
 
 .get {
   transition: transform 0.6s ease;
   padding: 0 33px !important;
+  will-change: transform;
 }
-
 .get:active {
   transform: scale(1.1);
 }
@@ -285,7 +282,6 @@ body.ui-scroll-locked {
 .more {
   margin-left: 49.8% !important;
 }
-
 .more i {
   font-size: 34px;
 }
@@ -305,24 +301,22 @@ body.ui-scroll-locked {
   margin: 0;
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+  background: linear-gradient(145deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 100%);
+  will-change: backdrop-filter;
 }
 
 .notification {
   height: 83px;
 }
 
-.dark .sheet-modal {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+.sheet-modal {
+  background-color: rgba(255,255,255,0.8);
   backdrop-filter: blur(13px);
   -webkit-backdrop-filter: blur(13px);
 }
-
-.sheet-modal {
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(13px);
-  -webkit-backdrop-filter: blur(13px);
+.dark .sheet-modal {
+  background-color: rgba(0,0,0,0.5);
+  color: white;
 }
 
 .inline {
@@ -346,18 +340,13 @@ body.ui-scroll-locked {
   display: flex;
   overflow-x: auto;
   -webkit-overflow-scrolling: auto;
+  contain: layout style;
 }
-
-.screenshot div {
-  flex-shrink: 0;
-  width: 230px;
-  height: auto;
-}
-
 .screenshot img {
   width: 200px;
   border-radius: 20px;
   margin: 5px;
+  flex-shrink: 0;
 }
 
 .swiper-title-container {
@@ -366,17 +355,16 @@ body.ui-scroll-locked {
   left: 14px;
   width: fit-content;
   padding: 6px 12px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08));
+  background: linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08));
   backdrop-filter: blur(14px) saturate(180%);
   -webkit-backdrop-filter: blur(14px) saturate(180%);
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.25);
   display: flex;
   flex-direction: column;
   pointer-events: none;
 }
-
 .swiper-title,
 .swiper-title-small {
   margin: 0;
@@ -384,7 +372,7 @@ body.ui-scroll-locked {
   font-weight: 600;
   color: #fff;
   line-height: 1.2;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.25);
 }
 
 .swiper-padding {
@@ -396,7 +384,6 @@ body.ui-scroll-locked {
   height: 50%;
   border-radius: 20px;
 }
-
 .swiper-slide img {
   width: 100%;
   height: 100%;
@@ -415,7 +402,6 @@ body.ui-scroll-locked {
   border-top-left-radius: 27px;
   border-top-right-radius: 27px;
 }
-
 .swipe-nav i {
   font-size: 60px;
   color: gray;
@@ -458,26 +444,23 @@ body.ui-scroll-locked {
   display: none;
   background-color: var(--f7-page-bg-color);
 }
-
 .sidebar-header {
   margin-top: 30%;
   text-align: center;
   padding: 30px 0;
 }
-
 .sidebar-header i {
   font-size: 36px;
 }
-
 .sidebar-list .item-link.tab-link-active {
   color: var(--f7-ios-primary);
 }
 
+/* Responsive */
 @media (max-width: 499px) {
   .page[data-name="repo-detail"].page-with-subnavbar .subnavbar {
     display: none !important;
   }
-
   .page[data-name="repo-detail"].page-with-subnavbar .page-content {
     padding-top: calc(var(--f7-navbar-height) + var(--f7-safe-area-top)) !important;
   }
@@ -488,7 +471,6 @@ body.ui-scroll-locked {
     display: block;
     width: 290px;
   }
-
   .swiper .featured,
   .swiper .guides {
     width: 85%;
@@ -496,49 +478,39 @@ body.ui-scroll-locked {
     height: 50%;
     border-radius: 20px;
   }
-
   .title-container {
     position: absolute;
     bottom: 5%;
     left: 5%;
     padding: 5px;
   }
-
   .swiper-title {
     font-size: 2vw;
   }
-
   .fab {
     margin-bottom: 2%;
   }
-
   .swipe-nav {
     height: 5vh;
     max-height: 30px;
   }
-
   .newsimg {
     width: 50%;
   }
-
   .list.separated ul {
     background: transparent;
   }
-
   .searchbar-expandable {
     margin-bottom: 4% !important;
   }
-
   .item-media img {
     border-radius: 27% !important;
   }
-
   #app {
     margin-left: var(--sidebar-width, 290px);
     width: calc(100vw - var(--sidebar-width, 290px));
     max-width: calc(100vw - var(--sidebar-width, 290px));
   }
-
   .toolbar {
     display: none;
   }
@@ -548,26 +520,22 @@ body.ui-scroll-locked {
   .more {
     margin-left: 76% !important;
   }
-
   .swiper .featured {
     width: 63%;
     max-width: 500px;
     height: 50%;
     border-radius: 20px;
   }
-
   .searchbar-expandable {
     margin-bottom: 5% !important;
   }
-
   .news-card .card-image {
-    width: 100%;
     height: 360px;
-    overflow: hidden;
   }
 }
-@media (orientation: landscape) and (max-height: 500px) { 
+
+@media (orientation: landscape) and (max-height: 500px) {
   .fab {
-    margin-bottom: 1%;    
+    margin-bottom: 1%;
   }
 }
