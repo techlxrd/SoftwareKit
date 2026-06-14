@@ -365,8 +365,8 @@ html.ui-scroll-locked, body.ui-scroll-locked {
   align-items: center;
   justify-content: center;
   background: rgba(255,255,255,0.46);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px) saturate(250%) !important;
+  -webkit-backdrop-filter: blur(4px) saturate(250%) !important;
   box-shadow: 0 4px 12px rgba(0,0,0,0.12);
   color: #000;
 }
@@ -382,8 +382,8 @@ html.ui-scroll-locked, body.ui-scroll-locked {
   padding: 10px 12px;
   border-radius: 20px;
   background: rgba(255,255,255,0.46);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(4px) saturate(250%) !important;
+  -webkit-backdrop-filter: blur(4px) saturate(250%) !important;
   box-shadow: 0 6px 18px rgba(0,0,0,0.1);
 }
 
@@ -406,8 +406,8 @@ html.ui-scroll-locked, body.ui-scroll-locked {
 .dark .news-card .news-overlay {
   background: rgba(30,30,32,0.46);
   border: 1px solid rgba(255,255,255,0.08);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(4px) saturate(250%) !important;
+  -webkit-backdrop-filter: blur(4px) saturate(250%) !important;
 }
 
 .dark .news-card .news-title { color: #fff; }
@@ -536,8 +536,8 @@ img { pointer-events: none; }
   width: fit-content;
   padding: 6px 12px;
   background: linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08));
-  backdrop-filter: blur(6px) saturate(180%);
-  -webkit-backdrop-filter: blur(6px) saturate(180%);
+  backdrop-filter: blur(4px) saturate(250%) !important;
+  -webkit-backdrop-filter: blur(4px) saturate(250%) !important;
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.18);
   box-shadow: 0 6px 20px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.25);
