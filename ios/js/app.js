@@ -773,12 +773,30 @@ reportForm.addEventListener('submit', function (e) {
 document.addEventListener('DOMContentLoaded', () => {
   const STORAGE_KEY = 'altstore_repos_v3';
   const LOCAL_REPO_URL = './altstore.json';
-  const PROXY = 'https://api.allorigins.win/raw?url=';
-  const BACKUP_PROXIES = [
-    'https://api.codetabs.com/v1/proxy?quest=',
+  const PROXY_LIST = [
+    'https://api.allorigins.win/raw?url=',
+    'https://cors.eu.org/',
+  'https://api.codetabs.com/v1/proxy?quest=',
+    'https://proxy.techzbots1.workers.dev/?url=',
+    'https://cors-anywhere.herokuapp.com/',
+    'https://cors.bridged.cc/',
     'https://thingproxy.freeboard.io/fetch/',
     'https://corsproxy.io/?url='
   ];
+
+  function getUserProxy() {
+    return localStorage.getItem('custom_cors_proxy');
+  }
+
+  function getProxies() {
+    const custom = getUserProxy();
+    if (custom) return [custom, ...PROXY_LIST];
+    return PROXY_LIST;
+  }
+
+  // Increase timeout for slower proxies
+  const FETCH_TIMEOUT = 8000; // ms
+
   const NSFW_PREF_PREFIX = 'source_nsfw_pref:';
   const NSFW_TERMS_REGEX = [
     /\b(porn|nsfw|xxx|18\+)\b/i,
@@ -791,7 +809,6 @@ document.addEventListener('DOMContentLoaded', () => {
     'iconURL', 'screenshotURLs', 'appPermissions', 'versions',
     'versionDate', 'size', 'date', 'url'
   ]);
-  const FETCH_TIMEOUT = 1000;
 
   if (!window.repoView) {
     window.repoView = app.views.create('#repository-view', { name: 'repoView' });
@@ -1070,7 +1087,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return allApps;
   }
 
-  function createFetchWithTimeout(url, timeout) {
+  function createFetchWithTimeout(url, timeout = FETCH_TIMEOUT) {
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), timeout);
     return fetch(url, { signal: controller.signal })
@@ -1084,23 +1101,22 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  async function tryProxies(url) {
-    const proxies = [
-      `${PROXY}${encodeURIComponent(url)}`,
-      ...BACKUP_PROXIES.map(p => `${p}${encodeURIComponent(url)}`)
-    ];
-    for (const proxyUrl of proxies) {
-      try {
-        const res = await createFetchWithTimeout(proxyUrl, FETCH_TIMEOUT);
-        if (res.ok) {
-          const data = await res.json();
-          return data;
-        }
-      } catch (e) {
-        continue;
-      }
+  // Race all proxies – first successful JSON wins
+  async function tryProxiesRace(url) {
+    const fetchJson = async (proxy) => {
+      const proxyUrl = proxy + encodeURIComponent(url);
+      const res = await createFetchWithTimeout(proxyUrl, FETCH_TIMEOUT);
+      if (!res.ok) throw new Error(`Status ${res.status}`);
+      return res.json();
+    };
+
+    const proxies = getProxies();
+    const tasks = proxies.map(p => fetchJson(p).catch(() => Promise.reject(p)));
+    try {
+      return await Promise.any(tasks);
+    } catch {
+      return null;
     }
-    return null;
   }
 
   async function fetchRepo(url) {
@@ -1115,7 +1131,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     try {
-      const jsonData = await tryProxies(url);
+      const jsonData = await tryProxiesRace(url);
       if (!jsonData) return null;
       const repo = sanitizeRepo(jsonData, url);
       return applySavedNsfwPreference(repo);
@@ -1502,7 +1518,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const minDelay = 2000;
 
     try {
-      const [fetchedRepo] = await Promise.all([
+      let [fetchedRepo] = await Promise.all([
         fetchRepo(normalizedUrl),
         new Promise(resolve => {
           const remaining = minDelay - (Date.now() - startTime);
@@ -1510,11 +1526,37 @@ document.addEventListener('DOMContentLoaded', () => {
         })
       ]);
       app.dialog.close();
-
+      
       if (!fetchedRepo) {
-        app.dialog.alert('Unable to add source. Please check the URL and ensure it contains valid repository data.', 'Error');
-        return;
+        const choice = await new Promise(resolve => {
+          app.dialog.create({
+            title: 'All proxies failed',
+            text: 'None of the CORS proxies could fetch this source. You can still add it if you have its JSON content.',
+            buttons: [
+              { text: 'Paste JSON manually', onClick: () => resolve('paste') },
+              { text: 'Cancel', onClick: () => resolve('cancel') }
+            ]
+          }).open();
+        });
+        if (choice === 'cancel') return;
+        const jsonStr = await new Promise(resolve => {
+          app.dialog.prompt('Paste the full repository JSON', 'Manual add', resolve);
+        });
+        if (!jsonStr) return;
+        try {
+          const parsed = JSON.parse(jsonStr);
+          fetchedRepo = sanitizeRepo(parsed, normalizedUrl);
+        } catch {
+          app.dialog.alert('Invalid JSON. Please check the content.', 'Error');
+          return;
+        }
+        if (!fetchedRepo) {
+          app.dialog.alert('Could not parse a valid repository from the JSON.', 'Error');
+          return;
+        }
       }
+      // =================================================================
+
       let repo = fetchedRepo;
       repo.sourceURL = normalizedUrl;
       if (!repo.apps || !Array.isArray(repo.apps)) {
@@ -2705,10 +2747,13 @@ function initVirtualList(containerSelector, items) {
     },
     height: 90,
   });
-  items.forEach(item => {
-    const popupHtml = createPopupHtml(item);
-    document.body.insertAdjacentHTML("beforeend", popupHtml);
-  });
+  const frag = document.createDocumentFragment();
+  for (const item of items) {
+    const temp = document.createElement('template');
+    temp.innerHTML = createPopupHtml(item);
+    frag.appendChild(temp.content.firstChild);
+  }
+  document.body.appendChild(frag);
 }
 
 async function fetchAndLoadApps() {
@@ -2977,7 +3022,19 @@ function reset() {
     ]
   }).open();
 }
-
+    (function() {
+      var e = document.getElementById('os-version');
+      if (e) {
+        var t, n = navigator.userAgent;
+        if ((t = n.match(/(iPhone|iPad|iPod).*? OS (\d+)_?(\d+)?_?(\d+)?/i))) e.textContent = t[1] + ' ' + t.slice(2)
+          .filter(Boolean).join('.');
+        else if ((t = n.match(/iPad.*? OS (\d+)_?(\d+)?_?(\d+)?/i))) e.textContent = 'iPadOS ' + t.slice(1).filter(
+          Boolean).join('.');
+        else if ((t = n.match(/Mac OS X (\d+)[_.](\d+)(?:[_.](\d+))?/i))) e.textContent = 'macOS ' + t.slice(1).filter(
+          Boolean).join('.');
+        else e.textContent = '';
+      }
+    })();
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.getRegistration().then(registration => {
     if (!registration) {
