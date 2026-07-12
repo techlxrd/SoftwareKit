@@ -773,29 +773,15 @@ reportForm.addEventListener('submit', function (e) {
 document.addEventListener('DOMContentLoaded', () => {
   const STORAGE_KEY = 'altstore_repos_v3';
   const LOCAL_REPO_URL = './altstore.json';
-  const PROXY_LIST = [
-    'https://corsproxy.io/?url=',
-    'https://api.codetabs.com/v1/proxy?quest=',
-    'https://cors.bridged.cc/',
-    'https://thingproxy.freeboard.io/fetch/',
-    'https://cors.eu.org/',
-    'https://api.allorigins.win/raw?url=',
-    'https://proxy.techzbots1.workers.dev/?url=',
-    'https://cors-anywhere.herokuapp.com/'
-  ];
 
-  function getUserProxy() {
-    return localStorage.getItem('custom_cors_proxy');
+  const CUSTOM_PROXY = 'https://sw-alt.techlxrd.workers.dev/?url=';
+
+  function getProxy() {
+    const saved = localStorage.getItem('custom_cors_proxy');
+    return saved || CUSTOM_PROXY;
   }
 
-  function getProxies() {
-    const custom = getUserProxy();
-    if (custom) return [custom, ...PROXY_LIST];
-    return PROXY_LIST;
-  }
-
-  const FETCH_TIMEOUT = 8000;
-  const PROXY_TIMEOUT = 6000;
+  const FETCH_TIMEOUT = 10000;
 
   const NSFW_PREF_PREFIX = 'source_nsfw_pref:';
   const NSFW_TERMS_REGEX = [
@@ -1113,31 +1099,17 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    const proxy = getProxy();
     try {
-      const res = await fetch(url, {
-        signal: (() => { const ctrl = new AbortController(); setTimeout(() => ctrl.abort(), FETCH_TIMEOUT); return ctrl.signal; })(),
-        headers: { 'Accept': 'application/json' }
-      });
-      if (res.ok) {
-        const json = await res.json();
-        const repo = sanitizeRepo(json, url);
-        return applySavedNsfwPreference(repo);
-      }
-    } catch (e) {}
-
-    const proxies = getProxies();
-    for (const proxy of proxies) {
-      try {
-        const proxyUrl = proxy + encodeURIComponent(url);
-        const res = await createFetchWithTimeout(proxyUrl, PROXY_TIMEOUT);
-        if (!res.ok) throw new Error(`Status ${res.status}`);
-        const json = await res.json();
-        const repo = sanitizeRepo(json, url);
-        return applySavedNsfwPreference(repo);
-      } catch (e) {}
+      const proxyUrl = proxy + encodeURIComponent(url);
+      const res = await createFetchWithTimeout(proxyUrl, FETCH_TIMEOUT);
+      if (!res.ok) throw new Error(`Status ${res.status}`);
+      const json = await res.json();
+      const repo = sanitizeRepo(json, url);
+      return applySavedNsfwPreference(repo);
+    } catch (e) {
+      return null;
     }
-
-    return null;
   }
 
   window.openPhotoBrowser = function (screenshotUrls) {
@@ -1530,8 +1502,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!fetchedRepo) {
         const choice = await new Promise(resolve => {
           app.dialog.create({
-            title: 'All proxies failed',
-            text: 'None of the CORS proxies could fetch this source. You can still add it if you have its JSON content.',
+            title: 'Fetch failed',
+            text: 'Could not fetch this source. You can still add it if you have the JSON content.',
             buttons: [
               { text: 'Paste JSON manually', onClick: () => resolve('paste') },
               { text: 'Cancel', onClick: () => resolve('cancel') }
