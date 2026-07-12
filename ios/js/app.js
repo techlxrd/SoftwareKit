@@ -774,14 +774,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const STORAGE_KEY = 'altstore_repos_v3';
   const LOCAL_REPO_URL = './altstore.json';
   const PROXY_LIST = [
-    'https://api.allorigins.win/raw?url=',
-    'https://cors.eu.org/',
-  'https://api.codetabs.com/v1/proxy?quest=',
-    'https://proxy.techzbots1.workers.dev/?url=',
-    'https://cors-anywhere.herokuapp.com/',
+    'https://corsproxy.io/?url=',
+    'https://api.codetabs.com/v1/proxy?quest=',
     'https://cors.bridged.cc/',
     'https://thingproxy.freeboard.io/fetch/',
-    'https://corsproxy.io/?url='
+    'https://cors.eu.org/',
+    'https://api.allorigins.win/raw?url=',
+    'https://proxy.techzbots1.workers.dev/?url=',
+    'https://cors-anywhere.herokuapp.com/'
   ];
 
   function getUserProxy() {
@@ -794,8 +794,8 @@ document.addEventListener('DOMContentLoaded', () => {
     return PROXY_LIST;
   }
 
-  // Increase timeout for slower proxies
-  const FETCH_TIMEOUT = 8000; // ms
+  const FETCH_TIMEOUT = 8000;
+  const PROXY_TIMEOUT = 6000;
 
   const NSFW_PREF_PREFIX = 'source_nsfw_pref:';
   const NSFW_TERMS_REGEX = [
@@ -1101,24 +1101,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 
-  // Race all proxies – first successful JSON wins
-  async function tryProxiesRace(url) {
-    const fetchJson = async (proxy) => {
-      const proxyUrl = proxy + encodeURIComponent(url);
-      const res = await createFetchWithTimeout(proxyUrl, FETCH_TIMEOUT);
-      if (!res.ok) throw new Error(`Status ${res.status}`);
-      return res.json();
-    };
-
-    const proxies = getProxies();
-    const tasks = proxies.map(p => fetchJson(p).catch(() => Promise.reject(p)));
-    try {
-      return await Promise.any(tasks);
-    } catch {
-      return null;
-    }
-  }
-
   async function fetchRepo(url) {
     if (url === LOCAL_REPO_URL) {
       try {
@@ -1130,14 +1112,32 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
       }
     }
+
     try {
-      const jsonData = await tryProxiesRace(url);
-      if (!jsonData) return null;
-      const repo = sanitizeRepo(jsonData, url);
-      return applySavedNsfwPreference(repo);
-    } catch (e) {
-      return null;
+      const res = await fetch(url, {
+        signal: (() => { const ctrl = new AbortController(); setTimeout(() => ctrl.abort(), FETCH_TIMEOUT); return ctrl.signal; })(),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        const json = await res.json();
+        const repo = sanitizeRepo(json, url);
+        return applySavedNsfwPreference(repo);
+      }
+    } catch (e) {}
+
+    const proxies = getProxies();
+    for (const proxy of proxies) {
+      try {
+        const proxyUrl = proxy + encodeURIComponent(url);
+        const res = await createFetchWithTimeout(proxyUrl, PROXY_TIMEOUT);
+        if (!res.ok) throw new Error(`Status ${res.status}`);
+        const json = await res.json();
+        const repo = sanitizeRepo(json, url);
+        return applySavedNsfwPreference(repo);
+      } catch (e) {}
     }
+
+    return null;
   }
 
   window.openPhotoBrowser = function (screenshotUrls) {
@@ -1555,7 +1555,6 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
       }
-      // =================================================================
 
       let repo = fetchedRepo;
       repo.sourceURL = normalizedUrl;
@@ -2747,13 +2746,10 @@ function initVirtualList(containerSelector, items) {
     },
     height: 90,
   });
-  const frag = document.createDocumentFragment();
-  for (const item of items) {
-    const temp = document.createElement('template');
-    temp.innerHTML = createPopupHtml(item);
-    frag.appendChild(temp.content.firstChild);
-  }
-  document.body.appendChild(frag);
+  items.forEach(item => {
+    const popupHtml = createPopupHtml(item);
+    document.body.insertAdjacentHTML("beforeend", popupHtml);
+  });
 }
 
 async function fetchAndLoadApps() {
