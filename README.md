@@ -1,6 +1,6 @@
 # SoftwareKit
 
-Welcome to **SoftwareKit** — a modern platform built for users across the **Apple** and **HUAWEI** ecosystems.
+Welcome to **SoftwareKit** - a modern platform built for users across the **Apple** and **HUAWEI** ecosystems.
 
 The goal of SoftwareKit is simple: create useful tools, utilities, and services that are easy to use, fast, and enjoyable. We focus on clean design, smooth performance, and removing unnecessary complexity from everyday tasks.
 
