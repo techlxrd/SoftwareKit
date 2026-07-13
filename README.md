@@ -1,58 +1,71 @@
 # SoftwareKit
 
-SoftwareKit is a modern web platform built for people who use iOS, macOS, and HarmonyOS. The project focuses on creating useful tools and utilities with a clean interface, fast performance, and a smooth overall experience.
+Welcome to **SoftwareKit** — a modern platform built for users across the **Apple** and **HUAWEI** ecosystems.
 
-Whether you're exploring apps, managing services, or just looking for lightweight tools that work well, SoftwareKit aims to keep things simple, responsive, and easy to use.
+The goal of SoftwareKit is simple: create useful tools, utilities, and services that are easy to use, fast, and enjoyable. We focus on clean design, smooth performance, and removing unnecessary complexity from everyday tasks.
+
+Whether you're discovering new apps, managing services, or searching for lightweight tools that just work, SoftwareKit is designed to provide a simple and reliable experience.
 
 🌐 Website: https://swkit.app
 
 ---
 
-# Features
+# ✨ Features
 
-- Fast and lightweight experience
-- Clean and modern interface
-- Utilities for Apple and HUAWEI ecosystem users
-- Regular updates and improvements
-- Built with simplicity and performance in mind
-
----
-
-# Project Structure
-
-This repository contains the source code and components that power the SoftwareKit platform.
+- ⚡ Fast and lightweight performance
+- 🎨 Clean, modern, and user-friendly interface
+- 🍎 Tools and utilities for Apple ecosystem users
+- 🔵 Support for HUAWEI ecosystem users
+- 🔄 Regular updates and improvements
+- 🛠️ Built with simplicity, reliability, and performance in mind
 
 ---
 
-# License
+# 📁 Project Structure
 
-This project is licensed under the
-GNU General Public License v2.0 (GPL-2.0)
+This repository contains the source code, components, and resources that power the SoftwareKit platform.
 
-You are allowed to:
+The project is continuously evolving as new features, improvements, and tools are added.
 
-- Use the code
-- Modify the project
-- Share and distribute it
+---
 
-## Conditions:
+# 📜 License
 
-- Modified or derivative versions must also use the GPL-2.0 license
-- Source code must remain publicly available when distributed
+SoftwareKit is licensed under the **GNU General Public License v2.0 (GPL-2.0)**.
+
+This means you are free to:
+
+- Use the project
+- Modify the source code
+- Share and distribute your own versions
+
+## Requirements
+
+If you create and distribute modified versions:
+
+- Your changes must also be released under the GPL-2.0 license
+- The source code must remain publicly available
 
 Full license text:
+
 https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
 
 ---
 
-# Notes
+# ⚠️ Third-Party Services
 
-SoftwareKit may reference third-party applications, brands, or services. Unless clearly stated otherwise, those services are not owned, affiliated with, or managed by this project.
+SoftwareKit may mention or interact with third-party applications, brands, or services.
+
+Unless explicitly stated, these third-party products and services are not owned by, affiliated with, or managed by SoftwareKit.
+
+All trademarks and brand names belong to their respective owners.
 
 ---
 
-# Contact
+# 💬 Contact
 
-Questions, ideas, or collaboration requests are always welcome.
+Have a question, suggestion, or want to collaborate?
+
+Feel free to reach out — feedback and ideas are always appreciated.
 
 - Website: https://techlord.is-a.dev
