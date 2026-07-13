@@ -31,7 +31,7 @@ The project is continuously evolving as new features, improvements, and tools ar
 
 # 📜 License
 
-SoftwareKit is licensed under the **GNU General Public License v2.0 (GPL-2.0)**.
+SoftwareKit is licensed under the **GNU General Public License v3.0 (GPL-3.0)**.
 
 This means you are free to:
 
@@ -48,7 +48,7 @@ If you create and distribute modified versions:
 
 Full license text:
 
-https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html
+https://www.gnu.org/licenses/old-licenses/gpl-3.0.en.html
 
 ---
 
