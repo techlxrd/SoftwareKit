@@ -44,7 +44,7 @@ a, a:link, a:visited {
     bottom: 16px;
   }
 }
-
+#signer-logs{padding: 16px; font-family: monospace; word-break: break-all; white-space: pre-wrap; min-height: 100%;}
 .standalone .install { display: none; }
 
 .searchbar-bottom-wrap {
@@ -166,6 +166,7 @@ html.ui-scroll-locked, body.ui-scroll-locked {
   backdrop-filter: blur(4px) saturate(250%) !important;
   -webkit-backdrop-filter: blur(4px) saturate(250%) !important;
 }
+
 .dark .searchbar-input-wrap, .dark .searchbar-disable-button {
   backdrop-filter: blur(2px) !important;
   -webkit-backdrop-filter: blur(2px) !important;
@@ -596,6 +597,15 @@ img { pointer-events: none; }
   }
 }
 
+@media only screen and (min-width: 500px) {
+  .more { margin-left: 76% !important; }
+  .swiper .featured, .swiper .guides { width: 63%; max-width: 500px; height: 50%; border-radius: 20px; }
+  .searchbar-expandable { margin-bottom: 5% !important; }
+  .news-card .card-image { height: 360px; }
+  .searchbar-bottom-wrap { display: none; }
+  .subnavbar { display: block; }
+}
+
 @media only screen and (min-width: 1000px) {
   .sidebar { display: block; width: 290px; }
   .swiper .featured, .swiper .guides { width: 85%; max-width: 500px; height: 50%; border-radius: 20px; }
@@ -616,15 +626,22 @@ img { pointer-events: none; }
   .toolbar { display: none; }
 }
 
-@media only screen and (min-width: 500px) {
-  .more { margin-left: 76% !important; }
-  .swiper .featured, .swiper .guides { width: 63%; max-width: 500px; height: 50%; border-radius: 20px; }
-  .searchbar-expandable { margin-bottom: 5% !important; }
-  .news-card .card-image { height: 360px; }
-  .searchbar-bottom-wrap { display: none; }
-  .subnavbar { display: block; }
+@media only screen and (min-width: 1400px) {
+  .news-card .card-image { height: 440px; }
+  .swiper .featured, .swiper .guides { max-width: 600px; }
+  .swiper-title { font-size: 1.6vw; }
+  .sidebar-header { margin-top: 20%; }
+}
+
+@media only screen and (min-width: 1800px) {
+  .news-card .card-image { height: 520px; }
+  .app-icon { width: 140px; height: 140px; }
+  .swiper-title { font-size: 1.4vw; }
+  .searchbar-expandable { margin-bottom: 2% !important; }
 }
 
 @media (orientation: landscape) and (max-height: 500px) {
   .fab { margin-bottom: 1%; }
+  .sidebar-header { margin-top: 8%; }
+  .swiper .featured, .swiper .guides { height: 65%; }
 }
