@@ -1505,7 +1505,7 @@ document.addEventListener('DOMContentLoaded', () => {
             title: 'Fetch failed',
             text: 'Could not fetch this source. You can still add it if you have the JSON content.',
             buttons: [
-              { text: 'Paste JSON manually', onClick: () => resolve('paste') },
+              { text: 'Paste JSON', onClick: () => resolve('paste') },
               { text: 'Cancel', onClick: () => resolve('cancel') }
             ]
           }).open();
@@ -2025,19 +2025,21 @@ function checkConnection() {
 }
 
 checkConnection();
-
+//Signer
 const SignerEngine = {
   workerBase: 'https://api.cococloud.swkit.app',
   files: { ipa: null, p12: null, prov: null },
   appInfo: null,
   currentMode: 'custom',
   _hasCertResults: false,
+  sharedCerts: null,
+  _sharedCertsFetched: false,
 
   log: function(msg, color = 'var(--f7-theme-color)', escapeHtml = true) {
     const el = document.getElementById('signer-logs');
     if (!el) return;
     const safe = escapeHtml ? this._escapeHtml(String(msg)) : String(msg);
-    el.insertAdjacentHTML('beforeend', `<div style="color:${color}; margin-bottom:4px;">> ${safe}</div>`);
+    el.insertAdjacentHTML('beforeend', `<div style="color:${color}; ">> ${safe}</div>`);
     el.scrollTop = el.scrollHeight;
   },
 
@@ -2061,13 +2063,19 @@ const SignerEngine = {
   },
 
   _alert: function(message, title = 'Error') {
-    try {
-      if (window.app && app.dialog && typeof app.dialog.alert === 'function') {
-        app.dialog.alert(message, title);
-      } else {
-        alert(`${title}: ${message}`);
-      }
-    } catch (e) {}
+    const appInstance = (typeof app !== 'undefined' && app) || (window.app || null);
+    if (!appInstance || !appInstance.dialog) return;
+    if (typeof appInstance.dialog.alert === 'function') {
+      appInstance.dialog.alert(message, title);
+      return;
+    }
+    if (typeof appInstance.dialog.create === 'function') {
+      appInstance.dialog.create({
+        title: title,
+        text: message,
+        buttons: [{ text: 'OK' }]
+      }).open();
+    }
   },
 
   _arrayBufferToBinaryString: function(buffer) {
@@ -2187,6 +2195,72 @@ const SignerEngine = {
     }
   },
 
+  _fetchSharedCerts: async function() {
+    if (this._sharedCertsFetched) {
+      this._updateFreeCertUI();
+      return;
+    }
+    const freeList = document.getElementById('free-cert-list');
+    if (freeList) {
+      freeList.style.display = 'block';
+      this._setText('free-cert-name', 'Loading…');
+      this._setHtml('free-cert-status', '<span class="badge color-orange">Checking</span>');
+    }
+    try {
+      const res = await fetch(`${this.workerBase}/sharedcerts`);
+      const parsed = await this._parseResponse(res);
+      if (parsed.type === 'json' && parsed.data.success !== false && parsed.data.certificates && parsed.data.certificates.length > 0) {
+        this.sharedCerts = parsed.data.certificates;
+      } else {
+        this.sharedCerts = null;
+      }
+    } catch (err) {
+      this.sharedCerts = null;
+    }
+    this._sharedCertsFetched = true;
+    this._updateFreeCertUI();
+  },
+
+  _updateFreeCertUI: function() {
+    const freeList = document.getElementById('free-cert-list');
+    if (!freeList) return;
+    if (this.currentMode !== 'free') {
+      freeList.style.display = 'none';
+      return;
+    }
+    if (!this.sharedCerts || !this.sharedCerts.length) {
+      this._setText('free-cert-name', 'Unavailable');
+      this._setHtml('free-cert-status', '<span class="badge color-gray">Failed to load</span>');
+      freeList.style.display = 'block';
+      const signBtn = document.getElementById('sign-button');
+      if (signBtn) signBtn.style.display = 'none';
+      return;
+    }
+    const cert = this.sharedCerts[0];
+    this._setText('free-cert-name', cert.name || cert.CertificateName || 'Unknown');
+    const statusRaw = cert.status || cert.CertificateStatus || '';
+    const statusLower = statusRaw.toLowerCase();
+    let statusHtml = '';
+    if (statusLower.includes('revoked')) {
+      statusHtml = '<span class="badge color-red">Revoked</span>';
+    } else if (statusLower.includes('signed') || statusLower.includes('valid')) {
+      statusHtml = '<span class="badge color-green">Signed</span>';
+    } else {
+      statusHtml = `<span class="badge color-gray">${this._escapeHtml(statusRaw)}</span>`;
+    }
+    this._setHtml('free-cert-status', statusHtml);
+    freeList.style.display = 'block';
+
+    const signBtn = document.getElementById('sign-button');
+    if (signBtn) {
+      if (statusLower.includes('revoked')) {
+        signBtn.style.display = 'none';
+      } else {
+        signBtn.style.display = 'block';
+      }
+    }
+  },
+
   initModeSegmented: function() {
     const container = document.getElementById('mode-segmented');
     if (!container) return;
@@ -2202,6 +2276,8 @@ const SignerEngine = {
       const appInfoBlock = document.getElementById('app-info-block');
       const signBtn = document.getElementById('sign-button');
       const checkBtn = document.getElementById('check-button');
+      const freeCertList = document.getElementById('free-cert-list');
+
       if (mode !== 'check') {
         this._hideCertUI();
       } else {
@@ -2209,11 +2285,19 @@ const SignerEngine = {
       }
       if (signingBlock) signingBlock.style.display = (mode === 'check' || !this.files.ipa) ? 'none' : 'block';
       if (appInfoBlock) appInfoBlock.style.display = (mode === 'check' || !this.files.ipa) ? 'none' : 'block';
+
+      if (mode === 'free') {
+        this._fetchSharedCerts();
+      } else {
+        if (freeCertList) freeCertList.style.display = 'none';
+        if (signBtn) signBtn.style.display = (mode === 'check') ? 'none' : 'block';
+      }
+
       if (mode === 'check') {
         if (signBtn) signBtn.style.display = 'none';
         if (checkBtn) checkBtn.style.display = 'block';
       } else {
-        if (signBtn) signBtn.style.display = 'block';
+        if (signBtn && mode !== 'free') signBtn.style.display = 'block';
         if (checkBtn) checkBtn.style.display = 'none';
       }
     };
@@ -2389,14 +2473,19 @@ const SignerEngine = {
       this._alert(msg, 'Missing Files');
       return;
     }
+
     this.log('Starting certificate validation...', '#ff9500');
     this._hasCertResults = false;
     this._clearCertValues();
+    const revEl = document.getElementById('revocation-status');
+    if (revEl) revEl.innerHTML = '<span class="badge color-orange">Checking</span>';
+
     try {
       if (!window.forge) await this._loadScript('https://cdn.jsdelivr.net/npm/node-forge@1.3.1/dist/forge.min.js');
       if (!window.plist) await this._loadScript('https://cdn.jsdelivr.net/npm/plist@3.0.5/dist/plist.js');
       const forgeLib = window.forge || globalThis.forge;
       if (!forgeLib) throw new Error('Forge failed to load');
+
       let certData = null;
       let provInfo = null;
       if (p12File) {
@@ -2408,6 +2497,7 @@ const SignerEngine = {
         const provData = await this._readFileAsArrayBuffer(provFile);
         provInfo = this._parseMobileProvisionAccurate(provData);
       }
+
       if (certData) {
         const { subject, issuer, validity, serialNumber } = certData;
         const now = new Date();
@@ -2425,16 +2515,19 @@ const SignerEngine = {
         this._setText('prov-expiry', provInfo.expirationDate ? provInfo.expirationDate.toLocaleString() : 'Unknown');
         this._setText('prov-bundle', provInfo.bundleId || 'Unknown');
       }
-      const revEl = document.getElementById('revocation-status');
-      if (revEl) revEl.innerHTML = '<span class="badge color-orange">Checking</span>';
+
       this._hasCertResults = true;
       this._showCertUI();
-      this.log('Checking revocation status...', '#ff9500');
+
       const fd = new FormData();
       if (p12File) fd.append('file', p12File);
-      if (provFile) fd.append('file', provFile);
+      if (provFile) fd.append('mobileprovision', provFile);
+      const p12Pass = document.getElementById('p12-pass')?.value || '';
+      if (p12Pass) fd.append('password', p12Pass);
+
       const res = await fetch(`${this.workerBase}/certchecker`, { method: 'POST', body: fd });
       const parsed = await this._parseResponse(res);
+
       if (parsed.type === 'json') {
         const root = parsed.data;
         const status = this._normalizeRevocationStatus(root);
@@ -2463,11 +2556,9 @@ const SignerEngine = {
     } catch (err) {
       const msg = err && err.message ? err.message : 'Unknown error';
       this.log('Check failed: ' + msg, '#ff3b30');
-      const revEl = document.getElementById('revocation-status');
       if (revEl) revEl.innerHTML = '<span class="badge color-gray">Error</span>';
       this._alert(msg, 'Certificate Check Failed');
     } finally {
-      if (window.app && app.dialog) app.dialog.close();
       this._syncCertUIVisibility();
     }
   },
@@ -2485,6 +2576,15 @@ const SignerEngine = {
       this.log(msg, '#ff3b30');
       this._alert(msg, 'Missing Files');
       return;
+    }
+    if (mode === 'free' && this.sharedCerts && this.sharedCerts.length) {
+      const status = (this.sharedCerts[0].status || this.sharedCerts[0].CertificateStatus || '').toLowerCase();
+      if (status.includes('revoked')) {
+        const msg = 'The shared enterprise certificate is revoked and cannot be used for signing.';
+        this.log(msg, '#ff3b30');
+        this._alert(msg, 'Certificate Revoked');
+        return;
+      }
     }
     const endpoint = mode === 'free' ? 'free-enterprise-sign' : 'customsign';
     const fd = new FormData();
@@ -2580,7 +2680,6 @@ function updateFileLabel(input) {
 }
 
 window.SignerEngine = SignerEngine;
-
 const isMac = /Macintosh|MacIntel|MacPPC|Mac68K/.test(window.navigator.userAgent);
 const isiPad = isMac && (navigator.maxTouchPoints > 1);
 
