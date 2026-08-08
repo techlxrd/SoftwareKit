@@ -20,7 +20,7 @@
       "bundleIdentifier": "com.Flare.FlareStore-iOS",
       "marketplaceID": "",
       "developerName": "Unknown",
-      "subtitle": "",
+      "subtitle": "An awesome app.",
       "localizedDescription": "No description available for this app. ",
       "iconURL": "https://i.imgur.com/6fPksuQ.png",
       "tintColor": "#7f7f7f",
@@ -28,12 +28,12 @@
       "screenshots": [],
       "versions": [
         {
-          "downloadURL": "https://flarestore.vip/api/app/download-public/ios",
-          "size": 8300000,
           "version": "1.1",
-          "buildVersion": null,
           "date": "2026-04-08T10:17:00+03:00",
           "localizedDescription": null,
+          "downloadURL": "https://flarestore.vip/api/app/download-public/ios",
+          "size": 8300000,
+          "buildVersion": null,
           "minOSVersion": null
         }
       ],
@@ -453,39 +453,6 @@
       "appPermissions": {
         "entitlements": [],
         "privacy": {}
-      },
-      "patreon": {}
-    },
-    {
-      "name": "Browser",
-      "bundleIdentifier": "com.timi2506.VisionOSBrowser",
-      "marketplaceID": "",
-      "developerName": "timi2506",
-      "subtitle": "An awesome app.",
-      "localizedDescription": "visionOS Style Browser Built with SwiftUI and WebView",
-      "iconURL": "https://i.imgur.com/097p5Wa.png",
-      "tintColor": "#4c98e4",
-      "category": "other",
-      "screenshots": [
-        "https://i.imgur.com/2XOiukD.png"
-      ],
-      "versions": [
-        {
-          "version": "0.5",
-          "date": "2025-05-18T08:29:00+03:00",
-          "localizedDescription": null,
-          "downloadURL": "https://github.com/timi2506/Browser/releases/download/0.5/Browser-0.5-beta-iOS.ipa",
-          "size": 3000000,
-          "buildVersion": null,
-          "minOSVersion": "15.0"
-        }
-      ],
-      "appPermissions": {
-        "entitlements": [],
-        "privacy": {
-          "NSCameraUsageDescription": "visionOS Style New Tab Background using Live Camera Feed",
-          "NSPhotoLibraryUsageDescription": "Custom New Tab Background"
-        }
       },
       "patreon": {}
     },
@@ -963,17 +930,16 @@
         }
       },
       "patreon": {}
-    },
-    {}
+    }
   ],
   "news": [
     {
-      "title": "SoftwareKit v3.2",
+      "title": "SoftwareKit v3.4.1",
       "identifier": "news_0df3yswqwr",
-      "caption": "SoftwareKit was updated to v3.2. Check the changelog in Settings! 🎉 ",
-      "date": "2026-06-14T16:00",
-      "tintColor": "#a200ff",
-      "imageURL": "https://i.imgur.com/sA5s6sN.png",
+      "caption": "SoftwareKit was updated to v3.4.1. Check the changelog in Settings! 🎉 ",
+      "date": "2026-08-08T12:00",
+      "tintColor": "#ce69ff",
+      "imageURL": "https://i.imgur.com/jKXRWs3.png",
       "notify": true,
       "url": "https://swkit.app",
       "appID": null
