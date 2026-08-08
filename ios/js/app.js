@@ -2858,7 +2858,7 @@ async function fetchAndLoadApps() {
     const currentAppIds = apps.map(app => app.title);
     const seenAppIds = JSON.parse(localStorage.getItem('seen_apps') || '[]');
     const newApps = currentAppIds.filter(id => !seenAppIds.includes(id));
-    const badges = document.querySelectorAll(".tweaksnumber");
+    const badges = document.querySelectorAll(".appsnumber");
     for (const badge of badges) {
       if (newApps.length > 0) {
         badge.textContent = newApps.length;
