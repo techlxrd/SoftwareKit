@@ -43,7 +43,7 @@ This means you are free to:
 
 If you create and distribute modified versions:
 
-- Your changes must also be released under the GPL-2.0 license
+- Your changes must also be released under the GPL-3.0 license
 - The source code must remain publicly available
 
 Full license text:
