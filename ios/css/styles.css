@@ -33,7 +33,7 @@ a, a:link, a:visited {
 }
 
 .ios .tab-link-highlight {
-  transition-duration: 100ms;
+  transition-duration: 150ms;
   will-change: transform;
 }
 
@@ -147,8 +147,8 @@ html.ui-scroll-locked, body.ui-scroll-locked {
 .searchbar-input-wrap,
 .searchbar-disable-button,
 .fab {
-  backdrop-filter: blur(4px) saturate(250%) !important;
-  -webkit-backdrop-filter: blur(4px) saturate(250%) !important;
+  backdrop-filter: blur(4px) saturate(7) !important;
+  -webkit-backdrop-filter: blur(4px) saturate(7) !important;
 }
 
 .toolbar-pane.dark,
@@ -163,13 +163,13 @@ html.ui-scroll-locked, body.ui-scroll-locked {
 .dark .dialog,
 .fab.dark,
 .fab .dialog {
-  backdrop-filter: blur(4px) saturate(250%) !important;
-  -webkit-backdrop-filter: blur(4px) saturate(250%) !important;
+  backdrop-filter: blur(6px) saturate(5) !important;
+  -webkit-backdrop-filter: blur(6px) saturate(5) !important;
 }
 
 .dark .searchbar-input-wrap, .dark .searchbar-disable-button {
-  backdrop-filter: blur(2px) !important;
-  -webkit-backdrop-filter: blur(2px) !important;
+  backdrop-filter: blur(6px) saturate(5)!important;
+  -webkit-backdrop-filter: blur(6px) saturate(5) !important;
 }
 
 .display-none { display: none; }
