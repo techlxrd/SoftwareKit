@@ -1031,7 +1031,7 @@ function displayFavorites() {
           </a>
         </div>
         <div class="swipeout-actions-right">
-          <a class="swipeout-delete" onclick="removeFromFavorites('${fav.title}')">Unfavorite <i class="f7-icons">heart_slash_fill</i></a>
+          <a class="swipeout-delete" onclick="removeFromFavorites(${JSON.stringify(fav.title).replace(/&/g, "&amp;").replace(/"/g, "&quot;")})">Unfavorite <i class="f7-icons">heart_slash_fill</i></a>
         </div>
       </li>`);
   }
