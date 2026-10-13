@@ -1,550 +1,676 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SoftwareKit – Private iOS Sideloading Toolkit for Power Users</title>
-<meta name="description" content="SoftwareKit is a privacy-first iOS power-user toolkit for iPA signing, sideloading resources, jailbreak guides, Apple news, and device utilities. No accounts. No tracking. No unnecessary permissions.">
-<meta name="author" content="TechLxrd">
-<meta name="robots" content="index, follow, max-image-preview:large">
-<link rel="canonical" href="https://swkit.app/">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://swkit.app/">
-<meta property="og:title" content="SoftwareKit – iPA Signer, iOS Sideloading & AltStore Alternative">
-<meta property="og:description" content="Privacy-first iOS and macOS utility app for IPA signing, certificate checks, device information, Apple news, and AltStore support.">
-<meta property="og:image" content="https://softwarekit.pages.dev/ios/assets/linkpreview.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SoftwareKit – iPA Signer, iOS Sideloading & AltStore Alternative">
-<meta name="twitter:description" content="Privacy-first iOS and macOS utility app for IPA signing, certificate checks, device information, Apple news, and AltStore support.">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>SoftwareKit – iOS tools, sideloading guides and device utilities</title>
+  <meta name="description" content="SoftwareKit brings iPA signing, sideloading guides, device information and Apple-related utilities together in one privacy-minded web app.">
+  <meta name="author" content="TechLxrd">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://swkit.app/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://swkit.app/">
+  <meta property="og:title" content="SoftwareKit | iOS tools and sideloading resources">
+  <meta property="og:description" content="A handy collection of iPA signing tools, device information, Apple news and sideloading resources.">
+  <meta property="og:image" content="https://softwarekit.pages.dev/ios/assets/linkpreview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SoftwareKit | iOS tools and sideloading resources">
+  <meta name="twitter:description" content="A handy collection of iPA signing tools, device information, Apple news and sideloading resources.">
+  <link rel="icon" href="/favicon.png">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
-<link rel="icon" href="/favicon.png">
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --page-bg: #f5f5f7;
+      --surface: rgba(255, 255, 255, 0.48);
+      --surface-strong: rgba(255, 255, 255, 0.68);
+      --text: #1d1d1f;
+      --muted: #737378;
+      --border: rgba(255, 255, 255, 0.65);
+      --line: rgba(0, 0, 0, 0.08);
+      --accent: #0071e3;
+      --accent-hover: #0077ed;
+      --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.045);
+      --card-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.09);
+      --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    }
 
-<style>
-:root{
-  --blue2:#5856d6;--orange:#ff9500;--green:#34c759;--pink:#ff2d55;
-  --bg:#fbfbfd;--text:#1d1d1f;--muted:#6e6e73;--blue:#007aff;
-  --card:rgba(255,255,255,.72);--border:rgba(0,0,0,.08);
-  --shadow:0 30px 90px rgba(0,0,0,.08);
-}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  min-width:320px;
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(circle at 20% 0,#dbeeff,transparent 35%),
-    radial-gradient(circle at 90% 20%,#e8dcff,transparent 30%),
-    var(--bg);
-}
-a{text-decoration:none;color:inherit}
-.page{overflow:hidden}
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+    body {
+      position: relative;
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      background: var(--page-bg);
+      color: var(--text);
+      font-family: var(--font-stack);
+      font-size: 16px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    body::selection { background: var(--accent); color: #fff; }
+    ::selection { background: var(--accent); color: #fff; }
+    a { color: inherit; text-decoration: none; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+    img { max-width: 100%; }
 
-nav{
-  position:fixed;
-  top:16px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:10;
-  width:min(1100px,calc(100% - 32px));
-}
-.nav{
-  height:58px;
-  border-radius:999px;
-  background:rgba(255,255,255,.65);
-  backdrop-filter:blur(4px) saturate(250%);
-	-webkit-backdrop-filter:blur(4px) saturate(250%);
-  border:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 22px;
-}
-.brand{font-weight:800;letter-spacing:-.04em}
-.links{display:flex;gap:24px;color:var(--muted);font-size:14px}
+    .aurora-background {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+      background: transparent;
+    }
+    .aurora-blob {
+      position: absolute;
+      width: 48vw;
+      height: 48vw;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.42;
+      will-change: transform;
+      animation: aurora-drift 22s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .aurora-one { top: -12%; left: -12%; background: #0071e3; }
+    .aurora-two { top: 28%; right: -18%; width: 58vw; height: 58vw; background: #bf5af2; animation-delay: -5s; animation-direction: alternate-reverse; }
+    .aurora-three { bottom: -24%; left: 18%; width: 52vw; height: 52vw; background: #34c759; animation-delay: -10s; }
+    .aurora-four { top: 18%; left: 42%; width: 42vw; height: 42vw; background: #ff375f; opacity: 0.22; animation-delay: -15s; }
+    @keyframes aurora-drift {
+      0% { transform: translate(0, 0) scale(1) rotate(0); }
+      35% { transform: translate(7%, 10%) scale(1.1) rotate(8deg); }
+      70% { transform: translate(-6%, 5%) scale(0.9) rotate(-4deg); }
+      100% { transform: translate(10%, -10%) scale(1.04) rotate(5deg); }
+    }
 
-.cta,.button{
-  background:#007aff;
-  color:white;
-  padding:13px 24px;
-  border-radius:999px;
-  font-weight:700;
-  min-width:210px;
-  text-align:center;
-  display:inline-flex;
-  justify-content:center;
-  align-items:center;
-  gap:8px;
-}
-.nav .cta{min-width:auto}
+    .site-header {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      z-index: 50;
+      width: min(700px, calc(100% - 32px));
+      transform: translateX(-50%);
+    }
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 8px 14px 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      backdrop-filter: blur(18px) saturate(160%);
+      box-shadow: var(--card-shadow);
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding-left: 5px;
+      font-size: 17px;
+      font-weight: 730;
+      letter-spacing: -0.035em;
+      white-space: nowrap;
+    }
+    .brand-icon {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.055);
+      font-size: 14px;
+      transition: transform 220ms ease;
+    }
+    .brand:hover .brand-icon { transform: scale(1.06); }
+    .nav-links { display: flex; align-items: center; gap: 26px; }
+    .nav-links a { color: var(--muted); font-size: 13px; font-weight: 600; transition: color 180ms ease; }
+    .nav-links a:hover { color: var(--text); }
 
-.hero{
-  min-height:auto;
-  display:flex;
-  align-items:flex-start;
-  justify-content:center;
-  text-align:center;
-  padding:110px 24px 70px;
-}
-.wrap{max-width:1000px;margin:auto}
-h1{
-  font-size:clamp(42px,5.5vw,88px);
-  max-width:1000px;
-  line-height:.92;
-  letter-spacing:-.08em;
-  margin:25px 0;
-  background:linear-gradient(180deg,#111,#777);
-  -webkit-background-clip:text;
-  color:transparent;
-}
-.lead{
-  font-size:clamp(18px,2vw,25px);
-  color:var(--muted);
-  letter-spacing:-.03em;
-  max-width:800px;
-  margin:auto;
-}
-.actions{
-  margin-top:35px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:14px;
-  flex-wrap:wrap;
-}
-.secondary{background:white;color:var(--text);border:1px solid var(--border)}
+    main, footer { position: relative; z-index: 1; }
+    main { padding: 120px 0 64px; }
+    .container { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
+    .container-wide { width: min(1380px, calc(100% - 48px)); margin-inline: auto; }
+    .section { padding-top: 88px; padding-bottom: 32px; }
+    .section-heading { max-width: 820px; margin: 0 auto 42px; text-align: center; }
+    .section-heading h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.9rem, 3.5vw, 2.75rem);
+      line-height: 1.12;
+      letter-spacing: -0.045em;
+      font-weight: 740;
+    }
+    .section-heading p { margin: 0; color: var(--muted); font-size: 1.05rem; line-height: 1.65; }
 
-section{
-  margin:60px auto;
-  width:calc(100% - 32px);
-  position:relative;
-}
-section:before{
-  content:"";
-  position:absolute;
-  inset:-90px;
-  background:radial-gradient(circle,rgba(0,122,255,.07),transparent 60%);
-  z-index:-1;
-}
-.title{text-align:center;margin-bottom:40px}
-.title h2{font-size:52px;letter-spacing:-.06em;margin:0 0 10px}
-.title p{color:var(--muted);font-size:20px}
+    .hero {
+      display: flex;
+      min-height: min(650px, 72vh);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 46px 24px 66px;
+      text-align: center;
+    }
+    .hero h1 {
+      max-width: 900px;
+      margin: 0 0 24px;
+      font-size: clamp(2.8rem, 6.2vw, 4.75rem);
+      font-weight: 780;
+      line-height: 0.99;
+      letter-spacing: -0.055em;
+      background: linear-gradient(140deg, #171719 8%, #626269 76%, #88888d 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero-copy {
+      max-width: 690px;
+      margin: 0 0 32px;
+      color: var(--muted);
+      font-size: clamp(1rem, 1.6vw, 1.15rem);
+      line-height: 1.7;
+    }
+    .button-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; }
+    .button {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      padding: 11px 22px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.3;
+      text-align: center;
+      transition: transform 220ms ease, background-color 220ms ease, box-shadow 220ms ease;
+    }
+    .button:hover { transform: translateY(-1px); }
+    .button:active { transform: scale(0.98); }
+    .button-primary { color: #fff; background: var(--accent); box-shadow: 0 7px 20px rgba(0, 113, 227, 0.22); }
+    .button-primary:hover { background: var(--accent-hover); }
+    .button-secondary {
+      color: var(--text);
+      border-color: var(--border);
+      background: var(--surface-strong);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.035);
+    }
+    .button-secondary:hover { background: var(--surface); }
+    .hidden-link { display: none; }
 
-.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
-.card{
-  grid-column:span 6;
-  background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(245,248,255,.62));
-  border:1px solid var(--border);
-  border-radius:38px;
-  padding:38px;
-  min-height:240px;
-  backdrop-filter:blur(20px);
-  box-shadow:var(--shadow);
-}
-.donate-card{
-  background:linear-gradient(135deg,rgba(0,122,255,.12),rgba(175,82,222,.12));
-  border-color:rgba(0,122,255,.18);
-}
-.card.full{grid-column:span 12}
-.card:nth-child(2n){background:linear-gradient(145deg,rgba(255,255,255,.8),rgba(235,245,255,.7))}
-.card:nth-child(3n){background:linear-gradient(145deg,rgba(255,255,255,.8),rgba(240,235,255,.7))}
-.card h3{font-size:30px;letter-spacing:-.05em;margin:10px 0}
-.card p{color:var(--muted);font-size:18px;line-height:1.6}
+    .card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .glass-card {
+      position: relative;
+      overflow: hidden;
+      min-width: 0;
+      padding: 30px;
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      background: var(--surface);
+      -webkit-backdrop-filter: blur(18px) saturate(145%);
+      backdrop-filter: blur(18px) saturate(145%);
+      box-shadow: var(--card-shadow);
+      transition: transform 260ms ease, box-shadow 260ms ease, border-color 260ms ease;
+    }
+    .glass-card:hover { transform: translateY(-3px); box-shadow: var(--card-shadow-hover); }
+    .glass-card p { position: relative; z-index: 1; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.75; }
+    .intro-card { display: flex; min-height: 290px; flex-direction: column; justify-content: space-between; }
+    .card-title {
+      position: relative;
+      z-index: 1;
+      margin: 14px 0 12px;
+      font-size: clamp(1.35rem, 2.3vw, 1.8rem);
+      font-weight: 720;
+      line-height: 1.2;
+      letter-spacing: -0.035em;
+    }
+    .decorative-icon {
+      position: absolute;
+      right: -14px;
+      bottom: -28px;
+      z-index: 0;
+      color: var(--accent);
+      font-size: 150px;
+      line-height: 1;
+      opacity: 0.045;
+      pointer-events: none;
+      transition: transform 500ms ease, opacity 500ms ease;
+    }
+    .glass-card:hover .decorative-icon { transform: scale(1.06); opacity: 0.075; }
+    .eyebrow {
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: rgba(0, 113, 227, 0.09);
+      color: var(--accent);
+      font-size: 10px;
+      font-weight: 750;
+      letter-spacing: 0.09em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+    .eyebrow-purple { color: #8754cc; background: rgba(160, 96, 230, 0.11); }
+    .eyebrow-green { color: #218b48; background: rgba(52, 199, 89, 0.12); }
+    .eyebrow-orange { color: #b76b11; background: rgba(255, 149, 0, 0.12); }
+    .eyebrow-pink { color: #c0447d; background: rgba(255, 55, 95, 0.1); }
+    .eyebrow-discord { color: #5865f2; background: rgba(88, 101, 242, 0.1); }
+    .eyebrow-neutral { color: var(--text); background: rgba(128, 128, 128, 0.1); }
 
-.badge{
-  color:#007aff;
-  background:rgba(0,122,255,.10);
-  border:1px solid rgba(0,122,255,.15);
-  padding:7px 12px;
-  border-radius:999px;
-  font-weight:800;
-  font-size:13px;
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-}
-.shot{width:260px;border-radius:40px}
-.swiper{text-align:center}
-footer{text-align:center;padding:50px;color:var(--muted)}
+    .gallery-section { padding-top: 46px; }
+    .screenshot-swiper { width: 100%; padding-bottom: 48px; }
+    .screenshot-swiper .swiper-slide { display: flex; width: auto; align-items: center; justify-content: center; }
+    .screenshot-img { display: block; width: auto; max-width: min(100%, 820px); max-height: 600px; object-fit: contain; }
+    .swiper-pagination-bullet { background: var(--muted) !important; opacity: 0.38; transition: all 220ms ease; }
+    .swiper-pagination-bullet-active { background: var(--accent) !important; opacity: 1; transform: scale(1.15); }
 
-[data-aos]{will-change:transform,opacity}
-.card,.button,.cta,.shot{transition:transform .35s ease,box-shadow .35s ease}
-.card:hover{transform:translateY(-8px);box-shadow:0 35px 100px rgba(0,0,0,.12)}
-.button:hover,.cta:hover{transform:translateY(-2px)}
-.hero:after{
-  content:"";
-  position:absolute;
-  width:520px;
-  height:520px;
-  background:radial-gradient(circle,rgba(88,86,214,.18),transparent 65%);
-  top:15%;
-  left:50%;
-  transform:translateX(-50%);
-  filter:blur(20px);
-  z-index:-1;
-}
-.button.secondary{display:inline-flex;align-items:center;gap:8px}
+    .features-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: minmax(230px, auto); gap: 20px; }
+    .feature-card { min-height: 240px; }
+    .feature-card .card-title { margin-top: 15px; font-size: clamp(1.25rem, 2vw, 1.55rem); }
+    .feature-large { display: flex; min-height: 500px; grid-column: span 2; grid-row: span 2; flex-direction: column; justify-content: space-between; }
+    .feature-large .card-title { max-width: 440px; margin-top: 0; font-size: clamp(1.65rem, 3vw, 2.25rem); }
+    .feature-wide { display: flex; grid-column: span 4; align-items: center; justify-content: space-between; gap: 32px; }
+    .feature-wide-copy { max-width: 680px; }
+    .platform-icons { display: flex; flex: 0 0 auto; align-items: center; gap: 12px; color: #c0447d; font-size: 72px; opacity: 0.13; }
+    .feature-symbol { position: absolute; right: 18px; bottom: 8px; color: var(--accent); font-size: 84px; line-height: 1; opacity: 0.045; pointer-events: none; }
 
-details summary::marker{display:none}
-details summary{list-style:none}
-details summary:hover{color:#007aff}
+    .stack { display: flex; flex-direction: column; gap: 20px; padding-top: 46px; }
+    .privacy-card { padding: 62px 30px; text-align: center; }
+    .privacy-card .eyebrow { margin-bottom: 16px; }
+    .privacy-card .card-title { margin: 0 0 16px; font-size: clamp(1.8rem, 3.2vw, 2.65rem); }
+    .privacy-card p { max-width: 720px; margin-inline: auto; font-size: 16px; }
+    .two-column { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .action-card { display: flex; min-height: 270px; align-items: flex-start; flex-direction: column; justify-content: center; }
+    .action-card .card-title { margin-top: 15px; }
+    .action-card .button { margin-top: 24px; }
+    .community-button { background: #5865f2; box-shadow: 0 7px 20px rgba(88, 101, 242, 0.2); }
+    .community-button:hover { background: #4752c4; }
+    .support-card { background: linear-gradient(140deg, rgba(255, 55, 95, 0.055), rgba(255, 149, 0, 0.045)), var(--surface); }
+    .support-button { background: linear-gradient(100deg, #ec4899, #f97316); box-shadow: 0 7px 20px rgba(236, 72, 153, 0.16); }
+    .support-button:hover { background: linear-gradient(100deg, #db2777, #ea580c); }
+    .beta-card { padding: 42px 28px; text-align: center; }
+    .beta-card .eyebrow { margin-bottom: 10px; }
+    .beta-card .card-title { margin-top: 8px; }
+    .beta-card p { max-width: 650px; margin: 0 auto; }
+    .beta-card .button { margin-top: 22px; }
 
-#ai-transparency .card{
-  background:linear-gradient(145deg,rgba(255,255,255,.9),rgba(235,240,255,.7));
-}
-.ai-summary{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  cursor:pointer;
-  font-weight:750;
-  font-size:16px;
-  letter-spacing:-.03em;
-  padding:8px 4px;
-}
-.ai-summary .bi-stars{font-size:15px;color:#007aff}
-.ai-summary .bi-chevron-down{
-  margin-left:auto;
-  font-size:14px;
-  transition:transform .25s ease;
-}
-details[open] .bi-chevron-down{transform:rotate(180deg)}
-.ai-card{min-height:auto;padding:22px 28px}
-.ai-content{margin-top:22px;color:var(--muted)}
-.ai-content h3{color:var(--text);font-size:24px}
+    .platform-card { min-height: 230px; }
+    .platform-icon { margin-bottom: 14px; color: var(--accent); font-size: 30px; line-height: 1; }
+    .platform-card:nth-child(2) .platform-icon { color: #8754cc; }
+    .platform-card:nth-child(3) .platform-icon { color: #b76b11; }
+    .platform-card .card-title { margin-top: 0; font-size: 1.35rem; }
 
-@media(max-width:800px){
-  .nav{padding:0 14px;height:54px}
-  .brand{font-size:18px;white-space:nowrap}
-  .nav .cta{min-width:auto;width:auto;padding:10px 18px;font-size:15px}
-  .links{display:none}
-  .grid{display:block}
-  .card,.card.full{width:100%;margin-bottom:18px;min-height:auto}
-  .hero{padding-left:20px;padding-right:20px}
-  h1{font-size:clamp(38px,10vw,52px);line-height:1}
-  .title h2{font-size:38px}
-  .lead{font-size:18px;max-width:340px;margin:auto}
-  .cta,.button{width:100%;max-width:320px}
-  section{margin:90px auto;width:calc(100% - 32px)}
-  .card,.donate-card{
-    background:linear-gradient(135deg,rgba(0,122,255,.12),rgba(175,82,222,.12));
-    border-color:rgba(0,122,255,.18);
-  }
-}
+    .ai-section { padding-top: 44px; padding-bottom: 62px; }
+    .ai-card { padding: 22px 26px; border-color: rgba(0, 113, 227, 0.15); }
+    .ai-summary { display: flex; align-items: center; justify-content: space-between; gap: 18px; cursor: pointer; list-style: none; font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
+    .ai-summary::-webkit-details-marker { display: none; }
+    .ai-summary-label { display: flex; align-items: center; gap: 12px; }
+    .ai-summary-icon, .ai-chevron { display: grid; flex: 0 0 auto; place-items: center; border-radius:50%; }
+    .ai-summary-icon { width: 40px; height: 40px; color: var(--accent); background: rgba(0, 113, 227, 0.1); font-size: 17px; }
+    .ai-chevron { width: 34px; height: 34px; border-radius: 50%; background: rgba(128, 128, 128, 0.1); font-size: 13px; transition: transform 220ms ease; }
+    details[open] .ai-chevron { transform: rotate(180deg); }
+    .ai-content { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; line-height: 1.8; }
+    .ai-content p { margin: 0 0 14px; }
+    .ai-content ul { margin: 18px 0; padding-left: 20px; border-left: 2px solid rgba(0, 113, 227, 0.25); list-style: none; }
+    .ai-content li { margin: 0 0 10px; padding-left: 10px; }
+    .ai-content strong { color: var(--text); }
+    .ai-note { margin-top: 18px !important; padding-top: 18px; border-top: 1px solid var(--line); color: var(--text); }
 
-@media (prefers-color-scheme: dark){
-  :root{
-    --bg:#000000;
-    --text:#fbfbfd;
-    --muted:#a1a1a6;
-    --card:rgba(30,30,32,.72);
-    --border:rgba(255,255,255,.15);
-    --shadow:0 30px 90px rgba(0,0,0,.8);
-    --blue:#0a84ff;
-  }
-  body{
-    background:
-      radial-gradient(circle at 20% 0,rgba(0,122,255,.15),transparent 35%),
-      radial-gradient(circle at 90% 20%,rgba(175,82,222,.15),transparent 30%),
-      var(--bg);
-  }
-  .nav{background:rgba(30,30,32,.65)}
-  h1{
-    background:linear-gradient(180deg,#ffffff,#888888);
-    -webkit-background-clip:text;
-  }
-  .secondary{background:#1c1c1e}
-  .card{background:linear-gradient(145deg,rgba(40,40,42,.88),rgba(25,30,45,.62))}
-  .card:nth-child(2n){background:linear-gradient(145deg,rgba(40,40,42,.8),rgba(20,35,55,.7))}
-  .card:nth-child(3n){background:linear-gradient(145deg,rgba(40,40,42,.8),rgba(30,25,50,.7))}
-  #ai-transparency .card{background:linear-gradient(145deg,rgba(40,40,42,.9),rgba(25,30,45,.7))}
-  .badge{
-    color:#0a84ff;
-    background:rgba(10,132,255,.15);
-    border-color:rgba(10,132,255,.25);
-  }
-  .hero:after{background:radial-gradient(circle,rgba(94,92,230,.25),transparent 65%)}
-  .donate-card{background:linear-gradient(135deg,rgba(10,132,255,.18),rgba(191,90,242,.18))}
-}
-</style>
+    .site-footer {
+      padding: 46px 24px 36px;
+      border-top: 1px solid var(--line);
+      background: var(--surface);
+      -webkit-backdrop-filter: blur(24px);
+      backdrop-filter: blur(24px);
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+    }
+    .footer-inner { display: flex; width: min(860px, 100%); margin: 0 auto; align-items: center; flex-direction: column; gap: 24px; }
+    .footer-links { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; }
+    .footer-links .button { min-height: 38px; padding: 8px 16px; border: 0; background: rgba(128, 128, 128, 0.1); box-shadow: none; font-size: 12px; }
+    .footer-links .button:hover { background: rgba(128, 128, 128, 0.17); }
+    .footer-legal { max-width: 670px; margin: 0; line-height: 1.8; }
+    .footer-credit { margin: 0; color: var(--text); font-size: 14px; }
+    .footer-credit a { font-weight: 700; text-decoration: underline; text-decoration-color: rgba(0, 113, 227, 0.35); text-underline-offset: 4px; }
+    .footer-year { margin: 0; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.7; }
+    .footer-email { color: var(--accent); font-weight: 550; }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --page-bg: #080809;
+        --surface: rgba(20, 20, 22, 0.62);
+        --surface-strong: rgba(44, 44, 46, 0.7);
+        --text: #f5f5f7;
+        --muted: #a1a1a6;
+        --border: rgba(255, 255, 255, 0.1);
+        --line: rgba(255, 255, 255, 0.1);
+        --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+        --card-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.42);
+      }
+      .hero h1 {
+        background: linear-gradient(140deg, #fff 10%, #d2d2d7 70%, #85858c 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+      .brand-icon { background: rgba(255, 255, 255, 0.1); }
+      .aurora-blob { opacity: 0.25; filter: blur(120px); }
+      .support-card { background: linear-gradient(140deg, rgba(255, 55, 95, 0.09), rgba(255, 149, 0, 0.06)), var(--surface); }
+    }
+    @media (max-width: 760px) {
+      .container, .container-wide { width: min(100% - 32px, 620px); }
+      main { padding-top: 104px; }
+      .section { padding-top: 64px; padding-bottom: 20px; }
+      .section-heading { margin-bottom: 28px; }
+      .section-heading p { font-size: 15px; }
+      .hero { min-height: 560px; padding: 52px 20px 44px; }
+      .hero h1 { max-width: 620px; font-size: clamp(2.6rem, 9.5vw, 4rem); }
+      .hero-copy { font-size: 16px; }
+      .button-row { width: 100%; max-width: 400px; flex-direction: column; }
+      .button-row .button { width: 100%; }
+      .card-grid, .two-column { grid-template-columns: 1fr; }
+      .glass-card { padding: 25px; border-radius: 27px; }
+      .intro-card { min-height: 250px; }
+      .features-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(215px, auto); gap: 14px; }
+      .feature-large { min-height: 350px; grid-column: span 2; grid-row: auto; }
+      .feature-wide { grid-column: span 2; }
+      .feature-card { min-height: 230px; }
+      .feature-wide { align-items: flex-start; flex-direction: column; gap: 12px; }
+      .platform-icons { font-size: 48px; }
+      .privacy-card { padding: 42px 24px; }
+      .action-card { min-height: 240px; }
+      .screenshot-img { max-height: 65vh; max-width: 92vw; }
+      .ai-card { padding: 18px; }
+      .ai-content { font-size: 13px; }
+      .stack { padding-top: 26px; }
+      .ai-section { padding-top: 30px; }
+    }
+    @media (max-width: 460px) {
+      .site-header { top: 12px; width: calc(100% - 22px); }
+      .nav-bar { padding: 7px 10px; }
+      .brand { gap: 8px; font-size: 15px; }
+      .brand-icon { width: 31px; height: 31px; }
+      .nav-links { gap: 12px; }
+      .nav-links a { font-size: 11px; }
+      main { padding-top: 84px; }
+      .hero { min-height: 510px; padding-inline: 16px; }
+      .hero h1 { font-size: clamp(2.35rem, 11vw, 3.25rem); }
+      .section-heading h2 { font-size: 1.8rem; }
+      .features-grid { grid-template-columns: 1fr; }
+      .feature-large, .feature-wide { grid-column: auto; }
+      .feature-large { min-height: 315px; }
+      .feature-card { min-height: 205px; }
+      .feature-wide { flex-direction: column; }
+      .privacy-card .card-title { font-size: 1.8rem; }
+      .ai-summary { font-size: 15px; }
+      .ai-summary-icon { width: 34px; height: 34px; }
+      .footer-links { flex-direction: column; width: 100%; }
+      .footer-links .button { width: 100%; max-width: 260px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
 </head>
 
 <body>
-<div class="page">
-<nav>
-  <div class="nav">
-    <span class="brand">SoftwareKit.</span>
-    <div class="links">
-      <a href="#features">Features</a>
-      <a href="#privacy">Privacy</a>
-      <a href="#support">Support</a>
-    </div>
-    <a class="cta" href="#support">Support</a>
+  <div class="aurora-background" aria-hidden="true">
+    <div class="aurora-blob aurora-one"></div>
+    <div class="aurora-blob aurora-two"></div>
+    <div class="aurora-blob aurora-three"></div>
+    <div class="aurora-blob aurora-four"></div>
   </div>
-</nav>
 
-<main>
-<section class="hero">
-  <div class="wrap">
-    <h1 data-aos="fade-up" data-aos-delay="100">The private toolkit for iOS power users.</h1>
-    <p class="lead" data-aos="fade-up" data-aos-delay="200">SoftwareKit brings iPA signing tools, sideloading resources, jailbreak guides, Apple news, and device utilities together in one fast, privacy-first PWA. No account. No tracking. No unnecessary permissions.</p>
-    <div class="actions" data-aos="fade-up" data-aos-delay="300">
-			<a class="button" href="ios/app.html">Download for iOS + macOS</a>
-      <a class="button" href="https://legacy.swkit.app"><i class="bi bi-clock-history"></i> Legacy iOS</a>    
-      <a style="display:none" class="button secondary" href="openhm/app.html">HarmonyOS 5+</a>
-    </div>
-  </div>
-</section>
-
-<section id="who">
-  <div class="title">
-    <h2>Made for enthusiasts.</h2>
-    <p>SoftwareKit is built for people who want more from their devices.</p>
-  </div>
-  <div class="grid">
-    <div class="card">
-      <span class="badge">iOS ENTHUSIASTS</span>
-      <h3>Go beyond the defaults.</h3>
-      <p>Explore tools, guides, and utilities for people who want more control over their Apple devices.</p>
-    </div>
-    <div class="card">
-      <span class="badge">SIDELOADING</span>
-      <h3>Keep everything in one place.</h3>
-      <p>Signing tools, useful resources, news, and device utilities come together in one clean, focused experience.</p>
-    </div>
-  </div>
-</section>
-
-<section id="gallery">
-  <div class="title" data-aos="fade-up">
-    <h2>Designed to feel native.</h2>
-    <p>Inspired by Apple's focus on clarity, motion, and simplicity.</p>
-  </div>
-  <div class="swiper screenshot-swiper">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <img class="shot" src="assets/ios-screenshot.png" alt="SoftwareKit iOS screenshot" decoding="async">
-      </div>
-      <div class="swiper-slide">
-        <img class="shot" src="https://i.imgur.com/kmHughI.png" alt="SoftwareKit Legacy screenshot" decoding="async">
+  <nav class="site-header" aria-label="Main navigation">
+    <div class="nav-bar">
+      <a class="brand" href="#top" aria-label="SoftwareKit home">
+        <span class="brand-icon"><i class="bi bi-wrench-adjustable" aria-hidden="true"></i></span>
+        <span>SoftwareKit</span>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#support">Support</a>
       </div>
     </div>
-    <div class="swiper-pagination"></div>
-  </div>
-</section>
+  </nav>
 
-<section id="features">
-  <div class="title" data-aos="fade-up">
-    <h2>Built for people who want more control.</h2>
-    <p>A clean experience for sideloading, device management, and Apple power users.</p>
-  </div>
-  <div class="grid">
-    <div class="card full" data-aos="fade-up">
-      <span class="badge">iPA SIGNER</span>
-      <h3>Sign apps without the headache.</h3>
-      <p>Select an IPA, sign it, and move on. SoftwareKit keeps the process straightforward instead of burying it under unnecessary steps.</p>
-    </div>
-    <div class="card" data-aos="fade-up">
-      <span class="badge">CERTIFICATES</span>
-      <h3>Know what's happening.</h3>
-      <p>Check signing status before installation and get a clearer picture of what's happening with your apps.</p>
-    </div>
-    <div class="card" data-aos="fade-up">
-      <span class="badge">DEVICE TOOLS</span>
-      <h3>Your device, clearly presented.</h3>
-      <p>View your UDID and other important device information in a clean, readable interface.</p>
-    </div>
-    <div class="card full" data-aos="fade-up">
-      <span class="badge">APPLE PLATFORMS</span>
-      <h3>Built for iPhone and Mac.</h3>
-      <p>The experience follows Apple's design language while staying lightweight, fast, and focused on the tools that matter.</p>
-    </div>
-  </div>
-</section>
-
-<section id="trust">
-  <div class="title">
-    <h2>Built differently.</h2>
-    <p>Designed for people who care about privacy and control.</p>
-  </div>
-  <div class="grid">
-    <div class="card">
-      <span class="badge">PRIVACY</span>
-      <h3>No accounts.</h3>
-      <p>SoftwareKit does not require registration, tracking, or unnecessary data collection.</p>
-    </div>
-    <div class="card">
-      <span class="badge">PWA</span>
-      <h3>Runs instantly.</h3>
-      <p>Open it in Safari and add it to your Home Screen. No installation permissions required.</p>
-    </div>
-    <div class="card full">
-      <span class="badge">OPEN SOURCE</span>
-      <h3>Transparent by design.</h3>
-      <p>The project is open source and developed independently.</p>
-    </div>
-  </div>
-</section>
-
-<section id="privacy">
-  <div class="grid">
-    <div class="card full" data-aos="fade-up">
-      <span class="badge">PRIVACY FIRST</span>
-      <h3>No tracking. No account. No permissions.</h3>
-      <p>SoftwareKit runs as a PWA and does not require device permissions, accounts, analytics, or advertising profiles. Your data stays yours.</p>
-    </div>
-  </div>
-</section>
-
-<section id="community">
-  <div class="card full" data-aos="fade-up">
-    <span class="badge"><i class="bi bi-discord"></i> COMMUNITY</span>
-    <h3>Join the SoftwareKit community.</h3>
-    <p>Get updates, suggest features, report bugs, and help shape the future of SoftwareKit alongside other iOS power users.</p>
-    <a class="button" href="https://discord.gg/WGF4MMY9nD"><i class="bi bi-discord"></i> Join Discord</a>
-  </div>
-</section>
-
-<section id="support">
-  <div class="card full donate-card" data-aos="fade-up">
-    <span class="badge"><i class="bi bi-heart-fill"></i> SUPPORT THE PROJECT</span>
-    <h3>Support independent open-source development.</h3>
-    <p>SoftwareKit is open source and developed independently. Your support helps cover development, hosting, maintenance, and future improvements.</p>
-    <a class="button" href="https://www.buymeacoffee.com/techlxrd07">Donate</a>
-  </div>
-</section>
-
-<section id="beta">
-  <div class="card full" data-aos="fade-up">
-    <span class="badge"><i class="bi bi-rocket-takeoff"></i> BETA PROGRAM</span>
-    <h3>Experience the next version early.</h3>
-    <p>Enroll in the SoftwareKit Beta Program to get early access to experimental features, test new tools, and help provide feedback before public releases.</p>
-    <a class="button" href="https://beta.swkit.app/ios/app">Enroll Beta Program</a>
-  </div>
-</section>
-
-<section id="platforms">
-  <div class="title" data-aos="fade-up">
-    <h2>Made for every generation.</h2>
-    <p>Modern devices, classic devices, and everything in between. Each platform gets the experience it deserves.</p>
-  </div>
-  <div class="grid">
-    <div class="card" data-aos="fade-up">
-      <span class="badge"><i class="bi bi-phone"></i> iOS</span>
-      <h3>At home on iPhone.</h3>
-      <p>Sign apps, manage utilities, view device information, and use a clean experience designed around iPhone.</p>
-    </div>
-    <div class="card" data-aos="fade-up">
-      <span class="badge"><i class="bi bi-laptop"></i> macOS</span>
-      <h3>Powerful on Mac.</h3>
-      <p>A Mac experience built around speed and productivity, with the same simple SoftwareKit design.</p>
-    </div>
-    <div style="display:none;" class="card" data-aos="fade-up">
-      <span class="badge"><i class="bi bi-phone-fill"></i> HarmonyOS</span>
-      <h3>Built separately, built properly.</h3>
-      <p>HarmonyOS support stays focused as its own app, keeping the platform experience polished and reliable.</p>
-    </div>
-    <div class="card" data-aos="fade-up">
-      <span class="badge"><i class="bi bi-clock-history"></i> Legacy iOS</span>
-      <h3>Older devices still matter.</h3>
-      <p>SoftwareKit Legacy keeps older devices useful with support for iOS 5 through iOS 9, while respecting the simplicity of classic hardware.</p>
-    </div>
-  </div>
-</section>
-
-<section id="ai-transparency">
-  <div class="card full ai-card" data-aos="fade-up">
-    <details>
-      <summary class="ai-summary">
-        <i class="bi bi-stars"></i>
-        <span>Development transparency</span>
-        <i class="bi bi-chevron-down"></i>
-      </summary>
-      <div class="ai-content">
-        <p>As a solo developer, I want to be upfront about the fact that I used AI to help with some features and improvements, especially in areas where I did not have the necessary knowledge yet. I also want to address the comments I've received saying that the app is completely "vibe-coded." I don't like vibe-coding and I'm actually against relying on it as a substitute for understanding and creativity. That said, I do think AI can be a useful coding tool when it's used alongside your own work, testing, debugging, and decisions.</p>
-
-        <hr>
-
-        <p>• AltStore repo support: I started working on AltStore repo support based on a friend's idea, then used AI to help improve and fix parts of the implementation.</p>
-
-        <p>• The major performance optimizations introduced in v3.2 were made with the help of DeepSeek.</p>
-
-        <p>• The iPA Signer was mostly made with AI.</p>
-
-        <p>• The landing page was made with AI and then improved by me because landing-page design is not my strong point and I often struggle to come up with ideas for it.</p>
-
-        <p>• The Liquid Glass effect from the HarmonyOS version was taken from a CodePen and improved with AI.</p>
-
-        <p>• The newsfeed from the HarmonyOS version was fixed with the help of AI because I did not know how to work around the CORS restrictions involved.</p>
-
-        <p>• The Device Information feature was improved with AI.</p>
-
-        <p>• The app library features were improved with AI.</p>
-
-        <p>• Some descriptions and other text were written by me and then improved with AI.</p>
-
-        <p>• Some CSS optimizations were made with AI.</p>
-
-        <p>AI did not simply build everything and leave it finished. I still had to fix many issues myself because generated code often needed changes before it actually worked the way I wanted. In some cases, getting a feature working properly took many hours of testing, debugging, and rewriting. The rest of the project was built by me.</p>
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <h1 id="hero-title" data-aos="fade-up" data-aos-duration="800">A little more control over your Apple devices.</h1>
+      <p class="hero-copy" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">SoftwareKit brings iPA signing, sideloading guides and useful device tools together in one place. No account needed, just the tools and information you came for.</p>
+      <div class="button-row" data-aos="fade-up" data-aos-duration="800" data-aos-delay="180">
+        <a href="ios/app.html" class="button button-primary">Get SoftwareKit <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+        <a href="https://legacy.swkit.app" class="button button-secondary"><i class="bi bi-clock-history" aria-hidden="true"></i> Legacy version</a>
+        <a href="openhm/app.html" class="hidden-link">HarmonyOS 5+</a>
       </div>
-    </details>
-  </div>
-</section>
-</main>
+    </section>
 
-<footer>
-  <div class="actions">
-    <a class="button secondary" href="legal.html"><i class="bi bi-shield-lock"></i> Legal</a>
-    <a class="button secondary" href="https://github.com/techlxrd/SoftwareKit"><i class="bi bi-github"></i> GitHub</a>
-  </div>
+    <section id="who" class="container section">
+      <div class="section-heading" data-aos="fade-up">
+        <h2>Made by an enthusiast, for enthusiasts.</h2>
+        <p>I wanted a straightforward place for the tools and guides I use, without the extra noise.</p>
+      </div>
+      <div class="card-grid">
+        <article class="glass-card intro-card" data-aos="fade-up" data-aos-delay="80">
+          <div>
+            <span class="eyebrow">A bit more freedom</span>
+            <h3 class="card-title">Get more out of your device.</h3>
+            <p>SoftwareKit started as a way to bring helpful guides, utilities and resources together. It is for people who like exploring what their Apple devices can do.</p>
+          </div>
+          <i class="decorative-icon bi bi-cpu-fill" aria-hidden="true"></i>
+        </article>
+        <article class="glass-card intro-card" data-aos="fade-up" data-aos-delay="140">
+          <div>
+            <span class="eyebrow eyebrow-purple">Tools in one place</span>
+            <h3 class="card-title">Less searching around.</h3>
+            <p>Find signing tools, device information, Apple-related updates and sideloading resources in one clean, easy-to-use place.</p>
+          </div>
+          <i class="decorative-icon bi bi-grid-1x2-fill" aria-hidden="true"></i>
+        </article>
+      </div>
+    </section>
 
-  <p>
-    SoftwareKit is a free, open-source utility project and is not intended for piracy.
-    SoftwareKit is licensed under the GNU General Public License v3.0 (GPLv3).
-    All trademarks, platform names, app names, and product names are the property of their respective owners.
-  </p>
+    <section id="gallery" class="container-wide section gallery-section">
+      <div class="section-heading" data-aos="fade-up">
+        <h2>Simple by design.</h2>
+        <p>A familiar, uncluttered interface that keeps the useful stuff easy to find.</p>
+      </div>
+      <div class="swiper screenshot-swiper" data-aos="fade-up" data-aos-delay="100">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide"><img class="screenshot-img" src="assets/ios-screenshot.png" alt="SoftwareKit app interface on iOS" decoding="async" loading="lazy"></div>
+          <div class="swiper-slide"><img class="screenshot-img" src="https://i.imgur.com/kmHughI.png" alt="SoftwareKit legacy interface" decoding="async" loading="lazy"></div>
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </section>
 
-  <p>Built with ❤️ by <a href="https://techlxrd.github.io"><strong>TechLxrd</strong></a></p>
+    <section id="features" class="container section">
+      <div class="section-heading" data-aos="fade-up">
+        <h2>The tools you need, without the clutter.</h2>
+        <p>Open a tool, get what you need, and get on with your day.</p>
+      </div>
+      <div class="features-grid">
+        <article class="glass-card feature-card feature-large" data-aos="fade-up">
+          <div><span class="eyebrow"><i class="bi bi-pen" aria-hidden="true"></i> iPA signer</span></div>
+          <div>
+            <h3 class="card-title">Sign iPA files with fewer steps.</h3>
+            <p>Choose your file and follow the signing process without digging through a maze of menus.</p>
+          </div>
+          <i class="feature-symbol bi bi-file-earmark-zip" aria-hidden="true"></i>
+        </article>
+        <article class="glass-card feature-card" data-aos="fade-up" data-aos-delay="80">
+          <span class="eyebrow eyebrow-green"><i class="bi bi-patch-check" aria-hidden="true"></i> Certificates</span>
+          <h3 class="card-title">Check certificate status.</h3>
+          <p>Review your certificate details before trying to install an app.</p>
+          <i class="feature-symbol bi bi-shield-check" aria-hidden="true"></i>
+        </article>
+        <article class="glass-card feature-card" data-aos="fade-up" data-aos-delay="120">
+          <span class="eyebrow eyebrow-orange"><i class="bi bi-wrench" aria-hidden="true"></i> Device tools</span>
+          <h3 class="card-title">Find your device details.</h3>
+          <p>Check specifications, find your UDID and view useful device information in one spot.</p>
+          <i class="feature-symbol bi bi-info-circle" aria-hidden="true"></i>
+        </article>
+        <article class="glass-card feature-wide" data-aos="fade-up" data-aos-delay="80">
+          <div class="feature-wide-copy">
+            <span class="eyebrow eyebrow-pink"><i class="bi bi-apple" aria-hidden="true"></i> Apple platforms</span>
+            <h3 class="card-title">Made for iPhone, iPad and Mac.</h3>
+            <p>The layout adapts to the screen you are using, so the tools stay easy to read and use whether you are on an iPhone, iPad or Mac.</p>
+          </div>
+          <div class="platform-icons" aria-hidden="true"><i class="bi bi-laptop"></i><i class="bi bi-phone"></i></div>
+        </article>
+      </div>
+    </section>
 
-  <p class="mini-note">© 2026 SoftwareKit <br>softwarekit_app@outlook.com</p>
-</footer>
-</div>
+    <section class="container stack">
+      <article id="privacy" class="glass-card privacy-card" data-aos="fade-up">
+        <span class="eyebrow eyebrow-neutral"><i class="bi bi-lock-fill" aria-hidden="true"></i> Privacy</span>
+        <h2 class="card-title">Private by design</h2>
+        <p>You should not have to hand over personal details just to use an app. SoftwareKit runs as a web app and is designed to avoid unnecessary permissions, accounts and advertising profiles. Your data should stay yours.</p>
+      </article>
 
-<script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="techlxrd07" data-description="Support me on Buy me a coffee!" data-message="Support SoftwareKit and help cover future domain costs + development." data-color="#007aff" data-position="Right" data-x_margin="18" data-y_margin="18" defer></script>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  AOS.init({
-    duration: 900,
-    easing: "ease-out-cubic",
-    once: false,
-    offset: 80
-  });
+      <div class="two-column">
+        <article id="community" class="glass-card action-card" data-aos="fade-up">
+          <span class="eyebrow eyebrow-discord"><i class="bi bi-discord" aria-hidden="true"></i> Community</span>
+          <h3 class="card-title">Help shape what comes next.</h3>
+          <p>Share an idea, report a bug or see what is being worked on. Feedback from people who use SoftwareKit makes a difference.</p>
+          <a class="button button-primary community-button" href="https://discord.gg/WGF4MMY9nD"><i class="bi bi-discord" aria-hidden="true"></i> Join the Discord</a>
+        </article>
+        <article id="support" class="glass-card action-card support-card" data-aos="fade-up" data-aos-delay="80">
+          <span class="eyebrow eyebrow-pink"><i class="bi bi-heart-fill" aria-hidden="true"></i> Support development</span>
+          <h3 class="card-title">Help keep the project going.</h3>
+          <p>SoftwareKit is an independently developed open-source project. Contributions help with domain costs and future development.</p>
+          <a class="button button-primary support-button" href="https://www.buymeacoffee.com/techlxrd07"><i class="bi bi-cup-hot-fill" aria-hidden="true"></i> Buy me a coffee</a>
+        </article>
+      </div>
 
-  new Swiper(".swiper", {
-    loop: false,
-    centeredSlides: true,
-    slidesPerView: "auto",
-    spaceBetween: 24
-  });
-});
-</script>
+      <article id="beta" class="glass-card beta-card" data-aos="fade-up">
+        <span class="eyebrow eyebrow-orange"><i class="bi bi-rocket-takeoff" aria-hidden="true"></i> Beta program</span>
+        <h3 class="card-title">Try new features early.</h3>
+        <p>The beta gives you a look at experimental features and UI updates before they reach the public release. Your feedback helps improve them.</p>
+        <a class="button button-secondary" href="https://beta.swkit.app/ios/app">Join the beta</a>
+      </article>
+    </section>
 
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"SoftwareApplication",
-  "name":"SoftwareKit",
-  "url":"https://swkit.app/",
-  "applicationCategory":"UtilityApplication",
-  "operatingSystem":["iOS","macOS","HarmonyOS"]
-}
-</script>
+    <section id="platforms" class="container section">
+      <div class="section-heading" data-aos="fade-up">
+        <h2>For new devices and old favourites.</h2>
+        <p>SoftwareKit has a place for current Apple devices and some older classics, too.</p>
+      </div>
+      <div class="card-grid">
+        <article class="glass-card platform-card" data-aos="fade-up">
+          <div class="platform-icon"><i class="bi bi-phone" aria-hidden="true"></i></div>
+          <h3 class="card-title">On iPhone and iPad.</h3>
+          <p>Use the tools on your Apple device through an interface designed to feel at home on a smaller screen.</p>
+        </article>
+        <article class="glass-card platform-card" data-aos="fade-up" data-aos-delay="80">
+          <div class="platform-icon"><i class="bi bi-laptop" aria-hidden="true"></i></div>
+          <h3 class="card-title">On Mac.</h3>
+          <p>Make use of the extra screen space to browse resources and work with the tools comfortably.</p>
+        </article>
+        <article class="glass-card platform-card" data-aos="fade-up" data-aos-delay="120">
+          <div class="platform-icon"><i class="bi bi-clock-history" aria-hidden="true"></i></div>
+          <h3 class="card-title">For legacy iOS.</h3>
+          <p>Older devices deserve some attention too. The legacy version supports iOS 4 through iOS 9.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="ai-transparency" class="container ai-section">
+      <div class="glass-card ai-card" data-aos="fade-up">
+        <details>
+          <summary class="ai-summary">
+            <span class="ai-summary-label"><span class="ai-summary-icon"><i class="bi bi-stars" aria-hidden="true"></i></span> A note about using AI</span>
+            <span class="ai-chevron"><i class="bi bi-chevron-down" aria-hidden="true"></i></span>
+          </summary>
+          <div class="ai-content">
+            <p>As a solo developer, I want to be open about how SoftwareKit is made. Some people have called it “vibe coded,” so I thought it was worth explaining where AI has helped and where the work is still mine.</p>
+            <p>I do not see AI as a replacement for understanding the code or making the decisions. I use it as a tool when I hit a problem or need a hand with something unfamiliar, then test and refine the result myself.</p>
+            <ul>
+              <li><strong>Performance:</strong> AI helped me work through the performance improvements in version v3.2.</li>
+              <li><strong>More complex features:</strong> The iPA signer and AltStore repository support were developed with AI assistance, followed by testing and debugging.</li>
+              <li><strong>This landing page:</strong> AI helped with the initial design ideas, which I then revised and improved.</li>
+              <li><strong>Writing:</strong> I write most of the content and use AI to help polish the English, which is not my first language.</li>
+              <li><strong>CSS:</strong> I used AI as a second pair of eyes for some styling and compatibility improvements across Mac, iPad and iPhone.</li>
+            </ul>
+            <p class="ai-note">AI-generated code rarely works perfectly on the first try. A lot of the work has been testing, debugging and rewriting until things behave as expected. The direction and decisions behind SoftwareKit are mine, and I continue to build and improve it myself.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-aos="fade-up" data-aos-duration="700">
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="legal.html" class="button button-secondary"><i class="bi bi-shield-lock" aria-hidden="true"></i> Legal</a>
+        <a href="https://github.com/techlxrd/SoftwareKit" class="button button-secondary"><i class="bi bi-github" aria-hidden="true"></i> Source on GitHub</a>
+      </div>
+      <p class="footer-legal">SoftwareKit is a free, open-source utility project and is not intended for piracy.<br>Licensed under the GNU General Public License v3.0 (GPLv3).<br>All trademarks, platform names, app names and product names belong to their respective owners.</p>
+      <p class="footer-credit">Made with ❤️ by <a href="https://techlxrd.github.io">TechLxrd</a> in Romania</p>
+      <p class="footer-year">© 2026 SoftwareKit</p>
+      <a class="footer-email" href="mailto:softwarekit_app@outlook.com">softwarekit_app@outlook.com</a>
+    </div>
+  </footer>
+
+  <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="techlxrd07" data-description="Support me on Buy me a coffee!" data-message="Support SoftwareKit and help cover future domain costs plus development." data-color="#0071e3" data-position="Right" data-x_margin="18" data-y_margin="18" defer></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.AOS) {
+        AOS.init({
+          duration: 750,
+          easing: "ease-out-cubic",
+          once: false,
+          offset: 40,
+          delay: 0,
+          anchorPlacement: "top-bottom",
+          disable: () => window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        });
+
+        window.addEventListener("load", () => {
+          if (window.AOS) AOS.refreshHard();
+        }, { once: true });
+      }
+      if (window.Swiper && document.querySelector(".screenshot-swiper")) {
+        new Swiper(".screenshot-swiper", {
+          loop: false,
+          centeredSlides: true,
+          slidesPerView: "auto",
+          spaceBetween: 32,
+          grabCursor: true,
+          pagination: { el: ".swiper-pagination", clickable: true }
+        });
+      }
+    });
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "SoftwareKit",
+    "url": "https://swkit.app/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": ["iOS", "macOS"]
+  }
+  </script>
 </body>
 </html>
