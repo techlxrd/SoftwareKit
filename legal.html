@@ -1,373 +1,235 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>SoftwareKit – Terms & Privacy</title>
-    <meta name="description" content="SoftwareKit Terms of Service and Privacy Policy.">
-    <link rel="icon" href="/favicon.png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
-    <style>
-        :root {
-            --blue: #007aff;
-            --blue2: #5856d6;
-            --bg: #fbfbfd;
-            --text: #1d1d1f;
-            --muted: #6e6e73;
-            --border: rgba(0, 0, 0, .08);
-            --shadow: 0 30px 90px rgba(0, 0, 0, .08);
-        }
-        * {
-            box-sizing: border-box
-        }
-        html {
-            scroll-behavior: smooth
-        }
-        body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-            color: var(--text);
-            background:
-                radial-gradient(circle at 20% 0, #dbeeff, transparent 35%),
-                radial-gradient(circle at 90% 20%, #e8dcff, transparent 30%),
-                var(--bg);
-        }
-        a {
-            text-decoration: none;
-            color: inherit
-        }
-        .page {
-            overflow: hidden;
-        }
-        nav {
-            position: fixed;
-            top: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            width: min(1100px, calc(100% - 32px));
-        }
-        .nav {
-            height: 58px;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, .65);
-            backdrop-filter: blur(4px);
-						-webkit-backdrop-filter: blur(4px);
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 22px;
-        }
-        .brand {
-            font-weight: 800;
-            letter-spacing: -.04em;
-        }
-        .links {
-            display: flex;
-            gap: 20px;
-        }
-        .cta,
-        .button {
-            background: var(--blue);
-            color: white;
-            padding: 13px 24px;
-            border-radius: 999px;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        section {
-            width: calc(100% - 32px);
-            max-width: 1100px;
-            margin: 0 auto 80px;
-            position: relative;
-        }
-        .hero {
-            padding-top: 120px;
-        }
-        .card {
-            background:
-                linear-gradient(145deg,
-                    rgba(255, 255, 255, .88),
-                    rgba(245, 248, 255, .65));
-            border: 1px solid var(--border);
-            border-radius: 38px;
-            padding: 45px;
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(20px);
-        }
-        .legal-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .badge {
-            color: var(--blue);
-            background: rgba(0, 122, 255, .1);
-            border: 1px solid rgba(0, 122, 255, .15);
-            padding: 7px 12px;
-            border-radius: 999px;
-            font-weight: 800;
-            font-size: 13px;
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-        }
-        h1 {
-            font-size: clamp(42px, 6vw, 78px);
-            line-height: .95;
-            letter-spacing: -.07em;
-            margin: 25px 0 15px;
-            background: linear-gradient(#111, #777);
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-        h2 {
-            font-size: 36px;
-            letter-spacing: -.05em;
-            margin-top: 40px;
-        }
-        p {
-            color: var(--muted);
-            font-size: 18px;
-            line-height: 1.65;
-        }
-        hr {
-            border: 0;
-            border-top: 1px solid var(--border);
-            margin: 45px 0;
-        }
-        footer {
-            text-align: center;
-            padding: 50px;
-            color: var(--muted);
-        }
-        .secondary {
-            background: white;
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-        .actions {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        .card a {
-            color: var(--blue);
-        }
-        @media(max-width:800px) {
-            .nav {
-                height: 54px;
-                padding: 0 15px;
-            }
-            .links {
-                display: block;
-            }
-            .cta {
-                padding: 10px 18px;
-            }
-            .card {
-                padding: 25px;
-                border-radius: 30px;
-            }
-            h1 {
-                font-size: 50px;
-            }
-            h2 {
-                font-size: 30px;
-            }
-            p {
-            font-size: 16px;
-            }
-        }
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #000000;
-                --text: #fbfbfd;
-                --muted: #a1a1a6;
-                --blue: #0a84ff;
-                --border: rgba(255, 255, 255, 0.15);
-                --shadow: 0 30px 90px rgba(0, 0, 0, 0.8);
-            }
-            body {
-                background:
-                    radial-gradient(circle at 20% 0, rgba(0, 122, 255, 0.15), transparent 35%),
-                    radial-gradient(circle at 90% 20%, rgba(175, 82, 222, 0.15), transparent 30%),
-                    var(--bg);
-            }
-            .nav {
-                background: rgba(30, 30, 32, 0.65);
-            }
-            .secondary {
-                background: #1c1c1e;
-            }
-            .card {
-                background: linear-gradient(145deg, rgba(40, 40, 42, 0.88), rgba(25, 30, 45, 0.62));
-            }
-            .badge {
-                color: #0a84ff;
-                background: rgba(10,132,255,.15);
-                border-color: rgba(10,132,255,.25);
-            }
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>SoftwareKit – Terms of Service & Privacy Policy</title>
+  <meta name="description" content="Read the SoftwareKit terms of service and privacy policy, including how device information is processed.">
+  <meta name="theme-color" content="#f5f5f7">
+  <link rel="icon" href="/favicon.png">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --page-bg: #f5f5f7;
+      --surface: rgba(255,255,255,.48);
+      --surface-strong: rgba(255,255,255,.68);
+      --text: #1d1d1f;
+      --muted: #737378;
+      --border: rgba(255,255,255,.65);
+      --line: rgba(0,0,0,.08);
+      --accent: #0071e3;
+      --accent-hover: #0077ed;
+      --card-shadow: 0 8px 32px rgba(0,0,0,.045);
+      --font-stack: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+    body {
+      position: relative; min-height: 100vh; margin: 0; overflow-x: hidden;
+      background: var(--page-bg); color: var(--text); font-family: var(--font-stack);
+      font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+    ::selection { background: var(--accent); color: #fff; }
+    a { color: inherit; text-decoration: none; }
+    a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+    .aurora-background { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .aurora-blob {
+      position: absolute; width: 48vw; height: 48vw; border-radius: 50%;
+      filter: blur(100px); opacity: .42; will-change: transform;
+      animation: aurora-drift 22s infinite alternate cubic-bezier(.4,0,.2,1);
+    }
+    .aurora-one { top: -12%; left: -12%; background: #0071e3; }
+    .aurora-two { top: 28%; right: -18%; width: 58vw; height: 58vw; background: #bf5af2; animation-delay: -5s; animation-direction: alternate-reverse; }
+    .aurora-three { bottom: -24%; left: 18%; width: 52vw; height: 52vw; background: #34c759; animation-delay: -10s; }
+    .aurora-four { top: 18%; left: 42%; width: 42vw; height: 42vw; background: #ff375f; opacity: .22; animation-delay: -15s; }
+    @keyframes aurora-drift {
+      0% { transform: translate(0,0) scale(1) rotate(0); }
+      35% { transform: translate(7%,10%) scale(1.1) rotate(8deg); }
+      70% { transform: translate(-6%,5%) scale(.9) rotate(-4deg); }
+      100% { transform: translate(10%,-10%) scale(1.04) rotate(5deg); }
+    }
+    .site-header { position: fixed; top: 18px; left: 50%; z-index: 50; width: min(700px,calc(100% - 32px)); transform: translateX(-50%); }
+    .nav-bar {
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      padding: 8px 10px; border: 1px solid var(--border); border-radius: 999px;
+      background: var(--surface); -webkit-backdrop-filter: blur(18px) saturate(160%);
+      backdrop-filter: blur(18px) saturate(160%); box-shadow: var(--card-shadow);
+    }
+    .brand { display: inline-flex; align-items: center; gap: 10px; padding-left: 5px; font-size: 17px; font-weight: 730; letter-spacing: -.035em; white-space: nowrap; }
+    .brand-icon { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; background: rgba(0,0,0,.055); font-size: 14px; transition: transform 220ms ease; }
+    .brand:hover .brand-icon { transform: scale(1.06); }
+    .button {
+      display: inline-flex; min-height: 42px; align-items: center; justify-content: center; gap: 8px;
+      padding: 9px 18px; border: 1px solid transparent; border-radius: 999px;
+      font: inherit; font-size: 13px; font-weight: 650; line-height: 1.3; text-align: center;
+      transition: transform 220ms ease, background-color 220ms ease;
+    }
+    .button:hover { transform: translateY(-1px); }
+    .button-primary { color: #fff; background: var(--accent); }
+    .button-primary:hover { background: var(--accent-hover); }
+    main, footer { position: relative; z-index: 1; }
+    main { padding: 122px 0 40px; }
+    .container { width: min(900px,calc(100% - 48px)); margin-inline: auto; }
+    .legal-card {
+      padding: clamp(24px,5vw,52px); border: 1px solid var(--border); border-radius: 30px;
+      background: var(--surface); -webkit-backdrop-filter: blur(18px) saturate(145%);
+      backdrop-filter: blur(18px) saturate(145%); box-shadow: var(--card-shadow);
+    }
+    .legal-header { max-width: 680px; margin: 0 auto 38px; text-align: center; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px; border-radius: 999px;
+      color: var(--accent); background: rgba(0,113,227,.09); font-size: 10px;
+      font-weight: 750; letter-spacing: .09em; line-height: 1.4; text-transform: uppercase;
+    }
+    h1 {
+      margin: 18px 0 12px; font-size: clamp(2.25rem,5vw,3.6rem); font-weight: 780;
+      line-height: 1.04; letter-spacing: -.055em;
+      background: linear-gradient(140deg,#171719 8%,#626269 76%,#88888d 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .lead { max-width: 560px; margin: 0 auto; color: var(--muted); font-size: 1rem; line-height: 1.7; }
+    h2 { margin: 36px 0 12px; font-size: clamp(1.45rem,3vw,1.9rem); font-weight: 730; line-height: 1.2; letter-spacing: -.04em; }
+    .legal-card h2:first-of-type { margin-top: 0; }
+    p { margin: 0 0 16px; color: var(--muted); font-size: 15px; line-height: 1.8; }
+    p strong { color: var(--text); font-weight: 680; }
+    .legal-card a:not(.button) { color: var(--accent); text-decoration: underline; text-decoration-color: rgba(0,113,227,.35); text-underline-offset: 3px; overflow-wrap: anywhere; }
+    hr { height: 1px; margin: 34px 0; border: 0; background: var(--line); }
+    .contact-note { margin-top: 26px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 18px; background: rgba(128,128,128,.045); }
+    .contact-note p:last-child { margin-bottom: 0; }
+    footer { max-width: 800px; margin: 0 auto; padding: 30px 24px 44px; text-align: center; }
+    .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 22px; }
+    .footer-links .button { border-color: var(--border); color: var(--text); background: var(--surface); }
+    footer p { margin: 8px 0; font-size: 12px; line-height: 1.8; }
+    footer a { color: var(--accent); }
+    .copyright { margin-top: 18px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --page-bg: #050505; --surface: rgba(20,20,22,.52); --surface-strong: rgba(35,35,38,.72);
+        --text: #f5f5f7; --muted: #a1a1a6; --border: rgba(255,255,255,.11);
+        --line: rgba(255,255,255,.12); --accent: #0a84ff; --accent-hover: #2794ff;
+        --card-shadow: 0 8px 32px rgba(0,0,0,.3);
+      }
+      .aurora-blob { opacity: .28; filter: blur(120px); }
+      .brand-icon { background: rgba(255,255,255,.1); }
+      h1 { background-image: linear-gradient(140deg,#fff 8%,#d1d1d6 76%,#8e8e93 100%); }
+      .contact-note { background: rgba(255,255,255,.035); }
+    }
+    @media (max-width: 600px) {
+      .site-header { top: 12px; }
+      main { padding-top: 94px; }
+      .container { width: calc(100% - 28px); }
+      .legal-card { padding: 24px 20px; border-radius: 24px; }
+      .legal-header { margin-bottom: 30px; }
+      h1 { font-size: clamp(2.1rem,10vw,3rem); }
+      h2 { margin-top: 30px; }
+      p { font-size: 14px; line-height: 1.75; }
+      .aurora-blob { width: 80vw; height: 80vw; }
+      footer { padding: 24px 20px 36px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
 </head>
 <body>
-    <div class="page">
-        <nav>
-            <div class="nav">
-                <span class="brand">
-                    SoftwareKit. 
-                </span>
-                <div class="links">
-                    <a class="cta" href="index.html">
-                        <i class="bi bi-house"></i>
-                        Back
-                    </a>
-                </div>
-            </div>
-        </nav>
-        <main>
-            <section class="hero">
-                <div class="card" data-aos="fade-up">
-                    <div class="legal-header">
-                        <span class="badge">
-                            <i class="bi bi-shield-lock"></i>
-                            LEGAL
-                        </span>
-                        <p>
-                            SoftwareKit terms of service and privacy policy.
-                        </p>
-                    </div>
-                    <h2>
-                        Terms of Service
-                    </h2>
-                    <p>
-                        Welcome to SoftwareKit. By using this app, you agree to the following terms.
-                    </p>
-                    <p>
-                        <strong>1. App Usage:</strong>
-                        SoftwareKit provides utilities and tools for advanced device usage. All content available in the app is manually reviewed before being listed. We reserve the right to remove any utility, app, or source at any time.
-                    </p>
-                    <p>
-                        <strong>2. Third-Party Content:</strong>
-                        SoftwareKit may provide access to third-party apps, utilities, or external sources. These are not owned or controlled by us. You are responsible for reviewing and accepting their terms before use.
-                    </p>
-                    <p>
-                        <strong>3. Security and Reporting:</strong>
-                        Any utility, app, or source may be removed if reported or found to be malicious, unsafe, or misleading.
-                    </p>
-                    <p>
-                        <strong>4. User Responsibility:</strong>
-                        SoftwareKit is not malicious and does not intentionally provide malicious content. You are responsible for anything you install or add.
-                    </p>
-                    <p>
-                        <strong>5. Disclaimer:</strong>
-                        SoftwareKit is provided “as is” without warranties of any kind. Use of the app is entirely at your own risk.
-                    </p>
-                    <p>
-                        <strong>6. Intellectual Property:</strong>
-                        SoftwareKit is licensed under the GNU General Public License v2.0 (GPLv2). You may copy, modify, redistribute, and create derivative works of the software only in compliance with GPLv2. Modified or redistributed versions must include the original copyright and license notices.
-                    </p>
-                    <p>
-                        <strong>7. Changes:</strong>
-                        These terms may be updated at any time. Continued use of SoftwareKit means you accept the latest version.
-                    </p>
-                    <hr>
-                    <h2>
-                        Privacy Policy
-                    </h2>
-                    <p>
-                        SoftwareKit respects your privacy and limits data handling to what is strictly necessary for specific features.
-                    </p>
-                    <p>
-                        <strong>1. Data Collection:</strong>
-                        SoftwareKit does not collect, track, sell, or share personal data for analytics, advertising, or profiling purposes.
-                    </p>
-                    <p>
-                        <strong>2. Device Info Feature:</strong>
-                        If you use the Device Info feature, certain device-related information, including UDID and technical details, may temporarily be sent to a Cloudflare Workers endpoint. This data is required only for the feature to function.
-                    </p>
-                    <p>
-                        <strong>3. Temporary Processing:</strong>
-                        Data sent to the Cloudflare Worker is stored temporarily for a maximum of 5 minutes so the app can retrieve it. After this period, it is automatically deleted and is not retained, logged, or reused.
-                    </p>
-                    <p>
-                        <strong>4. Encryption:</strong>
-                        All data transmitted between the app and the Cloudflare Worker is encrypted in transit.
-                    </p>
-                    <p>
-                        <strong>5. Local Storage:</strong>
-                        Once received by the app, device information is stored locally on your device only. This information does not leave your device again unless you manually trigger the Device Info feature.
-                    </p>
-                    <p>
-                        <strong>6. Third-Party Services:</strong>
-                        Cloudflare Workers are used only as a temporary processing layer and are not used for tracking, analytics, or data mining.
-                    </p>
-                    <p>
-                        <strong>7. Policy Updates:</strong>
-                        This Privacy Policy may be updated if app functionality changes. Continued use of SoftwareKit means you accept the latest version.
-                    </p>
-                    <p>
-                        <strong>Questions or concerns?</strong><br>
-                        Use the Feedback option in Settings or contact:
-                        <a href="mailto:softwarekit_app@outlook.com">
-                            softwarekit_app@outlook.com
-                        </a>
-                    </p>
-                </div>
-            </section>
-        </main>
-        <footer>
-            <div class="actions">
-                <a class="button secondary" href="https://github.com/techlxrd/SoftwareKit">
-                    <i class="bi bi-github"></i>
-                    GitHub
-                </a>
-            </div>
-            <p>
-                SoftwareKit is a free, open-source utility project and is not intended for piracy.
-                SoftwareKit is licensed under the GNU General Public License v2.0 (GPLv2).
-                All trademarks, platform names, app names, and product names are the property of their respective owners.
-            </p>
-            <p>
-                Built with ❤️ by
-                <a href="https://techlxrd.github.io">
-                    <strong>TechLxrd</strong>
-                </a>
-            </p>
-            <p>
-                © 2026 SoftwareKit
-                <br>
-                softwarekit_app@outlook.com
-            </p>
-        </footer>
+  <div class="aurora-background" aria-hidden="true">
+    <div class="aurora-blob aurora-one"></div>
+    <div class="aurora-blob aurora-two"></div>
+    <div class="aurora-blob aurora-three"></div>
+    <div class="aurora-blob aurora-four"></div>
+  </div>
+
+  <header class="site-header">
+    <nav class="nav-bar" aria-label="Main navigation">
+      <a class="brand" href="index.html" aria-label="SoftwareKit home">
+        <span class="brand-icon"><i class="bi bi-wrench-adjustable" aria-hidden="true"></i></span>
+        <span>SoftwareKit</span>
+      </a>
+      <a class="button button-primary" href="index.html"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to home</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="container" aria-labelledby="page-title">
+      <article class="legal-card" data-aos="fade-up" data-aos-duration="900">
+        <header class="legal-header">
+          <span class="eyebrow"><i class="bi bi-shield-lock" aria-hidden="true"></i> Legal</span>
+         
+        </header>
+
+        <section aria-labelledby="terms-title">
+          <h2 id="terms-title">Terms of Service</h2>
+          <p>Welcome to SoftwareKit. By using the app, you agree to the terms below.</p>
+          <p><strong>1. App usage.</strong> SoftwareKit provides utilities and tools for advanced device use. Content is manually reviewed before it is listed. We may remove a utility, app, or source at any time.</p>
+          <p><strong>2. Third-party content.</strong> SoftwareKit may link to or provide access to third-party apps, utilities, and sources. These are not owned or controlled by us. Please review and accept their terms before using them.</p>
+          <p><strong>3. Security and reporting.</strong> A utility, app, or source may be removed if it is reported or found to be malicious, unsafe, or misleading.</p>
+          <p><strong>4. Your responsibility.</strong> SoftwareKit does not intentionally provide malicious content. You are responsible for the apps, files, and sources you choose to install or add.</p>
+          <p><strong>5. Disclaimer.</strong> SoftwareKit is provided “as is”, without warranties of any kind. You use the app at your own risk.</p>
+          <p><strong>6. Intellectual property.</strong> SoftwareKit is licensed under the GNU General Public License v2.0 (GPLv2). You may copy, modify, redistribute, and create derivative works only in accordance with GPLv2. Modified or redistributed versions must retain the original copyright and license notices.</p>
+          <p><strong>7. Changes to these terms.</strong> These terms may be updated at any time. If you continue using SoftwareKit, you accept the latest version.</p>
+        </section>
+
+        <hr>
+
+        <section aria-labelledby="privacy-title" data-aos="fade-up" data-aos-duration="700">
+          <h2 id="privacy-title">Privacy Policy</h2>
+          <p>SoftwareKit aims to keep data handling to the minimum needed for specific features.</p>
+          <p><strong>1. Data collection.</strong> SoftwareKit does not collect, track, sell, or share personal data for analytics, advertising, or profiling.</p>
+          <p><strong>2. Device Info feature.</strong> If you use Device Info, some device-related information, including your UDID and technical details, may be sent temporarily to a Cloudflare Workers endpoint. This information is needed for the feature to work.</p>
+          <p><strong>3. Temporary processing.</strong> Data sent to the Cloudflare Worker is stored temporarily for up to 5 minutes so the app can retrieve it. After that, it is automatically deleted and is not retained, logged, or reused.</p>
+          <p><strong>4. Encryption.</strong> Data sent between the app and the Cloudflare Worker is encrypted in transit.</p>
+          <p><strong>5. Local storage.</strong> Once the app receives your device information, it is stored locally on your device. It is not sent elsewhere again unless you manually use the Device Info feature.</p>
+          <p><strong>6. Third-party services.</strong> Cloudflare Workers are used as a temporary processing layer, not for tracking, analytics, or data mining.</p>
+          <p><strong>7. Policy updates.</strong> This policy may change when app functionality changes. Continued use of SoftwareKit means you accept the latest version.</p>
+          <div class="contact-note">
+            <p><strong>Questions or concerns?</strong></p>
+            <p>Use the Feedback option in Settings or email <a href="mailto:softwarekit_app@outlook.com">softwarekit_app@outlook.com</a>.</p>
+          </div>
+        </section>
+      </article>
+    </section>
+  </main>
+
+  <footer data-aos="fade-up" data-aos-duration="700">
+    <div class="footer-links">
+      <a class="button" href="https://github.com/techlxrd/SoftwareKit"><i class="bi bi-github" aria-hidden="true"></i> Source on GitHub</a>
+      <a class="button" href="mailto:softwarekit_app@outlook.com"><i class="bi bi-envelope" aria-hidden="true"></i> Contact</a>
     </div>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            AOS.init({
-                duration: 900,
-                easing: "ease-out-cubic",
-                once: true,
-                offset: 80
-            });
+    <p>SoftwareKit is a free, open-source utility project and is not intended for piracy.</p>
+    <p>SoftwareKit is licensed under the GNU General Public License v3.0 (GPLv3). All trademarks, platform names, app names, and product names belong to their respective owners.</p>
+    <p>Built with ❤️ by <a href="https://techlxrd.github.io"><strong>TechLxrd</strong></a></p>
+    <p class="copyright">© 2026 SoftwareKit</p>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (window.AOS) {
+        AOS.init({
+          duration: 900,
+          easing: "ease-out-cubic",
+          once: true,
+          offset: 50
         });
-    </script>
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": "SoftwareKit",
-            "url": "https://swkit.app/",
-            "applicationCategory": "UtilityApplication",
-            "operatingSystem": ["iOS", "macOS", "HarmonyOS"]
-        }
-    </script>
+        window.addEventListener("load", function () {
+          AOS.refresh();
+        }, { once: true });
+      }
+    });
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "SoftwareKit",
+    "url": "https://swkit.app/",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": ["iOS", "macOS"]
+  }
+  </script>
 </body>
 </html>
