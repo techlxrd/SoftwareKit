@@ -15,11 +15,42 @@
   ],
   "apps": [
     {
+      "name": "BuildBox",
+      "bundleIdentifier": "com.mikevillarroel.buildbox",
+      "marketplaceID": "",
+      "developerName": "MikeBuilds",
+      "subtitle": "iPhone Compiler & Signer",
+      "localizedDescription": "Compile on GitHub, sign on-device with your certificate, install. BuildBox runs the whole flow from your iPhone — no Mac, no PC, no uploading your IPAs to signing services.",
+      "iconURL": "https://i.imgur.com/WpOkkgK.png",
+      "tintColor": "#00a6ff",
+      "category": "utilities",
+      "screenshots": [
+        "https://i.imgur.com/8sXk71E.png",
+        "https://i.imgur.com/K5SAaR6.png"
+      ],
+      "versions": [
+        {
+          "downloadURL": "https://github.com/mikevillarroel/buildbox-ios/releases/download/v2.1.0/BuildBox-2.1.0.ipa",
+          "size": 18000000,
+          "version": "2.1.0",
+          "buildVersion": null,
+          "date": "2026-10-31T20:31:00+02:00",
+          "localizedDescription": null,
+          "minOSVersion": null
+        }
+      ],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {}
+      },
+      "patreon": {}
+    },
+    {
       "name": "Husk",
       "bundleIdentifier": "com.husk.app",
       "marketplaceID": "",
       "developerName": "Unknown",
-      "subtitle": "",
+      "subtitle": "An awesome app.",
       "localizedDescription": "Android apps and games on your iPhone.",
       "iconURL": "https://i.imgur.com/TYSTcf4.png",
       "tintColor": "#7b5fe1",
@@ -27,12 +58,12 @@
       "screenshots": [],
       "versions": [
         {
-          "downloadURL": "https://github.com/Leviidev/Husk/releases/download/3.0/Husk.ipa",
-          "size": 140100000,
           "version": "3.0.0",
-          "buildVersion": null,
           "date": "2026-10-24T07:42:00+03:00",
           "localizedDescription": null,
+          "downloadURL": "https://github.com/Leviidev/Husk/releases/download/3.0/Husk.ipa",
+          "size": 140100000,
+          "buildVersion": null,
           "minOSVersion": null
         }
       ],
