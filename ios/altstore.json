@@ -2,37 +2,66 @@
   "name": "SoftwareKit",
   "subtitle": "",
   "description": "Official AltStore source provided by SoftwareKit. ",
-  "iconURL": "https://softwarekit.pages.dev/favicon.png",
+  "iconURL": "https://i.imgur.com/06F4J7I.jpeg",
   "website": "https://swkit.app",
   "patreonURL": "",
-  "tintColor": "#9e36ce",
+  "tintColor": "#00a6ff",
   "featuredApps": [
-    "com.cr4zy.nyxian",
+    "com.Flare.FlareStore-iOS",
     "com.stik.stikdebug",
     "com.opa334.Dopamine",
     "com.zurac.OldOS",
-    "com.kdt.livecontainer",
-    "dev.casp.ScreenSaver"
+    "com.husk.app"
   ],
   "apps": [
+    {
+      "name": "Husk",
+      "bundleIdentifier": "com.husk.app",
+      "marketplaceID": "",
+      "developerName": "Unknown",
+      "subtitle": "",
+      "localizedDescription": "Android apps and games on your iPhone.",
+      "iconURL": "https://i.imgur.com/TYSTcf4.png",
+      "tintColor": "#7b5fe1",
+      "category": "other",
+      "screenshots": [],
+      "versions": [
+        {
+          "downloadURL": "https://github.com/Leviidev/Husk/releases/download/3.0/Husk.ipa",
+          "size": 140100000,
+          "version": "3.0.0",
+          "buildVersion": null,
+          "date": "2026-10-24T07:42:00+03:00",
+          "localizedDescription": null,
+          "minOSVersion": null
+        }
+      ],
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {
+          "NSLocalNetworkUsageDescription": "Husk uses the local network to pair with this iPhone for JIT, without a computer."
+        }
+      },
+      "patreon": {}
+    },
     {
       "name": "FlareStore iOS",
       "bundleIdentifier": "com.Flare.FlareStore-iOS",
       "marketplaceID": "",
       "developerName": "Unknown",
       "subtitle": "An awesome app.",
-      "localizedDescription": "No description available for this app. ",
-      "iconURL": "https://i.imgur.com/6fPksuQ.png",
+      "localizedDescription": "FlareStore is a comprehensive platform for iOS app signing and sideloading. We provide a suite of browser-based tools that let you sign IPA files, manage signing certificates, install apps on your devices, and protect them from revocation — all without needing a Mac or Xcode. Whether you're a developer testing your own apps or an enthusiast running open-source software, FlareStore makes the process fast, secure, and accessible from any device.",
+      "iconURL": "https://i.imgur.com/VCNiklt.png",
       "tintColor": "#7f7f7f",
-      "category": "other",
+      "category": "utilities",
       "screenshots": [],
       "versions": [
         {
-          "version": "1.1",
-          "date": "2026-04-08T10:17:00+03:00",
+          "version": "1.5.0",
+          "date": "2026-10-23T17:35:00+03:00",
           "localizedDescription": null,
-          "downloadURL": "https://flarestore.vip/api/app/download-public/ios",
-          "size": 8300000,
+          "downloadURL": "https://flarestore.vip/api/app/download-public/ios?theme=default-dark",
+          "size": 13800000,
           "buildVersion": null,
           "minOSVersion": null
         }
@@ -41,7 +70,8 @@
         "entitlements": [],
         "privacy": {
           "NSCameraUsageDescription": "Take app icon pictures, scan repo codes, or pair devices. ",
-          "NSLocalNetworkUsageDescription": "This app needs to access the local network to do wireless installs."
+          "NSLocalNetworkUsageDescription": "This app needs to access the local network to do wireless installs.",
+          "NSLocationWhenInUseUsageDescription": "FlareStore only uses your location to show where you really are next to a location you have set yourself, in the app and on the Lock Screen. It is never asked for unless you tap to allow it, and location editing works without it."
         }
       },
       "patreon": {}
@@ -53,17 +83,17 @@
       "developerName": "StephenDev0",
       "subtitle": "Unlock the power of on-device debugging.",
       "localizedDescription": "Enable JIT for sideloaded apps, debug processes, and manage your iOS development workflow directly from your device.",
-      "iconURL": "https://i.imgur.com/yPFhrWA.png",
-      "tintColor": "#24ccfc",
+      "iconURL": "https://i.imgur.com/fF93Dey.png",
+      "tintColor": "#27c4fc",
       "category": "other",
       "screenshots": [],
       "versions": [
         {
-          "version": "3.1.0",
-          "date": "2026-03-31T05:04:00+03:00",
+          "version": "Latest",
+          "date": "2026-10-23T17:37:00+03:00",
           "localizedDescription": null,
-          "downloadURL": "https://github.com/StephenDev0/StikDebug/releases/latest",
-          "size": 10900000,
+          "downloadURL": "https://github.com/StikDebug/StikDebug/releases/latest",
+          "size": 13500000,
           "buildVersion": null,
           "minOSVersion": null
         }
@@ -80,12 +110,12 @@
     },
     {
       "name": "Nyxian",
-      "bundleIdentifier": "com.cr4zy.nyxian",
+      "bundleIdentifier": "org.emexlabs.nyxian",
       "marketplaceID": "",
       "developerName": "Unknown",
       "subtitle": "An awesome app.",
       "localizedDescription": "IDE to develop native code iOS apps and tools on unjailbroken iOS",
-      "iconURL": "https://i.imgur.com/aFmOkoq.png",
+      "iconURL": "https://i.imgur.com/eKO21GJ.png",
       "tintColor": "#8c64bc",
       "category": "developer",
       "screenshots": [
@@ -97,11 +127,11 @@
       ],
       "versions": [
         {
-          "version": "0.8.6",
-          "date": "2026-03-29T14:22:00+03:00",
+          "version": "0.11.4",
+          "date": "2026-10-23T17:40:00+03:00",
           "localizedDescription": null,
-          "downloadURL": "https://github.com/ProjectNyxian/Nyxian/releases/download/0.8.6/nyxian.ipa",
-          "size": 87500000,
+          "downloadURL": "https://github.com/emexlab/Nyxian/releases/download/0.11.4/Nyxian.ipa",
+          "size": 111300000,
           "buildVersion": null,
           "minOSVersion": null
         }
@@ -243,36 +273,6 @@
         "privacy": {
           "NSAccentColorName": "AccentColor",
           "NSFaceIDUsageDescription": "To securely store your Apple ID authentication information, biometric authentication is required."
-        }
-      },
-      "patreon": {}
-    },
-    {
-      "name": "Taurine",
-      "bundleIdentifier": "org.coolstar.taurine",
-      "marketplaceID": "",
-      "developerName": "CoolStar",
-      "subtitle": "Jailbreak",
-      "localizedDescription": "Time to get amped.\n\nSupports iOS 14.0-14.8.1.",
-      "iconURL": "https://i.imgur.com/WXL3mle.png",
-      "tintColor": "#cf3c5a",
-      "category": "other",
-      "screenshots": [],
-      "versions": [
-        {
-          "version": "1.1.7-3",
-          "date": "2025-12-26T10:02:00+02:00",
-          "localizedDescription": null,
-          "downloadURL": "https://github.com/Odyssey-Team/Taurine/releases/download/1.1.7-3/Taurine.1.1.7-3.ipa",
-          "size": 32200000,
-          "buildVersion": null,
-          "minOSVersion": null
-        }
-      ],
-      "appPermissions": {
-        "entitlements": [],
-        "privacy": {
-          "NSAccentColorName": "AccentColor"
         }
       },
       "patreon": {}
@@ -856,52 +856,6 @@
       "patreon": {}
     },
     {
-      "name": "NeoFreeBird",
-      "bundleIdentifier": "com.atebits.Tweetie2",
-      "marketplaceID": "",
-      "developerName": "Aridan",
-      "subtitle": "An awesome app.",
-      "localizedDescription": "A modified Twitter app, with branding reverts, BHTwitter and other QoL modifications.",
-      "iconURL": "https://i.imgur.com/T2iu5c1.png",
-      "tintColor": "#1c9cf4",
-      "category": "social",
-      "screenshots": [
-        "https://neofreebird.aridan.net/images/IMG_9219.png",
-        "https://neofreebird.aridan.net/images/IMG_9220.png"
-      ],
-      "versions": [
-        {
-          "version": "10.94",
-          "date": "2025-05-17T12:46:00+03:00",
-          "localizedDescription": null,
-          "downloadURL": "https://github.com/actuallyaridan/NeoFreeBird/releases/download/1.0/NeoFreeBird-1.0-Twitter-10.94-rev3.ipa",
-          "size": 151100000,
-          "buildVersion": null,
-          "minOSVersion": null
-        }
-      ],
-      "appPermissions": {
-        "entitlements": [],
-        "privacy": {
-          "NSAdvertisingAttributionReportEndpoint": "https://singular-bi.net",
-          "NSBluetoothAlwaysUsageDescription": "Twitter uses Bluetooth to discover Cast-enabled devices near you.",
-          "NSCameraUsageDescription": "Capture and post photos and videos from Twitter.",
-          "NSUserTrackingUsageDescription": "This helps Twitter show you more relevant ads.",
-          "NSPhotoLibraryAddUsageDescription": "This lets you download photos and videos to your Photos.",
-          "NSLocalNetworkUsageDescription": "Twitter uses the local network to discover Cast-enabled devices on your WiFi network.",
-          "NSSpeechRecognitionUsageDescription": "Going forward, whenever you choose to share captions on this device, Apple will provide the service. Doing so helps make sure people of all hearing abilities can access your content.",
-          "NSLocationUsageDescription": "Enjoy the Twitter experience tailored to your location.",
-          "NSCalendarsUsageDescription": "Add events to your calendar from Twitter.",
-          "NSMicrophoneUsageDescription": "Capture and post videos with sound from Twitter.",
-          "NSLocationWhenInUseUsageDescription": "Enjoy the Twitter experience tailored to your location.",
-          "NSFaceIDUsageDescription": "Use FaceID to authenticate on Twitter.",
-          "NSContactsUsageDescription": "We will securely upload your contacts to our servers to help you connect with friends and suggest users to follow on Twitter.",
-          "NSPhotoLibraryUsageDescription": "Easily add photos on Twitter."
-        }
-      },
-      "patreon": {}
-    },
-    {
       "name": "Sileo Demo",
       "bundleIdentifier": "org.coolstar.SileoDemo",
       "marketplaceID": "",
@@ -934,12 +888,12 @@
   ],
   "news": [
     {
-      "title": "SoftwareKit v3.4.1",
+      "title": "SoftwareKit v4.0",
       "identifier": "news_0df3yswqwr",
-      "caption": "SoftwareKit was updated to v3.4.1. Check the changelog in Settings! 🎉 ",
+      "caption": "SoftwareKit was updated to v4.0. Check the changelog on the Today tab! 🎉 ",
       "date": "2026-08-08T12:00",
-      "tintColor": "#ce69ff",
-      "imageURL": "https://i.imgur.com/jKXRWs3.png",
+      "tintColor": "#00b7ff",
+      "imageURL": "https://i.imgur.com/IsavX8d.png",
       "notify": true,
       "url": "https://swkit.app",
       "appID": null

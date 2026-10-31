@@ -1,41 +1,188 @@
+<!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/framework7-icons@5.0.5/css/framework7-icons.css" crossorigin="anonymous">
-    <title>SoftwareKit UDID retrieval Success</title>
-    <meta name="theme-color" content="#000000">   
-</head>
-<body>
-    <i class="f7-icons">checkmark_circle_fill</i>
-    <p class="center"><strong>Success</strong></p><p>You may now return to the app, where the magic happens! </p>
+    <meta name="theme-color" content="#080b16">  
+    <title>
+      SoftwareKit UDID Retrieval Success
+    </title>
+    <link rel="stylesheet"   href="https://cdn.jsdelivr.net/npm/framework7-icons@5.0.5/css/framework7-icons.css"
+        crossorigin="anonymous">
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/aos@2.3.4/dist/aos.css"
+    >
     <style>
-        body { 
-            margin: 0;
-            background: url('https://raw.githubusercontent.com/techlxrd/techlxrd.github.io/refs/heads/main/assets/bg-dark.jpeg') no-repeat center center fixed; 
-            background-size: cover;
+      :root {
+            color-scheme: light dark;
+            --text: #f7f8ff;
+            --muted: rgba(235, 239, 255, 0.76);
+            --glass: rgba(16, 22, 43, 0.62);
+            --glass-border: rgba(255, 255, 255, 0.16);
+            --success: #42e58b;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            min-height: 100%;
+        }
+
+        body {
+            position: relative;
+            isolation: isolate;
             display: flex;
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center;    
-            text-align: center;         
-            height: 100vh; 
-            color: white; 
-            overflow:hidden;
-            overflow-y: hidden;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            min-height: 100svh;
+            margin: 0;
+            padding: 24px;
             overflow-x: hidden;
-            font-family:system-ui;
+            background: #080b16;
+            color: var(--text);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            text-align: center;
+        }
+
+        body::before {
+            position: fixed;
+            z-index: -2;
+            inset: 0;
+            content: "";
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(7, 10, 24, 0.76),
+                    rgba(12, 18, 38, 0.55)
+                ),
+                url("https://raw.githubusercontent.com/techlxrd/techlxrd.github.io/refs/heads/main/assets/bg-dark.jpeg")
+                center / cover no-repeat;
+            transform: scale(1.02);
+        }
+
+        body::after {
+            position: fixed;
+            z-index: -1;
+            inset: -20%;
+            content: "";
+            pointer-events: none;
+            background:
+                radial-gradient(
+                    ellipse at 18% 25%,
+                    rgba(82, 115, 255, 0.24),
+                    transparent 42%
+                ),
+                radial-gradient(
+                    ellipse at 82% 75%,
+                    rgba(88, 63, 191, 0.2),
+                    transparent 40%
+                );
+            animation: aurora 16s ease-in-out infinite alternate;
+        }
+
+        .success-card {
+            width: min(100%, 440px);
+            padding: clamp(30px, 7vw, 48px) clamp(24px, 6vw, 40px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            background: var(--glass);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+            -webkit-backdrop-filter: blur(22px);
+            backdrop-filter: blur(22px);
+        }
+
+        .icon-wrap {
+            display: grid;
+            place-items: center;
+            width: 92px;
+            height: 92px;
+            margin: 0 auto 22px;
+            border: 1px solid rgba(66, 229, 139, 0.3);
+            border-radius: 50%;
+            background: rgba(66, 229, 139, 0.1);
+            box-shadow: 0 0 40px rgba(66, 229, 139, 0.09);
         }
 
         .f7-icons {
-            font-size: 70px;
-            margin-bottom: 7px;
-            color:#31ff15;
+            color: var(--success);
+            font-size: 54px;
+            line-height: 1;
         }
 
-        p.center {
-            margin: 0;         
+        h1 {
+            margin: 0 0 12px;
+            font-size: clamp(1.7rem, 5vw, 2.15rem);
+            font-weight: 700;
+            letter-spacing: -0.045em;
+            line-height: 1.2;
         }
-    </style>  
-</body>
+
+        p {
+            max-width: 330px;
+            margin: 0 auto;
+            color: var(--muted);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        @keyframes aurora {
+            from {
+                transform: translate3d(-1%, -1%, 0) rotate(0deg);
+            }
+
+            to {
+                transform: translate3d(1%, 1%, 0) rotate(3deg);
+            }
+        }
+
+        @media (max-width: 420px) {
+            body {
+                padding: 18px;
+            }
+
+            .success-card {
+                border-radius: 24px;
+            }
+        }
+    </style>
+  </head>
+  <body>
+    <main class="success-card" data-aos="fade-up">
+      <div
+            class="icon-wrap"
+            data-aos="zoom-in"
+            data-aos-delay="100"
+            aria-hidden="true"
+        >
+        <i class="f7-icons">
+          checkmark_circle_fill
+        </i>
+      </div>
+      <h1 data-aos="fade-up" data-aos-delay="150">
+        Success
+      </h1>
+      <p data-aos="fade-up" data-aos-delay="250">
+        You may now return to the app,
+            where the magic happens!
+      </p>
+    </main>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js">
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+            if (window.AOS) {
+                AOS.init({
+                    duration: 850,
+                    easing: "ease-out-cubic",
+                    once: true,
+                    offset: 20
+                });
+            }
+        });
+    </script>
+  </body>
 </html>
