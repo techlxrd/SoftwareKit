@@ -1,0 +1,17 @@
+[
+  { "id": "default", "name": "Default", "subtitle": "SoftwareKit",       "url": "../../favicon.png" },
+  { "id": "icon-1",  "name": "Icon 1",  "subtitle": "@techlxrd07",      "url": "../assets/icons/Icon1.png"  },
+  { "id": "icon-2",  "name": "Icon 2",  "subtitle": "@OuniDesigns",     "url": "../assets/icons/Icon2.png"  },
+  { "id": "icon-3",  "name": "Icon 3",  "subtitle": "@techlxrd07",      "url": "../assets/icons/Icon3.png"  },
+  { "id": "icon-4",  "name": "Icon 4",  "subtitle": "@OuniDesigns",     "url": "../assets/icons/Icon4.png"  },
+  { "id": "icon-5",  "name": "Icon 5",  "subtitle": "@OuniDesigns",     "url": "../assets/icons/Icon5.png"  },
+  { "id": "icon-6",  "name": "Icon 6",  "subtitle": "@techlxrd07",      "url": "../assets/icons/Icon6.png"  },
+  { "id": "icon-7",  "name": "Icon 7",  "subtitle": "@OuniDesigns",     "url": "../assets/icons/Icon7.png"  },
+  { "id": "icon-8",  "name": "Icon 8",  "subtitle": "N/A",              "url": "../assets/icons/Icon8.png"  },
+  { "id": "icon-9",  "name": "Icon 9",  "subtitle": "@OuniDesigns",     "url": "../assets/icons/Icon9.png"  },
+  { "id": "icon-10", "name": "Icon 10", "subtitle": "@OuniDesigns",     "url": "../assets/icons/Icon10.png" },
+  { "id": "icon-11", "name": "Icon 11", "subtitle": "@techlxrd07",      "url": "../assets/icons/Icon11.png" },
+  { "id": "icon-12", "name": "Icon 12", "subtitle": "@OuniDesigns",     "url": "../assets/icons/Icon12.png" },
+  { "id": "icon-13", "name": "Icon 13", "subtitle": "@techlxrd07",      "url": "../assets/icons/Icon13.png" },
+  { "id": "icon-14", "name": "Icon 14", "subtitle": "@techlxrd07",      "url": "../assets/default.png" }
+]

@@ -2,10 +2,10 @@
   {
     "id": "scarlet",
     "title": "Scarlet",
-    "category": "3rd Party AppStore",
+    "category": "3rd Party App Store",
     "icon": "https://pbs.twimg.com/profile_images/1367920028813787144/cwvAQV9f_400x400.jpg",
     "description": "Scarlet makes installing and managing your favorite apps fast and simple, with both direct and computer-based install options.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://usescarlet.com",
     "type": "App",
     "device": "iPhone/iPad/Mac",
@@ -19,7 +19,7 @@
     "category": "Customisation",
     "icon": "https://i.imgur.com/fUWW8NL.jpeg",
     "description": "Radiance features wallpapers created by real artists and designers, with AI used only for object removal in photography. The collection includes community favorites, Radiance originals, and photo sets designed specifically for wallpaper formats.",
-    "compatible": "18.0 or later",
+    "compatible": "18.0+",
     "get_link": "https://radiancewallpapers.com/",
     "type": "App",
     "screenshots": [
@@ -34,7 +34,7 @@
     "category": "iPA Library",
     "icon": "https://i.imgur.com/ABk9WSH.png",
     "description": "Syde helps you discover, install, and manage third-party IPA files from one clean and easy-to-use platform.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://sydeapp.glide.page/",
     "type": "Website",
     "screenshots": [
@@ -47,7 +47,7 @@
     "category": "Customisation",
     "icon": "https://i.imgur.com/wuF5bgM.jpeg",
     "description": "Show Walls brings together high-quality wallpapers from creators around the world, with fresh updates and crisp downloads to personalize your device.",
-    "compatible": "18.0 or later",
+    "compatible": "18.0+",
     "get_link": "https://apps.apple.com/us/app/show-walls/id6737687624",
     "type": "App",
     "screenshots": [
@@ -62,14 +62,14 @@
     "category": "Other",
     "icon": "https://cdn2.unrealengine.com/eg-news-thumbnail-1-576x576-1b5068fe7512-576x576-8e4123810de1.png",
     "description": "Download and play Epic games like Fortnite, Rocket League Sideswipe, and Fall Guys Mobile. The store also includes eligible in-game rewards for Android, iPhone, and iPad users in the EU.",
-    "compatible": "17.4 or later (EU)",
+    "compatible": "17.4+ (EU)",
     "get_link": "https://store.epicgames.com/download",
     "type": "App",
     "screenshots": []
   },
   {
     "id": "irespring",
-    "title": "iRespring<i class=\"f7-icons checkmark\">checkmark_seal_fill</i>",
+    "title": "iRespring",
     "category": "Other",
     "icon": "https://irespring.pages.dev/favicon.ico",
     "description": "iRespring gives you a quick and reliable way to restart SpringBoard on supported iOS versions. Built by the developer of SoftwareKit.",
@@ -84,28 +84,14 @@
     "id": "folium",
     "title": "Folium",
     "category": "Emulator",
-    "icon": "https://jarrodnorwell.com/folium/folium_circle.png",
+    "icon": "https://jarrodnorwell.com/folium/circle.png",
     "description": "Folium brings high-performance multi-system emulation into a polished interface so you can play classic games anywhere.",
-    "compatible": "Unknown",
-    "get_link": "https://jarrodnorwell.com/folium/",
+    "compatible": "N/A",
+    "get_link": "https://jarrodnorwell.com/apps/folium",
     "type": "App",
     "screenshots": [
-      "https://i.imgur.com/gkchQB8.jpeg",
-      "https://i.imgur.com/uqd4MoH.jpeg"
-    ]
-  },
-  {
-    "id": "iconfig",
-    "title": "iConfig",
-    "category": "Other",
-    "icon": "https://i.imgur.com/hiwG5D1.jpeg",
-    "description": "Create and manage custom iOS configuration profiles directly from your browser with this simple web tool.",
-    "compatible": "Unknown",
-    "get_link": "https://s0n1c.ca/iconfig/",
-    "type": "Website",
-    "screenshots": [
-      "https://i.imgur.com/vCtM8lM.png",
-      "https://i.imgur.com/FtAIK2m.png"
+      "https://jarrodnorwell.com/folium/bandai/ws/games.png",
+      "https://jarrodnorwell.com/folium/bandai/ws/emulation.png"
     ]
   },
   {
@@ -114,7 +100,7 @@
     "category": "Other",
     "icon": "https://s0n1c.ca/altlist/icon.png",
     "description": "AltList makes sideloading easier by letting you browse and manage apps from AltStore sources in a clean web interface.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://s0n1c.ca/altlist/",
     "type": "Website",
     "screenshots": [
@@ -128,7 +114,7 @@
     "category": "Other",
     "icon": "https://i.imgur.com/I8tG6lq.png",
     "description": "Discover apps and games that match your interests, connect with other users, and keep track of deals with wish lists and price alerts.",
-    "compatible": "15.0 or later",
+    "compatible": "15.0+",
     "get_link": "https://Apps.Apple.com/ro/App/Appraven-Apps-gone-free/id1490607195",
     "type": "App",
     "screenshots": [
@@ -141,7 +127,7 @@
     "category": "Other",
     "icon": "https://i.imgur.com/kXATXtK.png",
     "description": "Demus offers free music streaming with a simple experience that feels like an alternative to paid services.",
-    "compatible": "17.0 or later",
+    "compatible": "17.0+",
     "get_link": "https://Apps.Apple.com/ro/App/demus-easy-music-streaming/id6474685600",
     "type": "App",
     "screenshots": [
@@ -155,7 +141,7 @@
     "category": "Other",
     "icon": "https://i.imgur.com/AVurVqQ.png",
     "description": "A powerful, ad-free graphing calculator with no subscriptions and all the tools you need for advanced math.",
-    "compatible": "16.0 or later",
+    "compatible": "16.0+",
     "get_link": "https://apps.apple.com/ro/app/acute-calculator/id6476837563",
     "type": "App",
     "screenshots": [
@@ -168,7 +154,7 @@
     "category": "Other",
     "icon": "https://i.imgur.com/MxrKE1e.png",
     "description": "UniChar is a flexible Unicode keyboard for iOS with no ads, deep customization, and a native feel for typing symbols faster.",
-    "compatible": "15.0 or later",
+    "compatible": "15.0+",
     "get_link": "https://Apps.Apple.com/ro/App/unichar-unicode-keyboard/id880811847",
     "type": "App",
     "screenshots": [
@@ -182,23 +168,10 @@
     "category": "Automation",
     "icon": "https://shareshortcuts.com/apple-touch-icon.png?v=jw7gjavNbw",
     "description": "Join a large Siri Shortcuts community and explore a growing library of free automations shared by users.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://shareshortcuts.com",
     "type": "Website",
     "screenshots": []
-  },
-  {
-    "id": "imazing",
-    "title": "iMazing",
-    "category": "Device Management",
-    "icon": "https://imazing.com/img/imazing3-logo.svg",
-    "description": "iMazing helps you back up, transfer, and manage your iPhone or iPad data from Mac or PC with powerful tools for media and file access.",
-    "compatible": "Unknown",
-    "get_link": "https://imazing.com",
-    "type": "Website",
-    "screenshots": [
-      "https://imazing.com/img/home/win/1-hero-winos-130x38-570x368@2x.jpg"
-    ]
   },
   {
     "id": "iconfigrealm",
@@ -206,7 +179,7 @@
     "category": "Utilities",
     "icon": "https://iconfigrealm.netlify.app/assets/images/iconfigrealm.jpeg",
     "description": "Customize your device with lightweight tweaks, shortcuts, screen savers, and configuration profiles, all without jailbreaking. A computer is required.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://iconfighub.netlify.App",
     "type": "Website",
     "screenshots": [
@@ -219,7 +192,7 @@
     "category": "Customisation",
     "icon": "https://i.imgur.com/Tyn22ul.png",
     "description": "Transform your iPhone home and lock screens with live weather, RSS feeds, and custom widgets.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://modmyiphone.dev",
     "type": "App",
     "screenshots": [
@@ -232,7 +205,7 @@
     "category": "Photo & Video",
     "icon": "https://i.imgur.com/usyD2fq.png",
     "description": "Create polished device mockups for your screenshots quickly with a simple, easy-to-use app.",
-    "compatible": "17.0 or later",
+    "compatible": "17.0+",
     "get_link": "https://Apps.Apple.com/ro/App/mockup-m/id6467768436",
     "type": "App",
     "screenshots": [
@@ -246,7 +219,7 @@
     "category": "Other",
     "icon": "https://i.imgur.com/zgPexTc.png",
     "description": "Browse a curated set of animal watch faces for Apple Watch and add a fun personal touch to your wrist.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://Apps.Apple.com/ro/App/watch-faces-gallery-animals/id1661519284",
     "type": "App",
     "screenshots": [
@@ -256,10 +229,10 @@
   {
     "id": "solves",
     "title": "Solves",
-    "category": "Hidden App Store App",
+    "category": "Other",
     "icon": "https://i.imgur.com/e6TxnFh.png",
     "description": "Solves gives the iOS Calculator a more advanced feature set and a cleaner, more capable interface.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://Apps.Apple.com/ro/App/solves-calculator-for-all/id1394359548",
     "type": "App",
     "screenshots": [
@@ -272,7 +245,7 @@
     "category": "3rd Party App Store",
     "icon": "https://flekstore.com/pro_app/icons/apple-touch-icon.png",
     "description": "FlekSt0re PRO is a code-signing platform for iOS that lets you browse an app library or sign your own apps with ease.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://flekstore.com/pro_App/?d=undefined",
     "type": "Website",
     "screenshots": [
@@ -284,39 +257,12 @@
     ]
   },
   {
-    "id": "utools",
-    "title": "3uTools",
-    "category": "Device Management",
-    "icon": "https://pbs.twimg.com/profile_images/662108693144686592/s1XHXp1D.png",
-    "description": "3uTools is an all-in-one device management suite for iPhone, iPad, and iPod, with backup, transfer, jailbreak, and more.",
-    "compatible": "Unknown",
-    "get_link": "https://3u.com",
-    "type": "App",
-    "device": "iPhone/iPad/iPod",
-    "screenshots": [
-      "https://m.3u.com/assets/windows_bg0@3x-BBmZer_h.png"
-    ]
-  },
-  {
-    "id": "bullfrogassistant",
-    "title": "BullfrogAssistant",
-    "category": "Other",
-    "icon": "https://api.ios222.com/logo256.png",
-    "description": "BullfrogAssistant makes it easy to install and manage apps on your device, with Mac or Windows required for setup.",
-    "compatible": "Unknown",
-    "get_link": "https://ios222.com",
-    "type": "App",
-    "screenshots": [
-      "https://i.imgur.com/nt0fRYz.png"
-    ]
-  },
-  {
     "id": "appdb",
     "title": "AppDB",
     "category": "3rd Party App Store",
     "icon": "https://pbs.twimg.com/profile_images/1838260547944394752/UfYijXbB.jpg",
     "description": "AppDB gives you access to a huge collection of third-party, tweaked, and modded apps for iPhone, iPad, and Mac.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://Appdb.to",
     "type": "Website",
     "device": "iPhone/iPad/Mac",
@@ -330,7 +276,7 @@
     "category": "3rd Party App Store",
     "icon": "https://pbs.twimg.com/profile_images/1625585716372684803/E0st7g9Q_400x400.jpg",
     "description": "AppBox helps you find and download apps quickly, with no ads, no paywalls, and no subscriptions.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://App.Appbox.click",
     "type": "Website",
     "screenshots": [
@@ -343,7 +289,7 @@
     "category": "3rd Party App Store",
     "icon": "https://www.eonhubApp.com/assets/icon.png",
     "description": "EonHub is a third-party app store with a clean interface and built-in blacklist protection.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://App.eonhubApp.com",
     "type": "Website",
     "screenshots": [
@@ -354,12 +300,12 @@
   {
     "id": "palera1n",
     "title": "palera1n",
-    "category": "Jailbreak",
+    "category": "Jailbreaking",
     "icon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLJEES6gzjao1qCndbODNKiyqyiGvmX7xquYhDmCnChA&s",
     "description": "palera1n is a developer-focused jailbreak for checkm8 devices, covering A8 through A11 hardware.",
     "compatible": "15.0 - Latest•A8-A11",
     "get_link": "https://palera.in",
-    "type": "Unknown",
+    "type": "N/A",
     "device": "iPhone/iPad/Mac",
     "screenshots": []
   },
@@ -369,7 +315,7 @@
     "category": "Customisation",
     "icon": "https://i.imgur.com/miHw4If.png",
     "description": "Explore deep widget customization with Widgy. Create, share, and personalize widgets for iPhone, iPad, and Apple Watch.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://Apps.Apple.com/ro/App/widgy-widgets/id1524540481",
     "type": "App",
     "device": "iPhone/iPad/Mac/Watch",
@@ -383,7 +329,7 @@
     "category": "Emulator",
     "icon": "https://eclipseemu.me/play/static/icons/apple-touch-icon.png",
     "description": "Eclipse is a browser-based multi-system emulator for iOS that lets you play classic games from several consoles.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://eclipseemu.me/play",
     "type": "Website",
     "screenshots": [
@@ -398,7 +344,7 @@
     "category": "Other",
     "icon": "https://lake-e.github.io/iPad-Calculator/images/icon.png",
     "description": "A clean, web-based calculator for iPad with essential features and easy access anytime.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://lake-e.github.io/iPad-Calculator/index.html",
     "type": "Website",
     "screenshots": [
@@ -411,7 +357,7 @@
     "category": "Photo & Video",
     "icon": "https://i.imgur.com/O8vSkca.png",
     "description": "Chroma Hue lets you design custom wallpapers with bright RGB halo effects, gradients, and your own images.",
-    "compatible": "18.0 or later",
+    "compatible": "18.0+",
     "get_link": "https://apps.apple.com/ro/app/chroma-hue/id6444013215?l=ro",
     "type": "App",
     "screenshots": [
@@ -425,7 +371,7 @@
     "category": "Customisation",
     "icon": "https://i.imgur.com/nHwtY0G.png",
     "description": "SWA helps you transform your home and lock screens with smart wallpapers and creative customization tools.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://Apps.Apple.com/ro/App/smart-wallpaper-art/id6447762747",
     "type": "App",
     "screenshots": []
@@ -436,7 +382,7 @@
     "category": "Customisation",
     "icon": "https://i.imgur.com/5FSk0AP.png",
     "description": "ShowAE lets you customize your home screen icons with more than 300 effects, plus easy export and apply options.",
-    "compatible": "16.0 or later",
+    "compatible": "16.0+",
     "get_link": "https://Apps.Apple.com/ro/App/showae/id6444632255",
     "type": "App",
     "screenshots": [
@@ -451,7 +397,7 @@
     "category": "Photo & Video",
     "icon": "https://i.imgur.com/HYnw1mZ.png",
     "description": "Create polished mockups for your screenshots in seconds with screenshotSL, a great tool for developers and designers.",
-    "compatible": "15.0 or later",
+    "compatible": "15.0+",
     "get_link": "https://Apps.Apple.com/ro/App/screenshotsl/id1658857348",
     "type": "App",
     "screenshots": [
@@ -464,7 +410,7 @@
     "category": "Customisation",
     "icon": "https://i.imgur.com/Dq6nP1H.png",
     "description": "Show gives you powerful tools to customize your home and lock screens and make your iPhone feel more personal.",
-    "compatible": "15.0 or later",
+    "compatible": "15.0+",
     "get_link": "https://Apps.Apple.com/ro/App/showcuts/id1615409976",
     "type": "App",
     "screenshots": [
@@ -477,7 +423,7 @@
     "category": "Photo & Video",
     "icon": "https://i.imgur.com/5W76IR0.png",
     "description": "Morfic makes it easy to create beautiful dynamic wallpapers that give your device a more personal look.",
-    "compatible": "15.0 or later",
+    "compatible": "15.0+",
     "get_link": "https://Apps.Apple.com/ro/App/morfic-live-dynamic-wallpaper/id1663728720",
     "type": "App",
     "screenshots": [
@@ -490,7 +436,7 @@
     "category": "3rd Party App Store",
     "icon": "https://raw.githubusercontent.com/Ibinou/-new-NoCodeHubInstaller/main/img/FD19EBF5-0177-462C-8C10-9C5B37766B29.png",
     "description": "iTweakHub is a web-based third-party app store for iOS and iPadOS with a large library and simple installation.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://getitweakhub.netlify.App",
     "type": "Website",
     "screenshots": [
@@ -505,11 +451,11 @@
     "category": "3rd Party App Store",
     "icon": "https://i.imgur.com/g78yZP4.jpeg",
     "description": "Zeus is one of the easiest ways to install apps on your iPhone or iPad without a computer.",
-    "compatible": "Unknown",
+    "compatible": "iOS 17+",
     "get_link": "https://getzeus.app/",
     "type": "App",
     "screenshots": [
-      "https://i.imgur.com/HN9AwVQ.jpg"
+  
     ]
   },
   {
@@ -518,7 +464,7 @@
     "category": "Sideloading",
     "icon": "https://softwarekit.pages.dev/ios/assets/altstore.png",
     "description": "AltStore lets you install apps outside the App Store without needing a jailbreak.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://altstore.io",
     "type": "App",
     "screenshots": [
@@ -533,7 +479,7 @@
     "category": "Customisation",
     "icon": "https://i.imgur.com/K8mcMFN.png",
     "description": "Broank gives you a wide range of tools and shortcuts for customizing your device.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://broank.com",
     "type": "Website",
     "screenshots": [
@@ -546,7 +492,7 @@
     "category": "3rd Party App Store",
     "icon": "https://jailbreaks.App/img/Jailbreaks.png",
     "description": "Jailbreaks is a central place for major jailbreak tools, utilities, and related resources.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://jailbreaks.App",
     "type": "Website",
     "screenshots": [
@@ -556,10 +502,10 @@
   {
     "id": "tubemax",
     "title": "TubeMax",
-    "category": "Hidden App Store App",
+    "category": "Other",
     "icon": "https://i.imgur.com/ldy8LVJ.png",
     "description": "TubeMax brings YouTube Premium-style features to your device, including ad-free playback and background listening.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://Apps.Apple.com/ro/App/tubemax-videos-music-streams/id1634335563",
     "type": "Website",
     "screenshots": [
@@ -572,7 +518,7 @@
     "category": "Sideloading",
     "icon": "https://pbs.twimg.com/profile_images/1610768676201848833/lvEKBXiS_400x400.jpg",
     "description": "SideStore is an AltStore fork that works on its own, so you can sideload apps on iOS without AltServer.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://sidestore.io",
     "type": "Website",
     "screenshots": [
@@ -610,14 +556,14 @@
     "category": "Automation",
     "icon": "https://assets.routinehub.co/file/routinehub/static/main/images/logo.png",
     "description": "RoutineHub is a large hub for Apple Shortcuts, where you can find, download, and publish advanced automations for iOS.",
-    "compatible": "iOS 12.0 or later",
+    "compatible": "iOS 12.0+",
     "get_link": "https://routinehub.co",
     "type": "Website",
     "screenshots": []
   },
   {
     "id": "trollcheck",
-    "title": "TrollCheck<i class=\"f7-icons checkmark\">checkmark_seal_fill</i>",
+    "title": "TrollCheck",
     "category": "Other",
     "icon": "https://trollcheck.pages.dev/favicon.ico",
     "description": "TrollCheck is a simple compatibility checker for TrollStore, built by the developer of SoftwareKit.",

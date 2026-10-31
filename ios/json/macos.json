@@ -11,6 +11,46 @@
     "device": "Mac",
     "screenshots": []
   },
+    {
+    "id": "utools",
+    "title": "3uTools",
+    "category": "Device Management",
+    "icon": "https://pbs.twimg.com/profile_images/662108693144686592/s1XHXp1D.png",
+    "description": "3uTools is an all-in-one device management suite for iPhone, iPad, and iPod, with backup, transfer, jailbreak, and more.",
+    "compatible": "N/A",
+    "get_link": "https://3u.com",
+    "type": "App",
+    "device": "iPhone/iPad/iPod",
+    "screenshots": [
+      "https://m.3u.com/assets/windows_bg0@3x-BBmZer_h.png"
+    ]
+  },
+    {
+    "id": "bullfrogassistant",
+    "title": "BullfrogAssistant",
+    "category": "Other",
+    "icon": "https://api.ios222.com/logo256.png",
+    "description": "BullfrogAssistant makes it easy to install and manage apps on your device, with Mac or Windows required for setup.",
+    "compatible": "N/A",
+    "get_link": "https://ios222.com",
+    "type": "App",
+    "screenshots": [
+      "https://i.imgur.com/nt0fRYz.png"
+    ]
+  },
+    {
+    "id": "imazing",
+    "title": "iMazing",
+    "category": "Device Management",
+    "icon": "https://imazing.com/img/imazing3-logo.svg",
+    "description": "iMazing helps you back up, transfer, and manage your iPhone or iPad data from Mac or PC with powerful tools for media and file access.",
+    "compatible": "N/A",
+    "get_link": "https://imazing.com",
+    "type": "Website",
+    "screenshots": [
+      "https://imazing.com/img/home/win/1-hero-winos-130x38-570x368@2x.jpg"
+    ]
+  },
   {
     "id": "alfred",
     "title": "Alfred",
@@ -155,7 +195,7 @@
     "category": "iOS Sideloading",
     "icon": "https://softwarekit.pages.dev/ios/assets/altstore.png",
     "description": "AltStore is the home for apps that push iOS boundaries—install apps outside the App Store, no jailbreak required.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://altstore.io",
     "type": "App",
     "device": "iOS",
@@ -171,7 +211,7 @@
     "category": "Sideloading",
     "icon": "https://sideloadly.io/icon.png",
     "description": "Sideload your favorite games and apps on iOS, Apple Silicon Macs, and Apple TV without jailbreak.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://sideloadly.io/",
     "type": "App",
     "device": "Multi-device",
@@ -186,7 +226,7 @@
     "category": "Device Management",
     "icon": "https://imazing.com/img/imazing3-logo.svg",
     "description": "iMazing is the world’s most trusted software to transfer and save your messages, music, files and data from your iPhone or iPad to your Mac or PC. Gain powerful backup, data extraction, media, and file transfer capabilities, and much more with iMazing.",
-    "compatible": "Unknown",
+    "compatible": "N/A",
     "get_link": "https://imazing.com/",
     "type": "App",
     "device": "Multi-device",
