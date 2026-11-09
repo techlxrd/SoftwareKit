@@ -724,6 +724,72 @@ html.dark .repo-color-item.repo-tinted .item-subtitle {
   display: block;
 }
 
+.fs-card .fs-card-content {
+  padding: 12px;
+}
+
+.fs-card-icon-wrapper {
+  position: relative;
+  margin-right: 12px;
+}
+
+.fs-card-icon {
+  border-radius: var(--app-radius-icon);
+  display: block;
+  object-fit: cover;
+}
+
+.fs-card-info {
+  min-width: 0;
+  flex-grow: 1;
+}
+
+.fs-card-title-row {
+  margin-bottom: 4px;
+}
+
+.fs-card-title {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--f7-text-color);
+  margin-right: 6px;
+}
+
+.fs-card-desc {
+  font-size: 12px;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.fs-card-action {
+  margin-left: 12px;
+  min-width: 60px;
+}
+
+.fs-card-btn {
+  height: 28px;
+  line-height: 28px;
+  padding: 0 16px;
+  margin-bottom: 4px;
+}
+
+.fs-card-url {
+  font-size: 10px;
+}
+
+.fs-card-footer {
+  min-height: auto;
+  padding: 8px 12px;
+}
+
+.fs-card-footer-text {
+  font-size: 11px;
+  text-align: center;
+}
+
 .news-reader-content {
   --fs-iframe-offset: 70px;
   background: #000;
